@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejercicios>
+    <!-- Categoría: Abdominales -->
+    <categoria nombre="Abdominales">
+        <ejercicio>
+            <nombre>Abdominal Apoyado con Fitball - con disco</nombre>
+            <descripcion>Se realiza sobre un fitball mientras se mantiene un disco sobre el pecho, activando los costados mediante un movimiento de contracción lateral.</descripcion>
+            <gif>@drawable/abdominal_apoyado_con_fitball___con_disco</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal bicicleta</nombre>
+            <descripcion>El ejercicio de abdominal bicicleta es excelente para trabajar los costados al simular un pedaleo mientras se alternan los codos y las rodillas en un movimiento controlado.</descripcion>
+            <gif>@drawable/abdominal_bicicleta</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal con Fitball</nombre>
+            <descripcion>Se realiza sobre un fitball para añadir inestabilidad, activando los músculos costados al realizar una contracción lateral de tronco.</descripcion>
+            <gif>@drawable/abdominal_con_fitball</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal con Piernas Elevadas</nombre>
+            <descripcion>Este ejercicio consiste en elevar las piernas mientras se realiza una contracción abdominal, enfocándose en los músculos costados.</descripcion>
+            <gif>@drawable/abdominal_con_piernas_elevadas_con_disco</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal con Piernas Elevadas (mancuernas)</nombre>
+            <descripcion>Al elevar las piernas y sostener mancuernas, este ejercicio trabaja los costados y la zona inferior del abdomen.</descripcion>
+            <gif>@drawable/abdominal_con_piernas_elevadas_mancuernas</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal Declinado</nombre>
+            <descripcion>El abdominal declinado se realiza en una banca en declive, activando principalmente la parte baja del abdomen y los costados.</descripcion>
+            <gif>@drawable/abdominal_declinado_m_quina</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal Declinado (máquina)</nombre>
+            <descripcion>La máquina para músculos centrales declinados proporciona soporte y control, permitiendo trabajar de forma focalizada los músculos del abdomen.</descripcion>
+            <gif>@drawable/abdominal_declinado_mancuernas</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal en banco</nombre>
+            <descripcion>Se realiza en un banco plano, activando la zona media del abdomen y los costados mediante un movimiento controlado de contracción.</descripcion>
+            <gif>@drawable/abdominal_en_banco</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal - en el banco con disco</nombre>
+            <descripcion>Se efectúa en un banco con un disco sobre el pecho para añadir peso, intensificando la activación de los costados.</descripcion>
+            <gif>@drawable/abdomi_drawable_abdominal_en_el_banco_con_disconal_alternado_supra_infra</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal (kettlebell)</nombre>
+            <descripcion>Este ejercicio de músculos centrales se realiza con un kettlebell, activando tanto la zona abdominal como los costados mediante un movimiento controlado.</descripcion>
+            <gif>@drawable/abdominal__kettlebell_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal Oblicuo Alternado con Pies Apoyados - con disco</nombre>
+            <descripcion>Combina giro oblicuo y apoyo de pies para intensificar el trabajo de los costados al sostener un disco.</descripcion>
+            <gif>@drawable/abdominal_oblicuo_alternado_con_pies_apoyados___con_disco</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal Oblíquo con Brazos Extendidos (mancuernas)</nombre>
+            <descripcion>Trabaja los costados utilizando mancuernas con los brazos extendidos, mejorando la fuerza y flexibilidad de los músculos laterales.</descripcion>
+            <gif>@drawable/abdominal_obl_quo_con_brazos_extendidos__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal Oblíquo con Pies en el Suelo (mancuernas)</nombre>
+            <descripcion>Se realiza con mancuernas y pies apoyados para trabajar de forma intensa la zona oblicua y lateral del abdomen.</descripcion>
+            <gif>@drawable/abdominal_obl_quo_con_pies_en_el_suelo__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal (polea)</nombre>
+            <descripcion>Realizado con una polea, este ejercicio activa la zona abdominal y los costados mediante un movimiento de contracción y rotación.</descripcion>
+            <gif>@drawable/abdominal__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal Recto con Fitball</nombre>
+            <descripcion>Sobre un fitball se trabaja la zona central del abdomen manteniendo la estabilidad durante la contracción.</descripcion>
+            <gif>@drawable/abdominal_recto_con_fitball</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal sentado</nombre>
+            <descripcion>Ejercicio básico que se realiza en posición sentada para trabajar el core de forma controlada.</descripcion>
+            <gif>@drawable/abdominal_sentado_m_quina</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal Sentado (máquina)</nombre>
+            <descripcion>Con máquina especializada se añade resistencia al movimiento para potenciar la contracción del abdomen y costados.</descripcion>
+            <gif>@drawable/abdominal_sentado_polea</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal Supra-infra alternado (mancuernas)</nombre>
+            <descripcion>Alterna la contracción entre la parte superior e inferior del abdomen, utilizando mancuernas para incrementar la resistencia.</descripcion>
+            <gif>@drawable/abdominal_supra_infra_alternado__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal Supra-infra (mancuernas)</nombre>
+            <descripcion>Realiza un movimiento combinado de contracción superior e inferior del abdomen con el apoyo de mancuernas.</descripcion>
+            <gif>@drawable/abdominal_supra_infra__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abdominal Tocar los Pies Alternado</nombre>
+            <descripcion>Implica tocar los pies de manera alterna mientras se contrae el abdomen, activando intensamente los costados.</descripcion>
+            <gif>@drawable/abdominal_tocar_los_pies_alternado</gif>
+        </ejercicio>
+    </categoria>
+
+    <!-- Categoría: Abductores -->
+    <categoria nombre="Abductores">
+        <ejercicio>
+            <nombre>Abducción de Cadera en Cuatro Apoyos (polea)</nombre>
+            <descripcion>Ideal para fortalecer los músculos abductores, se realiza en posición de cuatro apoyos con la resistencia de una polea.</descripcion>
+            <gif>@drawable/abducci_n_de_cadera_en_cuatro_apoyos__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abducción de Cadera Lateral (máquina)</nombre>
+            <descripcion>Ejercicio en máquina que permite aislar y trabajar los músculos abductores de forma controlada.</descripcion>
+            <gif>@drawable/abducci_n_de_cadera_lateral__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abducción de Cadera (polea)</nombre>
+            <descripcion>Utilizando la polea se trabaja la fuerza de los abductores manteniendo una postura correcta.</descripcion>
+            <gif>@drawable/abducci_n_de_cadera__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abducción en el Suelo</nombre>
+            <descripcion>Ejercicio sin equipo que trabaja los músculos abductores mediante movimientos laterales en el suelo.</descripcion>
+            <gif>@drawable/abducci_n_en_el_suelo</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Abductores en máquina</nombre>
+            <descripcion>Se realiza en máquina para trabajar de forma aislada y con progresivos incrementos de resistencia.</descripcion>
+            <gif>@drawable/abductores_en_m_quina</gif>
+        </ejercicio>
+    </categoria>
+
+    <!-- Categoría: Aductores -->
+    <categoria nombre="Aductores">
+        <ejercicio>
+            <nombre>Abdominal Tijera con Rotación de Piernas</nombre>
+            <descripcion>Ejercicio que, mediante un movimiento de tijera combinado con rotación, activa principalmente los músculos aductores.</descripcion>
+            <gif>@drawable/abdominal_tijera_con_rotaci_n_de_piernas</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Aducción de Cadera de Pie</nombre>
+            <descripcion>Realizado de pie, este ejercicio enfoca el trabajo en los músculos internos de los muslos, activando los aductores.</descripcion>
+            <gif>@drawable/aducci_n_de_cadera_de_pie</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Aducción de Cadera en el Suelo</nombre>
+            <descripcion>Se efectúa en el suelo para trabajar de forma concentrada los músculos aductores con un movimiento controlado.</descripcion>
+            <gif>@drawable/aducci_n_de_cadera_en_el_suelo</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Aducción de Cadera Lateral (máquina)</nombre>
+            <descripcion>Utiliza la máquina para aislar los aductores laterales y fortalecer la zona interna de los muslos.</descripcion>
+            <gif>@drawable/aducci_n_de_cadera_lateral__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Aducción de Cadera (polea)</nombre>
+            <descripcion>Con la resistencia de la polea, este ejercicio trabaja intensamente los músculos aductores.</descripcion>
+            <gif>@drawable/aducci_n_de_cadera__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Aducción Thrust (máquina)</nombre>
+            <descripcion>Se centra en los aductores mediante un movimiento guiado en máquina, favoreciendo una activación muscular controlada.</descripcion>
+            <gif>@drawable/aducci_n_thrust__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Aductores en máquina</nombre>
+            <descripcion>Permite trabajar los músculos internos de los muslos de forma progresiva y aislada.</descripcion>
+            <gif>@drawable/aductores_en_m_quina</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Piernas de Pie (máquina)</nombre>
+            <descripcion>Ejercicio en máquina que refuerza la fuerza de los aductores mediante la elevación de piernas con resistencia.</descripcion>
+            <gif>@drawable/elevaci_n_de_piernas_de_pie__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Piernas Frontal Colgado</nombre>
+            <descripcion>Se realiza colgado para aumentar la activación de los aductores junto con la zona inferior del abdomen.</descripcion>
+            <gif>@drawable/elevaci_n_de_piernas_frontal_colgado</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Flexión de Cadera de Pie (polea)</nombre>
+            <descripcion>Mediante la polea se fortalece el flexor de la cadera y se activa de forma secundaria la musculatura aductora.</descripcion>
+            <gif>@drawable/flexi_n_de_cadera_de_pie__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Tijera con Piernas Elevadas</nombre>
+            <descripcion>Con las piernas en posición de tijera y elevadas se activa intensamente la musculatura aductora y el core.</descripcion>
+            <gif>@drawable/tijera_con_piernas_elevadas</gif>
+        </ejercicio>
+    </categoria>
+
+    <!-- Categoría: Antebrazo -->
+    <categoria nombre="Antebrazo">
+        <ejercicio>
+            <nombre>Curl de Muñeca - agarre invertido (barra)</nombre>
+            <descripcion>Fortalece los extensores del antebrazo utilizando una barra con agarre invertido, mejorando la estabilidad y fuerza del agarre.</descripcion>
+            <gif>@drawable/curl_de_mu_eca___agarre_invertido__barra_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca - agarre invertido (polea)</nombre>
+            <descripcion>Utiliza la resistencia constante de la polea para trabajar de forma controlada los músculos del antebrazo.</descripcion>
+            <gif>@drawable/curl_de_mu_eca___agarre_invertido__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca (barra Z)</nombre>
+            <descripcion>Con una barra Z se realiza un movimiento de curl que aísla los músculos flexores del antebrazo.</descripcion>
+            <gif>@drawable/curl_de_mu_eca__barra_z_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca de Pie - agarre invertido (barra)</nombre>
+            <descripcion>Ejecutado de pie, este curl con agarre invertido potencia los extensores del antebrazo mientras se mantiene la postura erguida.</descripcion>
+            <gif>@drawable/curl_de_mu_eca_de_pie___agarre_invertido__barra_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca - de pie (mancuernas)</nombre>
+            <descripcion>Se realizan curls con mancuernas de pie para trabajar de forma unilateral la fuerza y estabilidad del antebrazo.</descripcion>
+            <gif>@drawable/curl_de_mu_eca___de_pie__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca en Banco - agarre invertido (mancuernas)</nombre>
+            <descripcion>Con el apoyo de un banco y mancuernas, se aísla el trabajo del antebrazo con un agarre invertido.</descripcion>
+            <gif>@drawable/curl_de_mu_eca_en_banco___agarre_invertido__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca en Banco - agarre pronado cerrado (barra)</nombre>
+            <descripcion>Este ejercicio se realiza en banco con un agarre pronado_cerrado para enfatizar la contracción en los músculos del antebrazo.</descripcion>
+            <gif>@drawable/curl_de_mu_eca_en_banco___agarre_pronado_cerrado__barra_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca en Banco - agarre supinado (barra)</nombre>
+            <descripcion>Mediante un agarre supinado se trabaja de forma equilibrada la musculatura del antebrazo mientras se apoya en banco.</descripcion>
+            <gif>@drawable/curl_de_mu_eca_en_banco___agarre_supinado__barra_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca Invertida Sentado (barra Z)</nombre>
+            <descripcion>En posición sentada con barra Z se consigue una activación más cómoda y focalizada de los músculos extensores del antebrazo.</descripcion>
+            <gif>@drawable/curl_de_mu_eca_invertida_sentado__barra_z_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca Invertido (barra Z)</nombre>
+            <descripcion>Utiliza la barra Z en posición invertida para trabajar la parte posterior del antebrazo de forma controlada.</descripcion>
+            <gif>@drawable/curl_de_mu_eca_invertido__barra_z_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca (kettlebell)</nombre>
+            <descripcion>Este ejercicio con kettlebell añade un desafío extra por la distribución del peso, activando los músculos del antebrazo.</descripcion>
+            <gif>@drawable/curl_de_mu_eca__kettlebell_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca (polea)</nombre>
+            <descripcion>La polea ofrece una resistencia uniforme que permite un trabajo muy controlado de la musculatura del antebrazo.</descripcion>
+            <gif>@drawable/curl_de_mu_eca__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca por detrás (barra Z)</nombre>
+            <descripcion>Realizado con barra Z, este curl por detrás trabaja de forma específica los músculos extensores del antebrazo.</descripcion>
+            <gif>@drawable/curl_de_mu_eca_por_detr_s__barra_z_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca Sentada (barra Z)</nombre>
+            <descripcion>Ejecutado en posición sentada con barra Z se aísla y fortalece la zona central del antebrazo.</descripcion>
+            <gif>@drawable/curl_de_mu_eca_sentada__barra_z_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca Sentada (smith)</nombre>
+            <descripcion>En máquina Smith se realiza un curl de muñeca sentado, lo que permite un movimiento guiado y seguro para el antebrazo.</descripcion>
+            <gif>@drawable/curl_de_mu_eca_sentada__smith_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca Unilateral en Banco - agarre invertido (mancuernas)</nombre>
+            <descripcion>Se trabaja cada antebrazo de forma independiente usando mancuernas y banco, con agarre invertido para mayor aislamiento.</descripcion>
+            <gif>@drawable/curl_de_mu_eca_unilateral_en_banco___agarre_invertido__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca Unilateral en Banco - agarre neutro (mancuernas)</nombre>
+            <descripcion>Con agarre neutro se realizan curls de forma unilateral en banco para equilibrar la fuerza de ambos antebrazos.</descripcion>
+            <gif>@drawable/curl_de_mu_eca_unilateral_en_banco___agarre_neutro__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Muñeca Unilateral (polea)</nombre>
+            <descripcion>Utilizando la polea se efectúa un curl unilateral que permite trabajar cada brazo por separado con precisión.</descripcion>
+            <gif>@drawable/curl_de_mu_eca_unilateral__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Rotación de Muñeca - agarre inverso (mancuernas)</nombre>
+            <descripcion>La rotación de muñeca con agarre inverso y mancuernas se enfoca en fortalecer los extensores del antebrazo de forma bilateral.</descripcion>
+            <gif>@drawable/rotaci_n_de_mu_eca___agarre_inverso__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Rotación de Muñeca Frontal (polea)</nombre>
+            <descripcion>Con la polea se trabaja la rotación frontal de la muñeca para mejorar la movilidad y fuerza del antebrazo.</descripcion>
+            <gif>@drawable/rotaci_n_de_mu_eca_frontal__polea_</gif>
+        </ejercicio>
+    </categoria>
+
+    <!-- Categoría: Bíceps -->
+    <categoria nombre="Bíceps">
+        <ejercicio>
+            <nombre>Cristos (mancuernas)</nombre>
+            <descripcion>Se realizan con mancuernas para trabajar la contracción y fuerza de los músculos bíceps.</descripcion>
+            <gif>@drawable/cristos__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps - agarre abierto (barra Z)</nombre>
+            <descripcion>Con barra Z y agarre abierto se enfatiza la contracción del bíceps, permitiendo un movimiento natural.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_agarre_abierto_barra</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Apoyado en Banco (barra)</nombre>
+            <descripcion>Ejecutado en banco, este curl con barra ayuda a aislar el trabajo en los bíceps.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_apoyado_en_banco_barra</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Arrastada (smith)</nombre>
+            <descripcion>Realizado en máquina Smith, ofrece un movimiento guiado para aislar el bíceps de forma segura.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_arrastada_smith</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Concentrada (kettlebell)</nombre>
+            <descripcion>Con kettlebell se realiza un curl concentrado que aísla el músculo bíceps para una contracción intensa.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_concentrada_kettlebell</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Concentrado (mancuernas)</nombre>
+            <descripcion>Mediante mancuernas se realiza de forma unilateral, concentrándose en la contracción máxima del bíceps.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_concentrado_mancuernas</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps - con soporte (mancuernas)</nombre>
+            <descripcion>Utiliza un soporte para aislar el bíceps mientras se realizan curls con mancuernas, mejorando la técnica.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_con_soporte_mancuernas</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Inverso (barra)</nombre>
+            <descripcion>Se efectúa con barra y agarre invertido, trabajando tanto los bíceps como los músculos del antebrazo.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_inverso_barra_z</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Inverso (polea)</nombre>
+            <descripcion>Con polea se realiza un curl inverso que favorece la contracción de los bíceps y estabiliza el antebrazo.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_inverso_polea</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Invertido Inclinado (mancuernas)</nombre>
+            <descripcion>Realizado en banco inclinado, se acentúa el estiramiento y contracción del bíceps usando mancuernas.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_invertido_inclinado_mancuernas</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Martillo Alterno Apoyado en el Banco (mancuernas)</nombre>
+            <descripcion>Con mancuernas y apoyado en banco se realiza un curl martillo alternado para trabajar el bíceps y el antebrazo.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_martillo_alterno_apoyado_en_el_banco_mancuernas</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Martillo Alterno Inclinado (mancuernas)</nombre>
+            <descripcion>Ejecutado en banco inclinado, este ejercicio trabaja la parte larga del bíceps con el agarre martillo.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_martillo_alterno_inclinado_mancuernas</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Martillo - con soporte (mancuernas)</nombre>
+            <descripcion>Utiliza soporte para realizar el curl martillo, facilitando una activación más concentrada del bíceps.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_martillo_con_soporte_mancuernas</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Martillo (polea)</nombre>
+            <descripcion>Se efectúa con polea para mantener una resistencia constante durante todo el movimiento del bíceps.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_martillo_polea</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Scott Alterno - agarre neutro (mancuernas)</nombre>
+            <descripcion>Ejecutado en banco Scott, se realiza de forma alterna con agarre neutro para trabajar el bíceps en aislamiento.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_scott_alterno_agarre_neutro_mancuernas</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Scott (máquina)</nombre>
+            <descripcion>La máquina Scott ofrece un movimiento guiado que maximiza el aislamiento y la contracción del bíceps.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_scott_m_quina</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Scott Sentado (mancuernas)</nombre>
+            <descripcion>Realizado sentado para mejorar el control y aislamiento del bíceps con mancuernas.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_scott_sentado_mancuernas</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Scott Unilateral - agarre neutro (mancuernas)</nombre>
+            <descripcion>Permite trabajar cada brazo de forma independiente, maximizando el aislamiento del bíceps.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_scott_unilateral_agarre_neutro_mancuernas</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Bíceps Spider - agarre invertido (mancuernas)</nombre>
+            <descripcion>Se realiza en posición inclinada con agarre invertido para intensificar la contracción del bíceps.</descripcion>
+            <gif>@drawable/curl_de_b_ceps_spider_agarre_invertido_mancuernas</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl Zottman (mancuernas)</nombre>
+            <descripcion>Combina un curl tradicional con una rotación para trabajar tanto los bíceps como los antebrazos.</descripcion>
+            <gif>@drawable/curl_zottman__mancuernas_</gif>
+        </ejercicio>
+    </categoria>
+
+    <!-- Categoría: Cardio -->
+    <categoria nombre="Cardio">
+        <ejercicio>
+            <nombre>Bicicleta ergométrica</nombre>
+            <descripcion>Ejercicio cardiovascular en máquina que simula el pedaleo, ayudando a mejorar la resistencia y quema de calorías.</descripcion>
+            <gif>@drawable/bicicleta_ergom_trica</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Bicicleta</nombre>
+            <descripcion>Ejercicio cardiovascular al aire libre o en máquina que fortalece el sistema cardiovascular.</descripcion>
+            <gif>@drawable/bicicleta</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Burpee</nombre>
+            <descripcion>Un ejercicio de alta intensidad que combina sentadilla, salto y flexión, ideal para mejorar la resistencia y fuerza.</descripcion>
+            <gif>@drawable/burpee_kettlebell</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Cinta de correr</nombre>
+            <descripcion>Permite realizar entrenamientos de carrera con control de velocidad e inclinación para trabajar la resistencia.</descripcion>
+            <gif>@drawable/cinta_de_correr</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elíptico</nombre>
+            <descripcion>Ofrece un entrenamiento cardiovascular de bajo impacto, ideal para mejorar la resistencia sin dañar las articulaciones.</descripcion>
+            <gif>@drawable/el_ptico</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Jumping Jacks</nombre>
+            <descripcion>Ejercicio pliométrico que mejora la coordinación y resistencia, involucrando casi todos los grupos musculares.</descripcion>
+            <gif>@drawable/jumping_jacks</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Maquina de escaleras</nombre>
+            <descripcion>Simula el ascenso por escaleras, fortaleciendo piernas y glúteos mientras mejora la capacidad cardiovascular.</descripcion>
+            <gif>@drawable/maquina_de_escaleras</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Saltar la Cuerda</nombre>
+            <descripcion>Ejercicio clásico para mejorar la coordinación, agilidad y resistencia cardiovascular con alto gasto calórico.</descripcion>
+            <gif>@drawable/saltar_la_cuerda</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Simulador de Caminata (máquina)</nombre>
+            <descripcion>Ofrece un entrenamiento controlado que simula la caminata, ideal para principiantes o en rehabilitación.</descripcion>
+            <gif>@drawable/simulador_de_caminata__m_quina_</gif>
+        </ejercicio>
+    </categoria>
+
+    <!-- Categoría: Cuadriceps -->
+    <categoria nombre="Cuadriceps">
+        <ejercicio>
+            <nombre>Levantamiento Terra en Déficit (barra hexagonal)</nombre>
+            <descripcion>Ejercicio que, utilizando una barra hexagonal, enfatiza la contracción de los músculos de la parte frontal de las piernas.</descripcion>
+            <gif>@drawable/levantamiento_terra_en_d_ficit__barra_hexagonal_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Levantamiento Terra Rumano Unilateral (RDL) (barra hexagonal)</nombre>
+            <descripcion>Realizado de forma unilateral para aislar y trabajar de forma intensa la parte posterior y cuadriceps.</descripcion>
+            <gif>@drawable/levantamiento_terra_rumano_unilateral__rdl___barra_hexagonal_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Levantamiento Terra Sumo (kettlebell)</nombre>
+            <descripcion>Con kettlebell y postura sumo se trabaja la parte interna y externa de los muslos junto con glúteos.</descripcion>
+            <gif>@drawable/levantamiento_terra_sumo__kettlebell_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Peso Muerto (mancuernas)</nombre>
+            <descripcion>Ejercicio básico que, con mancuernas, activa intensamente la cadena posterior y fortalece los cuadriceps indirectamente.</descripcion>
+            <gif>@drawable/peso_muerto__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Peso Muerto (máquina)</nombre>
+            <descripcion>Se realiza en máquina para garantizar un movimiento seguro y controlado, trabajando la fuerza de las piernas.</descripcion>
+            <gif>@drawable/peso_muerto__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Peso Muerto (polea)</nombre>
+            <descripcion>Con polea se efectúa un peso muerto que refuerza tanto la zona lumbar como los cuadriceps mediante resistencia constante.</descripcion>
+            <gif>@drawable/peso_muerto__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Prensa de Piernas Inclinada</nombre>
+            <descripcion>Ejercicio de fuerza para cuadriceps que se realiza en prensa inclinada, activando la parte frontal y media de las piernas.</descripcion>
+            <gif>@drawable/prensa_de_piernas_inclinada</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Prensa de Piernas Vertical (máquina)</nombre>
+            <descripcion>La prensa vertical permite trabajar los cuadriceps con un movimiento controlado y en un rango completo de movilidad.</descripcion>
+            <gif>@drawable/prensa_de_piernas_vertical__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Press de Pierna Horizontal Unilateral (máquina)</nombre>
+            <descripcion>Se enfoca en cada pierna de forma independiente, mejorando el equilibrio y fuerza de los cuadriceps.</descripcion>
+            <gif>@drawable/press_de_pierna_horizontal_unilateral__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Press de Piernas Alternado (máquina)</nombre>
+            <descripcion>Realiza un press alternado que favorece el trabajo unilateral y la simetría en el desarrollo de los cuadriceps.</descripcion>
+            <gif>@drawable/press_de_piernas_alternado__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Press de Piernas Vertical (máquina)</nombre>
+            <descripcion>Repite el ejercicio en vertical para maximizar el trabajo de la zona anterior del muslo.</descripcion>
+            <gif>@drawable/press_de_piernas_vertical__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Press de Pierna Unilateral (máquina)</nombre>
+            <descripcion>Aísla cada pierna de forma individual, permitiendo un mayor enfoque en la fuerza y estabilidad de los cuadriceps.</descripcion>
+            <gif>@drawable/press_de_pierna_unilateral__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Sentadilla Búlgara (mancuernas)</nombre>
+            <descripcion>Se realiza apoyando una pierna en un banco, lo que aumenta la dificultad y trabaja intensamente el cuadriceps y glúteos.</descripcion>
+            <gif>@drawable/sentadilla_b_lgara__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Sentadilla - con disco</nombre>
+            <descripcion>La sentadilla con disco añade peso extra sobre el pecho, intensificando el trabajo en los cuadriceps.</descripcion>
+            <gif>@drawable/sentadilla___con_disco</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Sentadilla - pies juntos (barra)</nombre>
+            <descripcion>Ejercicio clásico en el que se juntan los pies para focalizar el esfuerzo en el cuadriceps interno.</descripcion>
+            <gif>@drawable/sentadilla___pies_juntos__barra_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Sentadilla - pies separados (máquina)</nombre>
+            <descripcion>Utilizando máquina, se trabaja la sentadilla con pies separados para activar distintos sectores del cuadriceps.</descripcion>
+            <gif>@drawable/sentadilla___pies_separados__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Zancada con Pies Elevados (mancuernas)</nombre>
+            <descripcion>Con mancuernas y elevación de uno de los pies se realiza una zancada que enfatiza el trabajo unilateral de los cuadriceps.</descripcion>
+            <gif>@drawable/zancada_con_pies_elevados__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Zancada Cruzada (barra)</nombre>
+            <descripcion>Se efectúa con barra, cruzando la pierna para trabajar de forma integral la musculatura de las piernas.</descripcion>
+            <gif>@drawable/zancada_cruzada__barra_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Zancada Lateral (kettlebell)</nombre>
+            <descripcion>Realizada con kettlebell, esta zancada lateral activa intensamente los músculos de la parte externa del muslo.</descripcion>
+            <gif>@drawable/zancada_lateral__kettlebell_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Zancada Lateral (mancuernas)</nombre>
+            <descripcion>Con mancuernas se realiza la zancada lateral para fortalecer la parte externa del cuadriceps y mejorar la estabilidad.</descripcion>
+            <gif>@drawable/zancada_lateral__mancuernas_</gif>
+        </ejercicio>
+    </categoria>
+
+    <!-- Categoría: Dorsales -->
+    <categoria nombre="Dorsales">
+        <ejercicio>
+            <nombre>Crossover Inverso (polea)</nombre>
+            <descripcion>Utiliza la polea para realizar un movimiento de cruce inverso que fortalece los músculos dorsales.</descripcion>
+            <gif>@drawable/crossover_inverso__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Dominadas - agarre cerrado invertido con disco</nombre>
+            <descripcion>Con disco y agarre cerrado se intensifica la contracción de la espalda y los dorsales.</descripcion>
+            <gif>@drawable/dominadas___agarre_cerrado_invertido_con_disco</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Dominadas - agarre invertido (máquina)</nombre>
+            <descripcion>Ejecutadas en máquina, facilitan la realización de dominadas con agarre invertido para trabajar dorsales.</descripcion>
+            <gif>@drawable/dominadas___agarre_invertido__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Dominadas Comando</nombre>
+            <descripcion>Variación de dominadas que enfatiza la fuerza de espalda y dorsales mediante un movimiento explosivo.</descripcion>
+            <gif>@drawable/dominadas_comando</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Dominadas en máquina</nombre>
+            <descripcion>Proporciona asistencia para realizar dominadas, permitiendo trabajar progresivamente los dorsales.</descripcion>
+            <gif>@drawable/dominadas_en_m_quina</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Jalón - agarre abierto (polea)</nombre>
+            <descripcion>Ejercicio de polea con agarre abierto que trabaja intensamente la amplitud de los dorsales.</descripcion>
+            <gif>@drawable/jal_n___agarre_abierto__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Jalón - con cuerda (polea)</nombre>
+            <descripcion>La cuerda permite un movimiento más natural que activa los dorsales de forma completa.</descripcion>
+            <gif>@drawable/jal_n___con_cuerda__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Jalón de Espalda (polea)</nombre>
+            <descripcion>Se centra en trabajar la espalda mediante un movimiento de jalón que involucra a los dorsales.</descripcion>
+            <gif>@drawable/jal_n_de_espalda__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Jalón Estendida en Pie (polea)</nombre>
+            <descripcion>Realizado en pie, este jalón extiende la espalda para trabajar los dorsales de forma integral.</descripcion>
+            <gif>@drawable/jal_n_estendida_en_pie__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Remo - agarre invertido (barra)</nombre>
+            <descripcion>Ejercicio básico de remo con barra que trabaja la parte media de la espalda y los dorsales.</descripcion>
+            <gif>@drawable/remo___agarre_invertido__barra_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Remo - agarre invertido (mancuernas)</nombre>
+            <descripcion>Con mancuernas se realiza un remo que permite trabajar de forma unilateral y equilibrada los dorsales.</descripcion>
+            <gif>@drawable/remo___agarre_invertido__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Remo - agarre invertido (polea)</nombre>
+            <descripcion>La polea ofrece una resistencia constante para realizar un remo invertido que fortalece la espalda.</descripcion>
+            <gif>@drawable/remo___agarre_invertido__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Remo Alternado Sentado (polea)</nombre>
+            <descripcion>Permite trabajar de forma alternada cada lado de la espalda, favoreciendo la simetría muscular.</descripcion>
+            <gif>@drawable/remo_alternado_sentado__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Remo Apoyado en el Banco - agarre invertido (mancuernas)</nombre>
+            <descripcion>Realizado apoyado en banco, este remo con mancuernas y agarre invertido facilita el aislamiento de la espalda.</descripcion>
+            <gif>@drawable/remo_apoyado_en_el_banco___agarre_invertido__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Remo en Banco Inclinado - con cuerda (polea)</nombre>
+            <descripcion>Ejecutado en banco inclinado, se usa la cuerda para lograr un movimiento de remo que trabaja la espalda en profundidad.</descripcion>
+            <gif>@drawable/remo_en_banco_inclinado___con_cuerda__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Remo (máquina)</nombre>
+            <descripcion>La máquina de remo guía el movimiento, permitiendo trabajar los dorsales con seguridad y control.</descripcion>
+            <gif>@drawable/remo__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Remo - pegada cerrada (smith)</nombre>
+            <descripcion>Se efectúa un remo con agarre pegado, enfatizando la contracción de la espalda central.</descripcion>
+            <gif>@drawable/remo___pegada_cerrada__smith_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Remo (polea baja)</nombre>
+            <descripcion>Con polea baja se realiza un remo que enfatiza la contracción de la parte baja de la espalda.</descripcion>
+            <gif>@drawable/remo__polea_baja_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Remo (polea)</nombre>
+            <descripcion>Un clásico ejercicio de remo con polea que activa toda la musculatura dorsal.</descripcion>
+            <gif>@drawable/remo__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Remo Sentado - con barra V (polea)</nombre>
+            <descripcion>La barra V facilita un agarre cómodo y trabaja de forma intensa la parte media de la espalda.</descripcion>
+            <gif>@drawable/remo_sentado___con_barra_v__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Remo Unilateral en Pie (polea)</nombre>
+            <descripcion>Se realiza en posición de pie para trabajar cada lado de la espalda de forma independiente.</descripcion>
+            <gif>@drawable/remo_unilateral_en_pie__polea_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Remo Vertical Unilateral Apoyada en el Banco (polea)</nombre>
+            <descripcion>Ejecutado con apoyo en banco, este remo vertical unilateral focaliza el trabajo en los dorsales.</descripcion>
+            <gif>@drawable/remo_vertical_unilateral_apoyada_en_el_banco__polea_</gif>
+        </ejercicio>
+    </categoria>
+
+    <!-- Categoría: Femoral -->
+    <categoria nombre="Femoral">
+        <ejercicio>
+            <nombre>Abdominal Curl de Piernas (TRX)</nombre>
+            <descripcion>Con TRX se realizan curls de piernas que activan intensamente la parte posterior de las piernas y el core.</descripcion>
+            <gif>@drawable/abdominal_curl_de_piernas__trx_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Piernas Acostado (mancuernas)</nombre>
+            <descripcion>Realizado acostado, este curl con mancuernas aísla y trabaja los músculos femorales.</descripcion>
+            <gif>@drawable/curl_de_piernas_acostado__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Piernas Acostado (máquina)</nombre>
+            <descripcion>Se efectúa en máquina para ofrecer un movimiento guiado que refuerza los músculos de la parte posterior de las piernas.</descripcion>
+            <gif>@drawable/curl_de_piernas_acostado__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Piernas Declinada (mancuernas)</nombre>
+            <descripcion>Con mancuernas y en posición declinada se aumenta el estiramiento y la activación de los femorales.</descripcion>
+            <gif>@drawable/curl_de_piernas_declinada__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Piernas de Pie</nombre>
+            <descripcion>Ejercicio en el que se realiza un curl de piernas en posición de pie para trabajar los músculos posteriores del muslo.</descripcion>
+            <gif>@drawable/curl_de_piernas_de_pie</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Piernas de Pie (polea)</nombre>
+            <descripcion>Con polea se efectúa un curl de piernas de pie que enfatiza la resistencia en la parte posterior.</descripcion>
+            <gif>@drawable/curl_de_piernas_de_pie_polea</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Piernas Sentado (máquina)</nombre>
+            <descripcion>Realizado en máquina sentado, se logra un movimiento controlado que activa intensamente los femorales.</descripcion>
+            <gif>@drawable/curl_de_piernas_sentado__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Piernas Unilateral Acostado (máquina)</nombre>
+            <descripcion>Aísla cada pierna de forma individual para trabajar los femorales de forma precisa y equilibrada.</descripcion>
+            <gif>@drawable/curl_de_piernas_unilateral_acostado__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Piernas Unilateral de Rodillas (máquina)</nombre>
+            <descripcion>Con apoyo en rodillas y máquina se efectúa un curl unilateral que maximiza el aislamiento muscular.</descripcion>
+            <gif>@drawable/curl_de_piernas_unilateral_de_rodillas__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Curl de Piernas Unilateral Sentada (máquina)</nombre>
+            <descripcion>Se trabaja de forma unilateral en máquina para un control óptimo del movimiento y activación de los femorales.</descripcion>
+            <gif>@drawable/curl_de_piernas_unilateral_sentada__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Cadera con Fitball</nombre>
+            <descripcion>Ejercicio que, sobre un fitball, activa la musculatura posterior de las piernas y glúteos mediante la elevación de la cadera.</descripcion>
+            <gif>@drawable/elevaci_n_de_cadera_con_fitball</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Cadera (máquina)</nombre>
+            <descripcion>Utilizando máquina se efectúa la elevación de cadera para trabajar intensamente los músculos femorales y glúteos.</descripcion>
+            <gif>@drawable/elevaci_n_de_cadera__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Piernas en el Suelo</nombre>
+            <descripcion>Se efectúa en el suelo para trabajar el core y la parte inferior de las piernas mediante elevación controlada.</descripcion>
+            <gif>@drawable/elevaci_n_de_piernas_en_el_suelo</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Hiperextensión Lumbar Reversa (mancuernas)</nombre>
+            <descripcion>Ejercicio que invierte la hiperextensión para trabajar de forma intensa la zona lumbar y femoral.</descripcion>
+            <gif>@drawable/hiperextensi_n_lumbar_reversa_mancuernas</gif>
+        </ejercicio>
+    </categoria>
+
+    <!-- Categoría: Gemelos -->
+    <categoria nombre="Gemelos">
+        <ejercicio>
+            <nombre>Elevación de Talones Apoyado en el Banco</nombre>
+            <descripcion>Realizado sobre un banco, este ejercicio fortalece la parte posterior de las piernas, especialmente los gemelos.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones_apoyado_en_el_banco</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones (barra)</nombre>
+            <descripcion>Con barra se efectúa la elevación de talones para trabajar de forma intensa la musculatura de los gemelos.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones__barra_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones - con step (mancuernas)</nombre>
+            <descripcion>Utilizando mancuernas y un step se incrementa la dificultad y se trabaja la estabilidad en los gemelos.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones___con_step__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones - con step (smith)</nombre>
+            <descripcion>Ejecutado en máquina Smith con step, se efectúa la elevación de talones de forma controlada.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones___con_step__smith_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones - donkey (máquina)</nombre>
+            <descripcion>Simula el movimiento de un burro (donkey) para trabajar intensamente la parte posterior de las piernas.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones___donkey__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones en el Leg Press</nombre>
+            <descripcion>Se efectúa en leg press para concentrar el trabajo en la musculatura de los gemelos a través de un movimiento de empuje.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones_en_el_leg_press</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones en Pie (máquina)</nombre>
+            <descripcion>Ejecutado en máquina de talones, se efectúa la elevación de talones con estabilidad y resistencia.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones_en_pie__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones Frente y Trás (barra)</nombre>
+            <descripcion>Combina elevación frontal y trasera de talones para trabajar de forma completa la musculatura de la pantorrilla.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones_frente_y_tr_s__barra_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones Inclinada (máquina)</nombre>
+            <descripcion>Se efectúa en máquina con inclinación para enfatizar la contracción de los gemelos.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones_inclinada__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones Invertida (smith)</nombre>
+            <descripcion>Ejecutado en máquina Smith, se efectúa una elevación invertida para trabajar de forma diferente la musculatura de la pantorrilla.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones_invertida__smith_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones (kettlebell)</nombre>
+            <descripcion>Con kettlebell se efectúa un ejercicio de elevación de talones que añade un desafío extra por la distribución del peso.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones__kettlebell_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones (mancuernas)</nombre>
+            <descripcion>Se efectúa con mancuernas para trabajar la estabilidad y fuerza de los gemelos de forma unilateral.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones (máquina)</nombre>
+            <descripcion>Realizado en máquina, ofrece un movimiento controlado que refuerza la musculatura de los gemelos.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones Sentada (barra)</nombre>
+            <descripcion>Ejecutada en posición sentada con barra, se aísla la contracción de la pantorrilla.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones_sentada__barra_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones Sentada (mancuernas)</nombre>
+            <descripcion>Se realiza con mancuernas en posición sentada para trabajar la fuerza y resistencia de los gemelos.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones_sentada__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones Sentado (máquina)</nombre>
+            <descripcion>Ejercicio en máquina realizado en posición sentada para un control óptimo del movimiento.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones_sentado__m_quina_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones Sentado (smith)</nombre>
+            <descripcion>Utilizando la máquina Smith en posición sentada, se refuerza la contracción de la pantorrilla.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones_sentado__smith_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones Sentado Unilateral (mancuernas)</nombre>
+            <descripcion>Se efectúa de forma unilateral para corregir desequilibrios y fortalecer individualmente cada gemelo.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones_sentado_unilateral__mancuernas_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones (smith)</nombre>
+            <descripcion>Ejecutado en máquina Smith, ofrece una guía fija para trabajar la contracción de los gemelos.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones__smith_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones (TRX)</nombre>
+            <descripcion>Con TRX se efectúa la elevación de talones, añadiendo un componente de inestabilidad que activa el core.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones__trx_</gif>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación de Talones Unilateral - con step smith</nombre>
+            <descripcion>Mediante un step y máquina Smith se efectúa la elevación unilateral para trabajar la fuerza de cada gemelo.</descripcion>
+            <gif>@drawable/elevaci_n_de_talones_unilateral___con_step__smith_</gif>
+        </ejercicio>
+    </categoria>
+</ejercicios>
