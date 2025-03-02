@@ -1,6 +1,5 @@
 package com.example.gymrace
 
-// Importaciones necesarias para la aplicación y Compose
 import android.content.res.XmlResourceParser
 import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
@@ -9,15 +8,20 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.*
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -47,11 +51,8 @@ class MainActivity : ComponentActivity() {
         // Habilita la visualización edge-to-edge en la pantalla
         enableEdgeToEdge()
         setContent {
-            // Aplica el tema personalizado GymRaceTheme
             GymRaceTheme {
-                // Scaffold para estructura básica de pantalla
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    // Llama al contenido principal con padding interno
                     Content(
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -61,24 +62,98 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// Composable principal que muestra la lista de ejercicios y las categorías
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FilterBar(
+    searchQuery: MutableState<String>,
+    selectedCategory: MutableState<String>,
+    categories: List<String>
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        OutlinedTextField(
+            value = searchQuery.value,
+            onValueChange = { searchQuery.value = it },
+            label = { Text("Buscar") },
+            shape = RoundedCornerShape(8.dp), // Bordes redondeados para el buscador
+            modifier = Modifier.weight(0.6f)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded },
+            modifier = Modifier.weight(0.6f)
+        ) {
+            OutlinedTextField(
+                value = selectedCategory.value,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text("Categoría") },
+                shape = RoundedCornerShape(8.dp), // Bordes redondeados para el filtro
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                modifier = Modifier.menuAnchor() // Asegura que el menú se ancle al TextField
+            )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                categories.forEach { category ->
+                    DropdownMenuItem(
+                        text = { Text(category) },
+                        onClick = {
+                            selectedCategory.value = category
+                            expanded = false
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+// Composable principal que muestra la lista de ejercicios y las categorías filtradas
 @Composable
 fun Content(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     // Carga los GIFs desde XML; se obtiene la lista de GIFs y la lista de nombres de GIFs faltantes
     val (gifs, missingGifs) = remember { loadGifsFromXml(context.resources.getXml(R.xml.ejercicios), context) }
-    // Estado que contiene los nombres de los GIFs faltantes, separados por coma
     val missingGifsText = remember { mutableStateOf(missingGifs.joinToString(", ")) }
 
-    // Agrupa los ejercicios por categoría muscular
-    val gifsByCategory = gifs.groupBy { it.category }
+    // Estados para búsqueda y categoría seleccionada
+    val searchQuery = remember { mutableStateOf("") }
+    val selectedCategory = remember { mutableStateOf("Todos") }
+    // Lista de categorías: "Todos" + las categorías existentes
+    val categories = listOf("Todos") + gifs.map { it.category }.distinct()
 
-    // Lista perezosa para mostrar el contenido
+    // Filtra los ejercicios según la búsqueda y la categoría seleccionada
+    val filteredGifs = gifs.filter { gif ->
+        (selectedCategory.value == "Todos" || gif.category == selectedCategory.value) &&
+                (searchQuery.value.isEmpty() ||
+                        gif.title.contains(searchQuery.value, ignoreCase = true) ||
+                        gif.description.contains(searchQuery.value, ignoreCase = true))
+    }
+    // Agrupa los ejercicios filtrados por categoría
+    val gifsByCategory = filteredGifs.groupBy { it.category }
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        // Fila superior con buscador y desplegable
+        item {
+            FilterBar(
+                searchQuery = searchQuery,
+                selectedCategory = selectedCategory,
+                categories = categories
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
         // Muestra una alerta si hay GIFs faltantes
         item {
             if (missingGifsText.value.isNotEmpty()) {
@@ -90,23 +165,34 @@ fun Content(modifier: Modifier = Modifier) {
                 )
             }
         }
-        // Itera por cada categoría y sus ejercicios
-        for ((category, exercises) in gifsByCategory) {
-            // Encabezado de la categoría
+        // Si no hay ejercicios que cumplan con los filtros, muestra un mensaje
+        if (filteredGifs.isEmpty()) {
             item {
                 Text(
-                    text = category,
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier.padding(vertical = 8.dp)
+                    text = "No se encontraron ejercicios",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(16.dp)
                 )
             }
-            // Lista de ejercicios de la categoría
-            items(exercises) { gifData ->
-                GifBox(
-                    title = gifData.title,
-                    description = gifData.description,
-                    gif = gifData.resource
-                )
+        } else {
+            // Itera por cada categoría y sus ejercicios filtrados
+            for ((category, exercises) in gifsByCategory) {
+                // Encabezado de la categoría
+                item {
+                    Text(
+                        text = category,
+                        style = MaterialTheme.typography.headlineMedium,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
+                // Lista de ejercicios de la categoría
+                items(exercises) { gifData ->
+                    GifBox(
+                        title = gifData.title,
+                        description = gifData.description,
+                        gif = gifData.resource
+                    )
+                }
             }
         }
     }
@@ -122,7 +208,6 @@ fun GifBox(title: String, description: String, gif: Int) {
             .background(Color.LightGray)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            // Muestra la imagen del GIF
             GifImage(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -130,13 +215,11 @@ fun GifBox(title: String, description: String, gif: Int) {
                 gif = gif
             )
             Spacer(modifier = Modifier.height(16.dp))
-            // Título del ejercicio
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineSmall
             )
             Spacer(modifier = Modifier.height(8.dp))
-            // Descripción del ejercicio
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodyMedium
@@ -149,7 +232,6 @@ fun GifBox(title: String, description: String, gif: Int) {
 @Composable
 fun GifImage(modifier: Modifier = Modifier, gif: Int) {
     val context = LocalContext.current
-    // Configura el ImageLoader para soportar GIFs según la versión de Android
     val imageLoader = ImageLoader.Builder(context)
         .components {
             if (SDK_INT >= 28) {
@@ -159,7 +241,6 @@ fun GifImage(modifier: Modifier = Modifier, gif: Int) {
             }
         }
         .build()
-    // Usa rememberAsyncImagePainter para cargar el GIF desde el recurso
     Image(
         painter = rememberAsyncImagePainter(
             ImageRequest.Builder(context)
@@ -205,18 +286,15 @@ fun loadGifsFromXml(
     var description = ""
     var resource = 0
 
-    // Recorre el XML hasta el final del documento
     while (eventType != XmlPullParser.END_DOCUMENT) {
         when (eventType) {
             XmlPullParser.START_TAG -> {
                 currentTag = parser.name
                 when (currentTag) {
                     "categoria" -> {
-                        // Obtiene el atributo "nombre" para la categoría
                         currentCategory = parser.getAttributeValue(null, "nombre") ?: ""
                     }
                     "ejercicio" -> {
-                        // Reinicia los valores para cada ejercicio
                         title = ""
                         description = ""
                         resource = 0
@@ -230,10 +308,8 @@ fun loadGifsFromXml(
                         "nombre" -> title = text
                         "descripcion" -> description = text
                         "gif" -> {
-                            // Elimina la extensión ".gif" y el prefijo "@drawable/" para obtener el nombre del recurso
                             val resourceName = text.replace(".gif", "").replace("@drawable/", "").trim()
                             resource = context.resources.getIdentifier(resourceName, "drawable", context.packageName)
-                            // Si no se encuentra el recurso, se agrega a la lista de faltantes
                             if (resource == 0) {
                                 missingGifs.add(text)
                             }
@@ -242,22 +318,17 @@ fun loadGifsFromXml(
                 }
             }
             XmlPullParser.END_TAG -> {
-                // Al finalizar un ejercicio, si el recurso es válido se agrega a la lista
-                if (parser.name == "ejercicio") {
-                    if (resource != 0) {
-                        gifs.add(GifData(category = currentCategory, title = title, description = description, resource = resource))
-                    }
+                if (parser.name == "ejercicio" && resource != 0) {
+                    gifs.add(GifData(category = currentCategory, title = title, description = description, resource = resource))
                 }
                 currentTag = null
             }
         }
         eventType = parser.next()
     }
-    // Retorna un par con la lista de GIFs y la lista de GIFs faltantes
     return Pair(gifs, missingGifs)
 }
 
-// Función de previsualización para el composable Content
 @Preview(showBackground = true)
 @Composable
 fun ContentPreview() {
