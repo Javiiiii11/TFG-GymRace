@@ -354,48 +354,13 @@
 
 package com.example.gymrace
 
-import android.content.res.XmlResourceParser
-import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import coil.ImageLoader
-import coil.compose.rememberAsyncImagePainter
-import coil.decode.GifDecoder
-import coil.decode.ImageDecoderDecoder
-import coil.request.ImageRequest
-import coil.size.Size
-import com.example.gymrace.ui.theme.GymRaceTheme
-import org.xmlpull.v1.XmlPullParser
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.style.TextDirection.Companion.Content
 
-sealed class Screen(val title: String) {
-    object Home : Screen("Inicio")
-    object Exercises : Screen("Ejercicios")
-    object Settings : Screen("Ajustes")
-}
+import com.example.gymrace.ui.theme.GymRaceTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -403,63 +368,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GymRaceTheme {
-                val selectedScreen = remember { mutableStateOf<Screen>(Screen.Home) }
-                Scaffold(
-                    bottomBar = {
-                        BottomNavigationBar(selectedScreen)
-                    }
-                ) { innerPadding ->
-                    Box(modifier = Modifier.padding(innerPadding)) {
-                        when (selectedScreen.value) {
-                            Screen.Home -> HomeScreen()
-                            Screen.Exercises -> Content
-                            Screen.Settings -> SettingsScreen()
-                        }
-                    }
-                }
+                MainScreen()
             }
         }
-    }
-}
-
-@Composable
-fun BottomNavigationBar(selectedScreen: MutableState<Screen>) {
-    NavigationBar {
-        NavigationBarItem(
-            selected = selectedScreen.value is Screen.Home,
-            onClick = { selectedScreen.value = Screen.Home },
-            label = { Text("Inicio") },
-            icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") }
-        )
-
-        NavigationBarItem(
-            selected = selectedScreen.value is Screen.Settings,
-            onClick = { selectedScreen.value = Screen.Settings },
-            label = { Text("Ajustes") },
-            icon = { Icon(Icons.Default.Settings, contentDescription = "Ajustes") }
-        )
-    }
-}
-
-@Composable
-fun HomeScreen() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "Bienvenido a GymRace", style = MaterialTheme.typography.titleLarge)
-    }
-}
-
-@Composable
-fun SettingsScreen() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "Configuración", style = MaterialTheme.typography.titleLarge)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ContentPreview() {
-    GymRaceTheme {
-        Content
     }
 }
 
