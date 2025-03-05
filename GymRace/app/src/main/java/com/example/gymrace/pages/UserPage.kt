@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun SettingsPage(modifier: Modifier = Modifier) {
+fun UserPage(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()

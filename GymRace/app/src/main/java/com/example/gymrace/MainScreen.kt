@@ -22,8 +22,10 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import np.com.bimalkafle.bottomnavigationdemo.pages.HomePage
-import np.com.bimalkafle.bottomnavigationdemo.pages.SettingsPage
+import np.com.bimalkafle.bottomnavigationdemo.pages.UserPage
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,9 +34,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
     
     
     val navItemList = listOf(
-        NavItem("Home", Icons.Default.Home,0),
-        NavItem("Notification", Icons.Default.Notifications,5),
-        NavItem("Settings", Icons.Default.Settings,0),
+        NavItem("Inicio", Icons.Default.Home,0),
+        NavItem("Ejercicios", ImageVector.vectorResource(id = R.drawable.fitness), 0),
+        NavItem("Perfíl", Icons.Default.Person,0),
     )
 
     var selectedIndex by remember {
@@ -79,8 +81,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
 fun ContentScreen(modifier: Modifier = Modifier, selectedIndex : Int) {
     when(selectedIndex){
         0-> HomePage()
-        1-> NotificationPage()
-        2-> SettingsPage()
+        1-> EjerciciosPage()
+        2-> UserPage()
     }
 }
 

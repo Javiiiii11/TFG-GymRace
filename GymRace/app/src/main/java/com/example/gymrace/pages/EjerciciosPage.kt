@@ -1,35 +1,3 @@
-//package np.com.bimalkafle.bottomnavigationdemo.pages
-//
-//import androidx.compose.foundation.background
-//import androidx.compose.foundation.layout.Arrangement
-//import androidx.compose.foundation.layout.Column
-//import androidx.compose.foundation.layout.fillMaxSize
-//import androidx.compose.material3.Text
-//import androidx.compose.runtime.Composable
-//import androidx.compose.ui.Alignment
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.graphics.Color
-//import androidx.compose.ui.text.font.FontWeight
-//import androidx.compose.ui.unit.sp
-//
-//@Composable
-//fun NotificationPage(modifier: Modifier = Modifier) {
-//    Column(
-//        modifier = modifier
-//            .fillMaxSize()
-//            .background(Color(0xFF1976D2)),
-//        verticalArrangement = Arrangement.Center,
-//        horizontalAlignment = Alignment.CenterHorizontally
-//    ) {
-//        Text(
-//            text = "Notification Page",
-//            fontSize = 40.sp,
-//            fontWeight = FontWeight.SemiBold,
-//            color = Color.White
-//        )
-//    }
-//}
-
 package com.example.gymrace
 
 import android.content.res.XmlResourceParser
@@ -63,6 +31,7 @@ import coil.size.Size
 import com.example.gymrace.ui.theme.GymRaceTheme
 import org.xmlpull.v1.XmlPullParser
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.sp
 
 data class GifData(
     val category: String,
@@ -71,20 +40,9 @@ data class GifData(
     val resource: Int
 )
 
-class NotificationPage : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            GymRaceTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Content(
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
-        }
-    }
+@Composable
+fun EjerciciosPage(modifier: Modifier = Modifier) {
+    Content(modifier)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,7 +55,7 @@ fun FilterBar(
     var expanded by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         OutlinedTextField(
             value = searchQuery.value,
@@ -158,9 +116,12 @@ fun Content(modifier: Modifier = Modifier) {
                         gif.description.contains(searchQuery.value, ignoreCase = true))
     }
 
-    Column(modifier = modifier.fillMaxSize().padding(16.dp)) {
+    Column(modifier = modifier
+        .fillMaxSize()
+        .padding(16.dp)) {
+        Spacer(modifier = Modifier.height(32.dp)) // Add space above the filters
         FilterBar(searchQuery = searchQuery, selectedCategory = selectedCategory, categories = categories)
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         if (missingGifsText.value.isNotEmpty()) {
             Text(
@@ -180,7 +141,7 @@ fun Content(modifier: Modifier = Modifier) {
         } else {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(1.dp),
                 horizontalArrangement = Arrangement.spacedBy(1.dp)
             ) {
@@ -191,6 +152,7 @@ fun Content(modifier: Modifier = Modifier) {
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(95.dp)) // Add space below the last exercise
         }
     }
 }
@@ -222,7 +184,9 @@ fun GifBox(title: String, gif: Int) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                    modifier = Modifier.padding(horizontal = 16.dp).padding(top = 8.dp)
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 8.dp)
                 )
             }
         }
@@ -315,6 +279,6 @@ fun loadGifsFromXml(
 @Composable
 fun ContentPreview() {
     GymRaceTheme {
-        Content()
+        EjerciciosPage()
     }
 }
