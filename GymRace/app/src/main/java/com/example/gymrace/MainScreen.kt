@@ -1,5 +1,7 @@
 package com.example.gymrace
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -28,55 +30,54 @@ import np.com.bimalkafle.bottomnavigationdemo.pages.HomePage
 import np.com.bimalkafle.bottomnavigationdemo.pages.UserPage
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
-    
-    
-    val navItemList = listOf(
-        NavItem("Inicio", Icons.Default.Home,0),
-        NavItem("Ejercicios", ImageVector.vectorResource(id = R.drawable.fitness), 0),
-        NavItem("Perfíl", Icons.Default.Person,0),
-    )
+//    var showInitialScreen by remember { mutableStateOf(true) }
+//
+//    if (showInitialScreen) {
+//        InitialScreen(onTimeout = { showInitialScreen = false })
+//    } else {
+        val navItemList = listOf(
+            NavItem("Inicio", Icons.Default.Home, 0),
+            NavItem("Ejercicios", ImageVector.vectorResource(id = R.drawable.fitness), 0),
+            NavItem("Perfíl", Icons.Default.Person, 0),
+        )
 
-    var selectedIndex by remember {
-        mutableIntStateOf(0)
-    }
-    
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        bottomBar = {
-            NavigationBar {
-                navItemList.forEachIndexed { index, navItem -> 
-                    NavigationBarItem(
-                        selected =  selectedIndex == index ,
-                        onClick = {
-                            selectedIndex = index
-                        },
-                        icon = {
-                            BadgedBox(badge = {
-                                if(navItem.badgeCount>0)
-                                    Badge(){
-                                        Text(text = navItem.badgeCount.toString())
-                                    }
-                            }) {
-                                Icon(imageVector = navItem.icon, contentDescription = "Icon")
-                            }
-                               
-                        },
-                        label = {
-                            Text(text = navItem.label)
-                        }
-                    )
+        var selectedIndex by remember { mutableIntStateOf(0) }
+
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            bottomBar = {
+                NavigationBar {
+                    navItemList.forEachIndexed { index, navItem ->
+                        NavigationBarItem(
+                            selected = selectedIndex == index,
+                            onClick = { selectedIndex = index },
+                            icon = {
+                                BadgedBox(badge = {
+                                    if (navItem.badgeCount > 0)
+                                        Badge() {
+                                            Text(text = navItem.badgeCount.toString())
+                                        }
+                                }) {
+                                    Icon(imageVector = navItem.icon, contentDescription = "Icon")
+                                }
+                            },
+                            label = { Text(text = navItem.label) }
+                        )
+                    }
                 }
             }
+        ) { innerPadding ->
+            ContentScreen(modifier = Modifier.padding(innerPadding), selectedIndex)
         }
-    ) { innerPadding ->
-        ContentScreen(modifier = Modifier.padding(innerPadding),selectedIndex)
     }
-}
+//}
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ContentScreen(modifier: Modifier = Modifier, selectedIndex : Int) {
     when(selectedIndex){
