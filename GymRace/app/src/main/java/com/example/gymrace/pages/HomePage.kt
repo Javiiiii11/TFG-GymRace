@@ -21,8 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gymrace.R
@@ -36,7 +41,8 @@ import java.util.*
 @Composable
 fun HomePage(modifier: Modifier = Modifier) {
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize()
+            .padding(0.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Espaciado inicial
@@ -76,21 +82,7 @@ fun HomePage(modifier: Modifier = Modifier) {
 
         // Caja para Settings Page (si es una sección adicional)
         item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(400.dp)
-                    .background(Color(0x001976d2)),
-                contentAlignment = Alignment.TopStart
-            ) {
-                Text(
-                    text = "Más opciones",
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black,
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
+            Masoptions()
         }
 
         // Espaciado adicional al final
@@ -114,18 +106,54 @@ fun TitleSection() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarSection() {
-    ImprovedCalendar(
-        modifier = Modifier
-            .fillMaxWidth(0.9f)
-            .height(450.dp),
-        onDateSelected = { day -> println("Día seleccionado: $day") }
-    )
-    Spacer(modifier = Modifier.height(16.dp))
+    val today = remember { LocalDate.now() }
+    Column() {
+        Box(
+            modifier = Modifier
+                .padding(0.dp)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.TopStart
+        ) {
+            ImprovedCalendar(
+                modifier = Modifier
+                    .fillMaxWidth(0.7f)
+                    .height(380.dp),
+                onDateSelected = { day -> println("Día seleccionado: $day") }
+            )
+
+                Image(
+                    painter = painterResource(id = R.drawable.deco1___copia),
+                    contentDescription = "Imagen calendario",
+                    modifier = Modifier
+                        .size(410.dp)
+                        .padding(0.dp)
+                        .align(Alignment.BottomEnd),
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.fitness),
+                    contentDescription = "Imagen calendario",
+                    modifier = Modifier
+                        .size(110.dp)
+                        .padding(end = 40.dp, bottom = 20.dp)
+                        .align(Alignment.BottomEnd)
+                )
+            }
+
+        Spacer(modifier = Modifier.height(16.dp))
+    }
 }
+
 
 @Composable
 fun RoutineSection(title: String, exercises: List<Exercise>) {
-    Text(text = title, fontSize = 18.sp, color = Color.Gray)
+    Spacer(modifier = Modifier.height(5.dp))
+    Text(
+        text = title,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color.Black
+    )
+
     Spacer(modifier = Modifier.height(10.dp))
     LazyRow {
         items(exercises.size) { index ->
@@ -169,7 +197,13 @@ fun RoutineCard(exercise: Exercise) {
 
 @Composable
 fun CustomRoutineSection() {
-    Text(text = "Crea tu rutina personalizada", fontSize = 18.sp, color = Color.Gray)
+    Text(
+        text = "Crea tu rutina personalizada",
+        fontSize = 18.sp,
+        color = Color.Black,
+        fontWeight = FontWeight.Bold,
+
+        )
     Button(
         onClick = { },
         modifier = Modifier
@@ -221,10 +255,10 @@ fun CalendarGrid(daysInMonth: Int, firstDayOfMonth: Int, isCurrentMonth: Boolean
             val isToday = isCurrentMonth && dayNumber == today.dayOfMonth
             Box(
                 modifier = Modifier
-                    .padding(4.dp)
+                    .padding(0.dp)
                     .aspectRatio(1f)
                     .clip(CircleShape)
-                    .background(if (isToday) Color(0xFFE91E63) else Color.Transparent)
+                    .background(if (isToday) Color(0xffff9241) else Color.Transparent)
                     .clickable { onDateSelected(dayNumber) },
                 contentAlignment = Alignment.Center
             ) {
@@ -235,16 +269,59 @@ fun CalendarGrid(daysInMonth: Int, firstDayOfMonth: Int, isCurrentMonth: Boolean
 }
 @Composable
 fun Masoptions() {
+    val uriHandler = LocalUriHandler.current
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start,
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxSize()
+            .padding(0.dp)
+            .background(Color(0x001976d2)),
+    ){
         Text(
-            text = "Settings Page",
-            fontSize = 40.sp,
+            text = "Más opciones",
+            fontSize = 30.sp,
             fontWeight = FontWeight.SemiBold,
-            color = Color.White
+            color = Color.Black,
+            modifier = Modifier.padding(16.dp)
         )
+        Text(
+            text = buildAnnotatedString {
+                append("Unete a nuestra comunidad en ")
+                pushStringAnnotation(tag = "URL", annotation = "https://discord.gg/GwKP9ghQSg")
+                withStyle(style = SpanStyle(color = Color.Blue, textDecoration = TextDecoration.Underline)) {
+                    append("discord")
+                }
+                pop()
+            },
+            modifier = Modifier.padding(16.dp).clickable {
+                uriHandler.openUri("https://discord.gg/GwKP9ghQSg")
+            }
+        )
+        Text(
+            text = buildAnnotatedString {
+                append("Visita nuestra ")
+                pushStringAnnotation(tag = "URL", annotation = "https://www.ejemplo.com")
+                withStyle(style = SpanStyle(color = Color.Blue, textDecoration = TextDecoration.Underline)) {
+                    append("página web")
+                }
+                pop()
+            },
+            modifier = Modifier.padding(16.dp).clickable {
+                uriHandler.openUri("https://www.ejemplo.com")
+            }
+        )
+        Image(
+            painter = painterResource(id = R.drawable.deco2),
+            contentDescription = "Imagen abajo inicio",
+            contentScale = ContentScale.Crop, // O utiliza ContentScale.Fit según el efecto deseado
+            modifier = Modifier
+                .padding(0.dp)
+                .fillMaxWidth()
+                .wrapContentHeight()
+        )
+
     }
+
 }
