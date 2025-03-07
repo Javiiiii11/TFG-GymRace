@@ -1,106 +1,180 @@
 package com.example.gymrace.pages
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import android.os.Build
+import android.widget.Toast
+import androidx.compose.runtime.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.navigation.NavController
+import com.example.gymrace.MainScreen
+import com.google.firebase.Firebase
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.auth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
-fun RegisterPage(
-    onRegister: (String, String, String, String) -> Unit, // Callback para manejar el registro
-    modifier: Modifier = Modifier
-) {
-    // Estados para los campos del formulario
-    var name by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-    var isFormValid by remember { mutableStateOf(false) }
+fun RegisterPage(navController: NavController) {
+    val context = LocalContext.current
+    var name by rememberSaveable { mutableStateOf("") }
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+    var confirmPassword by rememberSaveable { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    var registrationError by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
+    var confirmPasswordVisible by remember { mutableStateOf(false) }
 
-    // Validación del formulario
-    LaunchedEffect(name, email, password, confirmPassword) {
-        isFormValid = name.isNotBlank() && email.isNotBlank() && password.isNotBlank() && password == confirmPassword
+    val isFormValid = name.isNotBlank() &&
+            email.isNotBlank() &&
+            email.contains("@") &&
+            email.contains(".") &&
+            password.isNotBlank() &&
+            password.length >= 6 &&
+            password == confirmPassword
+
+    fun registerUser(name: String, email: String, password: String) {
+        //registro con firebase
+        isLoading = true
+        registrationError = ""
+        Firebase.auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                isLoading = false
+                if (task.isSuccessful) {
+                    Firebase.auth.currentUser?.updateProfile(
+                        UserProfileChangeRequest.Builder()
+                            .setDisplayName(name)
+                            .build()
+                    )
+                    navController.navigate("main")
+                } else {
+                    registrationError = task.exception?.message ?: "Error desconocido"
+                }
+            }
     }
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Título
-        Text(text = "Registro", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+        Text(
+            text = "Crear Cuenta",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black
+        )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Campo de nombre
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text("Nombre Completo") },
+            label = { Text("Nombre completo") },
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Nombre") }
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Campo de correo electrónico
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Correo Electrónico") },
+            label = { Text("Correo electrónico") },
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Campo de contraseña
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
             label = { Text("Contraseña") },
-            visualTransformation = PasswordVisualTransformation(),
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            trailingIcon = {
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                        if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                        contentDescription = if (passwordVisible) "Ocultar contraseña" else "Mostrar contraseña"
+                    )
+                }
+            }
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Campo de confirmación de contraseña
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
-            label = { Text("Confirmar Contraseña") },
-            visualTransformation = PasswordVisualTransformation(),
+            label = { Text("Confirmar contraseña") },
+            visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            trailingIcon = {
+                IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+                    Icon(
+                        if (confirmPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                        contentDescription = if (confirmPasswordVisible) "Ocultar contraseña" else "Mostrar contraseña"
+                    )
+                }
+            }
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Botón de registro
         Button(
-            onClick = { onRegister(name, email, password, confirmPassword) },
+            onClick = {
+                CoroutineScope(Dispatchers.IO).launch {
+                    registerUser(name, email, password)
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
-            enabled = isFormValid,
+            enabled = isFormValid && !isLoading,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
         ) {
-            Text(text = "Registrar", color = Color.White)
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(24.dp),
+                    color = Color.White
+                )
+            } else {
+                Text(text = "Registrarse", color = Color.White)
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Enlace para ir a la página de inicio de sesión
-        TextButton(onClick = { /* Navegar a la página de inicio de sesión */ }) {
-            Text(text = "¿Ya tienes cuenta? Iniciar sesión", color = Color.Gray)
+        TextButton(onClick = { navController.navigate("login") }) {
+            Text(text = "¿Ya tienes cuenta? Inicia sesión", color = Color.Gray)
+        }
+
+        if (registrationError.isNotBlank()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = registrationError, color = Color.Red)
         }
     }
 }

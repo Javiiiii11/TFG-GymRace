@@ -34,11 +34,6 @@ import np.com.bimalkafle.bottomnavigationdemo.pages.UserPage
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
-//    var showInitialScreen by remember { mutableStateOf(true) }
-//
-//    if (showInitialScreen) {
-//        InitialScreen(onTimeout = { showInitialScreen = false })
-//    } else {
         val navItemList = listOf(
             NavItem("Inicio", Icons.Default.Home, 0),
             NavItem("Ejercicios", ImageVector.vectorResource(id = R.drawable.fitness), 0),

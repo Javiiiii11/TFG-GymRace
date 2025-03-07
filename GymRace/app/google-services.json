@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "706050795925",
+    "project_id": "gymrace-cd864",
+    "storage_bucket": "gymrace-cd864.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:706050795925:android:2b51e45b59b3f8f54bee9c",
+        "android_client_info": {
+          "package_name": "com.example.gymrace"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDuMtK3LC3t13vBxnlKWo972nYvtBpbwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

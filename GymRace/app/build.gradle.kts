@@ -1,5 +1,7 @@
+
 plugins {
-    alias(libs.plugins.android.application)
+    id("com.android.application")
+    id("com.google.gms.google-services")
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
@@ -49,6 +51,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.runtime.android)
+    implementation(libs.firebase.common.ktx)
+    implementation(libs.firebase.auth.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -58,6 +63,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 //    implementation(libs.coil.compose)
 //    implementation (libs.coil.gif)
+
+    //Gifs
     implementation("io.coil-kt:coil-compose:2.2.2")
     implementation ("io.coil-kt:coil-gif:2.1.0")
 
@@ -66,5 +73,11 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
 
     implementation(libs.threetenabp) // Add this line
+
+    implementation(libs.androidx.navigation.compose)
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
+
 
 }

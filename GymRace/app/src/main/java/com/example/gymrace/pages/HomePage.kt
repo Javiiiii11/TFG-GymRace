@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.example.gymrace.R
 import com.example.gymrace.pages.Exercise
 import java.time.LocalDate
@@ -100,7 +101,7 @@ fun TitleSection() {
         fontWeight = FontWeight.Bold,
         color = Color.Black
     )
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(0.dp))
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -112,31 +113,41 @@ fun CalendarSection() {
             modifier = Modifier
                 .padding(0.dp)
                 .fillMaxWidth(),
-            contentAlignment = Alignment.TopStart
+            contentAlignment = Alignment.Center
         ) {
             ImprovedCalendar(
                 modifier = Modifier
                     .fillMaxWidth(0.7f)
+                    .zIndex(1f)
+                    .padding(top = 55.dp)
                     .height(380.dp),
                 onDateSelected = { day -> println("Día seleccionado: $day") }
             )
-
-                Image(
-                    painter = painterResource(id = R.drawable.deco1___copia),
-                    contentDescription = "Imagen calendario",
-                    modifier = Modifier
-                        .size(410.dp)
-                        .padding(0.dp)
-                        .align(Alignment.BottomEnd),
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.fitness),
-                    contentDescription = "Imagen calendario",
-                    modifier = Modifier
-                        .size(110.dp)
-                        .padding(end = 40.dp, bottom = 20.dp)
-                        .align(Alignment.BottomEnd)
-                )
+            Image(
+                painter = painterResource(id = R.drawable.deco4),
+                contentDescription = "Imagen calendario",
+                modifier = Modifier
+                    .size(350.dp)
+                    .padding(0.dp)
+                    .zIndex(0f)
+                    .align(Alignment.Center),
+            )
+//                Image(
+//                    painter = painterResource(id = R.drawable.deco1___copia),
+//                    contentDescription = "Imagen calendario",
+//                    modifier = Modifier
+//                        .size(410.dp)
+//                        .padding(0.dp)
+//                        .align(Alignment.BottomEnd),
+//                )
+//                Image(
+//                    painter = painterResource(id = R.drawable.fitness),
+//                    contentDescription = "Imagen calendario",
+//                    modifier = Modifier
+//                        .size(110.dp)
+//                        .padding(end = 40.dp, bottom = 20.dp)
+//                        .align(Alignment.BottomEnd)
+//                )
             }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -258,7 +269,7 @@ fun CalendarGrid(daysInMonth: Int, firstDayOfMonth: Int, isCurrentMonth: Boolean
                     .padding(0.dp)
                     .aspectRatio(1f)
                     .clip(CircleShape)
-                    .background(if (isToday) Color(0xffff9241) else Color.Transparent)
+                    .background(if (isToday) Color(0xff753c12) else Color.Transparent)
                     .clickable { onDateSelected(dayNumber) },
                 contentAlignment = Alignment.Center
             ) {
