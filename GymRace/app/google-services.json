@@ -12,7 +12,12 @@
           "package_name": "com.example.gymrace"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "706050795925-23ac30bccl18pvgg70c5jucc1ug7p0vr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDDuMtK3LC3t13vBxnlKWo972nYvtBpbwA"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "706050795925-23ac30bccl18pvgg70c5jucc1ug7p0vr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

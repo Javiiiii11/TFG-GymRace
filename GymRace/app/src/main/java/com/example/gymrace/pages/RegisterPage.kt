@@ -1,5 +1,6 @@
 package com.example.gymrace.pages
 
+// Importaciones existentes
 import android.os.Build
 import android.widget.Toast
 import androidx.compose.runtime.*
@@ -33,9 +34,33 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+// Nuevas importaciones para autenticación con Google
+import android.content.Intent
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.example.gymrace.R
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
+
 @Composable
 fun RegisterPage(navController: NavController) {
+    // Contexto para acceder a recursos del sistema
     val context = LocalContext.current
+
+    // Variables de estado para el formulario
     var name by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
@@ -45,6 +70,7 @@ fun RegisterPage(navController: NavController) {
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
 
+    // Validación del formulario
     val isFormValid = name.isNotBlank() &&
             email.isNotBlank() &&
             email.contains("@") &&
@@ -53,8 +79,69 @@ fun RegisterPage(navController: NavController) {
             password.length >= 6 &&
             password == confirmPassword
 
+    // Configuración para GoogleSignIn
+    val googleSignInClient = remember {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("706050795925-23ac30bccl18pvgg70c5jucc1ug7p0vr.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+        GoogleSignIn.getClient(context, gso)
+    }
+
+    // Launcher para el intent de inicio de sesión con Google
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        isLoading = true
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            // Obtener la cuenta de Google
+            val account = task.getResult(ApiException::class.java)
+            // Autenticar con Firebase usando la cuenta de Google
+            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+            Firebase.auth.signInWithCredential(credential)
+                .addOnCompleteListener { authTask ->
+                    isLoading = false
+                    if (authTask.isSuccessful) {
+                        // Verificar si es un usuario nuevo
+                        val isNewUser = authTask.result?.additionalUserInfo?.isNewUser ?: false
+
+                        if (isNewUser) {
+                            // Si es un usuario nuevo, mostrar mensaje de bienvenida
+                            Toast.makeText(context, "¡Bienvenido a GymRace!", Toast.LENGTH_LONG).show()
+                        } else {
+                            // Si ya existía, mostrar mensaje de inicio de sesión
+                            Toast.makeText(context, "Has iniciado sesión con Google", Toast.LENGTH_SHORT).show()
+                        }
+                        // Navegar a la pantalla principal
+                        navController.navigate("main") {
+                            // Limpia la pila de navegación para que el usuario no pueda volver atrás
+                            popUpTo("login") { inclusive = true }
+                        }
+                    } else {
+                        // Mostrar error
+                        registrationError = authTask.exception?.message ?: "Error al iniciar sesión con Google"
+                        Toast.makeText(context, registrationError, Toast.LENGTH_LONG).show()
+                    }
+                }
+        } catch (e: ApiException) {
+            isLoading = false
+            Log.e("GoogleSignIn", "Google sign in failed with error code: ${e.statusCode}")
+            when (e.statusCode) {
+                GoogleSignInStatusCodes.DEVELOPER_ERROR -> {
+                    registrationError = "Error de configuración en Google Sign-In. Código: 10"
+                    Log.e("GoogleSignIn", "Developer error - SHA-1 fingerprint or package name mismatch")
+                }
+                else -> {
+                    registrationError = "Error al iniciar sesión con Google: ${e.statusCode}"
+                }
+            }
+            Toast.makeText(context, registrationError, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    // Función para registrar con correo/contraseña
     fun registerUser(name: String, email: String, password: String) {
-        //registro con firebase
         isLoading = true
         registrationError = ""
         Firebase.auth.createUserWithEmailAndPassword(email, password)
@@ -66,19 +153,33 @@ fun RegisterPage(navController: NavController) {
                             .setDisplayName(name)
                             .build()
                     )
-                    navController.navigate("main")
+                    navController.navigate("main") {
+                        // Limpia la pila de navegación para que el usuario no pueda volver atrás
+                        popUpTo("login") { inclusive = true }
+                    }
+
+                    Toast.makeText(context, "¡Bienvenido a GymRace!", Toast.LENGTH_LONG).show()
                 } else {
                     registrationError = task.exception?.message ?: "Error desconocido"
+                    Toast.makeText(context, registrationError, Toast.LENGTH_LONG).show()
                 }
             }
     }
 
+    // Función para iniciar el proceso de registro con Google
+    fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        launcher.launch(signInIntent)
+    }
+
+    // UI con Jetpack Compose
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Título de la página
         Text(
             text = "Crear Cuenta",
             fontSize = 28.sp,
@@ -87,6 +188,7 @@ fun RegisterPage(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Campos de entrada para registro con email/contraseña
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
@@ -146,6 +248,7 @@ fun RegisterPage(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Botón de registro con email/contraseña
         Button(
             onClick = {
                 CoroutineScope(Dispatchers.IO).launch {
@@ -166,15 +269,75 @@ fun RegisterPage(navController: NavController) {
             }
         }
 
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Separador para las opciones de registro
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Divider(
+                modifier = Modifier.weight(1f),
+                color = Color.Gray.copy(alpha = 0.5f)
+            )
+            Text(
+                text = " O CONTINÚA CON ",
+                fontSize = 12.sp,
+                color = Color.Gray,
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
+            Divider(
+                modifier = Modifier.weight(1f),
+                color = Color.Gray.copy(alpha = 0.5f)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Botón de registro con Google
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .border(1.dp, Color.Gray.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
+                .clickable(enabled = !isLoading) { signInWithGoogle() },
+            contentAlignment = Alignment.Center
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                // Imagen del logo de Google
+                Image(
+                    painter = painterResource(id = R.drawable.logo_de_google), // Asegúrate de tener este recurso
+                    contentDescription = "Logo de Google",
+                    modifier = Modifier.size(24.dp),
+                    contentScale = ContentScale.Fit
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Continuar con Google",
+                    color = Color.Black,
+                    fontSize = 16.sp
+                )
+            }
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
 
-        TextButton(onClick = { navController.navigate("login") }) {
-            Text(text = "¿Ya tienes cuenta? Inicia sesión", color = Color.Gray)
-        }
-
-        if (registrationError.isNotBlank()) {
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = registrationError, color = Color.Red)
-        }
+        // Enlace a la pantalla de login
+        Text(
+            text = "¿Ya tienes una cuenta? Inicia sesión",
+            color = Color.Gray,
+            fontSize = 14.sp,
+            modifier = Modifier.clickable {
+                navController.navigate("login") {
+                    // Limpia la pila de navegación para que el usuario no pueda volver atrás
+                    popUpTo("login") { inclusive = true }
+                }
+            }
+        )
     }
 }

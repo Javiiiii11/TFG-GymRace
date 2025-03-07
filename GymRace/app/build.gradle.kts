@@ -78,6 +78,11 @@ dependencies {
 
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
+    // Dependencias de Firebase Auth (ya deberías tenerlas)
+    implementation("com.google.firebase:firebase-auth-ktx")
+
+    // Dependencias para Google Sign-In
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
 
 }

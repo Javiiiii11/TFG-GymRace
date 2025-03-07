@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.gymrace.pages.LoginPage
 import com.example.gymrace.pages.RegisterPage
 import com.example.gymrace.ui.theme.GymRaceTheme
 
@@ -22,6 +23,8 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController, startDestination = "register") {
                     composable("register") { RegisterPage(navController) }
                     composable("main") { MainScreen() }
+                    composable("login") { LoginPage(navController) }
+
                 }
             }
         }
