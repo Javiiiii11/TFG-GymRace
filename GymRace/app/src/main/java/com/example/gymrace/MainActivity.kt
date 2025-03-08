@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.gymrace.pages.LoginPage
 import com.example.gymrace.pages.RegisterPage
+import com.example.gymrace.pages.RegisterPage2
 import com.example.gymrace.ui.theme.GymRaceTheme
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -24,6 +25,7 @@ class MainActivity : ComponentActivity() {
                     composable("register") { RegisterPage(navController) }
                     composable("main") { MainScreen() }
                     composable("login") { LoginPage(navController) }
+                    composable("register2") { RegisterPage2(navController) }
 
                 }
             }

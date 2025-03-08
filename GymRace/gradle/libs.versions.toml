@@ -18,6 +18,7 @@ crashlytics-gradle = "3.0.3"
 navigationRuntimeAndroid = "2.9.0-alpha07"
 firebaseCommonKtx = "21.0.0"
 firebaseAuthKtx = "23.2.0"
+firebaseFirestoreKtx = "25.1.2"
 
 
 [libraries]
@@ -45,6 +46,7 @@ threetenabp = { group = "com.jakewharton.threetenabp", name = "threetenabp", ver
 androidx-navigation-runtime-android = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
 firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 
 
 [plugins]

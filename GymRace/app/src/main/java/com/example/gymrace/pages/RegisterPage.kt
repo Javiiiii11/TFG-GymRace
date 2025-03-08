@@ -57,7 +57,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 
 @Composable
 fun RegisterPage(navController: NavController) {
-    // Contexto para acceder a recursos del sistema
     val context = LocalContext.current
 
     // Variables de estado para el formulario
@@ -107,19 +106,17 @@ fun RegisterPage(navController: NavController) {
                         val isNewUser = authTask.result?.additionalUserInfo?.isNewUser ?: false
 
                         if (isNewUser) {
-                            // Si es un usuario nuevo, mostrar mensaje de bienvenida
-                            Toast.makeText(context, "¡Bienvenido a GymRace!", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, "Cuenta nueva, redirigiendo a registro", Toast.LENGTH_LONG).show()
+                            navController.navigate("register2") {
+                                popUpTo("login") { inclusive = true }
+                            }
                         } else {
-                            // Si ya existía, mostrar mensaje de inicio de sesión
                             Toast.makeText(context, "Has iniciado sesión con Google", Toast.LENGTH_SHORT).show()
-                        }
-                        // Navegar a la pantalla principal
-                        navController.navigate("main") {
-                            // Limpia la pila de navegación para que el usuario no pueda volver atrás
-                            popUpTo("login") { inclusive = true }
+                            navController.navigate("main") {
+                                popUpTo("login") { inclusive = true }
+                            }
                         }
                     } else {
-                        // Mostrar error
                         registrationError = authTask.exception?.message ?: "Error al iniciar sesión con Google"
                         Toast.makeText(context, registrationError, Toast.LENGTH_LONG).show()
                     }
@@ -140,6 +137,15 @@ fun RegisterPage(navController: NavController) {
         }
     }
 
+    // Función para iniciar el proceso de registro con Google
+    fun signInWithGoogle() {
+        // Forzar el diálogo de selección de cuenta cerrando la sesión actual
+        googleSignInClient.signOut().addOnCompleteListener {
+            val signInIntent = googleSignInClient.signInIntent
+            launcher.launch(signInIntent)
+        }
+    }
+
     // Función para registrar con correo/contraseña
     fun registerUser(name: String, email: String, password: String) {
         isLoading = true
@@ -153,23 +159,15 @@ fun RegisterPage(navController: NavController) {
                             .setDisplayName(name)
                             .build()
                     )
-                    navController.navigate("main") {
-                        // Limpia la pila de navegación para que el usuario no pueda volver atrás
+                    navController.navigate("register2") {
                         popUpTo("login") { inclusive = true }
                     }
-
-                    Toast.makeText(context, "¡Bienvenido a GymRace!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Registrado con éxito ${name}", Toast.LENGTH_LONG).show()
                 } else {
                     registrationError = task.exception?.message ?: "Error desconocido"
                     Toast.makeText(context, registrationError, Toast.LENGTH_LONG).show()
                 }
             }
-    }
-
-    // Función para iniciar el proceso de registro con Google
-    fun signInWithGoogle() {
-        val signInIntent = googleSignInClient.signInIntent
-        launcher.launch(signInIntent)
     }
 
     // UI con Jetpack Compose
@@ -188,7 +186,7 @@ fun RegisterPage(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Campos de entrada para registro con email/contraseña
+        // Campo para nombre
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
@@ -199,6 +197,7 @@ fun RegisterPage(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Campo para email
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -210,6 +209,7 @@ fun RegisterPage(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Campo para contraseña
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -229,6 +229,7 @@ fun RegisterPage(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(8.dp))
 
+        // Campo para confirmar contraseña
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
@@ -309,7 +310,6 @@ fun RegisterPage(navController: NavController) {
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                // Imagen del logo de Google
                 Image(
                     painter = painterResource(id = R.drawable.logo_de_google), // Asegúrate de tener este recurso
                     contentDescription = "Logo de Google",
@@ -334,7 +334,6 @@ fun RegisterPage(navController: NavController) {
             fontSize = 14.sp,
             modifier = Modifier.clickable {
                 navController.navigate("login") {
-                    // Limpia la pila de navegación para que el usuario no pueda volver atrás
                     popUpTo("login") { inclusive = true }
                 }
             }

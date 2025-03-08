@@ -44,6 +44,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import android.util.Log
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
+import com.google.firebase.auth.auth
 
 @Composable
 fun LoginPage(navController: NavController) {
@@ -82,38 +84,44 @@ fun LoginPage(navController: NavController) {
             val account = task.getResult(ApiException::class.java)
             // Autenticar con Firebase usando la cuenta de Google
             val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+            com.google.firebase.Firebase.auth.signInWithCredential(credential)
+                .addOnCompleteListener { authTask ->
+                    isLoading = false
+                    if (authTask.isSuccessful) {
+                        // Verificar si es un usuario nuevo
+                        val isNewUser = authTask.result?.additionalUserInfo?.isNewUser ?: false
 
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    Firebase.auth.signInWithCredential(credential).await()
-                    withContext(Dispatchers.Main) {
-                        isLoading = false
-                        Toast.makeText(context, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                        navController.navigate("main") {
-                            popUpTo("login") { inclusive = true }
+                        if (isNewUser) {
+                            Toast.makeText(context, "Cuenta nueva, redirigiendo a registro", Toast.LENGTH_LONG).show()
+                            navController.navigate("register2") {
+                                popUpTo("login") { inclusive = true }
+                            }
+                        } else {
+                            Toast.makeText(context, "Has iniciado sesión con Google", Toast.LENGTH_SHORT).show()
+                            navController.navigate("main") {
+                                popUpTo("login") { inclusive = true }
+                            }
                         }
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        isLoading = false
-                        loginError = e.message ?: "Error al iniciar sesión con Google"
+                    } else {
+                        loginError = authTask.exception?.message ?: "Error al iniciar sesión con Google"
                         Toast.makeText(context, loginError, Toast.LENGTH_LONG).show()
-                        Log.e("GoogleSignIn", "Error: ${e.message}")
                     }
                 }
-            }
         } catch (e: ApiException) {
             isLoading = false
             Log.e("GoogleSignIn", "Google sign in failed with error code: ${e.statusCode}")
-            loginError = "Error al iniciar sesión con Google: ${e.statusCode}"
-            if (e.statusCode == 10) {
-                loginError = "Error de configuración en Google Sign-In. Verifica SHA-1 y configuración."
-                Log.e("GoogleSignIn", "Developer error - SHA-1 fingerprint or package name mismatch")
+            when (e.statusCode) {
+                GoogleSignInStatusCodes.DEVELOPER_ERROR -> {
+                    loginError = "Error de configuración en Google Sign-In. Código: 10"
+                    Log.e("GoogleSignIn", "Developer error - SHA-1 fingerprint or package name mismatch")
+                }
+                else -> {
+                    loginError = "Error al iniciar sesión con Google: ${e.statusCode}"
+                }
             }
             Toast.makeText(context, loginError, Toast.LENGTH_LONG).show()
         }
     }
-
     // Función para iniciar sesión con correo/contraseña
     fun loginWithEmailAndPassword(email: String, password: String) {
         isLoading = true
@@ -143,6 +151,8 @@ fun LoginPage(navController: NavController) {
             }
         }
     }
+
+
 
     // Función para iniciar el proceso de registro con Google
     fun signInWithGoogle() {

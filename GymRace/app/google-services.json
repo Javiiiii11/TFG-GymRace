@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "706050795925-uk2puv65ra18gu8ef3a5o893hdjmetq8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gymrace",
+            "certificate_hash": "bd1421296776a919cc8cc700728b46dcddacb1dd"
+          }
+        },
+        {
           "client_id": "706050795925-23ac30bccl18pvgg70c5jucc1ug7p0vr.apps.googleusercontent.com",
           "client_type": 3
         }
