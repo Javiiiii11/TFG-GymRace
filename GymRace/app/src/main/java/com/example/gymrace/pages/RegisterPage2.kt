@@ -37,6 +37,7 @@ fun RegisterPage2(navController: NavController) {
     var peso by rememberSaveable { mutableStateOf("") }
     var altura by rememberSaveable { mutableStateOf("") }
     var año by rememberSaveable { mutableStateOf("") }
+    var nombre by rememberSaveable { mutableStateOf("") }
     var cargando by remember { mutableStateOf(false) }
 
     // Estado del menú desplegable
@@ -66,6 +67,7 @@ fun RegisterPage2(navController: NavController) {
     // Validación del formulario
     val isFormValid = peso.isNotBlank() &&
             altura.isNotBlank() &&
+            nombre.isNotBlank() &&
             año.isNotBlank() &&
             selectedGoal != "Selecciona tu objetivo" &&
             selectedDays != "Selecciona días" &&
@@ -80,6 +82,7 @@ fun RegisterPage2(navController: NavController) {
                 if (currentUser != null) {
                     val userId = currentUser.uid
                     val profileData = hashMapOf(
+                        "nombre" to nombre,
                         "peso" to peso.toFloat(),
                         "altura" to altura.toFloat(),
                         "edad" to año.toInt(),
@@ -94,7 +97,7 @@ fun RegisterPage2(navController: NavController) {
 //                        .await()
 
                     GLOBAL.guardarDatosRegistro(
-                        userId, peso, altura, año, selectedGoal, selectedDays, selectedExperience
+                        userId, nombre, peso, altura, año, selectedGoal, selectedDays, selectedExperience
                     ) {
                         navController.navigate("main") {
                             popUpTo("login") { inclusive = true }
@@ -129,14 +132,25 @@ fun RegisterPage2(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Campos de peso, altura y edad
+        // Campos de nombre, peso, altura y edad
+
         OutlinedTextField(
-            value = peso,
-            onValueChange = { peso = it },
-            label = { Text("Peso (kg)") },
+            value = nombre,
+            onValueChange = { nombre = it },
+            label = { Text("Nombre") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            leadingIcon = { Icon(Icons.Default.MonitorWeight, contentDescription = "Peso") },
+            leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Nombre") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+        )
+
+        OutlinedTextField(
+            value = año,
+            onValueChange = { año = it },
+            label = { Text("Edad") },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Edad") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
 
@@ -155,12 +169,12 @@ fun RegisterPage2(navController: NavController) {
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = año,
-            onValueChange = { año = it },
-            label = { Text("Edad") },
+            value = peso,
+            onValueChange = { peso = it },
+            label = { Text("Peso (kg)") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Edad") },
+            leadingIcon = { Icon(Icons.Default.MonitorWeight, contentDescription = "Peso") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
 

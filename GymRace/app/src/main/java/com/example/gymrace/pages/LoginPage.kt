@@ -156,9 +156,12 @@ fun LoginPage(navController: NavController) {
 
     // Función para iniciar el proceso de registro con Google
     fun signInWithGoogle() {
-        val signInIntent = googleSignInClient.signInIntent
-        launcher.launch(signInIntent)
+        googleSignInClient.signOut().addOnCompleteListener {
+            val signInIntent = googleSignInClient.signInIntent
+            launcher.launch(signInIntent)
+        }
     }
+
 
     // UI con Jetpack Compose
     Column(

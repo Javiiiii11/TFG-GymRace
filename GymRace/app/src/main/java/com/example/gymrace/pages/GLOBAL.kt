@@ -8,6 +8,7 @@ class GLOBAL {
 
         fun guardarDatosRegistro(
             id: String,
+            nombre: String,
             peso: String,
             altura: String,
             edad: String,
@@ -23,6 +24,7 @@ class GLOBAL {
                     .set(
                         hashMapOf(
                             "id" to id,
+                            "nombre" to nombre,
                             "peso" to peso,
                             "altura" to altura,
                             "edad" to edad,
@@ -47,6 +49,7 @@ class GLOBAL {
 
 
         var id: String = ""
+        var nombre: String = ""
         var peso: String = ""
         var altura: String = ""
         var edad: String = ""

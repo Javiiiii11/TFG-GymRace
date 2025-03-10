@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -165,15 +166,16 @@ fun GifBox(title: String, gif: Int) {
             .height(250.dp)
             .padding(8.dp)
             .clip(RoundedCornerShape(16.dp))
-            .background(Color.LightGray)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(top = 16.dp, start = 0.dp, end = 0.dp)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             GifImage(
                 modifier = Modifier
                     .clip(RoundedCornerShape(16.dp))
-                    .height(120.dp)
-                    .background(Color.LightGray),
+//                    .border(2.dp, MaterialTheme.colorScheme.surface, RoundedCornerShape(16.dp))
+//                    .background(Color.LightGray)
+                    .height(120.dp),
                 gif = gif
             )
 
