@@ -508,33 +508,6 @@ fun getRoutineDetails(routineName: String): RoutineDetails {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Tarjeta individual para cada ejercicio dentro de la rutina
 @Composable
 fun EjercicioCard(numero: Int, nombre: String, descripcion: String, imagenId: Int) {
@@ -604,7 +577,6 @@ fun EjercicioCard(numero: Int, nombre: String, descripcion: String, imagenId: In
 }
 
 // Tarjetas de rutina mejoradas
-// Tarjetas de rutina mejoradas - Versión modificada
 @Composable
 fun RoutineCard(
     exercise: Exercise,

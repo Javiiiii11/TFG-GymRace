@@ -2,6 +2,7 @@ package com.example.gymrace.pages
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -119,15 +120,19 @@ fun RegisterPage2(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+
     ) {
         // Título de la página
         Text(
             text = "Tu Perfil Físico",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Black
+            color = (MaterialTheme.colorScheme.onBackground)
+
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -140,6 +145,10 @@ fun RegisterPage2(navController: NavController) {
             label = { Text("Apodo") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+            ),
             leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Apodo ") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
@@ -150,6 +159,10 @@ fun RegisterPage2(navController: NavController) {
             label = { Text("Edad") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+            ),
             leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Edad") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
@@ -162,6 +175,10 @@ fun RegisterPage2(navController: NavController) {
             label = { Text("Altura (cm)") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+            ),
             leadingIcon = { Icon(Icons.Default.Height, contentDescription = "Altura") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
@@ -174,6 +191,10 @@ fun RegisterPage2(navController: NavController) {
             label = { Text("Peso (kg)") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+            ),
             leadingIcon = { Icon(Icons.Default.MonitorWeight, contentDescription = "Peso") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
@@ -185,7 +206,7 @@ fun RegisterPage2(navController: NavController) {
             text = "Información de Entrenamiento",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Black,
+            color = (MaterialTheme.colorScheme.onBackground),
             modifier = Modifier.align(Alignment.Start)
         )
 
@@ -204,6 +225,10 @@ fun RegisterPage2(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                    unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+                ),
                 label = { Text("Objetivo Fitness") }
             )
 
@@ -239,6 +264,10 @@ fun RegisterPage2(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                    unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+                ),
                 label = { Text("Días de entrenamiento por semana") }
             )
 
@@ -274,6 +303,10 @@ fun RegisterPage2(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                    unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+                ),
                 label = { Text("Nivel de experiencia") }
             )
 
@@ -300,12 +333,12 @@ fun RegisterPage2(navController: NavController) {
             onClick = { saveUserData() },
             modifier = Modifier.fillMaxWidth(),
             enabled = isFormValid && !cargando,
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xffff9240))
         ) {
             if (cargando) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
-                    color = Color.White
+                    color = Color(0xff7c461d)
                 )
             } else {
                 Text(text = "Guardar y Continuar", color = Color.White)

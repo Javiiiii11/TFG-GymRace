@@ -46,9 +46,12 @@ import kotlinx.coroutines.withContext
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.material.icons.filled.Key
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.firebase.auth.auth
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginPage(navController: NavController) {
     val context = LocalContext.current
@@ -59,6 +62,10 @@ fun LoginPage(navController: NavController) {
     var isLoading by remember { mutableStateOf(false) }
     var loginError by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+
+    // Nuevo: Variables para el diálogo de recuperación de contraseña
+    var showPasswordResetDialog by remember { mutableStateOf(false) }
+    var resetEmail by remember { mutableStateOf("") }
 
     // Validación del formulario
     val isFormValid = email.isNotBlank() &&
@@ -79,6 +86,7 @@ fun LoginPage(navController: NavController) {
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
+        // (código del launcher sin cambios)
         isLoading = true
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
@@ -94,7 +102,7 @@ fun LoginPage(navController: NavController) {
                         val isNewUser = authTask.result?.additionalUserInfo?.isNewUser ?: false
 
                         if (isNewUser) {
-                            Toast.makeText(context, "Cuenta nueva, redirigiendo a registro", Toast.LENGTH_LONG).show()
+//                            Toast.makeText(context, "Cuenta nueva, redirigiendo a registro", Toast.LENGTH_LONG).show()
                             navController.navigate("register2") {
                                 popUpTo("login") { inclusive = true }
                             }
@@ -106,7 +114,7 @@ fun LoginPage(navController: NavController) {
                         }
                     } else {
                         loginError = authTask.exception?.message ?: "Error al iniciar sesión con Google"
-                        Toast.makeText(context, loginError, Toast.LENGTH_LONG).show()
+//                        Toast.makeText(context, loginError, Toast.LENGTH_LONG).show()
                     }
                 }
         } catch (e: ApiException) {
@@ -115,17 +123,19 @@ fun LoginPage(navController: NavController) {
             when (e.statusCode) {
                 GoogleSignInStatusCodes.DEVELOPER_ERROR -> {
                     loginError = "Error de configuración en Google Sign-In. Código: 10"
-                    Log.e("GoogleSignIn", "Developer error - SHA-1 fingerprint or package name mismatch")
+//                    Log.e("GoogleSignIn", "Developer error - SHA-1 fingerprint or package name mismatch")
                 }
                 else -> {
-                    loginError = "Error al iniciar sesión con Google: ${e.statusCode}"
+//                    loginError = "Error al iniciar sesión con Google: ${e.statusCode}"
                 }
             }
-            Toast.makeText(context, loginError, Toast.LENGTH_LONG).show()
+//            Toast.makeText(context, loginError, Toast.LENGTH_LONG).show()
         }
     }
+
     // Función para iniciar sesión con correo/contraseña
     fun loginWithEmailAndPassword(email: String, password: String) {
+        // (código sin cambios)
         isLoading = true
         loginError = ""
 
@@ -155,30 +165,49 @@ fun LoginPage(navController: NavController) {
         }
     }
 
-
-
     // Función para iniciar el proceso de registro con Google
     fun signInWithGoogle() {
+        // (código sin cambios)
         googleSignInClient.signOut().addOnCompleteListener {
             val signInIntent = googleSignInClient.signInIntent
             launcher.launch(signInIntent)
         }
     }
 
+    // Nueva función para enviar correo de recuperación de contraseña
+    fun sendPasswordResetEmail(email: String) {
+        if (email.isBlank() || !email.contains("@") || !email.contains(".")) {
+            Toast.makeText(context, "Ingresa un correo electrónico válido", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        Firebase.auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(context, "Se ha enviado un correo para restablecer tu contraseña", Toast.LENGTH_LONG).show()
+                    showPasswordResetDialog = false
+                } else {
+                    Toast.makeText(context, "Error: ${task.exception?.message ?: "No se pudo enviar el correo"}", Toast.LENGTH_LONG).show()
+                }
+            }
+    }
 
     // UI con Jetpack Compose
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+
     ) {
         // Título de la página
         Text(
             text = "Iniciar Sesión",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -190,7 +219,11 @@ fun LoginPage(navController: NavController) {
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+            )
         )
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -202,6 +235,11 @@ fun LoginPage(navController: NavController) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            leadingIcon = { Icon(Icons.Default.Key, contentDescription = "Email") },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+            ),
             trailingIcon = {
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
                     Icon(
@@ -214,17 +252,13 @@ fun LoginPage(navController: NavController) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Enlace para recuperar contraseña
+        // Enlace para recuperar contraseña (modificado)
         Box(modifier = Modifier.fillMaxWidth()) {
             TextButton(
                 onClick = {
-                    //Mandar email contraseña olvidada
-                    if (email.length < 1) {
-                        Toast.makeText(context, "Ingresa tu correo para restablecer tu contraseña", Toast.LENGTH_LONG).show()
-                        return@TextButton
-                    }
-                    Firebase.auth.sendPasswordResetEmail(email)
-                    Toast.makeText(context, "Se ha enviado un correo para restablecer tu contraseña", Toast.LENGTH_LONG).show()
+                    // Modificado: Mostrar diálogo en lugar de enviar correo directamente
+                    resetEmail = email // Pre-llenar con el email actual si existe
+                    showPasswordResetDialog = true
                 },
                 modifier = Modifier.align(Alignment.CenterEnd)
             ) {
@@ -239,12 +273,12 @@ fun LoginPage(navController: NavController) {
             onClick = { loginWithEmailAndPassword(email, password) },
             modifier = Modifier.fillMaxWidth(),
             enabled = isFormValid && !isLoading,
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xffff9240))
         ) {
             if (isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
-                    color = Color.White
+                    color = Color(0xff7c461d)
                 )
             } else {
                 Text(text = "Iniciar Sesión", color = Color.White)
@@ -293,7 +327,7 @@ fun LoginPage(navController: NavController) {
             ) {
                 // Imagen del logo de Google
                 Image(
-                    painter = painterResource(id = R.drawable.logo_de_google), // Usar el mismo recurso que en RegisterPage
+                    painter = painterResource(id = R.drawable.logo_de_google),
                     contentDescription = "Logo de Google",
                     modifier = Modifier.size(24.dp),
                     contentScale = ContentScale.Fit
@@ -328,9 +362,49 @@ fun LoginPage(navController: NavController) {
             )
         }
     }
+
+    // Diálogo para recuperación de contraseña
+    if (showPasswordResetDialog) {
+        AlertDialog(
+            onDismissRequest = { showPasswordResetDialog = false },
+            title = { Text("Recuperar contraseña") },
+            text = {
+                Column {
+                    Text("Introduce tu correo electrónico para recibir instrucciones de recuperación de contraseña:")
+                    Spacer(modifier = Modifier.height(16.dp))
+                    OutlinedTextField(
+                        value = resetEmail,
+                        onValueChange = { resetEmail = it },
+                        label = { Text("Correo electrónico") },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                            unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+                        ),
+                        leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = { sendPasswordResetEmail(resetEmail) },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
+                ) {
+                    Text("Enviar")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showPasswordResetDialog = false }) {
+                    Text("Cancelar")
+                }
+            }
+        )
+    }
 }
 
-// Función para guardar el estado de inicio de sesión
+// Función para guardar el estado de inicio de sesión (sin cambios)
 fun saveLoginState(context: Context, isLoggedIn: Boolean, account: String) {
     val sharedPreferences: SharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
     val editor = sharedPreferences.edit()
@@ -338,7 +412,8 @@ fun saveLoginState(context: Context, isLoggedIn: Boolean, account: String) {
     editor.putString("account", account)
     editor.apply()
 }
-// Función para obtener el estado de inicio de sesión
+
+// Función para obtener el estado de inicio de sesión (sin cambios)
 fun getLoginState(context: Context): Pair<Boolean, String?> {
     val sharedPreferences: SharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
     val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)

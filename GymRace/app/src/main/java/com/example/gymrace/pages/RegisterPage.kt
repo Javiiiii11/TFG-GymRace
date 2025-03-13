@@ -42,9 +42,11 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.Key
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -57,6 +59,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.example.gymrace.R
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterPage(navController: NavController) {
     val context = LocalContext.current
@@ -164,10 +167,14 @@ fun RegisterPage(navController: NavController) {
                     navController.navigate("register2") {
                         popUpTo("login") { inclusive = true }
                     }
-                    Toast.makeText(context, "Registrado con éxito ${name}", Toast.LENGTH_LONG).show()
                 } else {
-                    registrationError = task.exception?.message ?: "Error desconocido"
-                    Toast.makeText(context, registrationError, Toast.LENGTH_LONG).show()
+                    val errorMessage = task.exception?.message ?: "Error desconocido"
+                    registrationError = errorMessage
+                    if (errorMessage.contains("The email address is already in use")) {
+                        Toast.makeText(context, "Este email ya está en uso", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(context, registrationError, Toast.LENGTH_LONG).show()
+                    }
                 }
             }
     }
@@ -176,15 +183,19 @@ fun RegisterPage(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+
+
     ) {
         // Título de la página
         Text(
             text = "Crear Cuenta",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -195,6 +206,10 @@ fun RegisterPage(navController: NavController) {
             label = { Text("Nombre completo") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+            ),
             leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Nombre") }
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -206,6 +221,10 @@ fun RegisterPage(navController: NavController) {
             label = { Text("Correo electrónico") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+            ),
             leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
@@ -220,6 +239,11 @@ fun RegisterPage(navController: NavController) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            leadingIcon = { Icon(Icons.Default.Key, contentDescription = "Email") },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+            ),
             trailingIcon = {
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
                     Icon(
@@ -240,6 +264,11 @@ fun RegisterPage(navController: NavController) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            leadingIcon = { Icon(Icons.Default.Key, contentDescription = "Email") },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
+                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+            ),
             trailingIcon = {
                 IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
                     Icon(
@@ -260,12 +289,12 @@ fun RegisterPage(navController: NavController) {
             },
             modifier = Modifier.fillMaxWidth(),
             enabled = isFormValid && !isLoading,
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xffff9240))
         ) {
             if (isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
-                    color = Color.White
+                    color = Color(0xff7c461d)
                 )
             } else {
                 Text(text = "Registrarse", color = Color.White)

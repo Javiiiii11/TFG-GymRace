@@ -85,5 +85,9 @@ dependencies {
     // Dependencias para Google Sign-In
     implementation("com.google.android.gms:play-services-auth:20.7.0")
 
+    //esto es la transicion de inicio
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+
 
 }
