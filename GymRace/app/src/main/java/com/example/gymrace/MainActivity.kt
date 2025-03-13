@@ -21,12 +21,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             GymRaceTheme {
                 val navController = rememberNavController()
-                NavHost(navController, startDestination = "register") {
+                NavHost(navController, startDestination = "login") {
                     composable("register") { RegisterPage(navController) }
-                    composable("main") { MainScreen() }
+                    composable("main") { MainScreen(navController) }
                     composable("login") { LoginPage(navController) }
                     composable("register2") { RegisterPage2(navController) }
 
+                    //pasar el navcontroller a todas las pantallas
+                    //has olvidado la contraseña
                 }
             }
         }

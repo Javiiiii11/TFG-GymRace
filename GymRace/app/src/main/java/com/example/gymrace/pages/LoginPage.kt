@@ -43,6 +43,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.firebase.auth.auth
@@ -132,6 +134,7 @@ fun LoginPage(navController: NavController) {
                 Firebase.auth.signInWithEmailAndPassword(email, password).await()
                 withContext(Dispatchers.Main) {
                     isLoading = false
+                    saveLoginState(context, true, email)
                     Toast.makeText(context, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
                     navController.navigate("main") {
                         popUpTo("login") { inclusive = true }
@@ -214,7 +217,15 @@ fun LoginPage(navController: NavController) {
         // Enlace para recuperar contraseña
         Box(modifier = Modifier.fillMaxWidth()) {
             TextButton(
-                onClick = { navController.navigate("password_recovery") },
+                onClick = {
+                    //Mandar email contraseña olvidada
+                    if (email.length < 1) {
+                        Toast.makeText(context, "Ingresa tu correo para restablecer tu contraseña", Toast.LENGTH_LONG).show()
+                        return@TextButton
+                    }
+                    Firebase.auth.sendPasswordResetEmail(email)
+                    Toast.makeText(context, "Se ha enviado un correo para restablecer tu contraseña", Toast.LENGTH_LONG).show()
+                },
                 modifier = Modifier.align(Alignment.CenterEnd)
             ) {
                 Text(text = "¿Olvidaste tu contraseña?", color = Color(0xFF1976D2))
@@ -317,4 +328,20 @@ fun LoginPage(navController: NavController) {
             )
         }
     }
+}
+
+// Función para guardar el estado de inicio de sesión
+fun saveLoginState(context: Context, isLoggedIn: Boolean, account: String) {
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.putBoolean("isLoggedIn", isLoggedIn)
+    editor.putString("account", account)
+    editor.apply()
+}
+// Función para obtener el estado de inicio de sesión
+fun getLoginState(context: Context): Pair<Boolean, String?> {
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+    val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+    val account = sharedPreferences.getString("account", null)
+    return Pair(isLoggedIn, account)
 }

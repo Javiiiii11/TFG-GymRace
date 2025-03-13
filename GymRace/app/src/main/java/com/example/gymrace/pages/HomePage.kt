@@ -153,7 +153,7 @@ fun TitleSection() {
         text = "Bienvenido a Gym Race",
         fontSize = 28.sp,
         fontWeight = FontWeight.Bold,
-        color = Color.Black
+        color = MaterialTheme.colorScheme.onSurface
     )
     Spacer(modifier = Modifier.height(0.dp))
 }
@@ -203,7 +203,7 @@ fun RoutineSection(title: String, exercises: List<Exercise>) {
             text = title,
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF303030),
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
@@ -703,7 +703,7 @@ fun CustomRoutineSection() {
             text = "Crea tu rutina personalizada",
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF303030),
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
@@ -805,7 +805,7 @@ fun Masoptions() {
             text = "Más opciones",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF303030),
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
         )
 
@@ -815,7 +815,7 @@ fun Masoptions() {
                 .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(
-                containerColor = Color.White
+                containerColor = MaterialTheme.colorScheme.surface
             )
         ) {
             Column(modifier = Modifier.padding(16.dp)) {

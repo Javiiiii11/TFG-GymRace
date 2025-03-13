@@ -137,10 +137,10 @@ fun RegisterPage2(navController: NavController) {
         OutlinedTextField(
             value = nombre,
             onValueChange = { nombre = it },
-            label = { Text("Nombre") },
+            label = { Text("Apodo") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Nombre") },
+            leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Apodo ") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
 

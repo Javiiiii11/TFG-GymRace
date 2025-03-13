@@ -1,6 +1,7 @@
 package com.example.gymrace.pages
 
 // Importaciones existentes
+import android.content.Context
 import android.os.Build
 import android.widget.Toast
 import androidx.compose.runtime.*
@@ -36,6 +37,7 @@ import kotlinx.coroutines.launch
 
 // Nuevas importaciones para autenticación con Google
 import android.content.Intent
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -339,4 +341,21 @@ fun RegisterPage(navController: NavController) {
             }
         )
     }
+
 }
+
+//// Función para guardar el estado de inicio de sesión
+//fun saveLoginState(context: Context, isLoggedIn: Boolean, account: String) {
+//    val sharedPreferences: SharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+//    val editor = sharedPreferences.edit()
+//    editor.putBoolean("isLoggedIn", isLoggedIn)
+//    editor.putString("account", account)
+//    editor.apply()
+//}
+//// Función para obtener el estado de inicio de sesión
+//fun getLoginState(context: Context): Pair<Boolean, String?> {
+//    val sharedPreferences: SharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
+//    val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+//    val account = sharedPreferences.getString("account", null)
+//    return Pair(isLoggedIn, account)
+//}
