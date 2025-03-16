@@ -51,7 +51,7 @@ fun MainScreen(navController: NavController) {
         colorScheme = if (isDarkTheme) DarkColors else LightColors
     ) {
         if (isLoggedIn) {
-            HomePage()
+            HomePage(onThemeChange = { isDarkTheme = !isDarkTheme }, navController = navController)
         } else {
             val navItemList = listOf(
                 NavItem("Inicio", Icons.Default.Home, 0),
@@ -100,7 +100,7 @@ fun MainScreen(navController: NavController) {
 @Composable
 fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int, onThemeChange: () -> Unit, navController: NavController) {
     when (selectedIndex) {
-        0 -> HomePage()
+        0 -> HomePage(onThemeChange =  onThemeChange,navController = navController)
         1 -> EjerciciosPage()
         2 -> UserPage(onThemeChange = onThemeChange, navController = navController)
     }

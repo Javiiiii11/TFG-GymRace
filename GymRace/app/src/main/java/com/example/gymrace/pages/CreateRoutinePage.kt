@@ -1,0 +1,583 @@
+package com.example.gymrace
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavHostController
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CrearRutinaPage(navController: NavHostController) {
+    val db = FirebaseFirestore.getInstance()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    var rutinaNombre by remember { mutableStateOf(TextFieldValue()) }
+    var rutinaDescripcion by remember { mutableStateOf(TextFieldValue()) }
+    var selectedDificultad by remember { mutableStateOf("Medio") }
+    val dificultades = listOf("Fácil", "Medio", "Difícil")
+    val ejerciciosSeleccionados = remember { mutableStateListOf<String>() }
+
+    // Estados de error, carga y éxito
+    var showErrorDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    var showSuccessDialog by remember { mutableStateOf(false) }
+
+    // Estados para búsqueda y selección de ejercicios
+    var buscarEjercicio by remember { mutableStateOf(TextFieldValue()) }
+    var showEjerciciosDialog by remember { mutableStateOf(false) }
+
+    // Cargar ejercicios desde XML (asegúrate de tener implementada la función loadGifsFromXml)
+    val context = LocalContext.current
+    val (ejerciciosData, _) = remember {
+        loadGifsFromXml(context.resources.getXml(R.xml.ejercicios), context)
+    }
+
+    // Lista de ejercicios disponibles desde el XML y categorías
+    val ejerciciosDisponibles = ejerciciosData.map { it.title }
+    var selectedCategory by remember { mutableStateOf("Todos") }
+    val categories = listOf("Todos") + ejerciciosData.map { it.category }.distinct()
+
+    // Filtrar ejercicios según búsqueda y categoría
+    val ejerciciosFiltrados = ejerciciosData.filter {
+        (selectedCategory == "Todos" || it.category == selectedCategory) &&
+                it.title.contains(buscarEjercicio.text, ignoreCase = true)
+    }.map { it.title }
+
+    val scope = rememberCoroutineScope()
+
+    // Estado para ver detalles del ejercicio seleccionado
+    var selectedExerciseDetail by remember { mutableStateOf<GifData?>(null) }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Crear Nueva Rutina") },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.navigate("main") {
+                            popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
+                        }
+                    }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Box(modifier = Modifier.padding(paddingValues)) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxSize()
+            ) {
+                OutlinedTextField(
+                    value = rutinaNombre,
+                    onValueChange = { rutinaNombre = it },
+                    label = { Text("Nombre de la Rutina*") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = rutinaNombre.text.isBlank() && errorMessage.isNotEmpty()
+                )
+                if (rutinaNombre.text.isBlank() && errorMessage.isNotEmpty()) {
+                    Text(
+                        text = "El nombre es obligatorio",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                OutlinedTextField(
+                    value = rutinaDescripcion,
+                    onValueChange = { rutinaDescripcion = it },
+                    label = { Text("Descripción (Opcional)") },
+                    modifier = Modifier.fillMaxWidth(),
+                    minLines = 2
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            "Dificultad",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            dificultades.forEach { dificultad ->
+                                FilterChip(
+                                    selected = dificultad == selectedDificultad,
+                                    onClick = { selectedDificultad = dificultad },
+                                    label = { Text(dificultad) }
+                                )
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        "Ejercicios",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Button(
+                        onClick = { showEjerciciosDialog = true },
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = "Añadir ejercicio")
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("Añadir")
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Lista de ejercicios seleccionados usando ExerciseCard
+                if (ejerciciosSeleccionados.isEmpty()) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        )
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(24.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                "No hay ejercicios seleccionados",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    ) {
+                        items(ejerciciosSeleccionados) { ejercicio ->
+                            ExerciseCard(
+                                ejercicio = ejercicio,
+                                ejerciciosData = ejerciciosData,
+                                ejerciciosSeleccionados = ejerciciosSeleccionados,
+                                onShowExerciseDetail = { nombreEjercicio ->
+                                    showExerciseDetail(nombreEjercicio, ejerciciosData) { selectedExerciseDetail = it }
+                                }
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = {
+                        if (rutinaNombre.text.isBlank()) {
+                            errorMessage = "Por favor, introduzca un nombre para la rutina"
+                            showErrorDialog = true
+                            return@Button
+                        }
+
+                        if (ejerciciosSeleccionados.isEmpty()) {
+                            errorMessage = "Por favor, añada al menos un ejercicio"
+                            showErrorDialog = true
+                            return@Button
+                        }
+
+                        isLoading = true
+
+                        val rutina = hashMapOf(
+                            "nombre" to rutinaNombre.text,
+                            "descripcion" to rutinaDescripcion.text,
+                            "dificultad" to selectedDificultad,
+                            "ejercicios" to ejerciciosSeleccionados.toList(),
+                            "usuarioId" to userId,
+                            "fechaCreacion" to com.google.firebase.Timestamp.now()
+                        )
+
+                        scope.launch {
+                            try {
+                                db.collection("rutinas").add(rutina)
+                                    .addOnSuccessListener {
+                                        isLoading = false
+                                        showSuccessDialog = true
+                                    }
+                                    .addOnFailureListener { e ->
+                                        isLoading = false
+                                        errorMessage = "Error: ${e.message}"
+                                        showErrorDialog = true
+                                    }
+                            } catch (e: Exception) {
+                                isLoading = false
+                                errorMessage = "Error: ${e.message}"
+                                showErrorDialog = true
+                            }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = !isLoading
+
+                ) {
+                    if (isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            strokeWidth = 2.dp
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                    Text("Guardar Rutina")
+                }
+            }
+        }
+    }
+
+    // Dialog para añadir ejercicios (versión mejorada)
+    if (showEjerciciosDialog) {
+        Dialog(
+            onDismissRequest = { showEjerciciosDialog = false }
+        ) {
+            Card(
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.9f)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    // Título y botón para cerrar
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "Añadir Ejercicios",
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        IconButton(onClick = { showEjerciciosDialog = false }) {
+                            Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Barra de búsqueda
+                    OutlinedTextField(
+                        value = buscarEjercicio,
+                        onValueChange = { buscarEjercicio = it },
+                        label = { Text("Buscar ejercicio") },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        leadingIcon = {
+                            Icon(Icons.Default.Search, contentDescription = "Buscar")
+                        }
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Filtro por categoría con chips horizontales
+                    Text(
+                        "Categorías:",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .horizontalScroll(rememberScrollState())
+                            .padding(vertical = 4.dp)
+                    ) {
+                        categories.forEach { category ->
+                            FilterChip(
+                                selected = category == selectedCategory,
+                                onClick = { selectedCategory = category },
+                                label = { Text(category) },
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Lista de ejercicios filtrados con miniaturas
+                    if (ejerciciosFiltrados.isEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                "No se encontraron ejercicios",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            items(ejerciciosFiltrados.size) { index ->
+                                val ejercicioNombre = ejerciciosFiltrados[index]
+                                val ejercicio = ejerciciosData.find { it.title == ejercicioNombre }
+
+                                if (ejercicio != null) {
+                                    ExercisePreviewItem(
+                                        gifData = ejercicio,
+                                        isSelected = ejerciciosSeleccionados.contains(ejercicioNombre),
+                                        onToggleSelect = { selected ->
+                                            if (selected) {
+                                                if (!ejerciciosSeleccionados.contains(ejercicioNombre)) {
+                                                    ejerciciosSeleccionados.add(ejercicioNombre)
+                                                }
+                                            } else {
+                                                ejerciciosSeleccionados.remove(ejercicioNombre)
+                                            }
+                                        },
+                                        onViewDetail = {
+                                            showExerciseDetail(ejercicioNombre, ejerciciosData) { selectedExerciseDetail = it }
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Botones de acción
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        TextButton(onClick = {
+                            showEjerciciosDialog = false
+                            buscarEjercicio = TextFieldValue("")
+                            selectedCategory = "Todos"
+                        }) {
+                            Text("Cancelar")
+                        }
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Button(onClick = {
+                            showEjerciciosDialog = false
+                        }) {
+                            Text("Confirmar (${ejerciciosSeleccionados.size})")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Dialog de error
+    if (showErrorDialog) {
+        AlertDialog(
+            onDismissRequest = { showErrorDialog = false },
+            title = { Text("Error") },
+            text = { Text(errorMessage) },
+            confirmButton = {
+                Button(onClick = { showErrorDialog = false }) {
+                    Text("Aceptar")
+                }
+            }
+        )
+    }
+
+    // Dialog de éxito
+    if (showSuccessDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showSuccessDialog = false
+                navController.popBackStack()
+            },
+            title = { Text("Éxito") },
+            text = { Text("Rutina creada correctamente") },
+            confirmButton = {
+                Button(onClick = {
+                    showSuccessDialog = false
+                    navController.navigate("main") {
+                        popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
+                    }                }) {
+                    Text("Aceptar")
+                }
+            }
+        )
+    }
+
+    // Dialog para detalles del ejercicio
+    if (selectedExerciseDetail != null) {
+        ExerciseDetailDialog(
+            gifData = selectedExerciseDetail!!,
+            onDismiss = { selectedExerciseDetail = null }
+        )
+    }
+}
+
+// Función para buscar y mostrar detalles de un ejercicio
+fun showExerciseDetail(
+    ejercicioNombre: String,
+    ejercicios: List<GifData>,
+    setSelectedExerciseDetail: (GifData?) -> Unit
+) {
+    val ejercicio = ejercicios.find { it.title == ejercicioNombre }
+    if (ejercicio != null) {
+        setSelectedExerciseDetail(ejercicio)
+    }
+}
+
+// Componente para mostrar la tarjeta de un ejercicio seleccionado con el texto truncado
+@Composable
+fun ExerciseCard(
+    ejercicio: String,
+    ejerciciosData: List<GifData>,
+    ejerciciosSeleccionados: MutableList<String>,
+    onShowExerciseDetail: (String) -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .clickable { onShowExerciseDetail(ejercicio) },
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            // El texto se trunca a una sola línea con puntos suspensivos
+            Text(
+                text = ejercicio,
+                modifier = Modifier.weight(1f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Row {
+                IconButton(onClick = { onShowExerciseDetail(ejercicio) }) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Ver detalles",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+                IconButton(onClick = { ejerciciosSeleccionados.remove(ejercicio) }) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Eliminar",
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
+        }
+    }
+}
+
+// Componente para mostrar la vista previa de un ejercicio en el diálogo de búsqueda
+@Composable
+fun ExercisePreviewItem(
+    gifData: GifData,
+    isSelected: Boolean,
+    onToggleSelect: (Boolean) -> Unit,
+    onViewDetail: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .clickable { onViewDetail() },
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Miniatura del GIF (asegúrate de tener implementado GifImage)
+            GifImage(
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                gif = gifData.resource
+            )
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = gifData.title,
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                )
+                Text(
+                    text = "Músculo: ${gifData.mainMuscle}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            Checkbox(
+                checked = isSelected,
+                onCheckedChange = onToggleSelect
+            )
+        }
+    }
+}

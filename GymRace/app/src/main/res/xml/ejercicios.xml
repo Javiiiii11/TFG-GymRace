@@ -6,191 +6,648 @@
             <nombre>Abdominal Apoyado con Fitball - con disco</nombre>
             <descripcion>Se realiza sobre un fitball mientras se mantiene un disco sobre el pecho, activando los costados mediante un movimiento de contracción lateral.</descripcion>
             <gif>@drawable/abdominal_apoyado_con_fitball___con_disco</gif>
+            <pasos>
+                <paso numero="1">Preparar el fitball y disponer el disco sobre el pecho.</paso>
+                <paso numero="2">Adoptar una postura estable sobre el fitball.</paso>
+                <paso numero="3">Ejecutar una contracción lateral activando los costados.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el equilibrio en el fitball.</item>
+                <item>Controla la respiración durante el movimiento.</item>
+                <item>No olvides activar el core para mayor estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Oblicuos</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal bicicleta</nombre>
             <descripcion>El ejercicio de abdominal bicicleta es excelente para trabajar los costados al simular un pedaleo mientras se alternan los codos y las rodillas en un movimiento controlado.</descripcion>
             <gif>@drawable/abdominal_bicicleta</gif>
+            <pasos>
+                <paso numero="1">Colocar la colchoneta y posicionarse boca arriba.</paso>
+                <paso numero="2">Llevar la rodilla y el codo opuesto hacia el centro.</paso>
+                <paso numero="3">Alternar el movimiento como si se pedaleara.</paso>
+                <paso numero="4">Realizar el movimiento de forma controlada y mantener la contracción.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento de forma fluida.</item>
+                <item>Evita forzar el cuello durante el ejercicio.</item>
+                <item>Mantén un ritmo constante para maximizar la contracción.</item>
+                <item>Concéntrate en el movimiento de los costados.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Oblicuos</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal con Fitball</nombre>
             <descripcion>Se realiza sobre un fitball para añadir inestabilidad, activando los músculos costados al realizar una contracción lateral de tronco.</descripcion>
             <gif>@drawable/abdominal_con_fitball</gif>
+            <pasos>
+                <paso numero="1">Colocar el fitball en una superficie segura.</paso>
+                <paso numero="2">Sentarse sobre el fitball con la espalda ligeramente arqueada.</paso>
+                <paso numero="3">Realizar contracciones laterales del tronco.</paso>
+                <paso numero="4">Regresar lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla el movimiento para mantener la estabilidad.</item>
+                <item>Activa el core constantemente.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Oblicuos</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal con Piernas Elevadas</nombre>
             <descripcion>Este ejercicio consiste en elevar las piernas mientras se realiza una contracción abdominal, enfocándose en los músculos costados.</descripcion>
             <gif>@drawable/abdominal_con_piernas_elevadas_con_disco</gif>
+            <pasos>
+                <paso numero="1">Acostarse en una colchoneta con las piernas extendidas.</paso>
+                <paso numero="2">Elevar las piernas manteniendo la zona media activada.</paso>
+                <paso numero="3">Realizar la contracción abdominal concentrada en los costados.</paso>
+                <paso numero="4">Bajar las piernas de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la zona media activa durante todo el movimiento.</item>
+                <item>Evita balanceos para un ejercicio más efectivo.</item>
+                <item>Realiza el movimiento de manera lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Abdominal inferior</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal con Piernas Elevadas (mancuernas)</nombre>
             <descripcion>Al elevar las piernas y sostener mancuernas, este ejercicio trabaja los costados y la zona inferior del abdomen.</descripcion>
             <gif>@drawable/abdominal_con_piernas_elevadas_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Seleccionar mancuernas de peso moderado.</paso>
+                <paso numero="2">Acostarse y sostener las mancuernas con ambas manos sobre el pecho.</paso>
+                <paso numero="3">Elevar las piernas mientras se contrae el abdomen.</paso>
+                <paso numero="4">Descender las piernas lentamente manteniendo la tensión.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla la bajada para evitar sobrecargar la zona lumbar.</item>
+                <item>Mantén las mancuernas seguras sin extender los brazos completamente.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Abdominal inferior</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal Declinado</nombre>
             <descripcion>El abdominal declinado se realiza en una banca en declive, activando principalmente la parte baja del abdomen y los costados.</descripcion>
             <gif>@drawable/abdominal_declinado_m_quina</gif>
+            <pasos>
+                <paso numero="1">Ajustar la banca en declive.</paso>
+                <paso numero="2">Colocar la espalda sobre la banca y los pies firmemente apoyados.</paso>
+                <paso numero="3">Realizar la contracción abdominal enfocada en la zona baja.</paso>
+                <paso numero="4">Regresar a la posición inicial de manera controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Enfócate en contraer la zona baja del abdomen.</item>
+                <item>Mantén los pies bien apoyados para mayor estabilidad.</item>
+                <item>No uses impulso para subir el torso.</item>
+            </consejo>
+            <musculos>
+                <principal>Abdominal inferior</principal>
+                <secundario>Recto abdominal</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal Declinado (máquina)</nombre>
             <descripcion>La máquina para músculos centrales declinados proporciona soporte y control, permitiendo trabajar de forma focalizada los músculos del abdomen.</descripcion>
             <gif>@drawable/abdominal_declinado_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina según las indicaciones.</paso>
+                <paso numero="2">Sentarse y asegurar la posición.</paso>
+                <paso numero="3">Ejecutar el movimiento de abdominal enfocado.</paso>
+                <paso numero="4">Controlar el retorno a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza una resistencia moderada para mantener la técnica correcta.</item>
+                <item>Concéntrate en la contracción de la zona baja.</item>
+                <item>Mantén la espalda apoyada en todo momento.</item>
+            </consejo>
+            <musculos>
+                <principal>Abdominal inferior</principal>
+                <secundario>Recto abdominal</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal en banco</nombre>
             <descripcion>Se realiza en un banco plano, activando la zona media del abdomen y los costados mediante un movimiento controlado de contracción.</descripcion>
             <gif>@drawable/abdominal_en_banco</gif>
+            <pasos>
+                <paso numero="1">Colocar el banco sobre una superficie estable.</paso>
+                <paso numero="2">Acostarse sobre el banco con la espalda recta.</paso>
+                <paso numero="3">Ejecutar la contracción abdominal concentrándose en el core.</paso>
+                <paso numero="4">Regresar a la posición de inicio de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda en contacto con el banco.</item>
+                <item>Activa el core antes de iniciar el movimiento.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Core</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal - en el banco con disco</nombre>
             <descripcion>Se efectúa en un banco con un disco sobre el pecho para añadir peso, intensificando la activación de los costados.</descripcion>
             <gif>@drawable/abdomi_drawable_abdominal_en_el_banco_con_disconal_alternado_supra_infra</gif>
+            <pasos>
+                <paso numero="1">Colocar el disco sobre el pecho y posicionarse en el banco.</paso>
+                <paso numero="2">Asegurarse de mantener la espalda en contacto con el banco.</paso>
+                <paso numero="3">Realizar la contracción lateral del abdomen.</paso>
+                <paso numero="4">Bajar el disco y volver a la posición inicial con control.</paso>
+            </pasos>
+            <consejo>
+                <item>El disco añade resistencia; controla su movimiento en todo momento.</item>
+                <item>Concéntrate en la contracción lateral para aislar los costados.</item>
+                <item>Mantén el core activado durante el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Oblicuos</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal (kettlebell)</nombre>
             <descripcion>Este ejercicio de músculos centrales se realiza con un kettlebell, activando tanto la zona abdominal como los costados mediante un movimiento controlado.</descripcion>
             <gif>@drawable/abdominal__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar un kettlebell adecuado.</paso>
+                <paso numero="2">Posicionarse en una colchoneta con buena base.</paso>
+                <paso numero="3">Realizar el movimiento de curl abdominal manteniendo el kettlebell cerca del pecho.</paso>
+                <paso numero="4">Bajar el peso lentamente y mantener el core activado.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el kettlebell cerca del cuerpo para evitar balanceos.</item>
+                <item>Realiza el movimiento de forma lenta para maximizar la contracción.</item>
+                <item>Controla la respiración durante la ejecución.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Oblicuos</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal Oblicuo Alternado con Pies Apoyados - con disco</nombre>
             <descripcion>Combina giro oblicuo y apoyo de pies para intensificar el trabajo de los costados al sostener un disco.</descripcion>
             <gif>@drawable/abdominal_oblicuo_alternado_con_pies_apoyados___con_disco</gif>
+            <pasos>
+                <paso numero="1">Colocar el disco sobre el pecho.</paso>
+                <paso numero="2">Sentarse en el banco con los pies firmemente apoyados.</paso>
+                <paso numero="3">Realizar giros alternados activando los oblicuos.</paso>
+                <paso numero="4">Regresar a la posición inicial controlando el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el giro de forma controlada para aislar los oblicuos.</item>
+                <item>Apoya bien los pies en el banco para mayor estabilidad.</item>
+                <item>Respira de forma rítmica durante el ejercicio.</item>
+                <item>No sobrecargues el disco para mantener la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Recto abdominal</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal Oblíquo con Brazos Extendidos (mancuernas)</nombre>
             <descripcion>Trabaja los costados utilizando mancuernas con los brazos extendidos, mejorando la fuerza y flexibilidad de los músculos laterales.</descripcion>
             <gif>@drawable/abdominal_obl_quo_con_brazos_extendidos__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar mancuernas ligeras a moderadas.</paso>
+                <paso numero="2">Extender los brazos a los lados manteniendo la postura.</paso>
+                <paso numero="3">Realizar una contracción oblicua enfocada en los costados.</paso>
+                <paso numero="4">Regresar lentamente a la posición de inicio.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla el movimiento para aislar eficazmente los oblicuos.</item>
+                <item>Mantén los brazos extendidos sin bloquear las articulaciones.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Core</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal Oblíquo con Pies en el Suelo (mancuernas)</nombre>
             <descripcion>Se realiza con mancuernas y pies apoyados para trabajar de forma intensa la zona oblicua y lateral del abdomen.</descripcion>
             <gif>@drawable/abdominal_obl_quo_con_pies_en_el_suelo__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Colocar una colchoneta y seleccionar mancuernas adecuadas.</paso>
+                <paso numero="2">Acostarse con los pies firmemente en el suelo.</paso>
+                <paso numero="3">Realizar el movimiento de contracción lateral con las mancuernas.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la postura estable para focalizar el trabajo en los oblicuos.</item>
+                <item>Evita movimientos bruscos que puedan comprometer el control.</item>
+                <item>Respira adecuadamente para no fatigarte rápidamente.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Recto abdominal</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal (polea)</nombre>
             <descripcion>Realizado con una polea, este ejercicio activa la zona abdominal y los costados mediante un movimiento de contracción y rotación.</descripcion>
             <gif>@drawable/abdominal__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea a la altura adecuada.</paso>
+                <paso numero="2">Adoptar una postura erguida y estable.</paso>
+                <paso numero="3">Realizar el movimiento de rotación y contracción del abdomen.</paso>
+                <paso numero="4">Volver a la posición inicial de manera controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza el soporte de la polea para evitar balanceos excesivos.</item>
+                <item>Mantén una postura erguida durante todo el ejercicio.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Oblicuos</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal Recto con Fitball</nombre>
             <descripcion>Sobre un fitball se trabaja la zona central del abdomen manteniendo la estabilidad durante la contracción.</descripcion>
             <gif>@drawable/abdominal_recto_con_fitball</gif>
+            <pasos>
+                <paso numero="1">Colocar el fitball sobre una superficie estable.</paso>
+                <paso numero="2">Sentarse y acomodar la espalda sobre el fitball.</paso>
+                <paso numero="3">Realizar contracciones abdominales de forma controlada.</paso>
+                <paso numero="4">Regresar a la posición de inicio manteniendo la estabilidad.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegura la estabilidad sobre el fitball para evitar desequilibrios.</item>
+                <item>Mantén el core activado durante todo el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Oblicuos</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal sentado</nombre>
             <descripcion>Ejercicio básico que se realiza en posición sentada para trabajar el core de forma controlada.</descripcion>
             <gif>@drawable/abdominal_sentado_m_quina</gif>
+            <pasos>
+                <paso numero="1">Sentarse en una silla o banco sin respaldo.</paso>
+                <paso numero="2">Mantener la espalda recta y el core activado.</paso>
+                <paso numero="3">Realizar contracciones abdominales profundas.</paso>
+                <paso numero="4">Descansar y repetir de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta en todo momento.</item>
+                <item>Activa el core antes de iniciar cada contracción.</item>
+                <item>Realiza movimientos lentos para maximizar el efecto.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Transverso abdominal</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal Sentado (máquina)</nombre>
             <descripcion>Con máquina especializada se añade resistencia al movimiento para potenciar la contracción del abdomen y costados.</descripcion>
             <gif>@drawable/abdominal_sentado_polea</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina de abdominales según las indicaciones.</paso>
+                <paso numero="2">Sentarse y posicionarse correctamente.</paso>
+                <paso numero="3">Ejecutar la contracción abdominal con resistencia.</paso>
+                <paso numero="4">Controlar el retorno a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la resistencia para trabajar el core sin comprometer la técnica.</item>
+                <item>Mantén una postura erguida durante el ejercicio.</item>
+                <item>Concéntrate en la contracción abdominal en cada repetición.</item>
+                <item>Realiza los movimientos de forma lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Core</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal Supra-infra alternado (mancuernas)</nombre>
             <descripcion>Alterna la contracción entre la parte superior e inferior del abdomen, utilizando mancuernas para incrementar la resistencia.</descripcion>
             <gif>@drawable/abdominal_supra_infra_alternado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar mancuernas de peso adecuado.</paso>
+                <paso numero="2">Acostarse o sentarse en una posición estable.</paso>
+                <paso numero="3">Alternar contracciones enfocando parte superior e inferior del abdomen.</paso>
+                <paso numero="4">Bajar el peso de manera controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Sincroniza bien las contracciones para un movimiento uniforme.</item>
+                <item>No apresures el movimiento para mantener la técnica.</item>
+                <item>Concéntrate en sentir el trabajo en ambas áreas del abdomen.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Abdominal inferior</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal Supra-infra (mancuernas)</nombre>
             <descripcion>Realiza un movimiento combinado de contracción superior e inferior del abdomen con el apoyo de mancuernas.</descripcion>
             <gif>@drawable/abdominal_supra_infra__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Colocar las mancuernas y posicionarse correctamente.</paso>
+                <paso numero="2">Realizar la contracción del abdomen de forma alternada.</paso>
+                <paso numero="3">Asegurarse de mantener la estabilidad en el core.</paso>
+                <paso numero="4">Regresar a la posición inicial controlando el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la estabilidad del core durante todo el movimiento.</item>
+                <item>Realiza el ejercicio de forma lenta y con control.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Abdominal inferior</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abdominal Tocar los Pies Alternado</nombre>
             <descripcion>Implica tocar los pies de manera alterna mientras se contrae el abdomen, activando intensamente los costados.</descripcion>
             <gif>@drawable/abdominal_tocar_los_pies_alternado</gif>
+            <pasos>
+                <paso numero="1">Acostarse sobre una colchoneta.</paso>
+                <paso numero="2">Elevar las piernas de forma recta.</paso>
+                <paso numero="3">Alternar el toque de cada pie con la mano contraria.</paso>
+                <paso numero="4">Realizar el movimiento de forma fluida y controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el toque de pies sin forzar la espalda.</item>
+                <item>Mantén el core activado durante todo el ejercicio.</item>
+                <item>Controla el ritmo para evitar movimientos bruscos.</item>
+            </consejo>
+            <musculos>
+                <principal>Recto abdominal</principal>
+                <secundario>Oblicuos</secundario>
+            </musculos>
         </ejercicio>
     </categoria>
+
 
     <!-- Categoría: Abductores -->
     <categoria nombre="Abductores">
         <ejercicio>
             <nombre>Abducción de Cadera en Cuatro Apoyos (polea)</nombre>
-            <descripcion>Ideal para fortalecer los músculos abductores, se realiza en posición de cuatro apoyos con la resistencia de una polea.</descripcion>
+            <descripcion>Ejercicio efectivo para fortalecer los músculos abductores, realizado en posición de cuatro apoyos con la resistencia de una polea.</descripcion>
             <gif>@drawable/abducci_n_de_cadera_en_cuatro_apoyos__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea a la altura del tobillo y asegurar la tobillera en la pierna.</paso>
+                <paso numero="2">Ponerse en posición de cuatro apoyos sobre una colchoneta.</paso>
+                <paso numero="3">Realizar la abducción de cadera levantando la pierna lateralmente sin girar la cadera.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Evita arquear la espalda; mantén el core activado.</item>
+                <item>Realiza movimientos lentos para un mayor control y activación muscular.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteo medio, glúteo menor</principal>
+                <secundario>Core, estabilizadores de cadera</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abducción de Cadera Lateral (máquina)</nombre>
-            <descripcion>Ejercicio en máquina que permite aislar y trabajar los músculos abductores de forma controlada.</descripcion>
+            <descripcion>Ejercicio en máquina que permite aislar y trabajar los músculos abductores de forma controlada con resistencia ajustable.</descripcion>
             <gif>@drawable/abducci_n_de_cadera_lateral__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina a una resistencia adecuada.</paso>
+                <paso numero="2">Sentarse con la espalda recta y colocar las piernas en la posición indicada.</paso>
+                <paso numero="3">Empujar las piernas hacia afuera realizando la abducción.</paso>
+                <paso numero="4">Regresar lentamente a la posición inicial sin dejar que el peso se apoye completamente.</paso>
+            </pasos>
+            <consejo>
+                <item>No arquees la espalda, mantén el torso erguido.</item>
+                <item>Usa una resistencia moderada para evitar balanceos innecesarios.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteo medio, glúteo menor</principal>
+                <secundario>Aductores, core</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abducción de Cadera (polea)</nombre>
-            <descripcion>Utilizando la polea se trabaja la fuerza de los abductores manteniendo una postura correcta.</descripcion>
+            <descripcion>Con la resistencia de la polea, este ejercicio activa y fortalece los abductores mientras se mantiene una postura erguida.</descripcion>
             <gif>@drawable/abducci_n_de_cadera__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea a la altura del tobillo y colocar la tobillera en la pierna a trabajar.</paso>
+                <paso numero="2">Pararse derecho, sujetándose de un soporte para mayor estabilidad.</paso>
+                <paso numero="3">Llevar la pierna hacia un lado en un movimiento controlado, sin inclinar el torso.</paso>
+                <paso numero="4">Regresar lentamente a la posición inicial y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el abdomen contraído para estabilizar el movimiento.</item>
+                <item>Evita hacer balanceos con el cuerpo; la pierna debe hacer todo el trabajo.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteo medio, glúteo menor</principal>
+                <secundario>Estabilizadores de cadera, core</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Abducción en el Suelo</nombre>
-            <descripcion>Ejercicio sin equipo que trabaja los músculos abductores mediante movimientos laterales en el suelo.</descripcion>
+            <descripcion>Ejercicio sin equipo que trabaja los músculos abductores mediante movimientos laterales mientras se mantiene el cuerpo alineado.</descripcion>
             <gif>@drawable/abducci_n_en_el_suelo</gif>
+            <pasos>
+                <paso numero="1">Acostarse de lado sobre una colchoneta con el cuerpo alineado.</paso>
+                <paso numero="2">Apoyar la cabeza sobre el brazo y mantener la pierna inferior flexionada para estabilidad.</paso>
+                <paso numero="3">Elevar la pierna superior en línea recta, sin inclinar el torso.</paso>
+                <paso numero="4">Bajar la pierna lentamente sin tocar el suelo y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Evita balancear la pierna; realiza el movimiento de forma controlada.</item>
+                <item>Puedes usar una banda elástica para mayor resistencia.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteo medio, glúteo menor</principal>
+                <secundario>Estabilizadores de cadera</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
-            <nombre>Abductores en máquina</nombre>
-            <descripcion>Se realiza en máquina para trabajar de forma aislada y con progresivos incrementos de resistencia.</descripcion>
+            <nombre>Abductores en Máquina</nombre>
+            <descripcion>Se realiza en máquina para trabajar de forma aislada los músculos abductores con resistencia progresiva.</descripcion>
             <gif>@drawable/abductores_en_m_quina</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina a una resistencia adecuada.</paso>
+                <paso numero="2">Sentarse con la espalda bien apoyada en el respaldo.</paso>
+                <paso numero="3">Empujar las piernas hacia afuera en un movimiento controlado.</paso>
+                <paso numero="4">Regresar lentamente sin permitir que el peso toque completamente el soporte.</paso>
+            </pasos>
+            <consejo>
+                <item>Evita usar impulso; realiza el movimiento lentamente.</item>
+                <item>Mantén la espalda apoyada en todo momento.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteo medio, glúteo menor</principal>
+                <secundario>Aductores, core</secundario>
+            </musculos>
         </ejercicio>
     </categoria>
+
 
     <!-- Categoría: Aductores -->
     <categoria nombre="Aductores">
         <ejercicio>
             <nombre>Abdominal Tijera con Rotación de Piernas</nombre>
-            <descripcion>Ejercicio que, mediante un movimiento de tijera combinado con rotación, activa principalmente los músculos aductores.</descripcion>
+            <descripcion>Ejercicio que, mediante un movimiento de tijera combinado con rotación, activa principalmente los músculos aductores y el core.</descripcion>
             <gif>@drawable/abdominal_tijera_con_rotaci_n_de_piernas</gif>
+            <pasos>
+                <paso numero="1">Acostarse sobre una colchoneta con las piernas estiradas.</paso>
+                <paso numero="2">Realizar un movimiento de tijera con las piernas, alternando arriba y abajo.</paso>
+                <paso numero="3">Incorporar una rotación del tronco para intensificar la activación de los aductores.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para mayor estabilidad.</item>
+                <item>Realiza el movimiento de forma lenta y controlada para evitar tensión en la espalda baja.</item>
+            </consejo>
+            <musculos>
+                <principal>Aductores</principal>
+                <secundario>Core, flexores de cadera</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Aducción de Cadera de Pie</nombre>
             <descripcion>Realizado de pie, este ejercicio enfoca el trabajo en los músculos internos de los muslos, activando los aductores.</descripcion>
             <gif>@drawable/aducci_n_de_cadera_de_pie</gif>
+            <pasos>
+                <paso numero="1">Permanecer de pie con buena postura, con las manos en la cintura.</paso>
+                <paso numero="2">Elevar una pierna hacia el costado y llevarla de nuevo al centro.</paso>
+                <paso numero="3">Mantener el equilibrio y la estabilidad en la pierna de apoyo.</paso>
+                <paso numero="4">Repetir el movimiento de forma controlada y cambiar de pierna.</paso>
+            </pasos>
+            <consejo>
+                <item>Evita inclinar el torso; mantén la espalda recta.</item>
+                <item>Puedes sujetarte de una barra o pared si tienes dificultad para equilibrarte.</item>
+            </consejo>
+            <musculos>
+                <principal>Aductores</principal>
+                <secundario>Glúteos, core</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Aducción de Cadera en el Suelo</nombre>
             <descripcion>Se efectúa en el suelo para trabajar de forma concentrada los músculos aductores con un movimiento controlado.</descripcion>
             <gif>@drawable/aducci_n_de_cadera_en_el_suelo</gif>
+            <pasos>
+                <paso numero="1">Acostarse de lado sobre una colchoneta.</paso>
+                <paso numero="2">Apoyar la cabeza en el brazo y mantener la pierna inferior extendida.</paso>
+                <paso numero="3">Elevar la pierna inferior lentamente sin doblar la rodilla.</paso>
+                <paso numero="4">Bajar la pierna de forma controlada sin tocar el suelo.</paso>
+            </pasos>
+            <consejo>
+                <item>Evita levantar la pierna demasiado rápido; concéntrate en la contracción del aductor.</item>
+                <item>Si necesitas más resistencia, usa una banda elástica alrededor de los tobillos.</item>
+            </consejo>
+            <musculos>
+                <principal>Aductores</principal>
+                <secundario>Glúteos, core</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Aducción de Cadera Lateral (máquina)</nombre>
             <descripcion>Utiliza la máquina para aislar los aductores laterales y fortalecer la zona interna de los muslos.</descripcion>
             <gif>@drawable/aducci_n_de_cadera_lateral__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina de aducción de cadera a una resistencia adecuada.</paso>
+                <paso numero="2">Sentarse y posicionar las piernas en el soporte de la máquina.</paso>
+                <paso numero="3">Ejecutar la aducción lateral juntando las piernas lentamente.</paso>
+                <paso numero="4">Regresar de manera controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>No bloquees las rodillas al final del movimiento.</item>
+                <item>Realiza el ejercicio con una resistencia moderada para evitar lesiones.</item>
+            </consejo>
+            <musculos>
+                <principal>Aductores</principal>
+                <secundario>Isquiotibiales, glúteos</secundario>
+            </musculos>
         </ejercicio>
+
         <ejercicio>
             <nombre>Aducción de Cadera (polea)</nombre>
             <descripcion>Con la resistencia de la polea, este ejercicio trabaja intensamente los músculos aductores.</descripcion>
             <gif>@drawable/aducci_n_de_cadera__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea a la altura de la cadera y colocar la tobillera en una pierna.</paso>
+                <paso numero="2">Mantener la pierna de apoyo firme y el torso erguido.</paso>
+                <paso numero="3">Mover la pierna con la polea hacia el centro del cuerpo.</paso>
+                <paso numero="4">Regresar de manera controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Evita balancear el cuerpo; mantén el control en el movimiento.</item>
+                <item>Puedes sujetarte de una barra para mayor estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Aductores</principal>
+                <secundario>Core, glúteos</secundario>
+            </musculos>
         </ejercicio>
-        <ejercicio>
-            <nombre>Aducción Thrust (máquina)</nombre>
-            <descripcion>Se centra en los aductores mediante un movimiento guiado en máquina, favoreciendo una activación muscular controlada.</descripcion>
-            <gif>@drawable/aducci_n_thrust__m_quina_</gif>
-        </ejercicio>
-        <ejercicio>
-            <nombre>Aductores en máquina</nombre>
-            <descripcion>Permite trabajar los músculos internos de los muslos de forma progresiva y aislada.</descripcion>
-            <gif>@drawable/aductores_en_m_quina</gif>
-        </ejercicio>
-        <ejercicio>
-            <nombre>Elevación de Piernas de Pie (máquina)</nombre>
-            <descripcion>Ejercicio en máquina que refuerza la fuerza de los aductores mediante la elevación de piernas con resistencia.</descripcion>
-            <gif>@drawable/elevaci_n_de_piernas_de_pie__m_quina_</gif>
-        </ejercicio>
-        <ejercicio>
-            <nombre>Elevación de Piernas Frontal Colgado</nombre>
-            <descripcion>Se realiza colgado para aumentar la activación de los aductores junto con la zona inferior del abdomen.</descripcion>
-            <gif>@drawable/elevaci_n_de_piernas_frontal_colgado</gif>
-        </ejercicio>
-        <ejercicio>
-            <nombre>Flexión de Cadera de Pie (polea)</nombre>
-            <descripcion>Mediante la polea se fortalece el flexor de la cadera y se activa de forma secundaria la musculatura aductora.</descripcion>
-            <gif>@drawable/flexi_n_de_cadera_de_pie__polea_</gif>
-        </ejercicio>
+
         <ejercicio>
             <nombre>Tijera con Piernas Elevadas</nombre>
             <descripcion>Con las piernas en posición de tijera y elevadas se activa intensamente la musculatura aductora y el core.</descripcion>
             <gif>@drawable/tijera_con_piernas_elevadas</gif>
+            <pasos>
+                <paso numero="1">Acostarse sobre una colchoneta y elevar ambas piernas.</paso>
+                <paso numero="2">Separar las piernas en forma de tijera.</paso>
+                <paso numero="3">Mantener la contracción en el core y aductores.</paso>
+                <paso numero="4">Regresar lentamente las piernas a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la zona lumbar pegada al suelo para evitar molestias en la espalda.</item>
+                <item>Realiza movimientos lentos y controlados.</item>
+            </consejo>
+            <musculos>
+                <principal>Aductores</principal>
+                <secundario>Core, flexores de cadera</secundario>
+            </musculos>
         </ejercicio>
     </categoria>
+
 
     <!-- Categoría: Antebrazo -->
     <categoria nombre="Antebrazo">
@@ -198,103 +655,387 @@
             <nombre>Curl de Muñeca - agarre invertido (barra)</nombre>
             <descripcion>Fortalece los extensores del antebrazo utilizando una barra con agarre invertido, mejorando la estabilidad y fuerza del agarre.</descripcion>
             <gif>@drawable/curl_de_mu_eca___agarre_invertido__barra_</gif>
+            <pasos>
+                <paso numero="1">Colocar la barra con agarre invertido.</paso>
+                <paso numero="2">Sentarse o pararse con buena postura.</paso>
+                <paso numero="3">Realizar el curl de muñeca enfocándose en los extensores.</paso>
+                <paso numero="4">Bajar la barra de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta y el core activado para mayor estabilidad.</item>
+                <item>Realiza el movimiento lentamente para aislar los extensores del antebrazo.</item>
+                <item>No balancees el cuerpo; concéntrate en la contracción muscular.</item>
+            </consejo>
+            <musculos>
+                <principal>Extensores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca - agarre invertido (polea)</nombre>
             <descripcion>Utiliza la resistencia constante de la polea para trabajar de forma controlada los músculos del antebrazo.</descripcion>
             <gif>@drawable/curl_de_mu_eca___agarre_invertido__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea al nivel de la muñeca.</paso>
+                <paso numero="2">Adoptar la postura correcta con el brazo extendido.</paso>
+                <paso numero="3">Ejecutar el curl de muñeca con agarre invertido.</paso>
+                <paso numero="4">Regresar a la posición inicial controlando el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la altura de la polea para lograr un movimiento natural.</item>
+                <item>Realiza el ejercicio de forma lenta y controlada.</item>
+                <item>Concéntrate en la activación de los extensores del antebrazo.</item>
+            </consejo>
+            <musculos>
+                <principal>Extensores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca (barra Z)</nombre>
             <descripcion>Con una barra Z se realiza un movimiento de curl que aísla los músculos flexores del antebrazo.</descripcion>
             <gif>@drawable/curl_de_mu_eca__barra_z_</gif>
+            <pasos>
+                <paso numero="1">Sostener la barra Z con agarre adecuado.</paso>
+                <paso numero="2">Adoptar una postura estable, sentado o de pie.</paso>
+                <paso numero="3">Realizar el curl concentrándose en los flexores.</paso>
+                <paso numero="4">Bajar la barra de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el codo fijo para aislar los flexores del antebrazo.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Flexores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca de Pie - agarre invertido (barra)</nombre>
             <descripcion>Ejecutado de pie, este curl con agarre invertido potencia los extensores del antebrazo mientras se mantiene la postura erguida.</descripcion>
             <gif>@drawable/curl_de_mu_eca_de_pie___agarre_invertido__barra_</gif>
+            <pasos>
+                <paso numero="1">Colocar la barra con agarre invertido y de pie.</paso>
+                <paso numero="2">Mantener la espalda recta y el core activado.</paso>
+                <paso numero="3">Realizar el curl concentrándose en los extensores.</paso>
+                <paso numero="4">Bajar la barra de manera controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén una postura erguida y evita balanceos.</item>
+                <item>Concéntrate en la contracción de los extensores durante el movimiento.</item>
+            </consejo>
+            <musculos>
+                <principal>Extensores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca - de pie (mancuernas)</nombre>
             <descripcion>Se realizan curls con mancuernas de pie para trabajar de forma unilateral la fuerza y estabilidad del antebrazo.</descripcion>
             <gif>@drawable/curl_de_mu_eca___de_pie__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar mancuernas de peso moderado.</paso>
+                <paso numero="2">Permanecer de pie con la postura correcta.</paso>
+                <paso numero="3">Realizar el curl de muñeca de forma unilateral.</paso>
+                <paso numero="4">Controlar el movimiento al bajar las mancuernas.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el ejercicio de forma unilateral para aislar cada antebrazo.</item>
+                <item>Mantén el brazo inmóvil, moviendo solo la muñeca.</item>
+                <item>Controla la bajada para maximizar la contracción muscular.</item>
+            </consejo>
+            <musculos>
+                <principal>Flexores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca en Banco - agarre invertido (mancuernas)</nombre>
             <descripcion>Con el apoyo de un banco y mancuernas, se aísla el trabajo del antebrazo con un agarre invertido.</descripcion>
             <gif>@drawable/curl_de_mu_eca_en_banco___agarre_invertido__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Colocar el banco y seleccionar mancuernas adecuadas.</paso>
+                <paso numero="2">Sentarse en el banco y posicionar los brazos sobre las rodillas.</paso>
+                <paso numero="3">Realizar el curl con agarre invertido.</paso>
+                <paso numero="4">Bajar las mancuernas lentamente manteniendo el control.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegura el banco para evitar movimientos bruscos.</item>
+                <item>Realiza el movimiento de forma lenta para aislar el antebrazo.</item>
+            </consejo>
+            <musculos>
+                <principal>Extensores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca en Banco - agarre pronado cerrado (barra)</nombre>
             <descripcion>Este ejercicio se realiza en banco con un agarre pronado_cerrado para enfatizar la contracción en los músculos del antebrazo.</descripcion>
             <gif>@drawable/curl_de_mu_eca_en_banco___agarre_pronado_cerrado__barra_</gif>
+            <pasos>
+                <paso numero="1">Ajustar el banco y colocar la barra en posición.</paso>
+                <paso numero="2">Sentarse en el banco con la espalda recta.</paso>
+                <paso numero="3">Ejecutar el curl con agarre pronado cerrado.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los codos fijos para aislar los flexores del antebrazo.</item>
+                <item>Realiza el movimiento de forma controlada y sin balanceos.</item>
+            </consejo>
+            <musculos>
+                <principal>Flexores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca en Banco - agarre supinado (barra)</nombre>
             <descripcion>Mediante un agarre supinado se trabaja de forma equilibrada la musculatura del antebrazo mientras se apoya en banco.</descripcion>
             <gif>@drawable/curl_de_mu_eca_en_banco___agarre_supinado__barra_</gif>
+            <pasos>
+                <paso numero="1">Preparar el banco y la barra.</paso>
+                <paso numero="2">Sentarse y posicionar los brazos de forma cómoda.</paso>
+                <paso numero="3">Realizar el curl con agarre supinado.</paso>
+                <paso numero="4">Bajar la barra de forma lenta y controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén un agarre firme y concentrado en el movimiento.</item>
+                <item>Realiza el curl de forma controlada para aislar la contracción.</item>
+            </consejo>
+            <musculos>
+                <principal>Flexores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca Invertida Sentado (barra Z)</nombre>
             <descripcion>En posición sentada con barra Z se consigue una activación más cómoda y focalizada de los músculos extensores del antebrazo.</descripcion>
             <gif>@drawable/curl_de_mu_eca_invertida_sentado__barra_z_</gif>
+            <pasos>
+                <paso numero="1">Sentarse y sostener la barra Z con agarre invertido.</paso>
+                <paso numero="2">Mantener la postura con la espalda recta.</paso>
+                <paso numero="3">Realizar el curl concentrándose en los extensores.</paso>
+                <paso numero="4">Bajar la barra lentamente y de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Siéntate con la espalda recta y apoya el antebrazo para mayor estabilidad.</item>
+                <item>Realiza el movimiento de forma controlada para aislar los extensores.</item>
+            </consejo>
+            <musculos>
+                <principal>Extensores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca Invertido (barra Z)</nombre>
             <descripcion>Utiliza la barra Z en posición invertida para trabajar la parte posterior del antebrazo de forma controlada.</descripcion>
             <gif>@drawable/curl_de_mu_eca_invertido__barra_z_</gif>
+            <pasos>
+                <paso numero="1">Agarra la barra Z con la posición invertida.</paso>
+                <paso numero="2">Adoptar una postura estable, sentado o de pie.</paso>
+                <paso numero="3">Ejecutar el movimiento de curl enfocado en los extensores.</paso>
+                <paso numero="4">Bajar la barra de manera controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento sin prisas para aislar la contracción de los extensores.</item>
+                <item>Mantén una postura estable y evita balanceos.</item>
+            </consejo>
+            <musculos>
+                <principal>Extensores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca (kettlebell)</nombre>
             <descripcion>Este ejercicio con kettlebell añade un desafío extra por la distribución del peso, activando los músculos del antebrazo.</descripcion>
             <gif>@drawable/curl_de_mu_eca__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar un kettlebell adecuado.</paso>
+                <paso numero="2">Adoptar la postura correcta, sentado o de pie.</paso>
+                <paso numero="3">Realizar el curl de muñeca controlando el peso.</paso>
+                <paso numero="4">Regresar a la posición inicial con control.</paso>
+            </pasos>
+            <consejo>
+                <item>Sostén el kettlebell con un agarre firme y mantén la postura erguida.</item>
+                <item>Realiza el movimiento de forma lenta para concentrar el esfuerzo en los antebrazos.</item>
+            </consejo>
+            <musculos>
+                <principal>Flexores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca (polea)</nombre>
             <descripcion>La polea ofrece una resistencia uniforme que permite un trabajo muy controlado de la musculatura del antebrazo.</descripcion>
             <gif>@drawable/curl_de_mu_eca__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea a la altura de la muñeca.</paso>
+                <paso numero="2">Posicionarse con el brazo extendido.</paso>
+                <paso numero="3">Ejecutar el curl de muñeca concentrándose en el movimiento.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la resistencia de la polea para mantener el movimiento controlado.</item>
+                <item>Mantén el brazo inmóvil, moviendo solo la muñeca.</item>
+            </consejo>
+            <musculos>
+                <principal>Flexores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca por detrás (barra Z)</nombre>
             <descripcion>Realizado con barra Z, este curl por detrás trabaja de forma específica los músculos extensores del antebrazo.</descripcion>
             <gif>@drawable/curl_de_mu_eca_por_detr_s__barra_z_</gif>
+            <pasos>
+                <paso numero="1">Sostener la barra Z con agarre invertido.</paso>
+                <paso numero="2">Adoptar una postura erguida y estable.</paso>
+                <paso numero="3">Realizar el curl por detrás enfocándose en los extensores.</paso>
+                <paso numero="4">Regresar a la posición inicial con control.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento sin impulso, concentrándote en la contracción de los extensores.</item>
+                <item>Mantén la postura correcta durante todo el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Extensores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca Sentada (barra Z)</nombre>
             <descripcion>Ejecutado en posición sentada con barra Z se aísla y fortalece la zona central del antebrazo.</descripcion>
             <gif>@drawable/curl_de_mu_eca_sentada__barra_z_</gif>
+            <pasos>
+                <paso numero="1">Sentarse en un banco con la espalda recta.</paso>
+                <paso numero="2">Sostener la barra Z con el agarre adecuado.</paso>
+                <paso numero="3">Realizar el curl de muñeca concentrándose en la contracción.</paso>
+                <paso numero="4">Bajar la barra de forma lenta y controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el agarre firme y la espalda recta durante todo el ejercicio.</item>
+                <item>Realiza el movimiento de forma controlada para maximizar la activación.</item>
+            </consejo>
+            <musculos>
+                <principal>Flexores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca Sentada (smith)</nombre>
             <descripcion>En máquina Smith se realiza un curl de muñeca sentado, lo que permite un movimiento guiado y seguro para el antebrazo.</descripcion>
             <gif>@drawable/curl_de_mu_eca_sentada__smith_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina Smith para el curl de muñeca.</paso>
+                <paso numero="2">Sentarse con la postura adecuada y agarrar la barra.</paso>
+                <paso numero="3">Ejecutar el curl de forma controlada.</paso>
+                <paso numero="4">Regresar a la posición inicial guiando el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza la máquina Smith para guiar el movimiento y mantener la forma.</item>
+                <item>Realiza el ejercicio de forma lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Flexores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca Unilateral en Banco - agarre invertido (mancuernas)</nombre>
             <descripcion>Se trabaja cada antebrazo de forma independiente usando mancuernas y banco, con agarre invertido para mayor aislamiento.</descripcion>
             <gif>@drawable/curl_de_mu_eca_unilateral_en_banco___agarre_invertido__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Colocar el banco y seleccionar una mancuerna adecuada.</paso>
+                <paso numero="2">Sentarse de forma estable en el banco.</paso>
+                <paso numero="3">Realizar el curl de forma unilateral con agarre invertido.</paso>
+                <paso numero="4">Bajar la mancuerna de forma controlada y repetir en el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el ejercicio de forma unilateral para aislar cada antebrazo.</item>
+                <item>Controla el movimiento en ambas fases para maximizar la contracción.</item>
+            </consejo>
+            <musculos>
+                <principal>Extensores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca Unilateral en Banco - agarre neutro (mancuernas)</nombre>
             <descripcion>Con agarre neutro se realizan curls de forma unilateral en banco para equilibrar la fuerza de ambos antebrazos.</descripcion>
             <gif>@drawable/curl_de_mu_eca_unilateral_en_banco___agarre_neutro__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Colocar el banco y seleccionar la mancuerna adecuada.</paso>
+                <paso numero="2">Sentarse y posicionar el brazo con agarre neutro.</paso>
+                <paso numero="3">Ejecutar el curl de forma controlada.</paso>
+                <paso numero="4">Regresar lentamente a la posición inicial y repetir en el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza un agarre neutro para equilibrar la fuerza en ambos antebrazos.</item>
+                <item>Realiza el movimiento de forma controlada para aislar la contracción.</item>
+            </consejo>
+            <musculos>
+                <principal>Flexores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Muñeca Unilateral (polea)</nombre>
             <descripcion>Utilizando la polea se efectúa un curl unilateral que permite trabajar cada brazo por separado con precisión.</descripcion>
             <gif>@drawable/curl_de_mu_eca_unilateral__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea al nivel adecuado.</paso>
+                <paso numero="2">Posicionarse de forma estable de pie o sentado.</paso>
+                <paso numero="3">Ejecutar el curl unilateral concentrándose en la contracción.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la resistencia de la polea para un movimiento controlado.</item>
+                <item>Realiza el movimiento de forma individual para aislar cada antebrazo.</item>
+            </consejo>
+            <musculos>
+                <principal>Flexores del antebrazo</principal>
+                <secundario>Músculos del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Rotación de Muñeca - agarre inverso (mancuernas)</nombre>
             <descripcion>La rotación de muñeca con agarre inverso y mancuernas se enfoca en fortalecer los extensores del antebrazo de forma bilateral.</descripcion>
             <gif>@drawable/rotaci_n_de_mu_eca___agarre_inverso__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar mancuernas de peso ligero.</paso>
+                <paso numero="2">Adoptar una postura de pie con el brazo extendido.</paso>
+                <paso numero="3">Realizar rotaciones de muñeca con agarre inverso.</paso>
+                <paso numero="4">Controlar la bajada y repetir el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza mancuernas ligeras para mantener el control en el movimiento.</item>
+                <item>Realiza las rotaciones de forma lenta para maximizar la activación de los extensores.</item>
+            </consejo>
+            <musculos>
+                <principal>Extensores del antebrazo</principal>
+                <secundario>Rotadores del antebrazo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Rotación de Muñeca Frontal (polea)</nombre>
             <descripcion>Con la polea se trabaja la rotación frontal de la muñeca para mejorar la movilidad y fuerza del antebrazo.</descripcion>
             <gif>@drawable/rotaci_n_de_mu_eca_frontal__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea a la altura adecuada.</paso>
+                <paso numero="2">Posicionarse de forma estable y agarrar la cuerda o mango.</paso>
+                <paso numero="3">Realizar la rotación frontal de la muñeca.</paso>
+                <paso numero="4">Volver a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el brazo inmóvil y concentra el movimiento en la muñeca.</item>
+                <item>Realiza el movimiento de forma lenta para maximizar el aislamiento.</item>
+            </consejo>
+            <musculos>
+                <principal>Flexores del antebrazo</principal>
+                <secundario>Rotadores del antebrazo</secundario>
+            </musculos>
         </ejercicio>
     </categoria>
+
 
     <!-- Categoría: Bíceps -->
     <categoria nombre="Bíceps">
@@ -302,103 +1043,387 @@
             <nombre>Cristos (mancuernas)</nombre>
             <descripcion>Se realizan con mancuernas para trabajar la contracción y fuerza de los músculos bíceps.</descripcion>
             <gif>@drawable/cristos__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar mancuernas de peso moderado.</paso>
+                <paso numero="2">Sentarse o pararse con buena postura.</paso>
+                <paso numero="3">Realizar el curl concentrado de bíceps.</paso>
+                <paso numero="4">Bajar las mancuernas controladamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento de forma lenta y controlada para maximizar la contracción.</item>
+                <item>Mantén la espalda recta y activa el core durante el ejercicio.</item>
+                <item>Utiliza un peso que te permita mantener la técnica adecuada.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps - agarre abierto (barra Z)</nombre>
             <descripcion>Con barra Z y agarre abierto se enfatiza la contracción del bíceps, permitiendo un movimiento natural.</descripcion>
             <gif>@drawable/curl_de_b_ceps_agarre_abierto_barra</gif>
+            <pasos>
+                <paso numero="1">Colocar la barra Z y adoptar un agarre abierto.</paso>
+                <paso numero="2">Mantener la postura con la espalda recta.</paso>
+                <paso numero="3">Ejecutar el curl concentrándose en el bíceps.</paso>
+                <paso numero="4">Regresar a la posición inicial controladamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los codos fijos y cerca del cuerpo para aislar el bíceps.</item>
+                <item>Realiza el movimiento de forma controlada y sin balanceos.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Apoyado en Banco (barra)</nombre>
             <descripcion>Ejecutado en banco, este curl con barra ayuda a aislar el trabajo en los bíceps.</descripcion>
             <gif>@drawable/curl_de_b_ceps_apoyado_en_banco_barra</gif>
+            <pasos>
+                <paso numero="1">Acomodar el banco y colocar la barra.</paso>
+                <paso numero="2">Sentarse y apoyar el brazo sobre el banco.</paso>
+                <paso numero="3">Realizar el curl de bíceps concentrado.</paso>
+                <paso numero="4">Bajar la barra de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegúrate de apoyar bien el brazo para aislar el bíceps.</item>
+                <item>Controla la bajada para maximizar la contracción.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Arrastada (smith)</nombre>
             <descripcion>Realizado en máquina Smith, ofrece un movimiento guiado para aislar el bíceps de forma segura.</descripcion>
             <gif>@drawable/curl_de_b_ceps_arrastada_smith</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina Smith.</paso>
+                <paso numero="2">Colocar la barra y adoptar la posición correcta.</paso>
+                <paso numero="3">Realizar el curl de bíceps de forma arrastrada.</paso>
+                <paso numero="4">Regresar a la posición inicial controlando el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza la guía de la máquina para mantener una ejecución precisa.</item>
+                <item>Realiza el movimiento de forma lenta para maximizar el aislamiento del bíceps.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Concentrada (kettlebell)</nombre>
             <descripcion>Con kettlebell se realiza un curl concentrado que aísla el músculo bíceps para una contracción intensa.</descripcion>
             <gif>@drawable/curl_de_b_ceps_concentrada_kettlebell</gif>
+            <pasos>
+                <paso numero="1">Seleccionar un kettlebell de peso adecuado.</paso>
+                <paso numero="2">Sentarse en un banco y apoyar el codo.</paso>
+                <paso numero="3">Realizar el curl concentrado enfocándose en el bíceps.</paso>
+                <paso numero="4">Bajar el kettlebell lentamente y con control.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegura el soporte del codo en el banco para aislar el bíceps.</item>
+                <item>Utiliza un kettlebell que te permita mantener la técnica adecuada.</item>
+                <item>Realiza el movimiento de forma controlada para maximizar la contracción.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Concentrado (mancuernas)</nombre>
             <descripcion>Mediante mancuernas se realiza de forma unilateral, concentrándose en la contracción máxima del bíceps.</descripcion>
             <gif>@drawable/curl_de_b_ceps_concentrado_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Seleccionar una mancuerna adecuada.</paso>
+                <paso numero="2">Sentarse y apoyar el brazo en el muslo.</paso>
+                <paso numero="3">Realizar el curl concentrado con máxima contracción.</paso>
+                <paso numero="4">Bajar la mancuerna controladamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Apoya el brazo firmemente en el muslo para aislar el bíceps.</item>
+                <item>Realiza el movimiento de forma lenta y concentrada.</item>
+                <item>Controla la bajada para mantener la tensión en el músculo.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps - con soporte (mancuernas)</nombre>
             <descripcion>Utiliza un soporte para aislar el bíceps mientras se realizan curls con mancuernas, mejorando la técnica.</descripcion>
             <gif>@drawable/curl_de_b_ceps_con_soporte_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Acomodar el soporte en el banco.</paso>
+                <paso numero="2">Colocar las mancuernas y apoyar el brazo sobre el soporte.</paso>
+                <paso numero="3">Realizar el curl de bíceps concentrado.</paso>
+                <paso numero="4">Bajar las mancuernas lentamente y con control.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza el soporte para asegurar una buena estabilidad y aislar el bíceps.</item>
+                <item>Controla el movimiento en cada repetición para evitar balanceos.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Inverso (barra)</nombre>
             <descripcion>Se efectúa con barra y agarre invertido, trabajando tanto los bíceps como los músculos del antebrazo.</descripcion>
             <gif>@drawable/curl_de_b_ceps_inverso_barra_z</gif>
+            <pasos>
+                <paso numero="1">Colocar la barra con agarre invertido.</paso>
+                <paso numero="2">Adoptar una postura de pie con la espalda recta.</paso>
+                <paso numero="3">Realizar el curl concentrado activando bíceps y antebrazos.</paso>
+                <paso numero="4">Regresar a la posición inicial controlando el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta y evita balancearte durante el movimiento.</item>
+                <item>Enfócate en la contracción tanto de bíceps como de antebrazos.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Inverso (polea)</nombre>
             <descripcion>Con polea se realiza un curl inverso que favorece la contracción de los bíceps y estabiliza el antebrazo.</descripcion>
             <gif>@drawable/curl_de_b_ceps_inverso_polea</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea al nivel adecuado.</paso>
+                <paso numero="2">Posicionarse de pie con buena postura.</paso>
+                <paso numero="3">Ejecutar el curl inverso concentrándose en el bíceps.</paso>
+                <paso numero="4">Bajar el peso de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza una resistencia que te permita realizar el movimiento de forma controlada.</item>
+                <item>Mantén el core activado y la espalda recta durante el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Invertido Inclinado (mancuernas)</nombre>
             <descripcion>Realizado en banco inclinado, se acentúa el estiramiento y contracción del bíceps usando mancuernas.</descripcion>
             <gif>@drawable/curl_de_b_ceps_invertido_inclinado_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Ajustar el banco en posición inclinada.</paso>
+                <paso numero="2">Sostener las mancuernas con un agarre adecuado.</paso>
+                <paso numero="3">Realizar el curl de bíceps concentrado manteniendo el estiramiento.</paso>
+                <paso numero="4">Bajar las mancuernas controladamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda apoyada en el banco para aislar el bíceps.</item>
+                <item>Realiza el movimiento de forma controlada y sin impulso.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Martillo Alterno Apoyado en el Banco (mancuernas)</nombre>
             <descripcion>Con mancuernas y apoyado en banco se realiza un curl martillo alternado para trabajar el bíceps y el antebrazo.</descripcion>
             <gif>@drawable/curl_de_b_ceps_martillo_alterno_apoyado_en_el_banco_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Acomodar el banco y seleccionar mancuernas adecuadas.</paso>
+                <paso numero="2">Sentarse y apoyar la espalda de forma estable.</paso>
+                <paso numero="3">Realizar el curl martillo alternando cada brazo.</paso>
+                <paso numero="4">Bajar las mancuernas de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Alterna cada brazo de forma controlada para equilibrar la fuerza.</item>
+                <item>Mantén los codos fijos durante el movimiento.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Martillo Alterno Inclinado (mancuernas)</nombre>
             <descripcion>Ejecutado en banco inclinado, este ejercicio trabaja la parte larga del bíceps con el agarre martillo.</descripcion>
             <gif>@drawable/curl_de_b_ceps_martillo_alterno_inclinado_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Ajustar el banco en posición inclinada.</paso>
+                <paso numero="2">Sostener las mancuernas con agarre martillo.</paso>
+                <paso numero="3">Realizar el curl de forma alternada.</paso>
+                <paso numero="4">Bajar lentamente y con control.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la técnica de agarre martillo para trabajar de forma equilibrada.</item>
+                <item>Realiza el movimiento de forma controlada sin balanceos.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Martillo - con soporte (mancuernas)</nombre>
             <descripcion>Utiliza soporte para realizar el curl martillo, facilitando una activación más concentrada del bíceps.</descripcion>
             <gif>@drawable/curl_de_b_ceps_martillo_con_soporte_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Colocar el soporte adecuado en el banco.</paso>
+                <paso numero="2">Sostener las mancuernas con agarre martillo.</paso>
+                <paso numero="3">Realizar el curl concentrado apoyado en el soporte.</paso>
+                <paso numero="4">Bajar las mancuernas controladamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza el soporte para mantener una posición estable y aislar el bíceps.</item>
+                <item>Realiza el movimiento con una velocidad controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Martillo (polea)</nombre>
             <descripcion>Se efectúa con polea para mantener una resistencia constante durante todo el movimiento del bíceps.</descripcion>
             <gif>@drawable/curl_de_b_ceps_martillo_polea</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea al nivel del brazo.</paso>
+                <paso numero="2">Posicionarse de forma estable y agarrar el mango.</paso>
+                <paso numero="3">Ejecutar el curl martillo concentrándose en la contracción.</paso>
+                <paso numero="4">Bajar el peso de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la postura erguida y el core activado.</item>
+                <item>Realiza el movimiento de forma controlada para aislar los bíceps.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Scott Alterno - agarre neutro (mancuernas)</nombre>
             <descripcion>Ejecutado en banco Scott, se realiza de forma alterna con agarre neutro para trabajar el bíceps en aislamiento.</descripcion>
             <gif>@drawable/curl_de_b_ceps_scott_alterno_agarre_neutro_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Ajustar el banco Scott en posición adecuada.</paso>
+                <paso numero="2">Seleccionar mancuernas y adoptar un agarre neutro.</paso>
+                <paso numero="3">Realizar el curl de bíceps alternado.</paso>
+                <paso numero="4">Regresar a la posición inicial controlando el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Alterna cada brazo de forma controlada para equilibrar la fuerza.</item>
+                <item>Mantén el core activado durante el movimiento.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Scott (máquina)</nombre>
             <descripcion>La máquina Scott ofrece un movimiento guiado que maximiza el aislamiento y la contracción del bíceps.</descripcion>
             <gif>@drawable/curl_de_b_ceps_scott_m_quina</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina Scott según las indicaciones.</paso>
+                <paso numero="2">Sentarse y colocar los brazos en la plataforma.</paso>
+                <paso numero="3">Realizar el curl concentrado del bíceps.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza la guía de la máquina para mantener la técnica correcta.</item>
+                <item>Realiza el movimiento lentamente para maximizar la contracción.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Scott Sentado (mancuernas)</nombre>
             <descripcion>Realizado sentado para mejorar el control y aislamiento del bíceps con mancuernas.</descripcion>
             <gif>@drawable/curl_de_b_ceps_scott_sentado_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Sentarse en el banco Scott con la espalda recta.</paso>
+                <paso numero="2">Sostener las mancuernas con agarre neutro.</paso>
+                <paso numero="3">Realizar el curl concentrado manteniendo el control.</paso>
+                <paso numero="4">Bajar las mancuernas lentamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento de forma lenta para aislar el bíceps.</item>
+                <item>Mantén la espalda recta y el core activado.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Scott Unilateral - agarre neutro (mancuernas)</nombre>
             <descripcion>Permite trabajar cada brazo de forma independiente, maximizando el aislamiento del bíceps.</descripcion>
             <gif>@drawable/curl_de_b_ceps_scott_unilateral_agarre_neutro_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Colocar el banco Scott y seleccionar una mancuerna.</paso>
+                <paso numero="2">Sentarse y posicionar el brazo de forma estable.</paso>
+                <paso numero="3">Realizar el curl de manera unilateral con agarre neutro.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada y repetir con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el ejercicio de forma unilateral para corregir posibles desequilibrios.</item>
+                <item>Controla el movimiento para mantener una técnica precisa.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Bíceps Spider - agarre invertido (mancuernas)</nombre>
             <descripcion>Se realiza en posición inclinada con agarre invertido para intensificar la contracción del bíceps.</descripcion>
             <gif>@drawable/curl_de_b_ceps_spider_agarre_invertido_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Ajustar el banco en posición inclinada tipo spider.</paso>
+                <paso numero="2">Sostener las mancuernas con agarre invertido.</paso>
+                <paso numero="3">Realizar el curl concentrado del bíceps.</paso>
+                <paso numero="4">Bajar las mancuernas controladamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la técnica de agarre invertido para un mayor aislamiento.</item>
+                <item>Realiza el movimiento de forma controlada para evitar balanceos.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquial</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl Zottman (mancuernas)</nombre>
             <descripcion>Combina un curl tradicional con una rotación para trabajar tanto los bíceps como los antebrazos.</descripcion>
             <gif>@drawable/curl_zottman__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar mancuernas y adoptar una postura de pie.</paso>
+                <paso numero="2">Realizar un curl tradicional del bíceps.</paso>
+                <paso numero="3">Al llegar a la parte superior, girar las muñecas para invertir el agarre.</paso>
+                <paso numero="4">Bajar las mancuernas de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza la rotación de las muñecas de forma controlada al final del curl.</item>
+                <item>Controla el movimiento para mantener la tensión en los bíceps y antebrazos.</item>
+            </consejo>
+            <musculos>
+                <principal>Bíceps braquial</principal>
+                <secundario>Braquiorradial</secundario>
+            </musculos>
         </ejercicio>
     </categoria>
+
 
     <!-- Categoría: Cardio -->
     <categoria nombre="Cardio">
@@ -406,48 +1431,184 @@
             <nombre>Bicicleta ergométrica</nombre>
             <descripcion>Ejercicio cardiovascular en máquina que simula el pedaleo, ayudando a mejorar la resistencia y quema de calorías.</descripcion>
             <gif>@drawable/bicicleta_ergom_trica</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina a un nivel moderado.</paso>
+                <paso numero="2">Sentarse y colocar los pies en los pedales.</paso>
+                <paso numero="3">Iniciar el pedaleo a un ritmo constante.</paso>
+                <paso numero="4">Incrementar la intensidad gradualmente y finalizar con enfriamiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Verifica la configuración de la máquina y ajústala a tu nivel de resistencia.</item>
+                <item>Mantén la espalda recta y el core activado durante todo el ejercicio.</item>
+                <item>Realiza un enfriamiento al finalizar para facilitar la recuperación.</item>
+            </consejo>
+            <musculos>
+                <principal>Sistema cardiovascular</principal>
+                <secundario>Cuádriceps y gemelos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Bicicleta</nombre>
             <descripcion>Ejercicio cardiovascular al aire libre o en máquina que fortalece el sistema cardiovascular.</descripcion>
             <gif>@drawable/bicicleta</gif>
+            <pasos>
+                <paso numero="1">Verificar el estado de la bicicleta o máquina.</paso>
+                <paso numero="2">Ajustar el asiento a la altura adecuada.</paso>
+                <paso numero="3">Comenzar a pedalear a un ritmo constante.</paso>
+                <paso numero="4">Aumentar la velocidad según la resistencia deseada y finalizar con enfriamiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza un calentamiento previo para preparar el sistema cardiovascular.</item>
+                <item>Ajusta el asiento correctamente para evitar lesiones en las rodillas.</item>
+                <item>Mantén un ritmo constante y termina con una fase de enfriamiento.</item>
+            </consejo>
+            <musculos>
+                <principal>Sistema cardiovascular</principal>
+                <secundario>Piernas</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Burpee</nombre>
             <descripcion>Un ejercicio de alta intensidad que combina sentadilla, salto y flexión, ideal para mejorar la resistencia y fuerza.</descripcion>
             <gif>@drawable/burpee_kettlebell</gif>
+            <pasos>
+                <paso numero="1">Párate con los pies separados al ancho de los hombros.</paso>
+                <paso numero="2">Realiza una sentadilla y coloca las manos en el suelo.</paso>
+                <paso numero="3">Lanza los pies hacia atrás para quedar en posición de plancha y luego vuelve a la posición inicial.</paso>
+                <paso numero="4">Salta y repite el movimiento de forma continua.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza cada fase del burpee de forma controlada, especialmente en la transición a plancha.</item>
+                <item>Mantén el core activado para proteger la zona lumbar.</item>
+                <item>Controla la bajada y la subida para evitar lesiones.</item>
+            </consejo>
+            <musculos>
+                <principal>Sistema cardiovascular</principal>
+                <secundario>Piernas, core y brazos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Cinta de correr</nombre>
             <descripcion>Permite realizar entrenamientos de carrera con control de velocidad e inclinación para trabajar la resistencia.</descripcion>
             <gif>@drawable/cinta_de_correr</gif>
+            <pasos>
+                <paso numero="1">Encender la cinta y seleccionar un programa o velocidad moderada.</paso>
+                <paso numero="2">Subir a la cinta y ajustar la inclinación si es necesario.</paso>
+                <paso numero="3">Correr a un ritmo constante manteniendo una buena postura.</paso>
+                <paso numero="4">Disminuir la velocidad gradualmente para finalizar el entrenamiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegura que la cinta esté en buenas condiciones antes de comenzar.</item>
+                <item>Mantén la espalda recta y utiliza una zancada natural para evitar lesiones.</item>
+                <item>Realiza un enfriamiento al finalizar para normalizar el ritmo cardiaco.</item>
+            </consejo>
+            <musculos>
+                <principal>Sistema cardiovascular</principal>
+                <secundario>Piernas (cuádriceps, isquiotibiales, gemelos)</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elíptico</nombre>
             <descripcion>Ofrece un entrenamiento cardiovascular de bajo impacto, ideal para mejorar la resistencia sin dañar las articulaciones.</descripcion>
             <gif>@drawable/el_ptico</gif>
+            <pasos>
+                <paso numero="1">Encender el elíptico y ajustar la resistencia.</paso>
+                <paso numero="2">Subir a la máquina y posicionar bien los pies.</paso>
+                <paso numero="3">Empezar a mover los brazos y piernas de forma coordinada.</paso>
+                <paso numero="4">Mantener un ritmo constante y finalizar con enfriamiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la resistencia para que sea desafiante pero no excesiva.</item>
+                <item>Mantén una postura erguida y coordina el movimiento de brazos y piernas.</item>
+                <item>Finaliza con un enfriamiento para evitar fatiga muscular.</item>
+            </consejo>
+            <musculos>
+                <principal>Sistema cardiovascular</principal>
+                <secundario>Piernas y glúteos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Jumping Jacks</nombre>
             <descripcion>Ejercicio pliométrico que mejora la coordinación y resistencia, involucrando casi todos los grupos musculares.</descripcion>
             <gif>@drawable/jumping_jacks</gif>
+            <pasos>
+                <paso numero="1">Párate con los pies juntos y brazos a los lados.</paso>
+                <paso numero="2">Salta abriendo las piernas y elevando los brazos por encima de la cabeza.</paso>
+                <paso numero="3">Regresar a la posición inicial de forma coordinada.</paso>
+                <paso numero="4">Repetir el movimiento a un ritmo constante.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el ejercicio de forma coordinada y con ritmo constante.</item>
+                <item>Mantén el core activado para mejorar la estabilidad.</item>
+                <item>Controla el aterrizaje para minimizar el impacto en las articulaciones.</item>
+            </consejo>
+            <musculos>
+                <principal>Sistema cardiovascular</principal>
+                <secundario>Piernas y brazos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Maquina de escaleras</nombre>
             <descripcion>Simula el ascenso por escaleras, fortaleciendo piernas y glúteos mientras mejora la capacidad cardiovascular.</descripcion>
             <gif>@drawable/maquina_de_escaleras</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina al nivel de resistencia deseado.</paso>
+                <paso numero="2">Subir a la máquina y colocar los pies en los escalones.</paso>
+                <paso numero="3">Simular el movimiento de subir escaleras de forma continua.</paso>
+                <paso numero="4">Finalizar con una fase de enfriamiento bajando la intensidad.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegura un buen ajuste de la resistencia para un entrenamiento efectivo.</item>
+                <item>Mantén una postura erguida y realiza el movimiento de forma controlada.</item>
+                <item>Realiza un enfriamiento adecuado para facilitar la recuperación.</item>
+            </consejo>
+            <musculos>
+                <principal>Sistema cardiovascular</principal>
+                <secundario>Piernas y glúteos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Saltar la Cuerda</nombre>
             <descripcion>Ejercicio clásico para mejorar la coordinación, agilidad y resistencia cardiovascular con alto gasto calórico.</descripcion>
             <gif>@drawable/saltar_la_cuerda</gif>
+            <pasos>
+                <paso numero="1">Seleccionar una cuerda de longitud adecuada.</paso>
+                <paso numero="2">Colocar la cuerda detrás de ti y agarrar las asas.</paso>
+                <paso numero="3">Saltar de forma continua mientras giras la cuerda.</paso>
+                <paso numero="4">Mantener un ritmo constante y finalizar con enfriamiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegúrate de que la cuerda tenga la longitud correcta para tu altura.</item>
+                <item>Realiza saltos suaves para minimizar el impacto en las articulaciones.</item>
+                <item>Mantén un ritmo constante y controla la respiración.</item>
+            </consejo>
+            <musculos>
+                <principal>Sistema cardiovascular</principal>
+                <secundario>Piernas y coordinación</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Simulador de Caminata (máquina)</nombre>
             <descripcion>Ofrece un entrenamiento controlado que simula la caminata, ideal para principiantes o en rehabilitación.</descripcion>
             <gif>@drawable/simulador_de_caminata__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Encender la máquina y ajustar la velocidad.</paso>
+                <paso numero="2">Subir a la máquina y posicionarse de forma segura.</paso>
+                <paso numero="3">Iniciar la caminata a un ritmo moderado.</paso>
+                <paso numero="4">Terminar el ejercicio con una fase de enfriamiento reduciendo la velocidad.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la velocidad de la máquina según tu nivel de resistencia.</item>
+                <item>Mantén una postura erguida y realiza el movimiento de forma natural.</item>
+                <item>Finaliza con un enfriamiento para ayudar a la recuperación.</item>
+            </consejo>
+            <musculos>
+                <principal>Sistema cardiovascular</principal>
+                <secundario>Piernas</secundario>
+            </musculos>
         </ejercicio>
     </categoria>
+
 
     <!-- Categoría: Cuadriceps -->
     <categoria nombre="Cuadriceps">
@@ -455,101 +1616,221 @@
             <nombre>Levantamiento Terra en Déficit (barra hexagonal)</nombre>
             <descripcion>Ejercicio que, utilizando una barra hexagonal, enfatiza la contracción de los músculos de la parte frontal de las piernas.</descripcion>
             <gif>@drawable/levantamiento_terra_en_d_ficit__barra_hexagonal_</gif>
+            <pasos>
+                <paso numero="1">Colocar la barra hexagonal en posición.</paso>
+                <paso numero="2">Adoptar una postura con las piernas separadas al ancho de los hombros.</paso>
+                <paso numero="3">Realizar el levantamiento manteniendo la espalda recta.</paso>
+                <paso numero="4">Bajar la barra de forma controlada y segura.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Levantamiento Terra Rumano Unilateral (RDL) (barra hexagonal)</nombre>
             <descripcion>Realizado de forma unilateral para aislar y trabajar de forma intensa la parte posterior y cuadriceps.</descripcion>
             <gif>@drawable/levantamiento_terra_rumano_unilateral__rdl___barra_hexagonal_</gif>
+            <pasos>
+                <paso numero="1">Colocar la barra hexagonal y seleccionar la pierna de apoyo.</paso>
+                <paso numero="2">Mantener la espalda recta y flexionar ligeramente la pierna libre.</paso>
+                <paso numero="3">Realizar el movimiento de descenso concentrándose en la contracción de la pierna trabajada.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Levantamiento Terra Sumo (kettlebell)</nombre>
             <descripcion>Con kettlebell y postura sumo se trabaja la parte interna y externa de los muslos junto con glúteos.</descripcion>
             <gif>@drawable/levantamiento_terra_sumo__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Adoptar una postura sumo con pies más anchos que el hombro.</paso>
+                <paso numero="2">Sostener el kettlebell con ambas manos.</paso>
+                <paso numero="3">Realizar el levantamiento enfocándose en los muslos y glúteos.</paso>
+                <paso numero="4">Bajar el kettlebell de forma controlada y repetir.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Peso Muerto (mancuernas)</nombre>
             <descripcion>Ejercicio básico que, con mancuernas, activa intensamente la cadena posterior y fortalece los cuadriceps indirectamente.</descripcion>
             <gif>@drawable/peso_muerto__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar mancuernas de peso moderado.</paso>
+                <paso numero="2">Párate con los pies al ancho de los hombros y mantener la espalda recta.</paso>
+                <paso numero="3">Realizar el movimiento de peso muerto bajando las mancuernas cerca del cuerpo.</paso>
+                <paso numero="4">Subir de forma controlada y repetir.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Peso Muerto (máquina)</nombre>
             <descripcion>Se realiza en máquina para garantizar un movimiento seguro y controlado, trabajando la fuerza de las piernas.</descripcion>
             <gif>@drawable/peso_muerto__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina según las indicaciones.</paso>
+                <paso numero="2">Posicionarse en la máquina con la espalda recta.</paso>
+                <paso numero="3">Ejecutar el movimiento de peso muerto.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Peso Muerto (polea)</nombre>
             <descripcion>Con polea se efectúa un peso muerto que refuerza tanto la zona lumbar como los cuadriceps mediante resistencia constante.</descripcion>
             <gif>@drawable/peso_muerto__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea a la resistencia deseada.</paso>
+                <paso numero="2">Adoptar una postura estable con los pies al ancho de los hombros.</paso>
+                <paso numero="3">Realizar el peso muerto manteniendo la espalda recta.</paso>
+                <paso numero="4">Regresar a la posición inicial con control.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Prensa de Piernas Inclinada</nombre>
             <descripcion>Ejercicio de fuerza para cuadriceps que se realiza en prensa inclinada, activando la parte frontal y media de las piernas.</descripcion>
             <gif>@drawable/prensa_de_piernas_inclinada</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina de prensa de piernas inclinada.</paso>
+                <paso numero="2">Colocar los pies en la plataforma con la separación adecuada.</paso>
+                <paso numero="3">Empujar la plataforma extendiendo las piernas.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Prensa de Piernas Vertical (máquina)</nombre>
             <descripcion>La prensa vertical permite trabajar los cuadriceps con un movimiento controlado y en un rango completo de movilidad.</descripcion>
             <gif>@drawable/prensa_de_piernas_vertical__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina de prensa vertical.</paso>
+                <paso numero="2">Sentarse y posicionar los pies en la plataforma.</paso>
+                <paso numero="3">Ejecutar el movimiento extendiendo las piernas.</paso>
+                <paso numero="4">Regresar de forma controlada a la posición inicial.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Press de Pierna Horizontal Unilateral (máquina)</nombre>
             <descripcion>Se enfoca en cada pierna de forma independiente, mejorando el equilibrio y fuerza de los cuadriceps.</descripcion>
             <gif>@drawable/press_de_pierna_horizontal_unilateral__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina para trabajo unilateral.</paso>
+                <paso numero="2">Colocar una pierna en la plataforma y la otra descansando.</paso>
+                <paso numero="3">Realizar el press concentrado en la pierna trabajada.</paso>
+                <paso numero="4">Regresar de forma controlada y repetir con la otra pierna.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Press de Piernas Alternado (máquina)</nombre>
             <descripcion>Realiza un press alternado que favorece el trabajo unilateral y la simetría en el desarrollo de los cuadriceps.</descripcion>
             <gif>@drawable/press_de_piernas_alternado__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina de press de piernas.</paso>
+                <paso numero="2">Sentarse y colocar los pies en la plataforma.</paso>
+                <paso numero="3">Alternar la extensión de cada pierna.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Press de Piernas Vertical (máquina)</nombre>
             <descripcion>Repite el ejercicio en vertical para maximizar el trabajo de la zona anterior del muslo.</descripcion>
             <gif>@drawable/press_de_piernas_vertical__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina de press vertical.</paso>
+                <paso numero="2">Sentarse y colocar ambos pies en la plataforma.</paso>
+                <paso numero="3">Realizar la extensión completa de las piernas.</paso>
+                <paso numero="4">Bajar de forma controlada a la posición inicial.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Press de Pierna Unilateral (máquina)</nombre>
             <descripcion>Aísla cada pierna de forma individual, permitiendo un mayor enfoque en la fuerza y estabilidad de los cuadriceps.</descripcion>
             <gif>@drawable/press_de_pierna_unilateral__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Configurar la máquina para trabajo unilateral.</paso>
+                <paso numero="2">Sentarse y colocar una pierna en la plataforma.</paso>
+                <paso numero="3">Ejecutar el press con la pierna seleccionada.</paso>
+                <paso numero="4">Regresar de forma controlada y repetir con la otra pierna.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Sentadilla Búlgara (mancuernas)</nombre>
             <descripcion>Se realiza apoyando una pierna en un banco, lo que aumenta la dificultad y trabaja intensamente el cuadriceps y glúteos.</descripcion>
             <gif>@drawable/sentadilla_b_lgara__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Colocar un banco detrás y posicionar una pierna sobre él.</paso>
+                <paso numero="2">Sostener las mancuernas a los lados o sobre los hombros.</paso>
+                <paso numero="3">Realizar la sentadilla bajando el cuerpo sin perder el equilibrio.</paso>
+                <paso numero="4">Subir de forma controlada y repetir en ambas piernas.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Sentadilla - con disco</nombre>
             <descripcion>La sentadilla con disco añade peso extra sobre el pecho, intensificando el trabajo en los cuadriceps.</descripcion>
             <gif>@drawable/sentadilla___con_disco</gif>
+            <pasos>
+                <paso numero="1">Colocar el disco sobre el pecho y posicionarse frente a la barra (o sin ella si se usa disco libre).</paso>
+                <paso numero="2">Adoptar una postura con pies separados al ancho de los hombros.</paso>
+                <paso numero="3">Realizar la sentadilla manteniendo la espalda recta.</paso>
+                <paso numero="4">Subir de forma controlada a la posición inicial.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Sentadilla - pies juntos (barra)</nombre>
             <descripcion>Ejercicio clásico en el que se juntan los pies para focalizar el esfuerzo en el cuadriceps interno.</descripcion>
             <gif>@drawable/sentadilla___pies_juntos__barra_</gif>
+            <pasos>
+                <paso numero="1">Colocar la barra sobre los trapecios.</paso>
+                <paso numero="2">Adoptar una postura con los pies juntos.</paso>
+                <paso numero="3">Realizar la sentadilla bajando lentamente.</paso>
+                <paso numero="4">Subir controladamente a la posición inicial.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Sentadilla - pies separados (máquina)</nombre>
             <descripcion>Utilizando máquina, se trabaja la sentadilla con pies separados para activar distintos sectores del cuadriceps.</descripcion>
             <gif>@drawable/sentadilla___pies_separados__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina de sentadillas.</paso>
+                <paso numero="2">Sentarse y colocar los pies en posición amplia.</paso>
+                <paso numero="3">Realizar la sentadilla extendiendo las piernas.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Zancada con Pies Elevados (mancuernas)</nombre>
             <descripcion>Con mancuernas y elevación de uno de los pies se realiza una zancada que enfatiza el trabajo unilateral de los cuadriceps.</descripcion>
             <gif>@drawable/zancada_con_pies_elevados__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar mancuernas y colocarse de pie.</paso>
+                <paso numero="2">Elevar ligeramente una pierna y avanzar en zancada.</paso>
+                <paso numero="3">Realizar la extensión de la pierna en el movimiento.</paso>
+                <paso numero="4">Regresar a la posición inicial y repetir con la otra pierna.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Zancada Cruzada (barra)</nombre>
             <descripcion>Se efectúa con barra, cruzando la pierna para trabajar de forma integral la musculatura de las piernas.</descripcion>
             <gif>@drawable/zancada_cruzada__barra_</gif>
+            <pasos>
+                <paso numero="1">Colocar la barra sobre los hombros.</paso>
+                <paso numero="2">Adoptar una postura erguida y separar ligeramente los pies.</paso>
+                <paso numero="3">Dar un paso cruzado hacia adelante realizando la zancada.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Zancada Lateral (kettlebell)</nombre>
             <descripcion>Realizada con kettlebell, esta zancada lateral activa intensamente los músculos de la parte externa del muslo.</descripcion>
             <gif>@drawable/zancada_lateral__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar un kettlebell y colocarse de pie.</paso>
+                <paso numero="2">Dar un gran paso lateral.</paso>
+                <paso numero="3">Flexionar la pierna lateral para ejecutar la zancada.</paso>
+                <paso numero="4">Regresar a la posición inicial controladamente y repetir del otro lado.</paso>
+            </pasos>
         </ejercicio>
         <ejercicio>
             <nombre>Zancada Lateral (mancuernas)</nombre>
             <descripcion>Con mancuernas se realiza la zancada lateral para fortalecer la parte externa del cuadriceps y mejorar la estabilidad.</descripcion>
             <gif>@drawable/zancada_lateral__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar mancuernas y colocarse de pie.</paso>
+                <paso numero="2">Dar un paso lateral amplio.</paso>
+                <paso numero="3">Realizar la zancada flexionando la pierna lateral.</paso>
+                <paso numero="4">Volver a la posición inicial de forma controlada y repetir del otro lado.</paso>
+            </pasos>
         </ejercicio>
     </categoria>
 
@@ -559,113 +1840,444 @@
             <nombre>Crossover Inverso (polea)</nombre>
             <descripcion>Utiliza la polea para realizar un movimiento de cruce inverso que fortalece los músculos dorsales.</descripcion>
             <gif>@drawable/crossover_inverso__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea a la altura de los hombros.</paso>
+                <paso numero="2">Posicionarse de pie con buen agarre.</paso>
+                <paso numero="3">Realizar el cruce inverso llevando los brazos hacia el centro.</paso>
+                <paso numero="4">Regresar de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la postura erguida y el core activado durante el movimiento.</item>
+                <item>Controla el retorno a la posición inicial para maximizar la contracción dorsal.</item>
+                <item>No utilices impulso; enfócate en la fuerza de los dorsales.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Dominadas - agarre cerrado invertido con disco</nombre>
             <descripcion>Con disco y agarre cerrado se intensifica la contracción de la espalda y los dorsales.</descripcion>
             <gif>@drawable/dominadas___agarre_cerrado_invertido_con_disco</gif>
+            <pasos>
+                <paso numero="1">Colocar el disco en la posición indicada.</paso>
+                <paso numero="2">Agarrar la barra con un agarre cerrado e invertido.</paso>
+                <paso numero="3">Realizar la dominada concentrándose en la contracción dorsal.</paso>
+                <paso numero="4">Bajar lentamente y repetir el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el disco bien sujeto para aumentar la intensidad sin comprometer la forma.</item>
+                <item>Enfócate en tirar con la espalda, no solo con los brazos.</item>
+                <item>Realiza el descenso de forma controlada para trabajar efectivamente los dorsales.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Bíceps</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Dominadas - agarre invertido (máquina)</nombre>
             <descripcion>Ejecutadas en máquina, facilitan la realización de dominadas con agarre invertido para trabajar dorsales.</descripcion>
             <gif>@drawable/dominadas___agarre_invertido__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina para dominadas.</paso>
+                <paso numero="2">Sentarse y posicionar bien el cuerpo.</paso>
+                <paso numero="3">Realizar la dominada con agarre invertido.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la asistencia de la máquina para mantener un movimiento fluido.</item>
+                <item>Mantén la espalda recta y contrae los dorsales al subir.</item>
+                <item>Realiza el movimiento de forma lenta para aislar los músculos dorsales.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Dominadas Comando</nombre>
             <descripcion>Variación de dominadas que enfatiza la fuerza de espalda y dorsales mediante un movimiento explosivo.</descripcion>
             <gif>@drawable/dominadas_comando</gif>
+            <pasos>
+                <paso numero="1">Agarra la barra con firmeza y posición invertida.</paso>
+                <paso numero="2">Realiza la dominada de forma explosiva.</paso>
+                <paso numero="3">Controla la bajada para proteger la espalda.</paso>
+                <paso numero="4">Repetir el movimiento de forma continua.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento explosivo solo si tienes buena técnica.</item>
+                <item>Controla la bajada para maximizar el trabajo en los dorsales.</item>
+                <item>Activa el core para mantener la estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+                <secundario>Bíceps</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Dominadas en máquina</nombre>
             <descripcion>Proporciona asistencia para realizar dominadas, permitiendo trabajar progresivamente los dorsales.</descripcion>
             <gif>@drawable/dominadas_en_m_quina</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina de dominadas asistida.</paso>
+                <paso numero="2">Sentarse y posicionarse adecuadamente.</paso>
+                <paso numero="3">Realizar la dominada concentrándose en los dorsales.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza la asistencia de la máquina para lograr un rango completo de movimiento.</item>
+                <item>Mantén el core activado y la espalda recta durante el ejercicio.</item>
+                <item>Controla la bajada para un mejor aislamiento de los dorsales.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Jalón - agarre abierto (polea)</nombre>
             <descripcion>Ejercicio de polea con agarre abierto que trabaja intensamente la amplitud de los dorsales.</descripcion>
             <gif>@drawable/jal_n___agarre_abierto__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea y seleccionar un agarre amplio.</paso>
+                <paso numero="2">Sentarse y posicionar la espalda recta.</paso>
+                <paso numero="3">Jalar la barra hacia el pecho concentrándose en los dorsales.</paso>
+                <paso numero="4">Regresar a la posición inicial controlando el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el pecho erguido y el core activado para una postura correcta.</item>
+                <item>Utiliza un agarre amplio para maximizar la activación de los dorsales.</item>
+                <item>Realiza el jalón de forma lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Jalón - con cuerda (polea)</nombre>
             <descripcion>La cuerda permite un movimiento más natural que activa los dorsales de forma completa.</descripcion>
             <gif>@drawable/jal_n___con_cuerda__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea y colocar la cuerda.</paso>
+                <paso numero="2">Sentarse y agarrar la cuerda con ambas manos.</paso>
+                <paso numero="3">Realizar el jalón llevando la cuerda hacia el pecho.</paso>
+                <paso numero="4">Controlar la subida y bajar lentamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento con un agarre firme en la cuerda.</item>
+                <item>Controla la velocidad del jalón para maximizar la contracción dorsal.</item>
+                <item>Mantén una postura erguida y evita balanceos.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Jalón de Espalda (polea)</nombre>
             <descripcion>Se centra en trabajar la espalda mediante un movimiento de jalón que involucra a los dorsales.</descripcion>
             <gif>@drawable/jal_n_de_espalda__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea y seleccionar la resistencia.</paso>
+                <paso numero="2">Sentarse con la espalda recta y agarrar la barra.</paso>
+                <paso numero="3">Jalar la barra hacia la espalda concentrándose en los dorsales.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la resistencia para que el movimiento sea desafiante pero controlado.</item>
+                <item>Conc\u00e9ntrate en jalar con la espalda y no solo con los brazos.</item>
+                <item>Realiza el movimiento de forma lenta y controlada para aislar los dorsales.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Jalón Estendida en Pie (polea)</nombre>
-            <descripcion>Realizado en pie, este jalón extiende la espalda para trabajar los dorsales de forma integral.</descripcion>
+            <nombre>Jal\u00f3n Estendida en Pie (polea)</nombre>
+            <descripcion>Realizado en pie, este jal\u00f3n extiende la espalda para trabajar los dorsales de forma integral.</descripcion>
             <gif>@drawable/jal_n_estendida_en_pie__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea a la altura adecuada.</paso>
+                <paso numero="2">Permanecer de pie y agarrar la barra o cuerda.</paso>
+                <paso numero="3">Realizar el jal\u00f3n extendiendo la espalda.</paso>
+                <paso numero="4">Regresar a la posici\u00f3n inicial controladamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Mant\u00e9n el tronco erguido y la espalda recta.</item>
+                <item>Extiende la espalda en cada repetici\u00f3n para activar todo el dorsal.</item>
+                <item>Realiza el movimiento con un ritmo constante.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Remo - agarre invertido (barra)</nombre>
-            <descripcion>Ejercicio básico de remo con barra que trabaja la parte media de la espalda y los dorsales.</descripcion>
+            <descripcion>Ejercicio b\u00e1sico de remo con barra que trabaja la parte media de la espalda y los dorsales.</descripcion>
             <gif>@drawable/remo___agarre_invertido__barra_</gif>
+            <pasos>
+                <paso numero="1">Colocar la barra en el soporte adecuado.</paso>
+                <paso numero="2">Adoptar una postura inclinada manteniendo la espalda recta.</paso>
+                <paso numero="3">Realizar el remo tirando la barra hacia el abdomen.</paso>
+                <paso numero="4">Bajar la barra de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mant\u00e9n la espalda recta durante todo el movimiento.</item>
+                <item>Conc\u00e9ntrate en tirar con los dorsales y no solo con los brazos.</item>
+                <item>Controla la bajada para maximizar el trabajo muscular.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+                <secundario>B\u00edceps</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Remo - agarre invertido (mancuernas)</nombre>
             <descripcion>Con mancuernas se realiza un remo que permite trabajar de forma unilateral y equilibrada los dorsales.</descripcion>
             <gif>@drawable/remo___agarre_invertido__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar mancuernas de peso adecuado.</paso>
+                <paso numero="2">Colocarse en posici\u00f3n inclinada sobre un banco.</paso>
+                <paso numero="3">Realizar el remo tirando de las mancuernas hacia el cuerpo.</paso>
+                <paso numero="4">Bajar las mancuernas de forma controlada y repetir en cada lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza un banco estable para apoyar la parte superior del cuerpo.</item>
+                <item>Realiza el remo de forma unilateral para equilibrar la fuerza.</item>
+                <item>Controla el movimiento en ambas fases para aislar los dorsales.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>B\u00edceps</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Remo - agarre invertido (polea)</nombre>
             <descripcion>La polea ofrece una resistencia constante para realizar un remo invertido que fortalece la espalda.</descripcion>
             <gif>@drawable/remo___agarre_invertido__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea a la altura de la espalda.</paso>
+                <paso numero="2">Sentarse y agarrar la barra con agarre invertido.</paso>
+                <paso numero="3">Realizar el remo concentrándose en la contracci\u00f3n dorsal.</paso>
+                <paso numero="4">Regresar de forma controlada a la posici\u00f3n inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la resistencia para un movimiento desafiante pero controlable.</item>
+                <item>Realiza el remo de forma lenta para maximizar la activaci\u00f3n de los dorsales.</item>
+                <item>Mant\u00e9n una postura erguida y el core activo.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Remo Alternado Sentado (polea)</nombre>
-            <descripcion>Permite trabajar de forma alternada cada lado de la espalda, favoreciendo la simetría muscular.</descripcion>
+            <descripcion>Permite trabajar de forma alternada cada lado de la espalda, favoreciendo la simetr\u00eda muscular.</descripcion>
             <gif>@drawable/remo_alternado_sentado__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea y sentarse en la m\u00e1quina.</paso>
+                <paso numero="2">Agarrar la barra con ambas manos.</paso>
+                <paso numero="3">Realizar el remo alternando el enfoque en cada lado de la espalda.</paso>
+                <paso numero="4">Bajar la barra controladamente y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Alterna el movimiento para equilibrar la fuerza de ambos lados.</item>
+                <item>Mant\u00e9n el core activado y la espalda recta durante el ejercicio.</item>
+                <item>Realiza cada repetici\u00f3n con control para maximizar el aislamiento muscular.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Remo Apoyado en el Banco - agarre invertido (mancuernas)</nombre>
             <descripcion>Realizado apoyado en banco, este remo con mancuernas y agarre invertido facilita el aislamiento de la espalda.</descripcion>
             <gif>@drawable/remo_apoyado_en_el_banco___agarre_invertido__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Colocar el banco y seleccionar mancuernas adecuadas.</paso>
+                <paso numero="2">Apoyarse en el banco con la rodilla y la mano correspondiente.</paso>
+                <paso numero="3">Realizar el remo tirando de las mancuernas hacia el torso.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza un banco estable para apoyar el cuerpo.</item>
+                <item>Realiza el movimiento de forma unilateral para aislar bien cada lado.</item>
+                <item>Controla la bajada para evitar rebotes.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>B\u00edceps</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Remo en Banco Inclinado - con cuerda (polea)</nombre>
             <descripcion>Ejecutado en banco inclinado, se usa la cuerda para lograr un movimiento de remo que trabaja la espalda en profundidad.</descripcion>
             <gif>@drawable/remo_en_banco_inclinado___con_cuerda__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar el banco en posici\u00f3n inclinada.</paso>
+                <paso numero="2">Sentarse y agarrar la cuerda conectada a la polea.</paso>
+                <paso numero="3">Realizar el remo concentr\u00e1ndose en la contracci\u00f3n dorsal.</paso>
+                <paso numero="4">Regresar a la posici\u00f3n inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mant\u00e9n la espalda recta y el core activado durante el ejercicio.</item>
+                <item>Realiza el movimiento con un ritmo controlado para aislar los dorsales.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Remo (máquina)</nombre>
-            <descripcion>La máquina de remo guía el movimiento, permitiendo trabajar los dorsales con seguridad y control.</descripcion>
+            <nombre>Remo (m\u00e1quina)</nombre>
+            <descripcion>La m\u00e1quina de remo guía el movimiento, permitiendo trabajar los dorsales con seguridad y control.</descripcion>
             <gif>@drawable/remo__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la m\u00e1quina de remo seg\u00fan las indicaciones.</paso>
+                <paso numero="2">Sentarse y agarrar la barra o mango.</paso>
+                <paso numero="3">Realizar el remo concentr\u00e1ndose en los dorsales.</paso>
+                <paso numero="4">Regresar a la posici\u00f3n inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Sigue las indicaciones de la m\u00e1quina para un movimiento guiado.</item>
+                <item>Realiza el ejercicio de forma lenta y controlada.</item>
+                <item>Conc\u00e9ntrate en apretar los dorsales en cada repetici\u00f3n.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Remo - pegada cerrada (smith)</nombre>
-            <descripcion>Se efectúa un remo con agarre pegado, enfatizando la contracción de la espalda central.</descripcion>
+            <descripcion>Se efect\u00faa un remo con agarre pegado, enfatizando la contracci\u00f3n de la espalda central.</descripcion>
             <gif>@drawable/remo___pegada_cerrada__smith_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la m\u00e1quina Smith.</paso>
+                <paso numero="2">Agarrar la barra con agarre pegado.</paso>
+                <paso numero="3">Realizar el remo concentr\u00e1ndose en la espalda central.</paso>
+                <paso numero="4">Bajar la barra de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mant\u00e9n los codos cerca del cuerpo para focalizar el trabajo en la espalda central.</item>
+                <item>Realiza el movimiento sin balanceos para aislar la contracci\u00f3n.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Remo (polea baja)</nombre>
-            <descripcion>Con polea baja se realiza un remo que enfatiza la contracción de la parte baja de la espalda.</descripcion>
+            <descripcion>Con polea baja se realiza un remo que enfatiza la contracci\u00f3n de la parte baja de la espalda.</descripcion>
             <gif>@drawable/remo__polea_baja_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea baja a la resistencia deseada.</paso>
+                <paso numero="2">Sentarse y posicionar los pies firmemente.</paso>
+                <paso numero="3">Ejecutar el remo concentr\u00e1ndose en la parte baja de la espalda.</paso>
+                <paso numero="4">Regresar a la posici\u00f3n inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza una resistencia adecuada para trabajar la parte baja de la espalda.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Mant\u00e9n la postura y el core activado durante todo el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Zona lumbar</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Remo (polea)</nombre>
-            <descripcion>Un clásico ejercicio de remo con polea que activa toda la musculatura dorsal.</descripcion>
+            <descripcion>Un cl\u00e1sico ejercicio de remo con polea que activa toda la musculatura dorsal.</descripcion>
             <gif>@drawable/remo__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea a la resistencia adecuada.</paso>
+                <paso numero="2">Sentarse y agarrar la barra con ambas manos.</paso>
+                <paso numero="3">Realizar el remo tirando la barra hacia el abdomen.</paso>
+                <paso numero="4">Regresar a la posici\u00f3n inicial controlando el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Conc\u00e9ntrate en activar todos los dorsales a lo largo del movimiento.</item>
+                <item>Realiza el ejercicio de forma controlada para evitar balanceos.</item>
+                <item>Mant\u00e9n la espalda recta y el core firme.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Remo Sentado - con barra V (polea)</nombre>
-            <descripcion>La barra V facilita un agarre cómodo y trabaja de forma intensa la parte media de la espalda.</descripcion>
+            <descripcion>La barra V facilita un agarre c\u00f3modo y trabaja de forma intensa la parte media de la espalda.</descripcion>
             <gif>@drawable/remo_sentado___con_barra_v__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea y colocar la barra V.</paso>
+                <paso numero="2">Sentarse y posicionar los pies firmemente.</paso>
+                <paso numero="3">Realizar el remo concentrándose en la contracci\u00f3n media de la espalda.</paso>
+                <paso numero="4">Bajar la barra de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Mant\u00e9n el core activado y la espalda recta durante todo el ejercicio.</item>
+                <item>Utiliza la barra V para un agarre que facilite la contracci\u00f3n.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Remo Unilateral en Pie (polea)</nombre>
-            <descripcion>Se realiza en posición de pie para trabajar cada lado de la espalda de forma independiente.</descripcion>
+            <descripcion>Se realiza en posici\u00f3n de pie para trabajar cada lado de la espalda de forma independiente.</descripcion>
             <gif>@drawable/remo_unilateral_en_pie__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea a la altura adecuada.</paso>
+                <paso numero="2">Posicionarse de pie con un brazo apoyado para equilibrio.</paso>
+                <paso numero="3">Realizar el remo con un brazo de forma unilateral.</paso>
+                <paso numero="4">Regresar a la posici\u00f3n inicial y repetir con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el ejercicio de forma unilateral para aislar cada lado.</item>
+                <item>Mant\u00e9n el equilibrio utilizando el brazo de apoyo.</item>
+                <item>Controla el movimiento para concentrarte en los dorsales.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Remo Vertical Unilateral Apoyada en el Banco (polea)</nombre>
             <descripcion>Ejecutado con apoyo en banco, este remo vertical unilateral focaliza el trabajo en los dorsales.</descripcion>
             <gif>@drawable/remo_vertical_unilateral_apoyada_en_el_banco__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea a la resistencia adecuada.</paso>
+                <paso numero="2">Sentarse en un banco y apoyar un brazo.</paso>
+                <paso numero="3">Realizar el remo vertical concentrándose en los dorsales.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza el apoyo del banco para estabilizar el cuerpo.</item>
+                <item>Realiza el remo de forma lenta para maximizar la contracci\u00f3n de los dorsales.</item>
+                <item>Alterna entre ambos brazos para equilibrar la fuerza.</item>
+            </consejo>
+            <musculos>
+                <principal>Dorsales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
         </ejercicio>
     </categoria>
+
 
     <!-- Categoría: Femoral -->
     <categoria nombre="Femoral">
@@ -673,71 +2285,281 @@
             <nombre>Abdominal Curl de Piernas (TRX)</nombre>
             <descripcion>Con TRX se realizan curls de piernas que activan intensamente la parte posterior de las piernas y el core.</descripcion>
             <gif>@drawable/abdominal_curl_de_piernas__trx_</gif>
+            <pasos>
+                <paso numero="1">Ajustar las correas del TRX a la altura adecuada.</paso>
+                <paso numero="2">Adoptar una postura estable y colocar los pies en las correas.</paso>
+                <paso numero="3">Realizar el curl de piernas enfocándose en la contracción de los femorales.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegura el TRX correctamente y mantén el core activado para estabilidad.</item>
+                <item>Realiza el movimiento de forma lenta para maximizar la contracción en los femorales.</item>
+                <item>Evita movimientos bruscos para prevenir lesiones.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Core</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Piernas Acostado (mancuernas)</nombre>
             <descripcion>Realizado acostado, este curl con mancuernas aísla y trabaja los músculos femorales.</descripcion>
             <gif>@drawable/curl_de_piernas_acostado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acostarse sobre una colchoneta.</paso>
+                <paso numero="2">Sostener una mancuerna entre los pies.</paso>
+                <paso numero="3">Realizar el curl elevando las piernas.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza mancuernas de peso ligero a moderado para mantener el control.</item>
+                <item>Mantén el movimiento lento para aislar correctamente los femorales.</item>
+                <item>Evita balanceos excesivos durante el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Piernas Acostado (máquina)</nombre>
             <descripcion>Se efectúa en máquina para ofrecer un movimiento guiado que refuerza los músculos de la parte posterior de las piernas.</descripcion>
             <gif>@drawable/curl_de_piernas_acostado__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina de curl de piernas.</paso>
+                <paso numero="2">Acostarse y posicionar las piernas en el soporte.</paso>
+                <paso numero="3">Realizar el curl concentrándose en los femorales.</paso>
+                <paso numero="4">Regresar de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la máquina a tu nivel de fuerza para un rango óptimo de movimiento.</item>
+                <item>Realiza el curl de forma lenta para maximizar la activación de los femorales.</item>
+                <item>Mantén una postura estable durante todo el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Piernas Declinada (mancuernas)</nombre>
             <descripcion>Con mancuernas y en posición declinada se aumenta el estiramiento y la activación de los femorales.</descripcion>
             <gif>@drawable/curl_de_piernas_declinada__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Ajustar el banco en posición declinada.</paso>
+                <paso numero="2">Acostarse y sostener las mancuernas entre los pies.</paso>
+                <paso numero="3">Realizar el curl elevando las piernas con énfasis en los femorales.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegura una buena inclinación del banco para aumentar el estiramiento.</item>
+                <item>Realiza el movimiento lentamente para aislar los femorales.</item>
+                <item>Mantén las mancuernas sujetas de forma segura.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Piernas de Pie</nombre>
             <descripcion>Ejercicio en el que se realiza un curl de piernas en posición de pie para trabajar los músculos posteriores del muslo.</descripcion>
             <gif>@drawable/curl_de_piernas_de_pie</gif>
+            <pasos>
+                <paso numero="1">Permanecer de pie con los pies separados al ancho de los hombros.</paso>
+                <paso numero="2">Sostener un soporte o barra para mantener el equilibrio.</paso>
+                <paso numero="3">Realizar el curl de piernas elevando el talón hacia el gl\u00fateo.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza un soporte para evitar perder el equilibrio.</item>
+                <item>Realiza el movimiento de forma lenta para enfocar el trabajo en los femorales.</item>
+                <item>Controla el descenso para evitar lesiones.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Gl\u00fateos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Piernas de Pie (polea)</nombre>
-            <descripcion>Con polea se efectúa un curl de piernas de pie que enfatiza la resistencia en la parte posterior.</descripcion>
+            <descripcion>Con polea se efect\u00faa un curl de piernas de pie que enfatiza la resistencia en la parte posterior.</descripcion>
             <gif>@drawable/curl_de_piernas_de_pie_polea</gif>
+            <pasos>
+                <paso numero="1">Ajustar la polea y seleccionar la resistencia adecuada.</paso>
+                <paso numero="2">Posicionarse de pie y agarrar el mango.</paso>
+                <paso numero="3">Realizar el curl de piernas concentrándose en la contracción de los femorales.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la resistencia para que el movimiento sea desafiante pero controlable.</item>
+                <item>Mant\u00e9n una postura erguida y estable durante el ejercicio.</item>
+                <item>Conc\u00e9ntrate en la contracci\u00f3n de los femorales al realizar el curl.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Gl\u00fateos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Curl de Piernas Sentado (máquina)</nombre>
-            <descripcion>Realizado en máquina sentado, se logra un movimiento controlado que activa intensamente los femorales.</descripcion>
+            <nombre>Curl de Piernas Sentado (m\u00e1quina)</nombre>
+            <descripcion>Realizado en m\u00e1quina sentado, se logra un movimiento controlado que activa intensamente los femorales.</descripcion>
             <gif>@drawable/curl_de_piernas_sentado__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la m\u00e1quina y sentarse correctamente.</paso>
+                <paso numero="2">Colocar las piernas en el soporte.</paso>
+                <paso numero="3">Ejecutar el curl de piernas concentrándose en los femorales.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la máquina para que el rango de movimiento sea adecuado.</item>
+                <item>Realiza el curl de forma lenta para maximizar la activaci\u00f3n muscular.</item>
+                <item>Mant\u00e9n una postura estable durante el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Curl de Piernas Unilateral Acostado (máquina)</nombre>
-            <descripcion>Aísla cada pierna de forma individual para trabajar los femorales de forma precisa y equilibrada.</descripcion>
+            <nombre>Curl de Piernas Unilateral Acostado (m\u00e1quina)</nombre>
+            <descripcion>A\u00edsla cada pierna de forma individual para trabajar los femorales de forma precisa y equilibrada.</descripcion>
             <gif>@drawable/curl_de_piernas_unilateral_acostado__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la m\u00e1quina para trabajo unilateral.</paso>
+                <paso numero="2">Acostarse y colocar una pierna en el soporte.</paso>
+                <paso numero="3">Realizar el curl concentrándose en el femoral de la pierna trabajada.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir con la otra pierna.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el ejercicio de forma unilateral para aislar bien cada pierna.</item>
+                <item>Mant\u00e9n el movimiento lento y controlado.</item>
+                <item>Activa el core para mejorar la estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Curl de Piernas Unilateral de Rodillas (máquina)</nombre>
-            <descripcion>Con apoyo en rodillas y máquina se efectúa un curl unilateral que maximiza el aislamiento muscular.</descripcion>
+            <nombre>Curl de Piernas Unilateral de Rodillas (m\u00e1quina)</nombre>
+            <descripcion>Con apoyo en rodillas y m\u00e1quina se efect\u00faa un curl unilateral que maximiza el aislamiento muscular.</descripcion>
             <gif>@drawable/curl_de_piernas_unilateral_de_rodillas__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la m\u00e1quina para el ejercicio unilateral.</paso>
+                <paso numero="2">Apoyar una rodilla en el coj\u00edn indicado.</paso>
+                <paso numero="3">Realizar el curl concentrado en la pierna trabajada.</paso>
+                <paso numero="4">Bajar lentamente y repetir con la otra pierna.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegura un buen soporte para la rodilla en el coj\u00edn.</item>
+                <item>Realiza el movimiento lentamente para maximizar el aislamiento.</item>
+                <item>Alterna entre piernas para corregir desequilibrios.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Curl de Piernas Unilateral Sentada (máquina)</nombre>
-            <descripcion>Se trabaja de forma unilateral en máquina para un control óptimo del movimiento y activación de los femorales.</descripcion>
+            <nombre>Curl de Piernas Unilateral Sentada (m\u00e1quina)</nombre>
+            <descripcion>Se trabaja de forma unilateral en m\u00e1quina para un control \u00f3ptimo del movimiento y activaci\u00f3n de los femorales.</descripcion>
             <gif>@drawable/curl_de_piernas_unilateral_sentada__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Sentarse en la m\u00e1quina y ajustar la resistencia.</paso>
+                <paso numero="2">Colocar una pierna en el \u00e1rea de trabajo.</paso>
+                <paso numero="3">Realizar el curl de piernas concentrado en la pierna elegida.</paso>
+                <paso numero="4">Regresar a la posici\u00f3n inicial controladamente y repetir con la otra pierna.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza la m\u00e1quina para controlar el rango de movimiento.</item>
+                <item>Realiza el ejercicio lentamente para enfocar el trabajo en cada pierna.</item>
+                <item>Alterna el ejercicio para lograr simetr\u00eda muscular.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevación de Cadera con Fitball</nombre>
-            <descripcion>Ejercicio que, sobre un fitball, activa la musculatura posterior de las piernas y glúteos mediante la elevación de la cadera.</descripcion>
+            <nombre>Elevaci\u00f3n de Cadera con Fitball</nombre>
+            <descripcion>Ejercicio que, sobre un fitball, activa la musculatura posterior de las piernas y gl\u00fateos mediante la elevaci\u00f3n de la cadera.</descripcion>
             <gif>@drawable/elevaci_n_de_cadera_con_fitball</gif>
+            <pasos>
+                <paso numero="1">Colocar el fitball sobre una superficie estable.</paso>
+                <paso numero="2">Acostarse con la parte superior de la espalda apoyada en el fitball.</paso>
+                <paso numero="3">Elevar la cadera contrayendo gl\u00fateos y femorales.</paso>
+                <paso numero="4">Bajar la cadera de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mant\u00e9n el core activado para estabilizar el movimiento.</item>
+                <item>Realiza la elevaci\u00f3n de la cadera de forma lenta y controlada.</item>
+                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gl\u00fateos y femorales.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Gl\u00fateos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevación de Cadera (máquina)</nombre>
-            <descripcion>Utilizando máquina se efectúa la elevación de cadera para trabajar intensamente los músculos femorales y glúteos.</descripcion>
+            <nombre>Elevaci\u00f3n de Cadera (m\u00e1quina)</nombre>
+            <descripcion>Utilizando m\u00e1quina se efect\u00faa la elevaci\u00f3n de cadera para trabajar intensamente los m\u00fasculos femorales y gl\u00fateos.</descripcion>
             <gif>@drawable/elevaci_n_de_cadera__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la m\u00e1quina de elevaci\u00f3n de cadera.</paso>
+                <paso numero="2">Sentarse y colocar los pies en el soporte.</paso>
+                <paso numero="3">Realizar la elevaci\u00f3n de cadera concentr\u00e1ndose en gl\u00fateos y femorales.</paso>
+                <paso numero="4">Bajar de forma controlada a la posici\u00f3n inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la m\u00e1quina para que se adapte a tu estatura y fuerza.</item>
+                <item>Mant\u00e9n una postura erguida y activa el core durante todo el ejercicio.</item>
+                <item>Realiza el movimiento de forma lenta para maximizar la contracci\u00f3n muscular.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Gl\u00fateos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevación de Piernas en el Suelo</nombre>
-            <descripcion>Se efectúa en el suelo para trabajar el core y la parte inferior de las piernas mediante elevación controlada.</descripcion>
+            <nombre>Elevaci\u00f3n de Piernas en el Suelo</nombre>
+            <descripcion>Se efect\u00faa en el suelo para trabajar el core y la parte inferior de las piernas mediante elevaci\u00f3n controlada.</descripcion>
             <gif>@drawable/elevaci_n_de_piernas_en_el_suelo</gif>
+            <pasos>
+                <paso numero="1">Acostarse sobre una colchoneta boca arriba.</paso>
+                <paso numero="2">Colocar las manos debajo de la cadera para soporte.</paso>
+                <paso numero="3">Elevar las piernas manteniendo el core activado.</paso>
+                <paso numero="4">Bajar de forma lenta y controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mant\u00e9n el core activado para proteger la espalda.</item>
+                <item>Realiza el movimiento lentamente para aislar la contracci\u00f3n de la parte inferior.</item>
+                <item>Controla el descenso para evitar rebotes.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Core</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Hiperextensión Lumbar Reversa (mancuernas)</nombre>
-            <descripcion>Ejercicio que invierte la hiperextensión para trabajar de forma intensa la zona lumbar y femoral.</descripcion>
+            <nombre>Hiperextensi\u00f3n Lumbar Reversa (mancuernas)</nombre>
+            <descripcion>Ejercicio que invierte la hiperextensi\u00f3n para trabajar de forma intensa la zona lumbar y femoral.</descripcion>
             <gif>@drawable/hiperextensi_n_lumbar_reversa_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Colocar una colchoneta y seleccionar mancuernas ligeras.</paso>
+                <paso numero="2">Acu\u00e9state boca abajo con las caderas en el borde de un banco.</paso>
+                <paso numero="3">Realiza la hiperextensi\u00f3n de forma inversa contrayendo la zona lumbar y femorales.</paso>
+                <paso numero="4">Baja de forma controlada y repite el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Mant\u00e9n el cuello alineado con la columna durante el ejercicio.</item>
+                <item>Realiza el movimiento de forma lenta para evitar sobrecargas.</item>
+                <item>Conc\u00e9ntrate en la contracci\u00f3n de la zona lumbar y los femorales.</item>
+            </consejo>
+            <musculos>
+                <principal>Femorales</principal>
+                <secundario>Zona lumbar</secundario>
+            </musculos>
         </ejercicio>
     </categoria>
 
@@ -747,106 +2569,423 @@
             <nombre>Elevación de Talones Apoyado en el Banco</nombre>
             <descripcion>Realizado sobre un banco, este ejercicio fortalece la parte posterior de las piernas, especialmente los gemelos.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_apoyado_en_el_banco</gif>
+            <pasos>
+                <paso numero="1">Colocar el banco y pararse detrás de él.</paso>
+                <paso numero="2">Apoyar la parte delantera de los pies en el borde del banco.</paso>
+                <paso numero="3">Elevar los talones contrayendo los gemelos.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el equilibrio apoyándote bien en el banco.</item>
+                <item>Realiza el movimiento de forma lenta para maximizar la contracción.</item>
+                <item>No utilices impulso; concéntrate en la activación de los gemelos.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones (barra)</nombre>
             <descripcion>Con barra se efectúa la elevación de talones para trabajar de forma intensa la musculatura de los gemelos.</descripcion>
             <gif>@drawable/elevaci_n_de_talones__barra_</gif>
+            <pasos>
+                <paso numero="1">Colocar la barra sobre los trapecios.</paso>
+                <paso numero="2">Adoptar una postura con los pies al ancho de los hombros.</paso>
+                <paso numero="3">Elevar los talones contrayendo los gemelos.</paso>
+                <paso numero="4">Bajar la barra de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegura un agarre firme en la barra y mantén la espalda recta.</item>
+                <item>Realiza el ejercicio con un ritmo controlado para maximizar el trabajo.</item>
+                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gemelos en cada repetici\u00f3n.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones - con step (mancuernas)</nombre>
             <descripcion>Utilizando mancuernas y un step se incrementa la dificultad y se trabaja la estabilidad en los gemelos.</descripcion>
             <gif>@drawable/elevaci_n_de_talones___con_step__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Colocar un step firme y seleccionar mancuernas ligeras.</paso>
+                <paso numero="2">Poner la parte delantera de los pies sobre el step.</paso>
+                <paso numero="3">Elevar los talones concentrándose en la contracción de los gemelos.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Mant\u00e9n la estabilidad sobre el step y activa el core.</item>
+                <item>Utiliza mancuernas ligeras para concentrarte en la técnica.</item>
+                <item>Realiza el movimiento lentamente para aislar los gemelos.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones - con step (smith)</nombre>
             <descripcion>Ejecutado en máquina Smith con step, se efectúa la elevación de talones de forma controlada.</descripcion>
             <gif>@drawable/elevaci_n_de_talones___con_step__smith_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina Smith y colocar un step.</paso>
+                <paso numero="2">Posicionarse de forma estable sobre el step.</paso>
+                <paso numero="3">Elevar los talones concentrándose en la contracción.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la altura del step para un buen rango de movimiento.</item>
+                <item>Utiliza la máquina Smith para guiar el movimiento.</item>
+                <item>Mant\u00e9n el core activado y realiza el ejercicio sin prisa.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones - donkey (máquina)</nombre>
             <descripcion>Simula el movimiento de un burro (donkey) para trabajar intensamente la parte posterior de las piernas.</descripcion>
             <gif>@drawable/elevaci_n_de_talones___donkey__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la máquina para el ejercicio donkey.</paso>
+                <paso numero="2">Adoptar la posici\u00f3n de \"donkey\" apoyando las manos en el respaldo.</paso>
+                <paso numero="3">Elevar los talones activando los gemelos.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Mant\u00e9n una buena posici\u00f3n corporal y evita balanceos.</item>
+                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gemelos en cada repetici\u00f3n.</item>
+                <item>Realiza el movimiento de forma controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones en el Leg Press</nombre>
-            <descripcion>Se efectúa en leg press para concentrar el trabajo en la musculatura de los gemelos a través de un movimiento de empuje.</descripcion>
+            <descripcion>Se efect\u00faa en leg press para concentrar el trabajo en la musculatura de los gemelos a trav\u00e9s de un movimiento de empuje.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_en_el_leg_press</gif>
+            <pasos>
+                <paso numero="1">Ajustar el leg press a la resistencia deseada.</paso>
+                <paso numero="2">Colocar los pies en la plataforma con la punta hacia el borde.</paso>
+                <paso numero="3">Empujar elevando los talones para trabajar los gemelos.</paso>
+                <paso numero="4">Regresar a la posici\u00f3n inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Coloca bien los pies para maximizar la activaci\u00f3n de los gemelos.</item>
+                <item>Realiza el movimiento de empuje de forma controlada.</item>
+                <item>Conc\u00e9ntrate en la contracci\u00f3n al elevar los talones.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevación de Talones en Pie (máquina)</nombre>
-            <descripcion>Ejecutado en máquina de talones, se efectúa la elevación de talones con estabilidad y resistencia.</descripcion>
+            <nombre>Elevación de Talones en Pie (m\u00e1quina)</nombre>
+            <descripcion>Ejecutado en m\u00e1quina de talones, se efect\u00faa la elevaci\u00f3n de talones con estabilidad y resistencia.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_en_pie__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la m\u00e1quina de elevaci\u00f3n de talones.</paso>
+                <paso numero="2">Posicionarse de pie en la m\u00e1quina.</paso>
+                <paso numero="3">Elevar los talones concentr\u00e1ndose en la contracci\u00f3n de los gemelos.</paso>
+                <paso numero="4">Bajar de forma controlada a la posici\u00f3n inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la m\u00e1quina a tu nivel de resistencia.</item>
+                <item>Mant\u00e9n la postura erguida y el core activado.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevación de Talones Frente y Trás (barra)</nombre>
-            <descripcion>Combina elevación frontal y trasera de talones para trabajar de forma completa la musculatura de la pantorrilla.</descripcion>
+            <nombre>Elevación de Talones Frente y Tr\u00e1s (barra)</nombre>
+            <descripcion>Combina elevaci\u00f3n frontal y trasera de talones para trabajar de forma completa la musculatura de la pantorrilla.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_frente_y_tr_s__barra_</gif>
+            <pasos>
+                <paso numero="1">Colocar la barra sobre los trapecios.</paso>
+                <paso numero="2">Adoptar una postura con los pies juntos.</paso>
+                <paso numero="3">Realizar elevaciones alternando la parte frontal y trasera de los talones.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Mant\u00e9n la barra bien colocada y la espalda recta.</item>
+                <item>Alterna el enfoque entre la parte frontal y trasera de los talones.</item>
+                <item>Realiza el movimiento con ritmo controlado para un trabajo completo.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevación de Talones Inclinada (máquina)</nombre>
-            <descripcion>Se efectúa en máquina con inclinación para enfatizar la contracción de los gemelos.</descripcion>
+            <nombre>Elevación de Talones Inclinada (m\u00e1quina)</nombre>
+            <descripcion>Se efect\u00faa en m\u00e1quina con inclinaci\u00f3n para enfatizar la contracci\u00f3n de los gemelos.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_inclinada__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la m\u00e1quina en posici\u00f3n inclinada.</paso>
+                <paso numero="2">Posicionarse de pie con la inclinaci\u00f3n adecuada.</paso>
+                <paso numero="3">Elevar los talones concentr\u00e1ndose en los gemelos.</paso>
+                <paso numero="4">Regresar a la posici\u00f3n inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la inclinaci\u00f3n para maximizar la contracci\u00f3n.</item>
+                <item>Mant\u00e9n la espalda recta y el core activado.</item>
+                <item>Realiza el movimiento lentamente para aislar los gemelos.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones Invertida (smith)</nombre>
-            <descripcion>Ejecutado en máquina Smith, se efectúa una elevación invertida para trabajar de forma diferente la musculatura de la pantorrilla.</descripcion>
+            <descripcion>Ejecutado en m\u00e1quina Smith, se efect\u00faa una elevaci\u00f3n invertida para trabajar de forma diferente la musculatura de la pantorrilla.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_invertida__smith_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la m\u00e1quina Smith para el ejercicio.</paso>
+                <paso numero="2">Colocar el cuerpo en posici\u00f3n invertida.</paso>
+                <paso numero="3">Elevar los talones activando los gemelos.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Mant\u00e9n la posici\u00f3n invertida estable durante el movimiento.</item>
+                <item>Realiza el ejercicio de forma controlada para evitar desequilibrios.</item>
+                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gemelos en cada repetici\u00f3n.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones (kettlebell)</nombre>
-            <descripcion>Con kettlebell se efectúa un ejercicio de elevación de talones que añade un desafío extra por la distribución del peso.</descripcion>
+            <descripcion>Con kettlebell se efect\u00faa un ejercicio de elevaci\u00f3n de talones que añade un desaf\u00edo extra por la distribuci\u00f3n del peso.</descripcion>
             <gif>@drawable/elevaci_n_de_talones__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar un kettlebell adecuado.</paso>
+                <paso numero="2">Adoptar una postura de pie con el kettlebell sostenido.</paso>
+                <paso numero="3">Realizar la elevaci\u00f3n de talones concentr\u00e1ndose en los gemelos.</paso>
+                <paso numero="4">Bajar el peso de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Sost\u00e9n el kettlebell de forma segura y mant\u00e9n la postura erguida.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gemelos.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones (mancuernas)</nombre>
-            <descripcion>Se efectúa con mancuernas para trabajar la estabilidad y fuerza de los gemelos de forma unilateral.</descripcion>
+            <descripcion>Se efect\u00faa con mancuernas para trabajar la estabilidad y fuerza de los gemelos de forma unilateral.</descripcion>
             <gif>@drawable/elevaci_n_de_talones__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Seleccionar mancuernas ligeras.</paso>
+                <paso numero="2">Adoptar una postura de pie con buena estabilidad.</paso>
+                <paso numero="3">Elevar los talones concentr\u00e1ndose en cada gemelo.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir en cada pierna.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el ejercicio de forma unilateral para asegurar el equilibrio.</item>
+                <item>Activa el core para mantener la estabilidad.</item>
+                <item>Controla la bajada para maximizar la activaci\u00f3n de los gemelos.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevación de Talones (máquina)</nombre>
-            <descripcion>Realizado en máquina, ofrece un movimiento controlado que refuerza la musculatura de los gemelos.</descripcion>
+            <nombre>Elevación de Talones (m\u00e1quina)</nombre>
+            <descripcion>Realizado en m\u00e1quina, ofrece un movimiento controlado que refuerza la musculatura de los gemelos.</descripcion>
             <gif>@drawable/elevaci_n_de_talones__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la m\u00e1quina de elevaci\u00f3n de talones.</paso>
+                <paso numero="2">Posicionarse de pie y colocar los pies en el soporte.</paso>
+                <paso numero="3">Realizar la elevaci\u00f3n concentr\u00e1ndose en los gemelos.</paso>
+                <paso numero="4">Regresar a la posici\u00f3n inicial controladamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la m\u00e1quina para obtener una resistencia adecuada.</item>
+                <item>Mant\u00e9n una postura erguida durante todo el movimiento.</item>
+                <item>Realiza el ejercicio con un movimiento fluido y controlado.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones Sentada (barra)</nombre>
-            <descripcion>Ejecutada en posición sentada con barra, se aísla la contracción de la pantorrilla.</descripcion>
+            <descripcion>Ejecutada en posici\u00f3n sentada con barra, se a\u00edsla la contracci\u00f3n de la pantorrilla.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_sentada__barra_</gif>
+            <pasos>
+                <paso numero="1">Sentarse en el banco y colocar la barra sobre los muslos.</paso>
+                <paso numero="2">Colocar los pies firmemente en el suelo.</paso>
+                <paso numero="3">Elevar los talones concentr\u00e1ndose en la contracci\u00f3n de la pantorrilla.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla el movimiento y conc\u00e9ntrate en la contracci\u00f3n de los gemelos.</item>
+                <item>Mant\u00e9n los pies bien plantados para mayor estabilidad.</item>
+                <item>Realiza el ejercicio de forma lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones Sentada (mancuernas)</nombre>
-            <descripcion>Se realiza con mancuernas en posición sentada para trabajar la fuerza y resistencia de los gemelos.</descripcion>
+            <descripcion>Se realiza con mancuernas en posici\u00f3n sentada para trabajar la fuerza y resistencia de los gemelos.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_sentada__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Sentarse en un banco con respaldo estable.</paso>
+                <paso numero="2">Seleccionar mancuernas ligeras y sostenerlas sobre los muslos.</paso>
+                <paso numero="3">Elevar los talones activando la contracci\u00f3n.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza mancuernas ligeras para concentrarte en la forma y contracci\u00f3n.</item>
+                <item>Mant\u00e9n una postura estable durante todo el ejercicio.</item>
+                <item>Realiza el movimiento lentamente para aislar los gemelos.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevación de Talones Sentado (máquina)</nombre>
-            <descripcion>Ejercicio en máquina realizado en posición sentada para un control óptimo del movimiento.</descripcion>
+            <nombre>Elevación de Talones Sentado (m\u00e1quina)</nombre>
+            <descripcion>Ejercicio en m\u00e1quina realizado en posici\u00f3n sentada para un control \u00f3ptimo del movimiento.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_sentado__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la m\u00e1quina de elevaci\u00f3n sentada.</paso>
+                <paso numero="2">Sentarse y colocar los pies en el soporte.</paso>
+                <paso numero="3">Realizar la elevaci\u00f3n de talones concentr\u00e1ndose en la contracci\u00f3n.</paso>
+                <paso numero="4">Regresar a la posici\u00f3n inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la m\u00e1quina para adaptarla a tu estatura y fuerza.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gemelos en cada repeticiones.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones Sentado (smith)</nombre>
-            <descripcion>Utilizando la máquina Smith en posición sentada, se refuerza la contracción de la pantorrilla.</descripcion>
+            <descripcion>Utilizando la m\u00e1quina Smith en posici\u00f3n sentada, se refuerza la contracci\u00f3n de la pantorrilla.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_sentado__smith_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la m\u00e1quina Smith para el ejercicio.</paso>
+                <paso numero="2">Sentarse y posicionar la barra sobre los muslos.</paso>
+                <paso numero="3">Realizar el curl de talones concentr\u00e1ndose en la contracci\u00f3n.</paso>
+                <paso numero="4">Bajar la barra de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza la guia de la m\u00e1quina Smith para mantener la forma correcta.</item>
+                <item>Realiza el movimiento de forma lenta y sin balanceos.</item>
+                <item>Conc\u00e9ntrate en la contracci\u00f3n de la pantorrilla en cada repeticiones.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones Sentado Unilateral (mancuernas)</nombre>
-            <descripcion>Se efectúa de forma unilateral para corregir desequilibrios y fortalecer individualmente cada gemelo.</descripcion>
+            <descripcion>Se efect\u00faa de forma unilateral para corregir desequilibrios y fortalecer individualmente cada gemelo.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_sentado_unilateral__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Sentarse en un banco y seleccionar una mancuerna ligera.</paso>
+                <paso numero="2">Ejecutar la elevaci\u00f3n de tal\u00f3n en un solo lado.</paso>
+                <paso numero="3">Concentrarse en la contracci\u00f3n del gemelo.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir con el otro lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el ejercicio de forma unilateral para detectar y corregir desequilibrios.</item>
+                <item>Mant\u00e9n el core activado y la postura estable.</item>
+                <item>Realiza el movimiento lentamente para maximizar la activaci\u00f3n muscular.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones (smith)</nombre>
-            <descripcion>Ejecutado en máquina Smith, ofrece una guía fija para trabajar la contracción de los gemelos.</descripcion>
+            <descripcion>Ejecutado en m\u00e1quina Smith, ofrece una gu\u00eda fija para trabajar la contracci\u00f3n de los gemelos.</descripcion>
             <gif>@drawable/elevaci_n_de_talones__smith_</gif>
+            <pasos>
+                <paso numero="1">Ajustar la m\u00e1quina Smith para elevaci\u00f3n de talones.</paso>
+                <paso numero="2">Sentarse o pararse seg\u00fan el dise\u00f1o de la m\u00e1quina.</paso>
+                <paso numero="3">Realizar la elevaci\u00f3n de talones concentr\u00e1ndose en los gemelos.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Sigue la gu\u00eda de la m\u00e1quina para mantener la t\u00e9cnica.</item>
+                <item>Realiza el movimiento de forma controlada y sin prisa.</item>
+                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gemelos.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones (TRX)</nombre>
-            <descripcion>Con TRX se efectúa la elevación de talones, añadiendo un componente de inestabilidad que activa el core.</descripcion>
+            <descripcion>Con TRX se efect\u00faa la elevaci\u00f3n de talones, a\u00f1adiendo un componente de inestabilidad que activa el core.</descripcion>
             <gif>@drawable/elevaci_n_de_talones__trx_</gif>
+            <pasos>
+                <paso numero="1">Ajustar el TRX a la altura adecuada.</paso>
+                <paso numero="2">Colocar los pies en las correas y adoptar una postura estable.</paso>
+                <paso numero="3">Realizar la elevaci\u00f3n de talones concentr\u00e1ndose en los gemelos y el core.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta el TRX para obtener un movimiento seguro y estable.</item>
+                <item>Mant\u00e9n el core activado para compensar la inestabilidad.</item>
+                <item>Realiza el movimiento lentamente para concentrarte en los gemelos.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Core</secundario>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones Unilateral - con step smith</nombre>
-            <descripcion>Mediante un step y máquina Smith se efectúa la elevación unilateral para trabajar la fuerza de cada gemelo.</descripcion>
+            <descripcion>Mediante un step y m\u00e1quina Smith se efect\u00faa la elevaci\u00f3n unilateral para trabajar la fuerza de cada gemelo.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_unilateral___con_step__smith_</gif>
+            <pasos>
+                <paso numero="1">Colocar el step y ajustar la m\u00e1quina Smith.</paso>
+                <paso numero="2">Posicionarse de forma unilateral sobre el step.</paso>
+                <paso numero="3">Realizar la elevaci\u00f3n del tal\u00f3n concentr\u00e1ndose en el gemelo trabajado.</paso>
+                <paso numero="4">Bajar de forma controlada y repetir en el otro lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el ejercicio de forma unilateral para corregir desequilibrios.</item>
+                <item>Utiliza la m\u00e1quina Smith como gu\u00eda para mantener la forma.</item>
+                <item>Mant\u00e9n el movimiento lento y controlado en cada pierna.</item>
+            </consejo>
+            <musculos>
+                <principal>Gemelos</principal>
+                <secundario>Estabilizadores del tobillo</secundario>
+            </musculos>
         </ejercicio>
     </categoria>
+
 </ejercicios>

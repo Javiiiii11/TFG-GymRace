@@ -9,20 +9,28 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
@@ -31,14 +39,21 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.example.gymrace.ui.theme.GymRaceTheme
 import org.xmlpull.v1.XmlPullParser
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.sp
 
 data class GifData(
     val category: String,
     val title: String,
     val description: String,
-    val resource: Int
+    val resource: Int,
+    val steps: List<Step> = emptyList(),
+    val tips: List<String> = emptyList(),
+    val mainMuscle: String = "",
+    val secondaryMuscles: String = ""
+)
+
+data class Step(
+    val number: Int,
+    val description: String
 )
 
 @Composable
@@ -120,7 +135,7 @@ fun Content(modifier: Modifier = Modifier) {
     Column(modifier = modifier
         .fillMaxSize()
         .padding(16.dp)) {
-        Spacer(modifier = Modifier.height(32.dp)) // Add space above the filters
+        Spacer(modifier = Modifier.height(32.dp))
         FilterBar(searchQuery = searchQuery, selectedCategory = selectedCategory, categories = categories)
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -147,19 +162,18 @@ fun Content(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.spacedBy(1.dp)
             ) {
                 items(filteredGifs) { gifData ->
-                    GifBox(
-                        title = gifData.title,
-                        gif = gifData.resource
-                    )
+                    GifBox(gifData = gifData)
                 }
             }
-            Spacer(modifier = Modifier.height(95.dp)) // Add space below the last exercise
+            Spacer(modifier = Modifier.height(95.dp))
         }
     }
 }
 
 @Composable
-fun GifBox(title: String, gif: Int) {
+fun GifBox(gifData: GifData) {
+    var showDetail by remember { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -167,16 +181,15 @@ fun GifBox(title: String, gif: Int) {
             .padding(8.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surface)
+            .clickable { showDetail = true }
             .padding(top = 16.dp, start = 0.dp, end = 0.dp)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             GifImage(
                 modifier = Modifier
                     .clip(RoundedCornerShape(16.dp))
-//                    .border(2.dp, MaterialTheme.colorScheme.surface, RoundedCornerShape(16.dp))
-//                    .background(Color.LightGray)
                     .height(120.dp),
-                gif = gif
+                gif = gifData.resource
             )
 
             Box(
@@ -184,7 +197,7 @@ fun GifBox(title: String, gif: Int) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = title,
+                    text = gifData.title,
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
@@ -193,7 +206,160 @@ fun GifBox(title: String, gif: Int) {
             }
         }
     }
+
+    if (showDetail) {
+        ExerciseDetailDialog(
+            gifData = gifData,
+            onDismiss = { showDetail = false }
+        )
+    }
 }
+
+@Composable
+fun ExerciseDetailDialog(
+    gifData: GifData,
+    onDismiss: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismiss) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, start = 0.dp, end = 0.dp, bottom = 16.dp),
+            shape = RoundedCornerShape(16.dp),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                // Close button
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    IconButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.align(Alignment.TopEnd)
+                    ) {
+                        Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                    }
+                }
+
+                // Title
+                Text(
+                    text = gifData.title,
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+
+                // Large GIF image
+                GifImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .clip(RoundedCornerShape(16.dp)),
+                    gif = gifData.resource
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Description
+                Text(
+                    text = "Descripción:",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = gifData.description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+                // Steps
+                if (gifData.steps.isNotEmpty()) {
+                    Text(
+                        text = "Pasos:",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    gifData.steps.forEach { step ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.Top
+                        ) {
+                            Text(
+                                text = "${step.number}.",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(end = 8.dp, top = 2.dp)
+                            )
+                            Text(
+                                text = step.description,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+                }
+
+
+                Spacer(modifier = Modifier.height(16.dp))
+                // Tips
+                if (gifData.tips.isNotEmpty()) {
+                    Text(
+                        text = "Consejos:",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    gifData.tips.forEach { tip ->
+                        Text(
+                            text = "• $tip",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+                // Muscles
+
+                if (gifData.mainMuscle.isNotEmpty() || gifData.secondaryMuscles.isNotEmpty()) {
+                    Text(
+                        text = "Músculos trabajados:",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Principal: ",
+                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                    )
+                    Text(
+                        text = gifData.mainMuscle,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    if (gifData.secondaryMuscles.isNotEmpty()) {
+                        Text(
+                            text = "Secundarios: ",
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                        )
+                        Text(
+                            text = gifData.secondaryMuscles,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+    }
+}
+
 
 @Composable
 fun GifImage(modifier: Modifier = Modifier, gif: Int) {
@@ -233,19 +399,35 @@ fun loadGifsFromXml(
     var title = ""
     var description = ""
     var resource = 0
+    val steps = mutableListOf<Step>()
+    val tips = mutableListOf<String>()
+    var mainMuscle = ""
+    var secondaryMuscles = ""
+    var inSteps = false
+    var inTips = false
+    var currentStepNumber = 0
+    var currentStepDesc = ""
 
     while (eventType != XmlPullParser.END_DOCUMENT) {
         when (eventType) {
             XmlPullParser.START_TAG -> {
                 currentTag = parser.name
                 when (currentTag) {
-                    "categoria" -> {
-                        currentCategory = parser.getAttributeValue(null, "nombre") ?: ""
-                    }
+                    "categoria" -> currentCategory = parser.getAttributeValue(null, "nombre") ?: ""
                     "ejercicio" -> {
                         title = ""
                         description = ""
                         resource = 0
+                        steps.clear()
+                        tips.clear()
+                        mainMuscle = ""
+                        secondaryMuscles = ""
+                    }
+                    "pasos" -> inSteps = true
+                    "consejo" -> inTips = true
+                    "paso" -> {
+                        currentStepNumber = parser.getAttributeValue(null, "numero")?.toIntOrNull() ?: 0
+                        currentStepDesc = ""
                     }
                 }
             }
@@ -258,18 +440,38 @@ fun loadGifsFromXml(
                         "gif" -> {
                             val resourceName = text.replace(".gif", "").replace("@drawable/", "").trim()
                             resource = context.resources.getIdentifier(resourceName, "drawable", context.packageName)
-                            if (resource == 0) {
-                                missingGifs.add(text)
-                            }
+                            if (resource == 0) missingGifs.add(text)
                         }
+                        "paso" -> if (inSteps) currentStepDesc = text
+                        "item" -> if (inTips) tips.add(text)
+                        "principal" -> mainMuscle = text
+                        "secundario" -> secondaryMuscles = text
                     }
                 }
             }
             XmlPullParser.END_TAG -> {
-                if (parser.name == "ejercicio" && resource != 0) {
-                    gifs.add(GifData(category = currentCategory, title = title, description = description, resource = resource))
+                when (parser.name) {
+                    "ejercicio" -> {
+                        if (resource != 0) {
+                            gifs.add(GifData(
+                                category = currentCategory,
+                                title = title,
+                                description = description,
+                                resource = resource,
+                                steps = steps.toList(),
+                                tips = tips.toList(),
+                                mainMuscle = mainMuscle,
+                                secondaryMuscles = secondaryMuscles
+                            ))
+                        }
+                    }
+                    "pasos" -> inSteps = false
+                    "consejo" -> inTips = false
+                    "paso" -> if (currentStepNumber > 0 && currentStepDesc.isNotEmpty()) {
+                        steps.add(Step(currentStepNumber, currentStepDesc))
+                    }
                 }
-                currentTag = null
+                if (parser.name == currentTag) currentTag = null
             }
         }
         eventType = parser.next()

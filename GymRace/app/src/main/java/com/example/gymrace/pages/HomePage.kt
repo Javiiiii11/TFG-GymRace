@@ -1,5 +1,6 @@
 package np.com.bimalkafle.bottomnavigationdemo.pages
 
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -34,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.gymrace.R
 import com.example.gymrace.pages.Exercise
 import com.google.firebase.firestore.FirebaseFirestore
@@ -46,7 +49,7 @@ import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomePage(modifier: Modifier = Modifier) {
+fun HomePage(modifier: Modifier = Modifier, navController: NavController, onThemeChange : () -> Unit) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -76,7 +79,7 @@ fun HomePage(modifier: Modifier = Modifier) {
 
         // Sección de rutina personalizada
         item {
-            CustomRoutineSection()
+            CustomRoutineSection(navController)
         }
 
         // Caja para Settings Page (si es una sección adicional)
@@ -664,7 +667,7 @@ fun RoutineCard(
 
 
 @Composable
-fun CustomRoutineSection() {
+fun CustomRoutineSection(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -682,7 +685,12 @@ fun CustomRoutineSection() {
         Card(
             modifier = Modifier
                 .size(200.dp)
-                .clickable { /* Acción para crear rutina */ },
+                .clickable {
+                    Log.d("Navigation", "Navegando a la página de crear rutina")
+                    navController.navigate("crearRutina") {
+                        popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
+                    }
+                },
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(
                 containerColor = Color(0xFF505050)
