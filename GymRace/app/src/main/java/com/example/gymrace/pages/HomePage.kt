@@ -671,20 +671,129 @@ fun CustomRoutineSection(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalAlignment = Alignment.Start
     ) {
         Text(
-            text = "Crea tu rutina personalizada",
+            text = "Rutinas Personalizadas",
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 16.dp)
         )
+    }
 
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            // Mis Rutinas
+            Card(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(180.dp)
+                    .padding(end = 8.dp)
+                    .clickable {
+                        Log.d("Navigation", "Navegando a mis rutinas")
+                        navController.navigate("misRutinas")
+                    },
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                elevation = CardDefaults.cardElevation(4.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+//                    Icon(
+//                        painter = painterResource(id = R.drawable.default_image),
+//                        contentDescription = "Mis Rutinas",
+//                        modifier = Modifier.size(64.dp),
+//                        tint = Color.White
+//                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.default_image),
+                        contentDescription = "Mis Rutinas",
+                        modifier = Modifier.size(64.dp),
+                        contentScale = ContentScale.Crop
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Mis Rutinas",
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+
+            // Rutinas de Amigos
+            Card(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(180.dp)
+                    .padding(start = 8.dp)
+                    .clickable {
+                        Log.d("Navigation", "Navegando a la página de crear rutina")
+                        navController.navigate("misRutinas") {
+                            popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
+                        }
+                    },
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                elevation = CardDefaults.cardElevation(4.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+//                    Icon(
+//                        painter = painterResource(id = R.drawable.default_image),
+//                        contentDescription = "Rutinas de Amigos",
+//                        modifier = Modifier.size(64.dp),
+//                        tint = Color.White
+//                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.default_image),
+                        contentDescription = "Rutinas de Amigos",
+                        modifier = Modifier.size(64.dp),
+                        contentScale = ContentScale.Crop
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Rutinas de Amigos",
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Crear Rutina (mantiene la funcionalidad existente)
         Card(
             modifier = Modifier
-                .size(200.dp)
+                .size(180.dp)
                 .clickable {
                     Log.d("Navigation", "Navegando a la página de crear rutina")
                     navController.navigate("crearRutina") {
@@ -693,7 +802,7 @@ fun CustomRoutineSection(navController: NavController) {
                 },
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(
-                containerColor = Color(0xFF505050)
+                containerColor = Color(0xFFFF5722)
             ),
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
@@ -701,17 +810,26 @@ fun CustomRoutineSection(navController: NavController) {
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "+",
-                    color = Color.White,
-                    fontSize = 64.sp,
-                    fontWeight = FontWeight.Light
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "+",
+                        color = Color.White,
+                        fontSize = 48.sp,
+                        fontWeight = FontWeight.Light
+                    )
+                    Text(
+                        text = "Crear Rutina",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }
 }
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ImprovedCalendar(modifier: Modifier, onDateSelected: (Int) -> Unit) {
