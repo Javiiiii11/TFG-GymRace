@@ -1,5 +1,6 @@
 package com.example.gymrace
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
@@ -38,63 +39,62 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.gymrace.pages.getLoginState
+import com.example.gymrace.pages.prueba
+import com.example.gymrace.ui.theme.ThemeManager
+import com.example.gymrace.ui.theme.rememberThemeState
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(navController: NavController) {
-    var isDarkTheme by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    val (isLoggedIn, account) = getLoginState(context)
+    val isDarkTheme = rememberThemeState().value
 
-    MaterialTheme(
-        colorScheme = if (isDarkTheme) DarkColors else LightColors
-    ) {
-        if (isLoggedIn) {
-            HomePage(onThemeChange = { isDarkTheme = !isDarkTheme }, navController = navController)
-        } else {
-            val navItemList = listOf(
-                NavItem("Inicio", Icons.Default.Home, 0),
-                NavItem("Ejercicios", ImageVector.vectorResource(id = R.drawable.fitness), 0),
-                NavItem("Perfíl", Icons.Default.Person, 0),
-            )
+    // Ya no necesitas MaterialTheme aquí porque ahora está en GymRaceTheme
 
-            var selectedIndex by remember { mutableIntStateOf(0) }
+    val navItemList = listOf(
+        NavItem("Inicio", Icons.Default.Home, 0),
+        NavItem("Ejercicios", ImageVector.vectorResource(id = R.drawable.fitness), 0),
+        NavItem("Perfíl", Icons.Default.Person, 0),
+    )
 
-            Scaffold(
-                modifier = Modifier.fillMaxSize(),
-                bottomBar = {
-                    NavigationBar {
-                        navItemList.forEachIndexed { index, navItem ->
-                            NavigationBarItem(
-                                selected = selectedIndex == index,
-                                onClick = { selectedIndex = index },
-                                icon = {
-                                    BadgedBox(badge = {
-                                        if (navItem.badgeCount > 0)
-                                            Badge() {
-                                                Text(text = navItem.badgeCount.toString())
-                                            }
-                                    }) {
-                                        Icon(imageVector = navItem.icon, contentDescription = "Icon")
+    var selectedIndex by remember { mutableIntStateOf(0) }
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        bottomBar = {
+            NavigationBar {
+                navItemList.forEachIndexed { index, navItem ->
+                    NavigationBarItem(
+                        selected = selectedIndex == index,
+                        onClick = { selectedIndex = index },
+                        icon = {
+                            BadgedBox(badge = {
+                                if (navItem.badgeCount > 0)
+                                    Badge() {
+                                        Text(text = navItem.badgeCount.toString())
                                     }
-                                },
-                                label = { Text(text = navItem.label) }
-                            )
-                        }
-                    }
+                            }) {
+                                Icon(imageVector = navItem.icon, contentDescription = "Icon")
+                            }
+                        },
+                        label = { Text(text = navItem.label) }
+                    )
                 }
-            ) { innerPadding ->
-                ContentScreen(
-                    modifier = Modifier.padding(innerPadding),
-                    selectedIndex = selectedIndex,
-                    onThemeChange = { isDarkTheme = !isDarkTheme },
-                    navController = navController
-                )
             }
         }
+    ) { innerPadding ->
+        ContentScreen(
+            modifier = Modifier.padding(innerPadding),
+            selectedIndex = selectedIndex,
+            onThemeChange = {
+                ThemeManager.toggleTheme(context)
+            },
+            navController = navController
+        )
     }
 }
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -103,6 +103,7 @@ fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int, onThemeChan
         0 -> HomePage(onThemeChange =  onThemeChange,navController = navController)
         1 -> EjerciciosPage()
         2 -> UserPage(onThemeChange = onThemeChange, navController = navController)
+        3-> prueba().prueba()
     }
 }
 

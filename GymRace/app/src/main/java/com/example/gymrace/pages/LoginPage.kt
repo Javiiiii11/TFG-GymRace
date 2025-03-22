@@ -418,5 +418,6 @@ fun getLoginState(context: Context): Pair<Boolean, String?> {
     val sharedPreferences: SharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
     val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
     val account = sharedPreferences.getString("account", null)
+    Log.d("LoginState", "isLoggedIn: $isLoggedIn, account: $account")
     return Pair(isLoggedIn, account)
 }

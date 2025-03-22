@@ -15,6 +15,7 @@ import com.example.gymrace.pages.InitialScreen
 import com.example.gymrace.pages.LoginPage
 import com.example.gymrace.pages.RegisterPage
 import com.example.gymrace.pages.RegisterPage2
+import com.example.gymrace.pages.prueba
 import com.example.gymrace.ui.theme.GymRaceTheme
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         setContent {
-            GymRaceTheme {
+            GymRaceTheme {  // Cambiado de MaterialTheme a GymRaceTheme
                 val navController = rememberNavController()
                 NavHost(navController, startDestination = "splash") {
                     composable("splash") { InitialScreen(navController) }
@@ -36,6 +37,7 @@ class MainActivity : ComponentActivity() {
                     composable("register2") { RegisterPage2(navController) }
                     composable("crearRutina") { CrearRutinaPage(navController) }
                     composable("misRutinas") { ListarMisRutinasPage(navController) }
+                    composable("prueba") { prueba().prueba() }
                     // Actualizado: Ruta para ejecutar una rutina con ID
                     composable(
                         route = "ejecutar_rutina/{rutinaId}",
@@ -44,7 +46,6 @@ class MainActivity : ComponentActivity() {
                         val rutinaId = backStackEntry.arguments?.getString("rutinaId") ?: ""
                         EjecutarRutinaPage(navController = navController, rutinaId = rutinaId)
                     }
-
                 }
             }
         }

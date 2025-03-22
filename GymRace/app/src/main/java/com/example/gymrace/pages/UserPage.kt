@@ -73,7 +73,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     var showThemeMenu by remember { mutableStateOf(false) }
-    var isDarkTheme by rememberSaveable { mutableStateOf(false) }
 
     // Estados para diálogos
     var showCommunityDialog by remember { mutableStateOf(false) }

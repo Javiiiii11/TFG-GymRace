@@ -1,5 +1,6 @@
 package com.example.gymrace
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
@@ -39,7 +41,9 @@ fun CrearRutinaPage(navController: NavHostController) {
     var selectedDificultad by remember { mutableStateOf("Medio") }
     val dificultades = listOf("Fácil", "Medio", "Difícil")
     val ejerciciosSeleccionados = remember { mutableStateListOf<String>() }
-
+    // Tema oscuro
+    val currentColorScheme = MaterialTheme.colorScheme == darkColorScheme()
+    Log.d("ColorScheme", currentColorScheme.toString())
     // Estados de error, carga y éxito
     var showErrorDialog by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
@@ -242,7 +246,7 @@ fun CrearRutinaPage(navController: NavHostController) {
                             "dificultad" to selectedDificultad,
                             "ejercicios" to ejerciciosSeleccionados.toList(),
                             "usuarioId" to userId,
-                            "fechaCreacion" to com.google.firebase.Timestamp.now()
+                            "fechaCreacion" to Timestamp.now()
                         )
 
                         scope.launch {
@@ -264,6 +268,10 @@ fun CrearRutinaPage(navController: NavHostController) {
                             }
                         }
                     },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    )
+                    ,
                     modifier = Modifier.fillMaxWidth(),
                     enabled = !isLoading
 
@@ -417,7 +425,12 @@ fun CrearRutinaPage(navController: NavHostController) {
 
                         Button(onClick = {
                             showEjerciciosDialog = false
-                        }) {
+                        },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary
+                            )
+
+                        ) {
                             Text("Confirmar (${ejerciciosSeleccionados.size})")
                         }
                     }

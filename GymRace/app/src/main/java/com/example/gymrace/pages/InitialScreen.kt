@@ -22,6 +22,7 @@ import coil.request.ImageRequest
 import com.example.gymrace.R
 import kotlinx.coroutines.delay
 import android.os.Build
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun InitialScreen(navController: NavController) {
@@ -36,6 +37,12 @@ fun InitialScreen(navController: NavController) {
     LaunchedEffect(key1 = true) {
         startAnimation = true
         delay(3000)
+        val current_user = FirebaseAuth.getInstance().currentUser
+        if (current_user != null) {
+            navController.navigate("main") {
+                popUpTo("splash") { inclusive = true }
+            }
+        } else
         navController.navigate("login") {
             popUpTo("splash") { inclusive = true }
         }

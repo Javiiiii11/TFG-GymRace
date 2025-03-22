@@ -37,6 +37,7 @@ import androidx.compose.ui.zIndex
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.gymrace.CrearRutinaPage
 import com.example.gymrace.R
 import com.example.gymrace.pages.Exercise
 import com.google.firebase.firestore.FirebaseFirestore
@@ -748,7 +749,9 @@ fun CustomRoutineSection(navController: NavController) {
                     .clickable {
                         Log.d("Navigation", "Navegando a la página de crear rutina")
                         navController.navigate("misRutinas") {
-                            popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
+                            popUpTo("main") {
+                                inclusive = false
+                            } // Borra todo el historial de navegación
                         }
                     },
                 shape = RoundedCornerShape(16.dp),
@@ -797,12 +800,12 @@ fun CustomRoutineSection(navController: NavController) {
                 .clickable {
                     Log.d("Navigation", "Navegando a la página de crear rutina")
                     navController.navigate("crearRutina") {
-                        popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
+                        launchSingleTop = true
                     }
                 },
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(
-                containerColor = Color(0xFFFF5722)
+                containerColor = MaterialTheme.colorScheme.primary,
             ),
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
