@@ -35,6 +35,7 @@ import np.com.bimalkafle.bottomnavigationdemo.pages.HomePage
 import np.com.bimalkafle.bottomnavigationdemo.pages.UserPage
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -71,14 +72,20 @@ fun MainScreen(navController: NavController) {
                         icon = {
                             BadgedBox(badge = {
                                 if (navItem.badgeCount > 0)
-                                    Badge() {
+                                    Badge(
+                                        containerColor = MaterialTheme.colorScheme.surfaceVariant // Cambia el color del círculo aquí
+                                    ) {
                                         Text(text = navItem.badgeCount.toString())
                                     }
                             }) {
                                 Icon(imageVector = navItem.icon, contentDescription = "Icon")
                             }
                         },
-                        label = { Text(text = navItem.label) }
+                        label = { Text(text = navItem.label) },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTextColor = MaterialTheme.colorScheme.primary
+                        )
                     )
                 }
             }
@@ -107,27 +114,27 @@ fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int, onThemeChan
     }
 }
 
-private val LightColors = lightColorScheme(
-    primary = Color(0xffff9241),// borde cajas seleccionadas buscar y filtro
-    onPrimary = Color(0xFFFFFFFF),
-    secondary = Color(0xFF03DAC5),
-    onSecondary = Color(0xffff00fc), // Cambiado a blanco
-    background = Color(0xffffffff), // fondo pagina
-    onBackground = Color(0xff000000), // textos ejercicios, parte superior calendario y unete y visit inicio
-    surface = Color(0xffcccccc), //selector de ejercicios  y cajas de ejercicios
-    onSurface = Color(0xff000000), // Cambiado a blanco
-)
-
-private val DarkColors = darkColorScheme(
-    primary = Color(0xffff9241),
-    onPrimary = Color(0xFFFFFFFF), // Cambiado a blanco
-    secondary = Color(0xFF03DAC5),
-    onSecondary = Color(0xFFFFFFFF), // Cambiado a blanco
-    background = Color(0xFF121212),
-    onBackground = Color(0xFFFFFFFF), // Cambiado a blanco
-    surface = Color(0xff505050),
-    onSurface = Color(0xFFFFFFFF) // Cambiado a blanco
-)
+//private val LightColors = lightColorScheme(
+//    primary = Color(0xffff9241),// borde cajas seleccionadas buscar y filtro
+//    onPrimary = Color(0xFFFFFFFF),
+//    secondary = Color(0xFF03DAC5),
+//    onSecondary = Color(0xffff00fc), // Cambiado a blanco
+//    background = Color(0xffffffff), // fondo pagina
+//    onBackground = Color(0xff000000), // textos ejercicios, parte superior calendario y unete y visit inicio
+//    surface = Color(0xffcccccc), //selector de ejercicios  y cajas de ejercicios
+//    onSurface = Color(0xff000000), // Cambiado a blanco
+//)
+//
+//private val DarkColors = darkColorScheme(
+//    primary = Color(0xffff9241),
+//    onPrimary = Color(0xFFFFFFFF), // Cambiado a blanco
+//    secondary = Color(0xFF03DAC5),
+//    onSecondary = Color(0xFFFFFFFF), // Cambiado a blanco
+//    background = Color(0xFF121212),
+//    onBackground = Color(0xFFFFFFFF), // Cambiado a blanco
+//    surface = Color(0xff505050),
+//    onSurface = Color(0xFFFFFFFF) // Cambiado a blanco
+//)
 
 
 

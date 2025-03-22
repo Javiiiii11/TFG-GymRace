@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -82,8 +83,13 @@ fun CrearRutinaPage(navController: NavHostController) {
                 title = { Text("Crear Nueva Rutina") },
                 navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate("main") {
-                            popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
+                        val previousBackStackEntry = navController.previousBackStackEntry
+                        if (previousBackStackEntry != null && previousBackStackEntry.destination.route != "main") {
+                            navController.popBackStack()
+                        } else {
+                            navController.navigate("main") {
+                                popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                            }
                         }
                     }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
@@ -148,7 +154,15 @@ fun CrearRutinaPage(navController: NavHostController) {
                                 FilterChip(
                                     selected = dificultad == selectedDificultad,
                                     onClick = { selectedDificultad = dificultad },
-                                    label = { Text(dificultad) }
+                                    label = {
+                                        Text(
+                                            dificultad,
+                                            color = if (dificultad == selectedDificultad) MaterialTheme.colorScheme.onPrimary else LocalContentColor.current
+                                        )
+                                    },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = MaterialTheme.colorScheme.primary
+                                    )
                                 )
                             }
                         }
@@ -269,7 +283,7 @@ fun CrearRutinaPage(navController: NavHostController) {
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary
+                        containerColor = MaterialTheme.colorScheme.primary
                     )
                     ,
                     modifier = Modifier.fillMaxWidth(),

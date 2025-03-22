@@ -869,7 +869,7 @@ fun CalendarHeader(currentYearMonth: YearMonth, onPrevious: () -> Unit, onNext: 
 fun CalendarGrid(daysInMonth: Int, firstDayOfMonth: Int, isCurrentMonth: Boolean, today: LocalDate, onDateSelected: (Int) -> Unit) {
     val days = listOf("L", "M", "X", "J", "V", "S", "D")
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        days.forEach { Text(it, fontWeight = FontWeight.Bold) }
+        days.forEach { Text( it, fontWeight = FontWeight.Bold)}
     }
     LazyVerticalGrid(columns = GridCells.Fixed(7)) {
         items(firstDayOfMonth - 1) { Box(modifier = Modifier.aspectRatio(1f)) }
@@ -916,15 +916,17 @@ fun Masoptions() {
                 .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            )
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            ),
+            elevation = CardDefaults.cardElevation(4.dp)
+
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = buildAnnotatedString {
                         append("Unete a nuestra comunidad en ")
                         pushStringAnnotation(tag = "URL", annotation = "https://discord.gg/GwKP9ghQSg")
-                        withStyle(style = SpanStyle(color = Color.Blue, textDecoration = TextDecoration.Underline)) {
+                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.secondary, textDecoration = TextDecoration.Underline)) {
                             append("discord")
                         }
                         pop()
@@ -941,7 +943,7 @@ fun Masoptions() {
                     text = buildAnnotatedString {
                         append("Visita nuestra ")
                         pushStringAnnotation(tag = "URL", annotation = "https://www.ejemplo.com")
-                        withStyle(style = SpanStyle(color = Color.Blue, textDecoration = TextDecoration.Underline)) {
+                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.secondary, textDecoration = TextDecoration.Underline)) {
                             append("página web")
                         }
                         pop()

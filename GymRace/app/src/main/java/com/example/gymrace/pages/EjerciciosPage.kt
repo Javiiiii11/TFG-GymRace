@@ -180,7 +180,7 @@ fun GifBox(gifData: GifData) {
             .height(250.dp)
             .padding(8.dp)
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable { showDetail = true }
             .padding(top = 16.dp, start = 0.dp, end = 0.dp)
     ) {

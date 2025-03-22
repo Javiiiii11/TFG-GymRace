@@ -10,6 +10,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -67,6 +68,13 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
     // Temporizador de ejercicio
     var exerciseTimer by remember { mutableStateOf(30) } // 30 segundos por defecto
     var isTimerRunning by remember { mutableStateOf(false) }
+
+    // Estado para controlar la visibilidad del popup de ajuste del temporizador
+    var showTimerAdjustDialog by remember { mutableStateOf(false) }
+
+    // Límites para el temporizador
+    val minTime = 10 // tiempo mínimo en segundos
+    val maxTime = 120 // tiempo máximo en segundos
 
     // Carga la rutina
     LaunchedEffect(rutinaId) {
@@ -162,7 +170,6 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                     }
                 )
             } else {
-                // Cuerpo principal de la pantalla de ejecución
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -241,85 +248,200 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                     text = "Categoría: ${currentExerciseData.category}",
                                     style = MaterialTheme.typography.bodyMedium
                                 )
-
-                                if (currentExerciseData.description.isNotEmpty()) {
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                    Text(
-                                        text = currentExerciseData.description,
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                }
                             }
                         }
                     }
 
+                    // Esto empuja los elementos siguientes hacia abajo
                     Spacer(modifier = Modifier.weight(1f))
 
-                    // Temporizador
-                    if (!isExerciseCompleted) {
-                        Box(
-                            modifier = Modifier
-                                .size(120.dp)
-                                .clip(CircleShape)
-                                .background(MaterialTheme.colorScheme.primaryContainer),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = exerciseTimer.toString(),
-                                style = MaterialTheme.typography.headlineLarge,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-                        }
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                    // Temporizador y botones pegados abajo
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        // Temporizador
+                        if (!isExerciseCompleted) {
+                            // Temporizador clickable para abrir el diálogo de ajuste
+                            Box(
+                                modifier = Modifier
+                                    .size(120.dp)
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.colorScheme.primaryContainer)
+                                    .clickable(enabled = !isTimerRunning) {
+                                        if (!isTimerRunning) {
+                                            showTimerAdjustDialog = true
+                                        }
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(
+                                        text = exerciseTimer.toString(),
+                                        style = MaterialTheme.typography.headlineLarge,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
 
-                        // Botón de inicio/pausa
-                        Button(
-                            onClick = { isTimerRunning = !isTimerRunning },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(56.dp)
-                        ) {
-                            Icon(
-                                imageVector = if (isTimerRunning) Icons.Default.Pause else Icons.Default.PlayArrow,
-                                contentDescription = null
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(if (isTimerRunning) "Pausar" else "Iniciar")
-                        }
-                    } else {
-                        // Botón para pasar al siguiente ejercicio
-                        Button(
-                            onClick = {
-                                if (currentExerciseIndex < rutina!!.ejercicios.size - 1) {
-                                    currentExerciseIndex++
-                                    isExerciseCompleted = false
-                                    exerciseTimer = 30 // Resetear temporizador
-                                } else {
-                                    isRutinaCompleted = true
+                                    // Indicador visual para ajustar el tiempo (solo visible si no está corriendo)
+                                    if (!isTimerRunning) {
+                                        Text(
+                                            text = "Tocar para ajustar",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+                                        )
+                                    }
                                 }
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(56.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary
-                            )
-                        ) {
-                            if (currentExerciseIndex < rutina!!.ejercicios.size - 1) {
-                                Icon(Icons.Default.ArrowForward, contentDescription = null)
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            // Botón de inicio/pausa
+                            Button(
+                                onClick = { isTimerRunning = !isTimerRunning },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(45.dp)
+                            ) {
+                                Icon(
+                                    imageVector = if (isTimerRunning) Icons.Default.Pause else Icons.Default.PlayArrow,
+                                    contentDescription = null
+                                )
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text("Siguiente ejercicio")
-                            } else {
-                                Icon(Icons.Default.CheckCircle, contentDescription = null)
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text("Finalizar rutina")
+                                Text(if (isTimerRunning) "Pausar" else "Iniciar")
+                            }
+                        } else {
+                            // Botón para pasar al siguiente ejercicio
+                            Button(
+                                onClick = {
+                                    if (currentExerciseIndex < rutina!!.ejercicios.size - 1) {
+                                        currentExerciseIndex++
+                                        isExerciseCompleted = false
+                                        exerciseTimer = 30 // Resetear temporizador
+                                    } else {
+                                        isRutinaCompleted = true
+                                    }
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(56.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary
+                                )
+                            ) {
+                                if (currentExerciseIndex < rutina!!.ejercicios.size - 1) {
+                                    Icon(Icons.Default.ArrowForward, contentDescription = null)
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text("Siguiente ejercicio")
+                                } else {
+                                    Icon(Icons.Default.CheckCircle, contentDescription = null)
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text("Finalizar rutina")
+                                }
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    // Diálogo para ajustar el temporizador
+    if (showTimerAdjustDialog) {
+        AlertDialog(
+            onDismissRequest = { showTimerAdjustDialog = false },
+            title = { Text("Ajustar tiempo") },
+            text = {
+                Column(
+                    modifier = Modifier.padding(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // Valor actual grande
+                    Text(
+                        text = "$exerciseTimer s",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Control de ajuste del temporizador
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Botones de decremento
+                        Row {
+                            OutlinedIconButton(
+                                onClick = { exerciseTimer = (exerciseTimer - 10).coerceAtLeast(minTime) },
+                                modifier = Modifier.size(40.dp)
+                            ) {
+                                Text("-10", style = MaterialTheme.typography.labelMedium)
+                            }
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            OutlinedIconButton(
+                                onClick = { exerciseTimer = (exerciseTimer - 5).coerceAtLeast(minTime) },
+                                modifier = Modifier.size(40.dp)
+                            ) {
+                                Text("-5", style = MaterialTheme.typography.labelMedium)
+                            }
+                        }
+
+                        // Botones de incremento
+                        Row {
+                            OutlinedIconButton(
+                                onClick = { exerciseTimer = (exerciseTimer + 5).coerceAtMost(maxTime) },
+                                modifier = Modifier.size(40.dp)
+                            ) {
+                                Text("+5", style = MaterialTheme.typography.labelMedium)
+                            }
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            OutlinedIconButton(
+                                onClick = { exerciseTimer = (exerciseTimer + 10).coerceAtMost(maxTime) },
+                                modifier = Modifier.size(40.dp)
+                            ) {
+                                Text("+10", style = MaterialTheme.typography.labelMedium)
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Slider para ajuste fino
+                    Slider(
+                        value = exerciseTimer.toFloat(),
+                        onValueChange = { exerciseTimer = it.toInt() },
+                        valueRange = minTime.toFloat()..maxTime.toFloat(),
+                        steps = ((maxTime - minTime) / 5) - 1, // Pasos de 5 segundos
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    // Rango del slider
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("$minTime s", style = MaterialTheme.typography.bodySmall)
+                        Text("$maxTime s", style = MaterialTheme.typography.bodySmall)
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = { showTimerAdjustDialog = false }
+                ) {
+                    Text("Aceptar")
+                }
+            }
+        )
     }
 
     // Diálogo de confirmación para salir

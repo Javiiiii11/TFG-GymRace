@@ -2,6 +2,12 @@ package com.example.gymrace
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,6 +29,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -52,7 +59,6 @@ fun ListarMisRutinasPage(navController: NavHostController) {
     var selectedRutina by remember { mutableStateOf<Rutina?>(null) }
 
     // Cargar rutinas del usuario
-// Dentro de tu composable ListarRutinasPage
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
             isLoading = true
@@ -231,16 +237,9 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                                 rutinaToDelete = rutina
                                 showDeleteDialog = true
                             },
-                            onEditClick = {
-                                // Implementar edición de rutina
-                                // Por ahora, solo mostramos los detalles
-                                selectedRutina = rutina
-                                showDetailDialog = true
-                            },
                             onPlayClick = {
                                 // Navegar a la pantalla de ejecución de rutina
-                                    navController.navigate("ejecutar_rutina/${rutina.id}")
-
+                                navController.navigate("ejecutar_rutina/${rutina.id}")
                             }
                         )
                     }
@@ -290,8 +289,19 @@ fun ListarMisRutinasPage(navController: NavHostController) {
         )
     }
 
-    // Diálogo para mostrar detalles de la rutina
+    // Diálogo para mostrar detalles de la rutina con opción para cambiar dificultad
     if (showDetailDialog && selectedRutina != null) {
+        // Lista de dificultades disponibles
+        val dificultades = listOf("Fácil", "Medio", "Difícil")
+        // Estado para controlar si se muestra o no el menú de dificultad
+        var showDifficultyMenu by remember { mutableStateOf(false) }
+        // Estado para la rutina actual que se está editando
+        var currentRutina by remember { mutableStateOf(selectedRutina!!) }
+        // Estado para mostrar indicador de guardado
+        var isSaving by remember { mutableStateOf(false) }
+        // Estado para mensajes de éxito
+        var successMessage by remember { mutableStateOf<String?>(null) }
+
         Dialog(onDismissRequest = {
             showDetailDialog = false
             selectedRutina = null
@@ -305,7 +315,7 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                 Column(
                     modifier = Modifier
                         .padding(16.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -313,7 +323,7 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = selectedRutina!!.nombre,
+                            text = currentRutina.nombre,
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )
@@ -327,31 +337,152 @@ fun ListarMisRutinasPage(navController: NavHostController) {
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Mostrar chip de dificultad
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = "Dificultad: ",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        AssistChip(
-                            onClick = { },
-                            label = { Text(selectedRutina!!.dificultad) },
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = when(selectedRutina!!.dificultad) {
-                                        "Fácil" -> Icons.Default.Star
-                                        "Difícil" -> Icons.Default.StarRate
-                                        else -> Icons.Default.StarHalf
+                    // Mostrar chip de dificultad con opción de cambio
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "Dificultad: ",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            AssistChip(
+                                onClick = { showDifficultyMenu = true },
+                                label = { Text(currentRutina.dificultad) },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = when(currentRutina.dificultad) {
+                                            "Fácil" -> Icons.Default.Star
+                                            "Difícil" -> Icons.Default.StarRate
+                                            else -> Icons.Default.StarHalf
+                                        },
+                                        contentDescription = null,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                },
+                                trailingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.ArrowDropDown,
+                                        contentDescription = "Cambiar dificultad",
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                }
+                            )
+                        }
+
+                        // Menú desplegable para cambiar dificultad
+                        DropdownMenu(
+                            expanded = showDifficultyMenu,
+                            onDismissRequest = { showDifficultyMenu = false },
+                            modifier = Modifier
+                                .width(200.dp)
+                                .background(MaterialTheme.colorScheme.surface)
+                        ) {
+                            dificultades.forEach { dificultad ->
+                                DropdownMenuItem(
+                                    text = { Text(dificultad) },
+                                    onClick = {
+                                        // Solo actualizar si la dificultad cambió
+                                        if (currentRutina.dificultad != dificultad) {
+                                            isSaving = true
+                                            scope.launch {
+                                                try {
+                                                    // Actualizar en Firestore
+                                                    db.collection("rutinas")
+                                                        .document(currentRutina.id)
+                                                        .update("dificultad", dificultad)
+                                                        .await()
+
+                                                    // Actualizar la rutina actual
+                                                    val updatedRutina = currentRutina.copy(dificultad = dificultad)
+                                                    currentRutina = updatedRutina
+
+                                                    // Actualizar la lista de rutinas
+                                                    rutinas = rutinas.map {
+                                                        if (it.id == updatedRutina.id) updatedRutina else it
+                                                    }
+
+                                                    successMessage = "Dificultad actualizada"
+                                                    isSaving = false
+
+                                                    // Auto-cerrar mensaje de éxito después de 2 segundos
+                                                    scope.launch {
+                                                        delay(2000)
+                                                        successMessage = null
+                                                    }
+                                                } catch (e: Exception) {
+                                                    errorMessage = "Error al actualizar: ${e.message}"
+                                                    isSaving = false
+                                                }
+                                            }
+                                        }
+                                        showDifficultyMenu = false
                                     },
-                                    contentDescription = null,
-                                    modifier = Modifier.size(18.dp)
+                                    leadingIcon = {
+                                        Icon(
+                                            imageVector = when(dificultad) {
+                                                "Fácil" -> Icons.Default.Star
+                                                "Difícil" -> Icons.Default.StarRate
+                                                else -> Icons.Default.StarHalf
+                                            },
+                                            contentDescription = null,
+                                            tint = if (dificultad == currentRutina.dificultad)
+                                                MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                                        )
+                                    },
+                                    trailingIcon = {
+                                        if (dificultad == currentRutina.dificultad) {
+                                            Icon(
+                                                imageVector = Icons.Default.Check,
+                                                contentDescription = "Seleccionado",
+                                                tint = MaterialTheme.colorScheme.primary
+                                            )
+                                        }
+                                    }
                                 )
                             }
-                        )
+                        }
                     }
 
-                    if (selectedRutina!!.descripcion.isNotEmpty()) {
+                    // Mostrar indicador de guardado o mensaje de éxito
+                    AnimatedVisibility(
+                        visible = isSaving || successMessage != null,
+                        enter = fadeIn() + expandVertically(),
+                        exit = fadeOut() + shrinkVertically()
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (isSaving) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(16.dp),
+                                    strokeWidth = 2.dp
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "Guardando cambios...",
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            } else if (successMessage != null) {
+                                Icon(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = null,
+                                    tint = Color(0xFF4CAF50),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = successMessage!!,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color(0xFF4CAF50)
+                                )
+                            }
+                        }
+                    }
+
+                    if (currentRutina.descripcion.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = "Descripción:",
@@ -359,7 +490,7 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = selectedRutina!!.descripcion,
+                            text = currentRutina.descripcion,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -367,7 +498,7 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "Ejercicios (${selectedRutina!!.ejercicios.size}):",
+                        text = "Ejercicios (${currentRutina.ejercicios.size}):",
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -379,7 +510,7 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                             .fillMaxWidth()
                             .heightIn(max = 200.dp)
                     ) {
-                        items(selectedRutina!!.ejercicios) { ejercicio ->
+                        items(currentRutina.ejercicios) { ejercicio ->
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -409,15 +540,15 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                     ) {
                         Button(
                             onClick = {
-                                // Navigate to ejecutar_rutina with the selected routine ID
+                                // Navegar a ejecutar_rutina con el ID de la rutina seleccionada
                                 if (selectedRutina != null) {
-                                    val rutinaId = selectedRutina!!.id
+                                    val rutinaId = currentRutina.id
                                     navController.navigate("ejecutar_rutina/$rutinaId")
                                     Log.d("ListarMisRutinasPage", "Ejecutar rutina: $rutinaId")
 
-//                                    // Clean up after navigation
+                                    // Limpiar después de la navegación
                                     showDetailDialog = false
-//                                    selectedRutina = null
+                                    selectedRutina = null
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
@@ -438,13 +569,13 @@ fun RutinaCard(
     rutina: Rutina,
     onRutinaClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onEditClick: () -> Unit,
     onPlayClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
+            .background(MaterialTheme.colorScheme.surface)
             .clickable { onRutinaClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -538,20 +669,6 @@ fun RutinaCard(
                 horizontalArrangement = Arrangement.End
             ) {
                 TextButton(
-                    onClick = onEditClick
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Editar",
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Editar")
-                }
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                TextButton(
                     onClick = onDeleteClick,
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = MaterialTheme.colorScheme.error
@@ -569,3 +686,4 @@ fun RutinaCard(
         }
     }
 }
+

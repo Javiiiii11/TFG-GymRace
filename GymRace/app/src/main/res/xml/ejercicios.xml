@@ -1989,7 +1989,7 @@
             </pasos>
             <consejo>
                 <item>Ajusta la resistencia para que el movimiento sea desafiante pero controlado.</item>
-                <item>Conc\u00e9ntrate en jalar con la espalda y no solo con los brazos.</item>
+                <item>Concéntrate en jalar con la espalda y no solo con los brazos.</item>
                 <item>Realiza el movimiento de forma lenta y controlada para aislar los dorsales.</item>
             </consejo>
             <musculos>
@@ -1998,18 +1998,18 @@
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Jal\u00f3n Estendida en Pie (polea)</nombre>
-            <descripcion>Realizado en pie, este jal\u00f3n extiende la espalda para trabajar los dorsales de forma integral.</descripcion>
+            <nombre>jalón Estendida en Pie (polea)</nombre>
+            <descripcion>Realizado en pie, este jalón extiende la espalda para trabajar los dorsales de forma integral.</descripcion>
             <gif>@drawable/jal_n_estendida_en_pie__polea_</gif>
             <pasos>
                 <paso numero="1">Ajustar la polea a la altura adecuada.</paso>
                 <paso numero="2">Permanecer de pie y agarrar la barra o cuerda.</paso>
-                <paso numero="3">Realizar el jal\u00f3n extendiendo la espalda.</paso>
-                <paso numero="4">Regresar a la posici\u00f3n inicial controladamente.</paso>
+                <paso numero="3">Realizar el jalón extendiendo la espalda.</paso>
+                <paso numero="4">Regresar a la posición inicial controladamente.</paso>
             </pasos>
             <consejo>
-                <item>Mant\u00e9n el tronco erguido y la espalda recta.</item>
-                <item>Extiende la espalda en cada repetici\u00f3n para activar todo el dorsal.</item>
+                <item>Mantén el tronco erguido y la espalda recta.</item>
+                <item>Extiende la espalda en cada repetición para activar todo el dorsal.</item>
                 <item>Realiza el movimiento con un ritmo constante.</item>
             </consejo>
             <musculos>
@@ -2019,7 +2019,7 @@
         </ejercicio>
         <ejercicio>
             <nombre>Remo - agarre invertido (barra)</nombre>
-            <descripcion>Ejercicio b\u00e1sico de remo con barra que trabaja la parte media de la espalda y los dorsales.</descripcion>
+            <descripcion>Ejercicio básico de remo con barra que trabaja la parte media de la espalda y los dorsales.</descripcion>
             <gif>@drawable/remo___agarre_invertido__barra_</gif>
             <pasos>
                 <paso numero="1">Colocar la barra en el soporte adecuado.</paso>
@@ -2028,14 +2028,14 @@
                 <paso numero="4">Bajar la barra de forma controlada.</paso>
             </pasos>
             <consejo>
-                <item>Mant\u00e9n la espalda recta durante todo el movimiento.</item>
-                <item>Conc\u00e9ntrate en tirar con los dorsales y no solo con los brazos.</item>
+                <item>Mantén la espalda recta durante todo el movimiento.</item>
+                <item>Concéntrate en tirar con los dorsales y no solo con los brazos.</item>
                 <item>Controla la bajada para maximizar el trabajo muscular.</item>
             </consejo>
             <musculos>
                 <principal>Dorsales</principal>
                 <secundario>Trapecios</secundario>
-                <secundario>B\u00edceps</secundario>
+                <secundario>Bíceps</secundario>
             </musculos>
         </ejercicio>
         <ejercicio>
@@ -2044,7 +2044,7 @@
             <gif>@drawable/remo___agarre_invertido__mancuernas_</gif>
             <pasos>
                 <paso numero="1">Seleccionar mancuernas de peso adecuado.</paso>
-                <paso numero="2">Colocarse en posici\u00f3n inclinada sobre un banco.</paso>
+                <paso numero="2">Colocarse en posición inclinada sobre un banco.</paso>
                 <paso numero="3">Realizar el remo tirando de las mancuernas hacia el cuerpo.</paso>
                 <paso numero="4">Bajar las mancuernas de forma controlada y repetir en cada lado.</paso>
             </pasos>
@@ -2055,7 +2055,7 @@
             </consejo>
             <musculos>
                 <principal>Dorsales</principal>
-                <secundario>B\u00edceps</secundario>
+                <secundario>Bíceps</secundario>
             </musculos>
         </ejercicio>
         <ejercicio>
@@ -2065,13 +2065,13 @@
             <pasos>
                 <paso numero="1">Ajustar la polea a la altura de la espalda.</paso>
                 <paso numero="2">Sentarse y agarrar la barra con agarre invertido.</paso>
-                <paso numero="3">Realizar el remo concentrándose en la contracci\u00f3n dorsal.</paso>
-                <paso numero="4">Regresar de forma controlada a la posici\u00f3n inicial.</paso>
+                <paso numero="3">Realizar el remo concentrándose en la contracción dorsal.</paso>
+                <paso numero="4">Regresar de forma controlada a la posición inicial.</paso>
             </pasos>
             <consejo>
                 <item>Ajusta la resistencia para un movimiento desafiante pero controlable.</item>
-                <item>Realiza el remo de forma lenta para maximizar la activaci\u00f3n de los dorsales.</item>
-                <item>Mant\u00e9n una postura erguida y el core activo.</item>
+                <item>Realiza el remo de forma lenta para maximizar la activación de los dorsales.</item>
+                <item>Mantén una postura erguida y el core activo.</item>
             </consejo>
             <musculos>
                 <principal>Dorsales</principal>
@@ -2080,18 +2080,18 @@
         </ejercicio>
         <ejercicio>
             <nombre>Remo Alternado Sentado (polea)</nombre>
-            <descripcion>Permite trabajar de forma alternada cada lado de la espalda, favoreciendo la simetr\u00eda muscular.</descripcion>
+            <descripcion>Permite trabajar de forma alternada cada lado de la espalda, favoreciendo la simetría muscular.</descripcion>
             <gif>@drawable/remo_alternado_sentado__polea_</gif>
             <pasos>
-                <paso numero="1">Ajustar la polea y sentarse en la m\u00e1quina.</paso>
+                <paso numero="1">Ajustar la polea y sentarse en la máquina.</paso>
                 <paso numero="2">Agarrar la barra con ambas manos.</paso>
                 <paso numero="3">Realizar el remo alternando el enfoque en cada lado de la espalda.</paso>
                 <paso numero="4">Bajar la barra controladamente y repetir.</paso>
             </pasos>
             <consejo>
                 <item>Alterna el movimiento para equilibrar la fuerza de ambos lados.</item>
-                <item>Mant\u00e9n el core activado y la espalda recta durante el ejercicio.</item>
-                <item>Realiza cada repetici\u00f3n con control para maximizar el aislamiento muscular.</item>
+                <item>Mantén el core activado y la espalda recta durante el ejercicio.</item>
+                <item>Realiza cada repetición con control para maximizar el aislamiento muscular.</item>
             </consejo>
             <musculos>
                 <principal>Dorsales</principal>
@@ -2115,7 +2115,7 @@
             </consejo>
             <musculos>
                 <principal>Dorsales</principal>
-                <secundario>B\u00edceps</secundario>
+                <secundario>Bíceps</secundario>
             </musculos>
         </ejercicio>
         <ejercicio>
@@ -2123,13 +2123,13 @@
             <descripcion>Ejecutado en banco inclinado, se usa la cuerda para lograr un movimiento de remo que trabaja la espalda en profundidad.</descripcion>
             <gif>@drawable/remo_en_banco_inclinado___con_cuerda__polea_</gif>
             <pasos>
-                <paso numero="1">Ajustar el banco en posici\u00f3n inclinada.</paso>
+                <paso numero="1">Ajustar el banco en posición inclinada.</paso>
                 <paso numero="2">Sentarse y agarrar la cuerda conectada a la polea.</paso>
-                <paso numero="3">Realizar el remo concentr\u00e1ndose en la contracci\u00f3n dorsal.</paso>
-                <paso numero="4">Regresar a la posici\u00f3n inicial de forma controlada.</paso>
+                <paso numero="3">Realizar el remo concentrándose en la contracción dorsal.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
             </pasos>
             <consejo>
-                <item>Mant\u00e9n la espalda recta y el core activado durante el ejercicio.</item>
+                <item>Mantén la espalda recta y el core activado durante el ejercicio.</item>
                 <item>Realiza el movimiento con un ritmo controlado para aislar los dorsales.</item>
             </consejo>
             <musculos>
@@ -2138,19 +2138,19 @@
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Remo (m\u00e1quina)</nombre>
-            <descripcion>La m\u00e1quina de remo guía el movimiento, permitiendo trabajar los dorsales con seguridad y control.</descripcion>
+            <nombre>Remo (máquina)</nombre>
+            <descripcion>La máquina de remo guía el movimiento, permitiendo trabajar los dorsales con seguridad y control.</descripcion>
             <gif>@drawable/remo__m_quina_</gif>
             <pasos>
-                <paso numero="1">Ajustar la m\u00e1quina de remo seg\u00fan las indicaciones.</paso>
+                <paso numero="1">Ajustar la máquina de remo según las indicaciones.</paso>
                 <paso numero="2">Sentarse y agarrar la barra o mango.</paso>
-                <paso numero="3">Realizar el remo concentr\u00e1ndose en los dorsales.</paso>
-                <paso numero="4">Regresar a la posici\u00f3n inicial de forma controlada.</paso>
+                <paso numero="3">Realizar el remo concentrándose en los dorsales.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
             </pasos>
             <consejo>
-                <item>Sigue las indicaciones de la m\u00e1quina para un movimiento guiado.</item>
+                <item>Sigue las indicaciones de la máquina para un movimiento guiado.</item>
                 <item>Realiza el ejercicio de forma lenta y controlada.</item>
-                <item>Conc\u00e9ntrate en apretar los dorsales en cada repetici\u00f3n.</item>
+                <item>Concéntrate en apretar los dorsales en cada repetición.</item>
             </consejo>
             <musculos>
                 <principal>Dorsales</principal>
@@ -2159,17 +2159,17 @@
         </ejercicio>
         <ejercicio>
             <nombre>Remo - pegada cerrada (smith)</nombre>
-            <descripcion>Se efect\u00faa un remo con agarre pegado, enfatizando la contracci\u00f3n de la espalda central.</descripcion>
+            <descripcion>Se efectúa un remo con agarre pegado, enfatizando la contracción de la espalda central.</descripcion>
             <gif>@drawable/remo___pegada_cerrada__smith_</gif>
             <pasos>
-                <paso numero="1">Ajustar la m\u00e1quina Smith.</paso>
+                <paso numero="1">Ajustar la máquina Smith.</paso>
                 <paso numero="2">Agarrar la barra con agarre pegado.</paso>
-                <paso numero="3">Realizar el remo concentr\u00e1ndose en la espalda central.</paso>
+                <paso numero="3">Realizar el remo concentrándose en la espalda central.</paso>
                 <paso numero="4">Bajar la barra de forma controlada.</paso>
             </pasos>
             <consejo>
-                <item>Mant\u00e9n los codos cerca del cuerpo para focalizar el trabajo en la espalda central.</item>
-                <item>Realiza el movimiento sin balanceos para aislar la contracci\u00f3n.</item>
+                <item>Mantén los codos cerca del cuerpo para focalizar el trabajo en la espalda central.</item>
+                <item>Realiza el movimiento sin balanceos para aislar la contracción.</item>
             </consejo>
             <musculos>
                 <principal>Dorsales</principal>
@@ -2178,18 +2178,18 @@
         </ejercicio>
         <ejercicio>
             <nombre>Remo (polea baja)</nombre>
-            <descripcion>Con polea baja se realiza un remo que enfatiza la contracci\u00f3n de la parte baja de la espalda.</descripcion>
+            <descripcion>Con polea baja se realiza un remo que enfatiza la contracción de la parte baja de la espalda.</descripcion>
             <gif>@drawable/remo__polea_baja_</gif>
             <pasos>
                 <paso numero="1">Ajustar la polea baja a la resistencia deseada.</paso>
                 <paso numero="2">Sentarse y posicionar los pies firmemente.</paso>
-                <paso numero="3">Ejecutar el remo concentr\u00e1ndose en la parte baja de la espalda.</paso>
-                <paso numero="4">Regresar a la posici\u00f3n inicial de forma controlada.</paso>
+                <paso numero="3">Ejecutar el remo concentrándose en la parte baja de la espalda.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
             </pasos>
             <consejo>
                 <item>Utiliza una resistencia adecuada para trabajar la parte baja de la espalda.</item>
                 <item>Realiza el movimiento de forma lenta y controlada.</item>
-                <item>Mant\u00e9n la postura y el core activado durante todo el ejercicio.</item>
+                <item>Mantén la postura y el core activado durante todo el ejercicio.</item>
             </consejo>
             <musculos>
                 <principal>Dorsales</principal>
@@ -2198,18 +2198,18 @@
         </ejercicio>
         <ejercicio>
             <nombre>Remo (polea)</nombre>
-            <descripcion>Un cl\u00e1sico ejercicio de remo con polea que activa toda la musculatura dorsal.</descripcion>
+            <descripcion>Un clásico ejercicio de remo con polea que activa toda la musculatura dorsal.</descripcion>
             <gif>@drawable/remo__polea_</gif>
             <pasos>
                 <paso numero="1">Ajustar la polea a la resistencia adecuada.</paso>
                 <paso numero="2">Sentarse y agarrar la barra con ambas manos.</paso>
                 <paso numero="3">Realizar el remo tirando la barra hacia el abdomen.</paso>
-                <paso numero="4">Regresar a la posici\u00f3n inicial controlando el movimiento.</paso>
+                <paso numero="4">Regresar a la posición inicial controlando el movimiento.</paso>
             </pasos>
             <consejo>
-                <item>Conc\u00e9ntrate en activar todos los dorsales a lo largo del movimiento.</item>
+                <item>Concéntrate en activar todos los dorsales a lo largo del movimiento.</item>
                 <item>Realiza el ejercicio de forma controlada para evitar balanceos.</item>
-                <item>Mant\u00e9n la espalda recta y el core firme.</item>
+                <item>Mantén la espalda recta y el core firme.</item>
             </consejo>
             <musculos>
                 <principal>Dorsales</principal>
@@ -2218,17 +2218,17 @@
         </ejercicio>
         <ejercicio>
             <nombre>Remo Sentado - con barra V (polea)</nombre>
-            <descripcion>La barra V facilita un agarre c\u00f3modo y trabaja de forma intensa la parte media de la espalda.</descripcion>
+            <descripcion>La barra V facilita un agarre cómodo y trabaja de forma intensa la parte media de la espalda.</descripcion>
             <gif>@drawable/remo_sentado___con_barra_v__polea_</gif>
             <pasos>
                 <paso numero="1">Ajustar la polea y colocar la barra V.</paso>
                 <paso numero="2">Sentarse y posicionar los pies firmemente.</paso>
-                <paso numero="3">Realizar el remo concentrándose en la contracci\u00f3n media de la espalda.</paso>
+                <paso numero="3">Realizar el remo concentrándose en la contracción media de la espalda.</paso>
                 <paso numero="4">Bajar la barra de forma controlada y repetir.</paso>
             </pasos>
             <consejo>
-                <item>Mant\u00e9n el core activado y la espalda recta durante todo el ejercicio.</item>
-                <item>Utiliza la barra V para un agarre que facilite la contracci\u00f3n.</item>
+                <item>Mantén el core activado y la espalda recta durante todo el ejercicio.</item>
+                <item>Utiliza la barra V para un agarre que facilite la contracción.</item>
                 <item>Realiza el movimiento de forma lenta y controlada.</item>
             </consejo>
             <musculos>
@@ -2238,17 +2238,17 @@
         </ejercicio>
         <ejercicio>
             <nombre>Remo Unilateral en Pie (polea)</nombre>
-            <descripcion>Se realiza en posici\u00f3n de pie para trabajar cada lado de la espalda de forma independiente.</descripcion>
+            <descripcion>Se realiza en posición de pie para trabajar cada lado de la espalda de forma independiente.</descripcion>
             <gif>@drawable/remo_unilateral_en_pie__polea_</gif>
             <pasos>
                 <paso numero="1">Ajustar la polea a la altura adecuada.</paso>
                 <paso numero="2">Posicionarse de pie con un brazo apoyado para equilibrio.</paso>
                 <paso numero="3">Realizar el remo con un brazo de forma unilateral.</paso>
-                <paso numero="4">Regresar a la posici\u00f3n inicial y repetir con el otro brazo.</paso>
+                <paso numero="4">Regresar a la posición inicial y repetir con el otro brazo.</paso>
             </pasos>
             <consejo>
                 <item>Realiza el ejercicio de forma unilateral para aislar cada lado.</item>
-                <item>Mant\u00e9n el equilibrio utilizando el brazo de apoyo.</item>
+                <item>Mantén el equilibrio utilizando el brazo de apoyo.</item>
                 <item>Controla el movimiento para concentrarte en los dorsales.</item>
             </consejo>
             <musculos>
@@ -2268,7 +2268,7 @@
             </pasos>
             <consejo>
                 <item>Utiliza el apoyo del banco para estabilizar el cuerpo.</item>
-                <item>Realiza el remo de forma lenta para maximizar la contracci\u00f3n de los dorsales.</item>
+                <item>Realiza el remo de forma lenta para maximizar la contracción de los dorsales.</item>
                 <item>Alterna entre ambos brazos para equilibrar la fuerza.</item>
             </consejo>
             <musculos>
@@ -2368,7 +2368,7 @@
             <pasos>
                 <paso numero="1">Permanecer de pie con los pies separados al ancho de los hombros.</paso>
                 <paso numero="2">Sostener un soporte o barra para mantener el equilibrio.</paso>
-                <paso numero="3">Realizar el curl de piernas elevando el talón hacia el gl\u00fateo.</paso>
+                <paso numero="3">Realizar el curl de piernas elevando el talón hacia el glúteo.</paso>
                 <paso numero="4">Bajar de forma controlada y repetir.</paso>
             </pasos>
             <consejo>
@@ -2378,12 +2378,12 @@
             </consejo>
             <musculos>
                 <principal>Femorales</principal>
-                <secundario>Gl\u00fateos</secundario>
+                <secundario>glúteos</secundario>
             </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Curl de Piernas de Pie (polea)</nombre>
-            <descripcion>Con polea se efect\u00faa un curl de piernas de pie que enfatiza la resistencia en la parte posterior.</descripcion>
+            <descripcion>Con polea se efectúa un curl de piernas de pie que enfatiza la resistencia en la parte posterior.</descripcion>
             <gif>@drawable/curl_de_piernas_de_pie_polea</gif>
             <pasos>
                 <paso numero="1">Ajustar la polea y seleccionar la resistencia adecuada.</paso>
@@ -2393,28 +2393,28 @@
             </pasos>
             <consejo>
                 <item>Ajusta la resistencia para que el movimiento sea desafiante pero controlable.</item>
-                <item>Mant\u00e9n una postura erguida y estable durante el ejercicio.</item>
-                <item>Conc\u00e9ntrate en la contracci\u00f3n de los femorales al realizar el curl.</item>
+                <item>Mantén una postura erguida y estable durante el ejercicio.</item>
+                <item>Concéntrate en la contracción de los femorales al realizar el curl.</item>
             </consejo>
             <musculos>
                 <principal>Femorales</principal>
-                <secundario>Gl\u00fateos</secundario>
+                <secundario>glúteos</secundario>
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Curl de Piernas Sentado (m\u00e1quina)</nombre>
-            <descripcion>Realizado en m\u00e1quina sentado, se logra un movimiento controlado que activa intensamente los femorales.</descripcion>
+            <nombre>Curl de Piernas Sentado (máquina)</nombre>
+            <descripcion>Realizado en máquina sentado, se logra un movimiento controlado que activa intensamente los femorales.</descripcion>
             <gif>@drawable/curl_de_piernas_sentado__m_quina_</gif>
             <pasos>
-                <paso numero="1">Ajustar la m\u00e1quina y sentarse correctamente.</paso>
+                <paso numero="1">Ajustar la máquina y sentarse correctamente.</paso>
                 <paso numero="2">Colocar las piernas en el soporte.</paso>
                 <paso numero="3">Ejecutar el curl de piernas concentrándose en los femorales.</paso>
                 <paso numero="4">Bajar de forma controlada y repetir.</paso>
             </pasos>
             <consejo>
                 <item>Ajusta la máquina para que el rango de movimiento sea adecuado.</item>
-                <item>Realiza el curl de forma lenta para maximizar la activaci\u00f3n muscular.</item>
-                <item>Mant\u00e9n una postura estable durante el ejercicio.</item>
+                <item>Realiza el curl de forma lenta para maximizar la activación muscular.</item>
+                <item>Mantén una postura estable durante el ejercicio.</item>
             </consejo>
             <musculos>
                 <principal>Femorales</principal>
@@ -2422,18 +2422,18 @@
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Curl de Piernas Unilateral Acostado (m\u00e1quina)</nombre>
-            <descripcion>A\u00edsla cada pierna de forma individual para trabajar los femorales de forma precisa y equilibrada.</descripcion>
+            <nombre>Curl de Piernas Unilateral Acostado (máquina)</nombre>
+            <descripcion>aísla cada pierna de forma individual para trabajar los femorales de forma precisa y equilibrada.</descripcion>
             <gif>@drawable/curl_de_piernas_unilateral_acostado__m_quina_</gif>
             <pasos>
-                <paso numero="1">Ajustar la m\u00e1quina para trabajo unilateral.</paso>
+                <paso numero="1">Ajustar la máquina para trabajo unilateral.</paso>
                 <paso numero="2">Acostarse y colocar una pierna en el soporte.</paso>
                 <paso numero="3">Realizar el curl concentrándose en el femoral de la pierna trabajada.</paso>
                 <paso numero="4">Bajar de forma controlada y repetir con la otra pierna.</paso>
             </pasos>
             <consejo>
                 <item>Realiza el ejercicio de forma unilateral para aislar bien cada pierna.</item>
-                <item>Mant\u00e9n el movimiento lento y controlado.</item>
+                <item>Mantén el movimiento lento y controlado.</item>
                 <item>Activa el core para mejorar la estabilidad.</item>
             </consejo>
             <musculos>
@@ -2442,17 +2442,17 @@
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Curl de Piernas Unilateral de Rodillas (m\u00e1quina)</nombre>
-            <descripcion>Con apoyo en rodillas y m\u00e1quina se efect\u00faa un curl unilateral que maximiza el aislamiento muscular.</descripcion>
+            <nombre>Curl de Piernas Unilateral de Rodillas (máquina)</nombre>
+            <descripcion>Con apoyo en rodillas y máquina se efectúa un curl unilateral que maximiza el aislamiento muscular.</descripcion>
             <gif>@drawable/curl_de_piernas_unilateral_de_rodillas__m_quina_</gif>
             <pasos>
-                <paso numero="1">Ajustar la m\u00e1quina para el ejercicio unilateral.</paso>
-                <paso numero="2">Apoyar una rodilla en el coj\u00edn indicado.</paso>
+                <paso numero="1">Ajustar la máquina para el ejercicio unilateral.</paso>
+                <paso numero="2">Apoyar una rodilla en el cojín indicado.</paso>
                 <paso numero="3">Realizar el curl concentrado en la pierna trabajada.</paso>
                 <paso numero="4">Bajar lentamente y repetir con la otra pierna.</paso>
             </pasos>
             <consejo>
-                <item>Asegura un buen soporte para la rodilla en el coj\u00edn.</item>
+                <item>Asegura un buen soporte para la rodilla en el cojín.</item>
                 <item>Realiza el movimiento lentamente para maximizar el aislamiento.</item>
                 <item>Alterna entre piernas para corregir desequilibrios.</item>
             </consejo>
@@ -2462,19 +2462,19 @@
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Curl de Piernas Unilateral Sentada (m\u00e1quina)</nombre>
-            <descripcion>Se trabaja de forma unilateral en m\u00e1quina para un control \u00f3ptimo del movimiento y activaci\u00f3n de los femorales.</descripcion>
+            <nombre>Curl de Piernas Unilateral Sentada (máquina)</nombre>
+            <descripcion>Se trabaja de forma unilateral en máquina para un control óptimo del movimiento y activación de los femorales.</descripcion>
             <gif>@drawable/curl_de_piernas_unilateral_sentada__m_quina_</gif>
             <pasos>
-                <paso numero="1">Sentarse en la m\u00e1quina y ajustar la resistencia.</paso>
-                <paso numero="2">Colocar una pierna en el \u00e1rea de trabajo.</paso>
+                <paso numero="1">Sentarse en la máquina y ajustar la resistencia.</paso>
+                <paso numero="2">Colocar una pierna en el área de trabajo.</paso>
                 <paso numero="3">Realizar el curl de piernas concentrado en la pierna elegida.</paso>
-                <paso numero="4">Regresar a la posici\u00f3n inicial controladamente y repetir con la otra pierna.</paso>
+                <paso numero="4">Regresar a la posición inicial controladamente y repetir con la otra pierna.</paso>
             </pasos>
             <consejo>
-                <item>Utiliza la m\u00e1quina para controlar el rango de movimiento.</item>
+                <item>Utiliza la máquina para controlar el rango de movimiento.</item>
                 <item>Realiza el ejercicio lentamente para enfocar el trabajo en cada pierna.</item>
-                <item>Alterna el ejercicio para lograr simetr\u00eda muscular.</item>
+                <item>Alterna el ejercicio para lograr simetría muscular.</item>
             </consejo>
             <musculos>
                 <principal>Femorales</principal>
@@ -2482,48 +2482,48 @@
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevaci\u00f3n de Cadera con Fitball</nombre>
-            <descripcion>Ejercicio que, sobre un fitball, activa la musculatura posterior de las piernas y gl\u00fateos mediante la elevaci\u00f3n de la cadera.</descripcion>
+            <nombre>elevación de Cadera con Fitball</nombre>
+            <descripcion>Ejercicio que, sobre un fitball, activa la musculatura posterior de las piernas y glúteos mediante la elevación de la cadera.</descripcion>
             <gif>@drawable/elevaci_n_de_cadera_con_fitball</gif>
             <pasos>
                 <paso numero="1">Colocar el fitball sobre una superficie estable.</paso>
                 <paso numero="2">Acostarse con la parte superior de la espalda apoyada en el fitball.</paso>
-                <paso numero="3">Elevar la cadera contrayendo gl\u00fateos y femorales.</paso>
+                <paso numero="3">Elevar la cadera contrayendo glúteos y femorales.</paso>
                 <paso numero="4">Bajar la cadera de forma controlada.</paso>
             </pasos>
             <consejo>
-                <item>Mant\u00e9n el core activado para estabilizar el movimiento.</item>
-                <item>Realiza la elevaci\u00f3n de la cadera de forma lenta y controlada.</item>
-                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gl\u00fateos y femorales.</item>
+                <item>Mantén el core activado para estabilizar el movimiento.</item>
+                <item>Realiza la elevación de la cadera de forma lenta y controlada.</item>
+                <item>Concéntrate en la contracción de los glúteos y femorales.</item>
             </consejo>
             <musculos>
                 <principal>Femorales</principal>
-                <secundario>Gl\u00fateos</secundario>
+                <secundario>glúteos</secundario>
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevaci\u00f3n de Cadera (m\u00e1quina)</nombre>
-            <descripcion>Utilizando m\u00e1quina se efect\u00faa la elevaci\u00f3n de cadera para trabajar intensamente los m\u00fasculos femorales y gl\u00fateos.</descripcion>
+            <nombre>elevación de Cadera (máquina)</nombre>
+            <descripcion>Utilizando máquina se efectúa la elevación de cadera para trabajar intensamente los músculos femorales y glúteos.</descripcion>
             <gif>@drawable/elevaci_n_de_cadera__m_quina_</gif>
             <pasos>
-                <paso numero="1">Ajustar la m\u00e1quina de elevaci\u00f3n de cadera.</paso>
+                <paso numero="1">Ajustar la máquina de elevación de cadera.</paso>
                 <paso numero="2">Sentarse y colocar los pies en el soporte.</paso>
-                <paso numero="3">Realizar la elevaci\u00f3n de cadera concentr\u00e1ndose en gl\u00fateos y femorales.</paso>
-                <paso numero="4">Bajar de forma controlada a la posici\u00f3n inicial.</paso>
+                <paso numero="3">Realizar la elevación de cadera concentrándose en glúteos y femorales.</paso>
+                <paso numero="4">Bajar de forma controlada a la posición inicial.</paso>
             </pasos>
             <consejo>
-                <item>Ajusta la m\u00e1quina para que se adapte a tu estatura y fuerza.</item>
-                <item>Mant\u00e9n una postura erguida y activa el core durante todo el ejercicio.</item>
-                <item>Realiza el movimiento de forma lenta para maximizar la contracci\u00f3n muscular.</item>
+                <item>Ajusta la máquina para que se adapte a tu estatura y fuerza.</item>
+                <item>Mantén una postura erguida y activa el core durante todo el ejercicio.</item>
+                <item>Realiza el movimiento de forma lenta para maximizar la contracción muscular.</item>
             </consejo>
             <musculos>
                 <principal>Femorales</principal>
-                <secundario>Gl\u00fateos</secundario>
+                <secundario>glúteos</secundario>
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevaci\u00f3n de Piernas en el Suelo</nombre>
-            <descripcion>Se efect\u00faa en el suelo para trabajar el core y la parte inferior de las piernas mediante elevaci\u00f3n controlada.</descripcion>
+            <nombre>elevación de Piernas en el Suelo</nombre>
+            <descripcion>Se efectúa en el suelo para trabajar el core y la parte inferior de las piernas mediante elevación controlada.</descripcion>
             <gif>@drawable/elevaci_n_de_piernas_en_el_suelo</gif>
             <pasos>
                 <paso numero="1">Acostarse sobre una colchoneta boca arriba.</paso>
@@ -2532,8 +2532,8 @@
                 <paso numero="4">Bajar de forma lenta y controlada.</paso>
             </pasos>
             <consejo>
-                <item>Mant\u00e9n el core activado para proteger la espalda.</item>
-                <item>Realiza el movimiento lentamente para aislar la contracci\u00f3n de la parte inferior.</item>
+                <item>Mantén el core activado para proteger la espalda.</item>
+                <item>Realiza el movimiento lentamente para aislar la contracción de la parte inferior.</item>
                 <item>Controla el descenso para evitar rebotes.</item>
             </consejo>
             <musculos>
@@ -2542,19 +2542,19 @@
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Hiperextensi\u00f3n Lumbar Reversa (mancuernas)</nombre>
-            <descripcion>Ejercicio que invierte la hiperextensi\u00f3n para trabajar de forma intensa la zona lumbar y femoral.</descripcion>
+            <nombre>hiperextensión Lumbar Reversa (mancuernas)</nombre>
+            <descripcion>Ejercicio que invierte la hiperextensión para trabajar de forma intensa la zona lumbar y femoral.</descripcion>
             <gif>@drawable/hiperextensi_n_lumbar_reversa_mancuernas</gif>
             <pasos>
                 <paso numero="1">Colocar una colchoneta y seleccionar mancuernas ligeras.</paso>
-                <paso numero="2">Acu\u00e9state boca abajo con las caderas en el borde de un banco.</paso>
-                <paso numero="3">Realiza la hiperextensi\u00f3n de forma inversa contrayendo la zona lumbar y femorales.</paso>
+                <paso numero="2">Acuéstate boca abajo con las caderas en el borde de un banco.</paso>
+                <paso numero="3">Realiza la hiperextensión de forma inversa contrayendo la zona lumbar y femorales.</paso>
                 <paso numero="4">Baja de forma controlada y repite el movimiento.</paso>
             </pasos>
             <consejo>
-                <item>Mant\u00e9n el cuello alineado con la columna durante el ejercicio.</item>
+                <item>Mantén el cuello alineado con la columna durante el ejercicio.</item>
                 <item>Realiza el movimiento de forma lenta para evitar sobrecargas.</item>
-                <item>Conc\u00e9ntrate en la contracci\u00f3n de la zona lumbar y los femorales.</item>
+                <item>Concéntrate en la contracción de la zona lumbar y los femorales.</item>
             </consejo>
             <musculos>
                 <principal>Femorales</principal>
@@ -2598,7 +2598,7 @@
             <consejo>
                 <item>Asegura un agarre firme en la barra y mantén la espalda recta.</item>
                 <item>Realiza el ejercicio con un ritmo controlado para maximizar el trabajo.</item>
-                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gemelos en cada repetici\u00f3n.</item>
+                <item>Concéntrate en la contracción de los gemelos en cada repetición.</item>
             </consejo>
             <musculos>
                 <principal>Gemelos</principal>
@@ -2616,7 +2616,7 @@
                 <paso numero="4">Bajar de forma controlada y repetir.</paso>
             </pasos>
             <consejo>
-                <item>Mant\u00e9n la estabilidad sobre el step y activa el core.</item>
+                <item>Mantén la estabilidad sobre el step y activa el core.</item>
                 <item>Utiliza mancuernas ligeras para concentrarte en la técnica.</item>
                 <item>Realiza el movimiento lentamente para aislar los gemelos.</item>
             </consejo>
@@ -2638,7 +2638,7 @@
             <consejo>
                 <item>Ajusta la altura del step para un buen rango de movimiento.</item>
                 <item>Utiliza la máquina Smith para guiar el movimiento.</item>
-                <item>Mant\u00e9n el core activado y realiza el ejercicio sin prisa.</item>
+                <item>Mantén el core activado y realiza el ejercicio sin prisa.</item>
             </consejo>
             <musculos>
                 <principal>Gemelos</principal>
@@ -2651,13 +2651,13 @@
             <gif>@drawable/elevaci_n_de_talones___donkey__m_quina_</gif>
             <pasos>
                 <paso numero="1">Ajustar la máquina para el ejercicio donkey.</paso>
-                <paso numero="2">Adoptar la posici\u00f3n de \"donkey\" apoyando las manos en el respaldo.</paso>
+                <paso numero="2">Adoptar la posición de "donkey" apoyando las manos en el respaldo.</paso>
                 <paso numero="3">Elevar los talones activando los gemelos.</paso>
                 <paso numero="4">Bajar de forma controlada y repetir.</paso>
             </pasos>
             <consejo>
-                <item>Mant\u00e9n una buena posici\u00f3n corporal y evita balanceos.</item>
-                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gemelos en cada repetici\u00f3n.</item>
+                <item>Mantén una buena posición corporal y evita balanceos.</item>
+                <item>Concéntrate en la contracción de los gemelos en cada repetición.</item>
                 <item>Realiza el movimiento de forma controlada.</item>
             </consejo>
             <musculos>
@@ -2667,18 +2667,18 @@
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones en el Leg Press</nombre>
-            <descripcion>Se efect\u00faa en leg press para concentrar el trabajo en la musculatura de los gemelos a trav\u00e9s de un movimiento de empuje.</descripcion>
+            <descripcion>Se efectúa en leg press para concentrar el trabajo en la musculatura de los gemelos a través de un movimiento de empuje.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_en_el_leg_press</gif>
             <pasos>
                 <paso numero="1">Ajustar el leg press a la resistencia deseada.</paso>
                 <paso numero="2">Colocar los pies en la plataforma con la punta hacia el borde.</paso>
                 <paso numero="3">Empujar elevando los talones para trabajar los gemelos.</paso>
-                <paso numero="4">Regresar a la posici\u00f3n inicial de forma controlada.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
             </pasos>
             <consejo>
-                <item>Coloca bien los pies para maximizar la activaci\u00f3n de los gemelos.</item>
+                <item>Coloca bien los pies para maximizar la activación de los gemelos.</item>
                 <item>Realiza el movimiento de empuje de forma controlada.</item>
-                <item>Conc\u00e9ntrate en la contracci\u00f3n al elevar los talones.</item>
+                <item>Concéntrate en la contracción al elevar los talones.</item>
             </consejo>
             <musculos>
                 <principal>Gemelos</principal>
@@ -2686,18 +2686,18 @@
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevación de Talones en Pie (m\u00e1quina)</nombre>
-            <descripcion>Ejecutado en m\u00e1quina de talones, se efect\u00faa la elevaci\u00f3n de talones con estabilidad y resistencia.</descripcion>
+            <nombre>Elevación de Talones en Pie (máquina)</nombre>
+            <descripcion>Ejecutado en máquina de talones, se efectúa la elevación de talones con estabilidad y resistencia.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_en_pie__m_quina_</gif>
             <pasos>
-                <paso numero="1">Ajustar la m\u00e1quina de elevaci\u00f3n de talones.</paso>
-                <paso numero="2">Posicionarse de pie en la m\u00e1quina.</paso>
-                <paso numero="3">Elevar los talones concentr\u00e1ndose en la contracci\u00f3n de los gemelos.</paso>
-                <paso numero="4">Bajar de forma controlada a la posici\u00f3n inicial.</paso>
+                <paso numero="1">Ajustar la máquina de elevación de talones.</paso>
+                <paso numero="2">Posicionarse de pie en la máquina.</paso>
+                <paso numero="3">Elevar los talones concentrándose en la contracción de los gemelos.</paso>
+                <paso numero="4">Bajar de forma controlada a la posición inicial.</paso>
             </pasos>
             <consejo>
-                <item>Ajusta la m\u00e1quina a tu nivel de resistencia.</item>
-                <item>Mant\u00e9n la postura erguida y el core activado.</item>
+                <item>Ajusta la máquina a tu nivel de resistencia.</item>
+                <item>Mantén la postura erguida y el core activado.</item>
                 <item>Realiza el movimiento de forma lenta y controlada.</item>
             </consejo>
             <musculos>
@@ -2706,8 +2706,8 @@
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevación de Talones Frente y Tr\u00e1s (barra)</nombre>
-            <descripcion>Combina elevaci\u00f3n frontal y trasera de talones para trabajar de forma completa la musculatura de la pantorrilla.</descripcion>
+            <nombre>Elevación de Talones Frente y Tríceps (barra)</nombre>
+            <descripcion>Combina elevación frontal y trasera de talones para trabajar de forma completa la musculatura de la pantorrilla.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_frente_y_tr_s__barra_</gif>
             <pasos>
                 <paso numero="1">Colocar la barra sobre los trapecios.</paso>
@@ -2716,7 +2716,7 @@
                 <paso numero="4">Bajar de forma controlada y repetir.</paso>
             </pasos>
             <consejo>
-                <item>Mant\u00e9n la barra bien colocada y la espalda recta.</item>
+                <item>Mantén la barra bien colocada y la espalda recta.</item>
                 <item>Alterna el enfoque entre la parte frontal y trasera de los talones.</item>
                 <item>Realiza el movimiento con ritmo controlado para un trabajo completo.</item>
             </consejo>
@@ -2726,18 +2726,18 @@
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevación de Talones Inclinada (m\u00e1quina)</nombre>
-            <descripcion>Se efect\u00faa en m\u00e1quina con inclinaci\u00f3n para enfatizar la contracci\u00f3n de los gemelos.</descripcion>
+            <nombre>Elevación de Talones Inclinada (máquina)</nombre>
+            <descripcion>Se efectúa en máquina con inclinación para enfatizar la contracción de los gemelos.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_inclinada__m_quina_</gif>
             <pasos>
-                <paso numero="1">Ajustar la m\u00e1quina en posici\u00f3n inclinada.</paso>
-                <paso numero="2">Posicionarse de pie con la inclinaci\u00f3n adecuada.</paso>
-                <paso numero="3">Elevar los talones concentr\u00e1ndose en los gemelos.</paso>
-                <paso numero="4">Regresar a la posici\u00f3n inicial de forma controlada.</paso>
+                <paso numero="1">Ajustar la máquina en posición inclinada.</paso>
+                <paso numero="2">Posicionarse de pie con la inclinación adecuada.</paso>
+                <paso numero="3">Elevar los talones concentrándose en los gemelos.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
             </pasos>
             <consejo>
-                <item>Ajusta la inclinaci\u00f3n para maximizar la contracci\u00f3n.</item>
-                <item>Mant\u00e9n la espalda recta y el core activado.</item>
+                <item>Ajusta la inclinación para maximizar la contracción.</item>
+                <item>Mantén la espalda recta y el core activado.</item>
                 <item>Realiza el movimiento lentamente para aislar los gemelos.</item>
             </consejo>
             <musculos>
@@ -2747,18 +2747,18 @@
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones Invertida (smith)</nombre>
-            <descripcion>Ejecutado en m\u00e1quina Smith, se efect\u00faa una elevaci\u00f3n invertida para trabajar de forma diferente la musculatura de la pantorrilla.</descripcion>
+            <descripcion>Ejecutado en máquina Smith, se efectúa una elevación invertida para trabajar de forma diferente la musculatura de la pantorrilla.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_invertida__smith_</gif>
             <pasos>
-                <paso numero="1">Ajustar la m\u00e1quina Smith para el ejercicio.</paso>
-                <paso numero="2">Colocar el cuerpo en posici\u00f3n invertida.</paso>
+                <paso numero="1">Ajustar la máquina Smith para el ejercicio.</paso>
+                <paso numero="2">Colocar el cuerpo en posición invertida.</paso>
                 <paso numero="3">Elevar los talones activando los gemelos.</paso>
                 <paso numero="4">Bajar de forma controlada y repetir.</paso>
             </pasos>
             <consejo>
-                <item>Mant\u00e9n la posici\u00f3n invertida estable durante el movimiento.</item>
+                <item>Mantén la posición invertida estable durante el movimiento.</item>
                 <item>Realiza el ejercicio de forma controlada para evitar desequilibrios.</item>
-                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gemelos en cada repetici\u00f3n.</item>
+                <item>Concéntrate en la contracción de los gemelos en cada repetición.</item>
             </consejo>
             <musculos>
                 <principal>Gemelos</principal>
@@ -2767,18 +2767,18 @@
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones (kettlebell)</nombre>
-            <descripcion>Con kettlebell se efect\u00faa un ejercicio de elevaci\u00f3n de talones que añade un desaf\u00edo extra por la distribuci\u00f3n del peso.</descripcion>
+            <descripcion>Con kettlebell se efectúa un ejercicio de elevación de talones que añade un desafío extra por la distribución del peso.</descripcion>
             <gif>@drawable/elevaci_n_de_talones__kettlebell_</gif>
             <pasos>
                 <paso numero="1">Seleccionar un kettlebell adecuado.</paso>
                 <paso numero="2">Adoptar una postura de pie con el kettlebell sostenido.</paso>
-                <paso numero="3">Realizar la elevaci\u00f3n de talones concentr\u00e1ndose en los gemelos.</paso>
+                <paso numero="3">Realizar la elevación de talones concentrándose en los gemelos.</paso>
                 <paso numero="4">Bajar el peso de forma controlada y repetir.</paso>
             </pasos>
             <consejo>
-                <item>Sost\u00e9n el kettlebell de forma segura y mant\u00e9n la postura erguida.</item>
+                <item>Sostén el kettlebell de forma segura y Mantén la postura erguida.</item>
                 <item>Realiza el movimiento de forma lenta y controlada.</item>
-                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gemelos.</item>
+                <item>Concéntrate en la contracción de los gemelos.</item>
             </consejo>
             <musculos>
                 <principal>Gemelos</principal>
@@ -2787,18 +2787,18 @@
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones (mancuernas)</nombre>
-            <descripcion>Se efect\u00faa con mancuernas para trabajar la estabilidad y fuerza de los gemelos de forma unilateral.</descripcion>
+            <descripcion>Se efectúa con mancuernas para trabajar la estabilidad y fuerza de los gemelos de forma unilateral.</descripcion>
             <gif>@drawable/elevaci_n_de_talones__mancuernas_</gif>
             <pasos>
                 <paso numero="1">Seleccionar mancuernas ligeras.</paso>
                 <paso numero="2">Adoptar una postura de pie con buena estabilidad.</paso>
-                <paso numero="3">Elevar los talones concentr\u00e1ndose en cada gemelo.</paso>
+                <paso numero="3">Elevar los talones concentrándose en cada gemelo.</paso>
                 <paso numero="4">Bajar de forma controlada y repetir en cada pierna.</paso>
             </pasos>
             <consejo>
                 <item>Realiza el ejercicio de forma unilateral para asegurar el equilibrio.</item>
                 <item>Activa el core para mantener la estabilidad.</item>
-                <item>Controla la bajada para maximizar la activaci\u00f3n de los gemelos.</item>
+                <item>Controla la bajada para maximizar la activación de los gemelos.</item>
             </consejo>
             <musculos>
                 <principal>Gemelos</principal>
@@ -2806,18 +2806,18 @@
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevación de Talones (m\u00e1quina)</nombre>
-            <descripcion>Realizado en m\u00e1quina, ofrece un movimiento controlado que refuerza la musculatura de los gemelos.</descripcion>
+            <nombre>Elevación de Talones (máquina)</nombre>
+            <descripcion>Realizado en máquina, ofrece un movimiento controlado que refuerza la musculatura de los gemelos.</descripcion>
             <gif>@drawable/elevaci_n_de_talones__m_quina_</gif>
             <pasos>
-                <paso numero="1">Ajustar la m\u00e1quina de elevaci\u00f3n de talones.</paso>
+                <paso numero="1">Ajustar la máquina de elevación de talones.</paso>
                 <paso numero="2">Posicionarse de pie y colocar los pies en el soporte.</paso>
-                <paso numero="3">Realizar la elevaci\u00f3n concentr\u00e1ndose en los gemelos.</paso>
-                <paso numero="4">Regresar a la posici\u00f3n inicial controladamente.</paso>
+                <paso numero="3">Realizar la elevación concentrándose en los gemelos.</paso>
+                <paso numero="4">Regresar a la posición inicial controladamente.</paso>
             </pasos>
             <consejo>
-                <item>Ajusta la m\u00e1quina para obtener una resistencia adecuada.</item>
-                <item>Mant\u00e9n una postura erguida durante todo el movimiento.</item>
+                <item>Ajusta la máquina para obtener una resistencia adecuada.</item>
+                <item>Mantén una postura erguida durante todo el movimiento.</item>
                 <item>Realiza el ejercicio con un movimiento fluido y controlado.</item>
             </consejo>
             <musculos>
@@ -2827,17 +2827,17 @@
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones Sentada (barra)</nombre>
-            <descripcion>Ejecutada en posici\u00f3n sentada con barra, se a\u00edsla la contracci\u00f3n de la pantorrilla.</descripcion>
+            <descripcion>Ejecutada en posición sentada con barra, se aísla la contracción de la pantorrilla.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_sentada__barra_</gif>
             <pasos>
                 <paso numero="1">Sentarse en el banco y colocar la barra sobre los muslos.</paso>
                 <paso numero="2">Colocar los pies firmemente en el suelo.</paso>
-                <paso numero="3">Elevar los talones concentr\u00e1ndose en la contracci\u00f3n de la pantorrilla.</paso>
+                <paso numero="3">Elevar los talones concentrándose en la contracción de la pantorrilla.</paso>
                 <paso numero="4">Bajar de forma controlada y repetir.</paso>
             </pasos>
             <consejo>
-                <item>Controla el movimiento y conc\u00e9ntrate en la contracci\u00f3n de los gemelos.</item>
-                <item>Mant\u00e9n los pies bien plantados para mayor estabilidad.</item>
+                <item>Controla el movimiento y Concéntrate en la contracción de los gemelos.</item>
+                <item>Mantén los pies bien plantados para mayor estabilidad.</item>
                 <item>Realiza el ejercicio de forma lenta y controlada.</item>
             </consejo>
             <musculos>
@@ -2847,17 +2847,17 @@
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones Sentada (mancuernas)</nombre>
-            <descripcion>Se realiza con mancuernas en posici\u00f3n sentada para trabajar la fuerza y resistencia de los gemelos.</descripcion>
+            <descripcion>Se realiza con mancuernas en posición sentada para trabajar la fuerza y resistencia de los gemelos.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_sentada__mancuernas_</gif>
             <pasos>
                 <paso numero="1">Sentarse en un banco con respaldo estable.</paso>
                 <paso numero="2">Seleccionar mancuernas ligeras y sostenerlas sobre los muslos.</paso>
-                <paso numero="3">Elevar los talones activando la contracci\u00f3n.</paso>
+                <paso numero="3">Elevar los talones activando la contracción.</paso>
                 <paso numero="4">Bajar de forma controlada y repetir.</paso>
             </pasos>
             <consejo>
-                <item>Utiliza mancuernas ligeras para concentrarte en la forma y contracci\u00f3n.</item>
-                <item>Mant\u00e9n una postura estable durante todo el ejercicio.</item>
+                <item>Utiliza mancuernas ligeras para concentrarte en la forma y contracción.</item>
+                <item>Mantén una postura estable durante todo el ejercicio.</item>
                 <item>Realiza el movimiento lentamente para aislar los gemelos.</item>
             </consejo>
             <musculos>
@@ -2866,19 +2866,19 @@
             </musculos>
         </ejercicio>
         <ejercicio>
-            <nombre>Elevación de Talones Sentado (m\u00e1quina)</nombre>
-            <descripcion>Ejercicio en m\u00e1quina realizado en posici\u00f3n sentada para un control \u00f3ptimo del movimiento.</descripcion>
+            <nombre>Elevación de Talones Sentado (máquina)</nombre>
+            <descripcion>Ejercicio en máquina realizado en posición sentada para un control óptimo del movimiento.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_sentado__m_quina_</gif>
             <pasos>
-                <paso numero="1">Ajustar la m\u00e1quina de elevaci\u00f3n sentada.</paso>
+                <paso numero="1">Ajustar la máquina de elevación sentada.</paso>
                 <paso numero="2">Sentarse y colocar los pies en el soporte.</paso>
-                <paso numero="3">Realizar la elevaci\u00f3n de talones concentr\u00e1ndose en la contracci\u00f3n.</paso>
-                <paso numero="4">Regresar a la posici\u00f3n inicial de forma controlada.</paso>
+                <paso numero="3">Realizar la elevación de talones concentrándose en la contracción.</paso>
+                <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
             </pasos>
             <consejo>
-                <item>Ajusta la m\u00e1quina para adaptarla a tu estatura y fuerza.</item>
+                <item>Ajusta la máquina para adaptarla a tu estatura y fuerza.</item>
                 <item>Realiza el movimiento de forma lenta y controlada.</item>
-                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gemelos en cada repeticiones.</item>
+                <item>Concéntrate en la contracción de los gemelos en cada repeticiones.</item>
             </consejo>
             <musculos>
                 <principal>Gemelos</principal>
@@ -2887,18 +2887,18 @@
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones Sentado (smith)</nombre>
-            <descripcion>Utilizando la m\u00e1quina Smith en posici\u00f3n sentada, se refuerza la contracci\u00f3n de la pantorrilla.</descripcion>
+            <descripcion>Utilizando la máquina Smith en posición sentada, se refuerza la contracción de la pantorrilla.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_sentado__smith_</gif>
             <pasos>
-                <paso numero="1">Ajustar la m\u00e1quina Smith para el ejercicio.</paso>
+                <paso numero="1">Ajustar la máquina Smith para el ejercicio.</paso>
                 <paso numero="2">Sentarse y posicionar la barra sobre los muslos.</paso>
-                <paso numero="3">Realizar el curl de talones concentr\u00e1ndose en la contracci\u00f3n.</paso>
+                <paso numero="3">Realizar el curl de talones concentrándose en la contracción.</paso>
                 <paso numero="4">Bajar la barra de forma controlada y repetir.</paso>
             </pasos>
             <consejo>
-                <item>Utiliza la guia de la m\u00e1quina Smith para mantener la forma correcta.</item>
+                <item>Utiliza la guia de la máquina Smith para mantener la forma correcta.</item>
                 <item>Realiza el movimiento de forma lenta y sin balanceos.</item>
-                <item>Conc\u00e9ntrate en la contracci\u00f3n de la pantorrilla en cada repeticiones.</item>
+                <item>Concéntrate en la contracción de la pantorrilla en cada repeticiones.</item>
             </consejo>
             <musculos>
                 <principal>Gemelos</principal>
@@ -2907,18 +2907,18 @@
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones Sentado Unilateral (mancuernas)</nombre>
-            <descripcion>Se efect\u00faa de forma unilateral para corregir desequilibrios y fortalecer individualmente cada gemelo.</descripcion>
+            <descripcion>Se efectúa de forma unilateral para corregir desequilibrios y fortalecer individualmente cada gemelo.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_sentado_unilateral__mancuernas_</gif>
             <pasos>
                 <paso numero="1">Sentarse en un banco y seleccionar una mancuerna ligera.</paso>
-                <paso numero="2">Ejecutar la elevaci\u00f3n de tal\u00f3n en un solo lado.</paso>
-                <paso numero="3">Concentrarse en la contracci\u00f3n del gemelo.</paso>
+                <paso numero="2">Ejecutar la elevación de talón en un solo lado.</paso>
+                <paso numero="3">Concentrarse en la contracción del gemelo.</paso>
                 <paso numero="4">Bajar de forma controlada y repetir con el otro lado.</paso>
             </pasos>
             <consejo>
                 <item>Realiza el ejercicio de forma unilateral para detectar y corregir desequilibrios.</item>
-                <item>Mant\u00e9n el core activado y la postura estable.</item>
-                <item>Realiza el movimiento lentamente para maximizar la activaci\u00f3n muscular.</item>
+                <item>Mantén el core activado y la postura estable.</item>
+                <item>Realiza el movimiento lentamente para maximizar la activación muscular.</item>
             </consejo>
             <musculos>
                 <principal>Gemelos</principal>
@@ -2927,18 +2927,18 @@
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones (smith)</nombre>
-            <descripcion>Ejecutado en m\u00e1quina Smith, ofrece una gu\u00eda fija para trabajar la contracci\u00f3n de los gemelos.</descripcion>
+            <descripcion>Ejecutado en máquina Smith, ofrece una guía fija para trabajar la contracción de los gemelos.</descripcion>
             <gif>@drawable/elevaci_n_de_talones__smith_</gif>
             <pasos>
-                <paso numero="1">Ajustar la m\u00e1quina Smith para elevaci\u00f3n de talones.</paso>
-                <paso numero="2">Sentarse o pararse seg\u00fan el dise\u00f1o de la m\u00e1quina.</paso>
-                <paso numero="3">Realizar la elevaci\u00f3n de talones concentr\u00e1ndose en los gemelos.</paso>
+                <paso numero="1">Ajustar la máquina Smith para elevación de talones.</paso>
+                <paso numero="2">Sentarse o pararse según el diseño de la máquina.</paso>
+                <paso numero="3">Realizar la elevación de talones concentrándose en los gemelos.</paso>
                 <paso numero="4">Bajar de forma controlada y repetir.</paso>
             </pasos>
             <consejo>
-                <item>Sigue la gu\u00eda de la m\u00e1quina para mantener la t\u00e9cnica.</item>
+                <item>Sigue la guía de la máquina para mantener la técnica .</item>
                 <item>Realiza el movimiento de forma controlada y sin prisa.</item>
-                <item>Conc\u00e9ntrate en la contracci\u00f3n de los gemelos.</item>
+                <item>Concéntrate en la contracción de los gemelos.</item>
             </consejo>
             <musculos>
                 <principal>Gemelos</principal>
@@ -2947,17 +2947,17 @@
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones (TRX)</nombre>
-            <descripcion>Con TRX se efect\u00faa la elevaci\u00f3n de talones, a\u00f1adiendo un componente de inestabilidad que activa el core.</descripcion>
+            <descripcion>Con TRX se efectúa la elevación de talones, añadiendo un componente de inestabilidad que activa el core.</descripcion>
             <gif>@drawable/elevaci_n_de_talones__trx_</gif>
             <pasos>
                 <paso numero="1">Ajustar el TRX a la altura adecuada.</paso>
                 <paso numero="2">Colocar los pies en las correas y adoptar una postura estable.</paso>
-                <paso numero="3">Realizar la elevaci\u00f3n de talones concentr\u00e1ndose en los gemelos y el core.</paso>
+                <paso numero="3">Realizar la elevación de talones concentrándose en los gemelos y el core.</paso>
                 <paso numero="4">Bajar de forma controlada y repetir.</paso>
             </pasos>
             <consejo>
                 <item>Ajusta el TRX para obtener un movimiento seguro y estable.</item>
-                <item>Mant\u00e9n el core activado para compensar la inestabilidad.</item>
+                <item>Mantén el core activado para compensar la inestabilidad.</item>
                 <item>Realiza el movimiento lentamente para concentrarte en los gemelos.</item>
             </consejo>
             <musculos>
@@ -2968,18 +2968,18 @@
         </ejercicio>
         <ejercicio>
             <nombre>Elevación de Talones Unilateral - con step smith</nombre>
-            <descripcion>Mediante un step y m\u00e1quina Smith se efect\u00faa la elevaci\u00f3n unilateral para trabajar la fuerza de cada gemelo.</descripcion>
+            <descripcion>Mediante un step y máquina Smith se efectúa la elevación unilateral para trabajar la fuerza de cada gemelo.</descripcion>
             <gif>@drawable/elevaci_n_de_talones_unilateral___con_step__smith_</gif>
             <pasos>
-                <paso numero="1">Colocar el step y ajustar la m\u00e1quina Smith.</paso>
+                <paso numero="1">Colocar el step y ajustar la máquina Smith.</paso>
                 <paso numero="2">Posicionarse de forma unilateral sobre el step.</paso>
-                <paso numero="3">Realizar la elevaci\u00f3n del tal\u00f3n concentr\u00e1ndose en el gemelo trabajado.</paso>
+                <paso numero="3">Realizar la elevación del talón concentrándose en el gemelo trabajado.</paso>
                 <paso numero="4">Bajar de forma controlada y repetir en el otro lado.</paso>
             </pasos>
             <consejo>
                 <item>Realiza el ejercicio de forma unilateral para corregir desequilibrios.</item>
-                <item>Utiliza la m\u00e1quina Smith como gu\u00eda para mantener la forma.</item>
-                <item>Mant\u00e9n el movimiento lento y controlado en cada pierna.</item>
+                <item>Utiliza la máquina Smith como guía para mantener la forma.</item>
+                <item>Mantén el movimiento lento y controlado en cada pierna.</item>
             </consejo>
             <musculos>
                 <principal>Gemelos</principal>

@@ -22,6 +22,7 @@ import coil.request.ImageRequest
 import com.example.gymrace.R
 import kotlinx.coroutines.delay
 import android.os.Build
+import androidx.compose.material3.MaterialTheme
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -69,12 +70,14 @@ fun SplashContent(alpha: Float) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White), // Fondo blanco
+//            .background(MaterialTheme.colorScheme.background), // Fondo
+            .background(Color.White), // Fondo
         contentAlignment = Alignment.Center
     ) {
         AsyncImage(
             model = ImageRequest.Builder(context)
                 .data(R.drawable.rotating) // GIF girando
+//                .data(R.drawable.logo_girando) // GIF girando
                 .build(),
             contentDescription = "Logo girando de GymRace",
             imageLoader = imageLoader,
