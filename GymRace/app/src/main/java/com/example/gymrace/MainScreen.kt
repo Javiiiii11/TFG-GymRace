@@ -39,6 +39,8 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.gymrace.pages.DesafiosPage
+import com.example.gymrace.pages.DietasPage
 import com.example.gymrace.pages.getLoginState
 import com.example.gymrace.pages.prueba
 import com.example.gymrace.ui.theme.ThemeManager
@@ -55,7 +57,9 @@ fun MainScreen(navController: NavController) {
 
     val navItemList = listOf(
         NavItem("Inicio", Icons.Default.Home, 0),
+        NavItem("Dietas", ImageVector.vectorResource(id = R.drawable.dietas2), 0),
         NavItem("Ejercicios", ImageVector.vectorResource(id = R.drawable.fitness), 0),
+        NavItem("Desafios", ImageVector.vectorResource(id = R.drawable.fuego), 0),
         NavItem("Perfíl", Icons.Default.Person, 0),
     )
 
@@ -108,9 +112,10 @@ fun MainScreen(navController: NavController) {
 fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int, onThemeChange: () -> Unit, navController: NavController) {
     when (selectedIndex) {
         0 -> HomePage(onThemeChange =  onThemeChange,navController = navController)
-        1 -> EjerciciosPage()
-        2 -> UserPage(onThemeChange = onThemeChange, navController = navController)
-        3-> prueba().prueba()
+        1 -> DietasPage()
+        2 -> EjerciciosPage()
+        3 -> DesafiosPage()
+        4 -> UserPage(onThemeChange = onThemeChange, navController = navController)
     }
 }
 
