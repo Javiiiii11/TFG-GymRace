@@ -1,19 +1,14 @@
 package com.example.gymrace
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -23,19 +18,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import java.util.*
-import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,11 +68,19 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
     val minTime = 10 // tiempo mínimo en segundos
     val maxTime = 120 // tiempo máximo en segundos
 
-    // Carga la rutina
+// Carga la rutina
     LaunchedEffect(rutinaId) {
         isLoading = true
         try {
-            val document = db.collection("rutinas").document(rutinaId).get().await()
+            // Intentamos obtener la rutina desde la colección "rutinas"
+            var document = db.collection("rutinas").document(rutinaId).get().await()
+
+            // Si no existe en "rutinas", se prueba en "rutinaspredefinidas"
+            if (!document.exists()) {
+                document = db.collection("rutinaspredefinidas").document(rutinaId).get().await()
+            }
+
+            // Si se encontró la rutina en alguna de las colecciones
             if (document.exists()) {
                 val data = document.data
                 if (data != null) {
@@ -104,6 +104,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
             isLoading = false
         }
     }
+
 
     // Efecto para el temporizador
     LaunchedEffect(isTimerRunning, currentExerciseIndex) {
@@ -572,7 +573,7 @@ fun RutinaCompletada(rutina: Rutina, onFinish: () -> Unit) {
 
 // Clase para iniciar una rutina desde un botón
 class RutinaLauncher(
-    private val navController: NavHostController,
+    private val navController: NavController,
     private val rutinaId: String
 ) {
     // Función para iniciar la rutina

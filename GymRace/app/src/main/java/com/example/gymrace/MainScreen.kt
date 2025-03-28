@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.gymrace.pages.DesafiosPage
@@ -85,7 +86,11 @@ fun MainScreen(navController: NavController) {
                                 Icon(imageVector = navItem.icon, contentDescription = "Icon")
                             }
                         },
-                        label = { Text(text = navItem.label) },
+                        label = { Text(
+                            text = navItem.label,
+                            fontSize = 11.sp // Adjust the font size here
+
+                        ) },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = MaterialTheme.colorScheme.primary,
                             selectedTextColor = MaterialTheme.colorScheme.primary

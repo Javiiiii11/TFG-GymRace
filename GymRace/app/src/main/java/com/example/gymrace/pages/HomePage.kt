@@ -1,6 +1,5 @@
 package np.com.bimalkafle.bottomnavigationdemo.pages
 
-import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -10,12 +9,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -36,12 +36,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.gymrace.CrearRutinaPage
+import com.example.gymrace.MainActivity
 import com.example.gymrace.R
+import com.example.gymrace.RutinaLauncher
 import com.example.gymrace.pages.Exercise
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
@@ -66,7 +67,9 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, onThem
 
         // Cargar rutinas predefinidas desde Firestore
         item {
-            LoadPredefinedExercisesFromFirestore()
+//            LoadPredefinedExercisesFromFirestore()
+            LoadPredefinedRoutinesFromFirestore(navController)
+
         }
 
         // Rutinas por día
@@ -95,10 +98,247 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, onThem
     }
 }
 
-data class Exercise(
-    val name: String,
-    val imageId: Int
+
+
+// Firestore Data Classes
+data class PredefinedRoutine(
+    val id: String = "",
+    val title: String = "",
+    val description: String = "",
+    val imageName: String = "",
+    val exercises: List<MainActivity.ExerciseDetail> = emptyList()
 )
+
+@Composable
+fun PredefinedRoutineCard(
+    routine: PredefinedRoutine,
+    navController: NavController
+) {
+    var showDialog by remember { mutableStateOf(false) }
+
+    // Obtención del recurso de imagen basado en el nombre
+    val imageResourceId = when (routine.imageName) {
+        "rbiceps" -> R.drawable.rbiceps
+        "rabdomen" -> R.drawable.rabdomen
+        "rpecho" -> R.drawable.rpecho
+        "respalda" -> R.drawable.respalda
+        "rcuadriceps" -> R.drawable.rcuadriceps
+        "rgluteos" -> R.drawable.rgluteos
+        else -> R.drawable.default_image
+    }
+
+    Card(
+        modifier = Modifier
+            .width(300.dp)
+            .height(250.dp)
+            .clickable { showDialog = true },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF303030)),
+        elevation = CardDefaults.cardElevation(8.dp)
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            // Imagen de fondo
+            Image(
+                painter = painterResource(id = imageResourceId),
+                contentDescription = routine.title,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+            // Capa oscura
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0x80000000))
+            )
+            // Contenido: título y botón (este último se puede omitir, ya que el diálogo se abre al hacer clic en la tarjeta)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = routine.title,
+                    color = Color.White,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Button(
+                    onClick = { showDialog = true },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PlayArrow,
+                        contentDescription = "Iniciar Rutina"
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Iniciar Rutina")
+                }
+            }
+        }
+    }
+
+    if (showDialog) {
+        PredefinedRoutineDetailDialog(
+            routine = routine,
+            navController = navController,
+            onDismissRequest = { showDialog = false }
+        )
+    }
+}
+
+
+
+@Composable
+fun PredefinedRoutinesSection(
+    routines: List<PredefinedRoutine>,
+    navController: NavController
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        Text(
+            text = "Rutinas Predefinidas",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(bottom = 12.dp)
+        )
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
+        ) {
+            items(routines.size) { index ->
+                PredefinedRoutineCard(
+                    routine = routines[index],
+                    navController = navController
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+fun LoadPredefinedRoutinesFromFirestore(navController: NavController) {
+    val db = FirebaseFirestore.getInstance()
+    val routines = remember { mutableStateListOf<PredefinedRoutine>() }
+    val isLoading = remember { mutableStateOf(true) }
+
+    LaunchedEffect(true) {
+        try {
+            val result = db.collection("rutinaspredefinidas")
+                .get()
+                .await()
+
+            routines.clear()
+            for (document in result.documents) {
+                val routine = document.toObject(PredefinedRoutine::class.java)?.copy(id = document.id)
+                routine?.let { routines.add(it) }
+            }
+            isLoading.value = false
+        } catch (e: Exception) {
+            Log.e("FirestoreError", "Error getting routines", e)
+            isLoading.value = false
+        }
+    }
+
+    if (isLoading.value) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+    } else {
+        PredefinedRoutinesSection(routines, navController)
+    }
+}
+
+
+@Composable
+fun PredefinedRoutineDetailDialog(
+    routine: PredefinedRoutine,
+    navController: NavController,
+    onDismissRequest: () -> Unit
+) {
+    // Utiliza la clase RutinaLauncher que ya tienes para iniciar la rutina.
+    // Nota: Asegúrate de que la ruta utilizada en RutinaLauncher ("ejecutar_rutina/$rutinaId")
+    // sea la misma que espera EjecutarRutinaPage en tu NavHost.
+    val rutinaLauncher = remember { RutinaLauncher(navController, routine.id) }
+
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = {
+            Text(
+                text = routine.title,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
+        },
+        text = {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                // Muestra la descripción de la rutina
+                Text(text = routine.description)
+                Spacer(modifier = Modifier.height(8.dp))
+                // Lista de ejercicios (nombre, repeticiones y series)
+                if (routine.exercises.isNotEmpty()) {
+                    Text(
+                        text = "Ejercicios a realizar:",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    routine.exercises.forEach { exercise ->
+                        Row() {
+                            Icon(imageVector = Icons.Default.FitnessCenter, contentDescription = null)
+
+                            Text(
+                                text = " ${exercise.name}: ${exercise.repetitions} repeticiones x ${exercise.sets} series",
+                                fontSize = 14.sp
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            // Al presionar este botón se lanza la rutina usando tu RutinaLauncher
+            rutinaLauncher.LaunchButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Iniciar Rutina"
+            )
+        },
+        dismissButton = {
+            TextButton(onClick = onDismissRequest) {
+                Text(text = "Cerrar")
+            }
+        }
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 data class ExerciseFromFirestore(
     val title: String = "",
@@ -151,50 +391,8 @@ fun LoadPredefinedExercisesFromFirestore() {
     }
 }
 
-@Composable
-fun TitleSection() {
-    Text(
-        text = "Bienvenido a Gym Race",
-        fontSize = 28.sp,
-        fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.onSurface
-    )
-    Spacer(modifier = Modifier.height(0.dp))
-}
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun CalendarSection() {
-    val today = remember { LocalDate.now() }
-    Column {
-        Box(
-            modifier = Modifier
-                .padding(0.dp)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            ImprovedCalendar(
-                modifier = Modifier
-                    .fillMaxWidth(0.7f)
-                    .zIndex(1f)
-                    .padding(top = 55.dp)
-                    .height(380.dp),
-                onDateSelected = { day -> println("Día seleccionado: $day") }
-            )
-            Image(
-                painter = painterResource(id = R.drawable.deco4),
-                contentDescription = "Imagen calendario",
-                modifier = Modifier
-                    .size(350.dp)
-                    .padding(0.dp)
-                    .zIndex(0f)
-                    .align(Alignment.Center),
-            )
-        }
 
-        Spacer(modifier = Modifier.height(16.dp))
-    }
-}
 
 @Composable
 fun RoutineSection(title: String, exercises: List<Exercise>) {
@@ -645,23 +843,6 @@ fun RoutineCard(
                     fontWeight = FontWeight.Bold,
                 )
             }
-
-            // Botón en la parte inferior
-//            Box(
-//                modifier = Modifier
-//                    .align(Alignment.BottomEnd)
-//                    .padding(16.dp)
-//                    .clip(RoundedCornerShape(8.dp))
-//                    .background(Color(0xFFFF5722))
-//                    .padding(horizontal = 12.dp, vertical = 8.dp)
-//            ) {
-//                Text(
-//                    text = "Comenzar",
-//                    color = Color.White,
-//                    fontWeight = FontWeight.Bold,
-//                    fontSize = 14.sp
-//                )
-//            }
         }
     }
 }
@@ -833,6 +1014,54 @@ fun CustomRoutineSection(navController: NavController) {
         }
     }
 }
+
+@Composable
+fun TitleSection() {
+    Text(
+        text = "Bienvenido a Gym Race",
+        fontSize = 28.sp,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+    Spacer(modifier = Modifier.height(0.dp))
+}
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun CalendarSection() {
+    val today = remember { LocalDate.now() }
+    Column {
+        Box(
+            modifier = Modifier
+                .padding(0.dp)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            ImprovedCalendar(
+                modifier = Modifier
+                    .fillMaxWidth(0.7f)
+                    .zIndex(1f)
+                    .padding(top = 55.dp)
+                    .height(380.dp),
+                onDateSelected = { day -> println("Día seleccionado: $day") }
+            )
+            Image(
+                painter = painterResource(id = R.drawable.deco4),
+                contentDescription = "Imagen calendario",
+                modifier = Modifier
+                    .size(350.dp)
+                    .padding(0.dp)
+                    .zIndex(0f)
+                    .align(Alignment.Center),
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ImprovedCalendar(modifier: Modifier, onDateSelected: (Int) -> Unit) {

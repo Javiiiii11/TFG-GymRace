@@ -18,10 +18,10 @@ import com.example.gymrace.pages.InitialScreen
 import com.example.gymrace.pages.LoginPage
 import com.example.gymrace.pages.RegisterPage
 import com.example.gymrace.pages.RegisterPage2
-import com.example.gymrace.pages.prueba
 import com.example.gymrace.ui.theme.GymRaceTheme
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
+import np.com.bimalkafle.bottomnavigationdemo.pages.PredefinedRoutine
 
 //@RequiresApi(Build.VERSION_CODES.O)
 //class MainActivity : ComponentActivity() {
@@ -109,6 +109,10 @@ class MainActivity : ComponentActivity() {
         // Crear datos de prueba para dietas (descomentar para ejecutar UNA vez, luego volver a comentar)
 //         crearDatosDePrueba()
 
+        // Crear datos de prueba para rutinas predefinidas (descomentar para ejecutar UNA vez, luego volver a comentar)
+//        createSampleRoutines()
+
+
         setContent {
             GymRaceTheme {  // Cambiado de MaterialTheme a GymRaceTheme
                 val navController = rememberNavController()
@@ -120,7 +124,6 @@ class MainActivity : ComponentActivity() {
                     composable("register2") { RegisterPage2(navController) }
                     composable("crearRutina") { CrearRutinaPage(navController) }
                     composable("misRutinas") { ListarMisRutinasPage(navController) }
-                    composable("prueba") { prueba().prueba() }
                     composable("dietas") { DietasPage() }  // Añadir ruta para la página de dietas
                     // Actualizado: Ruta para ejecutar una rutina con ID
                     composable(
@@ -148,6 +151,86 @@ class MainActivity : ComponentActivity() {
 
 
 
+    data class ExerciseDetail(
+        val name: String = "",
+        val repetitions: Int = 0,
+        val sets: Int = 0
+    )
+
+    fun createSampleRoutines() {
+        // Obtén la instancia de Firestore
+        val db = FirebaseFirestore.getInstance()
+
+        // Lista de rutinas de ejemplo con ejercicios incluidos
+        val routines = listOf(
+            PredefinedRoutine(
+                title = "Rutina de Piernas",
+                description = "Fortalece y tonifica tus piernas con ejercicios específicos.",
+                imageName = "rcuadriceps",
+                exercises = listOf(
+                    ExerciseDetail(name = "Sentadillas", repetitions = 12, sets = 3),
+                    ExerciseDetail(name = "Prensa de Piernas", repetitions = 10, sets = 3)
+                )
+            ),
+            PredefinedRoutine(
+                title = "Rutina de Brazos",
+                description = "Ejercicios para desarrollar bíceps y tríceps.",
+                imageName = "rbiceps",
+                exercises = listOf(
+                    ExerciseDetail(name = "Curl de Bíceps", repetitions = 12, sets = 3),
+                    ExerciseDetail(name = "Extensión de Tríceps", repetitions = 12, sets = 3)
+                )
+            ),
+            PredefinedRoutine(
+                title = "Rutina de Abdomen",
+                description = "Trabaja tu core con ejercicios que tonifican el abdomen.",
+                imageName = "rabdomen",
+                exercises = listOf(
+                    ExerciseDetail(name = "Crunches", repetitions = 20, sets = 3),
+                    ExerciseDetail(name = "Plancha", repetitions = 1, sets = 3) // Puedes interpretar la plancha como duración en cada set
+                )
+            ),
+            PredefinedRoutine(
+                title = "Rutina de Espalda",
+                description = "Fortalece y mejora la postura con ejercicios para la espalda.",
+                imageName = "respalda",
+                exercises = listOf(
+                    ExerciseDetail(name = "Remo con Barra", repetitions = 12, sets = 3),
+                    ExerciseDetail(name = "Peso Muerto", repetitions = 10, sets = 3)
+                )
+            ),
+            PredefinedRoutine(
+                title = "Rutina de Pecho",
+                description = "Ejercicios para desarrollar la fuerza y el tamaño del pecho.",
+                imageName = "rpecho",
+                exercises = listOf(
+                    ExerciseDetail(name = "Press de Banca", repetitions = 10, sets = 3),
+                    ExerciseDetail(name = "Flexiones", repetitions = 15, sets = 3)
+                )
+            ),
+            //gluteos
+            PredefinedRoutine(
+                title = "Rutina de Glúteos",
+                description = "Ejercicios para fortalecer y tonificar los glúteos.",
+                imageName = "rgluteos",
+                exercises = listOf(
+                    ExerciseDetail(name = "Elevación de Cadera", repetitions = 15, sets = 3),
+                    ExerciseDetail(name = "Zancadas", repetitions = 12, sets = 3)
+                )
+            ),
+        )
+
+        // Agrega cada rutina a Firestore
+        routines.forEach { routine ->
+            db.collection("rutinaspredefinidas").add(routine)
+                .addOnSuccessListener { documentReference ->
+                    Log.d("Firestore", "${routine.title} creada con ID: ${documentReference.id}")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Firestore", "Error al crear ${routine.title}", e)
+                }
+        }
+    }
 
 
     private fun crearDatosDePrueba() {
