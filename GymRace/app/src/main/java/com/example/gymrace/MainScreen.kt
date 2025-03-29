@@ -38,14 +38,17 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.gymrace.pages.ChallengeViewModel
 import com.example.gymrace.pages.DesafiosPage
 import com.example.gymrace.pages.DietasPage
 import com.example.gymrace.pages.getLoginState
 import com.example.gymrace.pages.prueba
 import com.example.gymrace.ui.theme.ThemeManager
 import com.example.gymrace.ui.theme.rememberThemeState
+import com.google.firebase.auth.FirebaseAuth
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -116,49 +119,17 @@ fun MainScreen(navController: NavController) {
 @Composable
 fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int, onThemeChange: () -> Unit, navController: NavController) {
     when (selectedIndex) {
-        0 -> HomePage(onThemeChange =  onThemeChange,navController = navController)
+        0 -> HomePage(onThemeChange = onThemeChange, navController = navController)
         1 -> DietasPage()
         2 -> EjerciciosPage()
-        3 -> DesafiosPage()
+        3 -> {
+            // Obtenemos una instancia del ViewModel
+            val viewModel = viewModel<ChallengeViewModel>()
+            // Obtenemos el ID del usuario actual
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            // Llamamos a DesafiosPage con los parámetros necesarios
+            DesafiosPage(viewModel = viewModel, userId = userId)
+        }
         4 -> UserPage(onThemeChange = onThemeChange, navController = navController)
     }
 }
-
-//private val LightColors = lightColorScheme(
-//    primary = Color(0xffff9241),// borde cajas seleccionadas buscar y filtro
-//    onPrimary = Color(0xFFFFFFFF),
-//    secondary = Color(0xFF03DAC5),
-//    onSecondary = Color(0xffff00fc), // Cambiado a blanco
-//    background = Color(0xffffffff), // fondo pagina
-//    onBackground = Color(0xff000000), // textos ejercicios, parte superior calendario y unete y visit inicio
-//    surface = Color(0xffcccccc), //selector de ejercicios  y cajas de ejercicios
-//    onSurface = Color(0xff000000), // Cambiado a blanco
-//)
-//
-//private val DarkColors = darkColorScheme(
-//    primary = Color(0xffff9241),
-//    onPrimary = Color(0xFFFFFFFF), // Cambiado a blanco
-//    secondary = Color(0xFF03DAC5),
-//    onSecondary = Color(0xFFFFFFFF), // Cambiado a blanco
-//    background = Color(0xFF121212),
-//    onBackground = Color(0xFFFFFFFF), // Cambiado a blanco
-//    surface = Color(0xff505050),
-//    onSurface = Color(0xFFFFFFFF) // Cambiado a blanco
-//)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
