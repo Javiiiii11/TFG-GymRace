@@ -139,6 +139,7 @@ fun DietasPage() {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
+            Spacer(modifier = Modifier.height(16.dp))
             // Barra de búsqueda
             OutlinedTextField(
                 value = searchQuery,
