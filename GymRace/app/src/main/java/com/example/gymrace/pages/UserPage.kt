@@ -120,7 +120,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                 if (userDocument.exists()) {
                     println("User document exists - loading data")
 
-                    // Actualizar variables globales
+// Actualizar variables globales
                     GLOBAL.id = currentUser.uid
                     GLOBAL.nombre = userDocument.getString("nombre") ?: ""
                     GLOBAL.peso = userDocument.getString("peso") ?: ""
@@ -128,9 +128,17 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                     GLOBAL.edad = userDocument.getString("edad") ?: ""
                     GLOBAL.objetivoFitness = userDocument.getString("objetivoFitness") ?: ""
                     GLOBAL.diasEntrenamientoPorSemana = userDocument.getString("diasEntrenamientoPorSemana") ?: ""
-                    GLOBAL.nivelExperiencia = userDocument.getString("nivelExperiencia") ?: ""
 
-                    // Actualizar estado local
+// Transformar el valor de nivelExperiencia al momento de asignarlo
+                    val rawNivelExperiencia = userDocument.getString("nivelExperiencia") ?: ""
+                    GLOBAL.nivelExperiencia = when (rawNivelExperiencia) {
+                        "Avanzado (más de 2 años)" -> "Avanzado"
+                        "Intermedio (6 meses - 2 años)" -> "Intermedio"
+                        "Principiante (menos de 6 meses)" -> "Principiante"
+                        else -> rawNivelExperiencia  // En caso de otro valor, se mantiene el original
+                    }
+
+// Actualizar estado local
                     userName = GLOBAL.nombre
                     userWeight = GLOBAL.peso
                     userHeight = GLOBAL.altura
@@ -138,6 +146,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                     userFitnessGoal = GLOBAL.objetivoFitness
                     userTrainingDays = GLOBAL.diasEntrenamientoPorSemana
                     userExperienceLevel = GLOBAL.nivelExperiencia
+
+
 
                     println("User data loaded successfully: ${GLOBAL.nombre}")
 
@@ -166,14 +176,15 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
     }
 
 
-// Mostrar dialogo de comunidad
+// Mostrar diálogo de comunidad
     if (showCommunityDialog) {
         LaunchedEffect(key1 = showCommunityDialog) {
             isLoadingUsers = true
             loadAllUsers { users ->
-                allUsers = users.filter { it.id != GLOBAL.id } // Filtrar al usuario actual
+                // Filtrar al usuario actual
+                allUsers = users.filter { it.id != GLOBAL.id }
                 isLoadingUsers = false
-                println("Usuarios cargados para el diálogo: ${allUsers.size}")
+                Log.d("UserPage", "Usuarios cargados para el diálogo: ${allUsers.size}")
             }
         }
 
@@ -183,10 +194,20 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
             isLoading = isLoadingUsers,
             onDismiss = { showCommunityDialog = false },
             onUserAction = { userId ->
-                addFriend(GLOBAL.id, userId) {
-                    // Recargar la lista de amigos después de agregar
-                    loadFriendsList(GLOBAL.id) { friends ->
-                        friendsList = friends
+                // Si el usuario ya es amigo, se elimina; de lo contrario, se agrega
+                if (friendsList.any { it.id == userId }) {
+                    removeFriend(GLOBAL.id, userId) {
+                        // Recargar la lista de amigos después de eliminar
+                        loadFriendsList(GLOBAL.id) { friends ->
+                            friendsList = friends
+                        }
+                    }
+                } else {
+                    addFriend(GLOBAL.id, userId) {
+                        // Recargar la lista de amigos después de agregar
+                        loadFriendsList(GLOBAL.id) { friends ->
+                            friendsList = friends
+                        }
                     }
                 }
             },
@@ -195,7 +216,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
         )
     }
 
-    // Mostrar dialogo de amigos
+// Mostrar diálogo de amigos
     if (showFriendsDialog) {
         UsersDialog(
             title = "Mis Amigos",
@@ -213,6 +234,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
             showAddButton = false
         )
     }
+
 
     Column(
         modifier = Modifier

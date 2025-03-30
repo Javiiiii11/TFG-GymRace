@@ -2,31 +2,42 @@ package com.example.gymrace.pages
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import coil.compose.rememberImagePainter
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import coil.compose.rememberImagePainter
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.ViewModel
+import com.example.gymrace.GifData
+import com.example.gymrace.R
+import com.example.gymrace.loadGifsFromXml
+import com.example.gymrace.showExerciseDetail
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -55,11 +66,6 @@ data class Friend(
     val profilePicUrl: String? = null
 )
 
-// Lista de ejercicios disponibles (usada en otros contextos)
-val availableExercises = listOf(
-    "Flexiones", "Sentadillas", "Abdominales", "Burpees", "Dominadas",
-    "Zancadas", "Plancha", "Saltos", "Estocadas", "Mountain Climbers"
-)
 
 // ViewModel para Desafíos
 class ChallengeViewModel : ViewModel() {
@@ -261,6 +267,7 @@ fun DesafiosPage(
     var selectedChallenge by remember { mutableStateOf<Challenge?>(null) }
     var newProgress by remember { mutableStateOf("0") }
 
+
     // Para refrescar cada 5 segundos
     LaunchedEffect(userId) {
         while (true) {
@@ -396,13 +403,14 @@ fun DesafiosPage(
 
 @Composable
 fun EmptyState() {
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Icon(
-            imageVector = Icons.Default.Person,
+            imageVector = ImageVector.vectorResource(id = R.drawable.fuego), //imagen central
             contentDescription = null,
             modifier = Modifier.size(80.dp),
             tint = MaterialTheme.colorScheme.primary
@@ -476,12 +484,12 @@ fun ChallengeItem(
             Spacer(modifier = Modifier.height(12.dp))
             Text(text = "Tu progreso: $myProgress / ${challenge.repetitions}", fontSize = 14.sp)
             LinearProgressIndicator(
-                progress = { myProgress.toFloat() / challenge.repetitions },
+                progress = myProgress.toFloat() / challenge.repetitions,
                 modifier = Modifier.fillMaxWidth().height(8.dp).padding(vertical = 2.dp)
             )
             Text(text = "Progreso del $otherName: $otherProgress / ${challenge.repetitions}", fontSize = 14.sp)
             LinearProgressIndicator(
-                progress = { otherProgress.toFloat() / challenge.repetitions },
+                progress = otherProgress.toFloat() / challenge.repetitions,
                 modifier = Modifier.fillMaxWidth().height(8.dp).padding(vertical = 2.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -705,15 +713,18 @@ fun EjerciciosDialog(
     onDismissRequest: () -> Unit,
     onEjercicioSelected: (String) -> Unit
 ) {
-    // Estados locales para la búsqueda y filtros
     var buscarEjercicio by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Todos") }
-    // Suponemos que estas listas provienen de algún repositorio o están definidas en otro lado
-    val categories = listOf("Todos", "Cardio", "Fuerza", "Flexibilidad")
-    val ejerciciosData = availableExercises.map { title -> ExerciseData(title = title) }
-    val ejerciciosSeleccionados = remember { mutableStateListOf<String>() }
 
-    // Filtrado simple
+    val context = LocalContext.current
+    val (ejerciciosData, _) = remember {
+        loadGifsFromXml(context.resources.getXml(R.xml.ejercicios), context)
+    }
+
+    val categories = listOf("Todos") + ejerciciosData.map { it.category }.distinct()
+    val ejerciciosSeleccionados = remember { mutableStateListOf<GifData>() }
+    var selectedExerciseDetail by remember { mutableStateOf<GifData?>(null) }
+
     val ejerciciosFiltrados = ejerciciosData.filter {
         it.title.contains(buscarEjercicio, ignoreCase = true) &&
                 (selectedCategory == "Todos" || it.category == selectedCategory)
@@ -736,7 +747,6 @@ fun EjerciciosDialog(
                         .fillMaxSize()
                         .padding(16.dp)
                 ) {
-                    // Título y botón para cerrar
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -753,7 +763,6 @@ fun EjerciciosDialog(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Barra de búsqueda
                     OutlinedTextField(
                         value = buscarEjercicio,
                         onValueChange = { buscarEjercicio = it },
@@ -767,7 +776,6 @@ fun EjerciciosDialog(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // Filtro por categoría con chips horizontales
                     Text(
                         "Categorías:",
                         style = MaterialTheme.typography.bodyMedium,
@@ -793,7 +801,6 @@ fun EjerciciosDialog(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Lista de ejercicios filtrados
                     if (ejerciciosFiltrados.isEmpty()) {
                         Box(
                             modifier = Modifier
@@ -810,20 +817,26 @@ fun EjerciciosDialog(
                         LazyColumn(
                             modifier = Modifier.weight(1f)
                         ) {
-                            items(ejerciciosFiltrados) { ejercicio ->
+                            items(ejerciciosFiltrados.size) { index ->
+                                val ejercicio = ejerciciosFiltrados[index]
+
                                 ExercisePreviewItem(
                                     gifData = ejercicio,
-                                    isSelected = ejerciciosSeleccionados.contains(ejercicio.title),
+                                    isSelected = ejerciciosSeleccionados.contains(ejercicio),
                                     onToggleSelect = { selected ->
                                         if (selected) {
-                                            if (!ejerciciosSeleccionados.contains(ejercicio.title)) {
-                                                ejerciciosSeleccionados.add(ejercicio.title)
-                                            }
+                                            ejerciciosSeleccionados.clear()
+                                            ejerciciosSeleccionados.add(ejercicio)
                                         } else {
-                                            ejerciciosSeleccionados.remove(ejercicio.title)
+                                            ejerciciosSeleccionados.remove(ejercicio)
                                         }
                                     },
-                                    onViewDetail = { /* Lógica para ver detalle */ }
+                                    onViewDetail = {
+                                        showExerciseDetail(
+                                            ejercicio.title,
+                                            ejerciciosData
+                                        ) { selectedExerciseDetail = it }
+                                    }
                                 )
                             }
                         }
@@ -831,7 +844,6 @@ fun EjerciciosDialog(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Botones de acción
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
@@ -849,7 +861,7 @@ fun EjerciciosDialog(
                         Button(
                             onClick = {
                                 if (ejerciciosSeleccionados.isNotEmpty()) {
-                                    onEjercicioSelected(ejerciciosSeleccionados.first())
+                                    onEjercicioSelected(ejerciciosSeleccionados.first().title)
                                 }
                                 onDismissRequest()
                             },
@@ -868,43 +880,59 @@ fun EjerciciosDialog(
 }
 
 
-@Composable
-fun Dialog(onDismissRequest: () -> Unit, content: @Composable () -> Unit) {
-
-}
-
 // Datos de ejemplo para cada ejercicio (ajusta según tu modelo real)
-data class ExerciseData(
-    val title: String,
-    val category: String = "Todos"
-)
+//data class ExerciseData(
+//    val title: String,
+//    val category: String = "Todos"
+//)
 
+// Chip de filtro para categorías
 @Composable
 fun ExercisePreviewItem(
-    gifData: ExerciseData,
+    gifData: GifData,
     isSelected: Boolean,
     onToggleSelect: (Boolean) -> Unit,
     onViewDetail: () -> Unit
 ) {
-    // Ejemplo simple de item para mostrar un ejercicio
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
-            .clip(MaterialTheme.shapes.small),
+            .clip(MaterialTheme.shapes.small)
+            .clickable { onToggleSelect(!isSelected) },
         border = if (isSelected) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
-                .clickable { onToggleSelect(!isSelected) },
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = gifData.title, modifier = Modifier.weight(1f))
-            IconButton(onClick = onViewDetail) {
-                Icon(Icons.Default.Edit, contentDescription = "Detalle")
+            Image(
+                painter = rememberImagePainter(data = gifData.resource),
+                contentDescription = "GIF de ${gifData.title}",
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .animateContentSize() // Animación para el contenido
+
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = gifData.title,
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                )
+                Text(
+                    text = "Músculo: ${gifData.mainMuscle}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
+            Checkbox(
+                checked = isSelected,
+                onCheckedChange = { onToggleSelect(it) }
+            )
         }
     }
 }
