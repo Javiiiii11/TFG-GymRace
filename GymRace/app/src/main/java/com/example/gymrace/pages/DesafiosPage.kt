@@ -1,21 +1,34 @@
 package com.example.gymrace.pages
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -29,13 +42,23 @@ data class Challenge(
     val description: String,
     val creatorId: String,
     val participantId: String,
-    val status: String // PENDING, ACCEPTED, COMPLETED
+    val exercise: String,
+    val repetitions: Int,
+    val creatorProgress: Int = 0,
+    val participantProgress: Int = 0,
+    val status: String // PENDING, ACCEPTED, IN_PROGRESS, COMPLETED
 )
 
 data class Friend(
     val id: String,
     val name: String,
     val profilePicUrl: String? = null
+)
+
+// Lista de ejercicios disponibles (usada en otros contextos)
+val availableExercises = listOf(
+    "Flexiones", "Sentadillas", "Abdominales", "Burpees", "Dominadas",
+    "Zancadas", "Plancha", "Saltos", "Estocadas", "Mountain Climbers"
 )
 
 // ViewModel para Desafíos
@@ -50,19 +73,15 @@ class ChallengeViewModel : ViewModel() {
 
     suspend fun loadFriends(userId: String) {
         try {
-            // Accedemos al documento de amigos del usuario
             val amigosDocSnapshot = firestore.collection("amigos")
                 .document(userId)
                 .get()
                 .await()
 
-            // Obtenemos el arreglo "listamigos" que contiene los IDs de los amigos
             val friendsIds = amigosDocSnapshot.get("listaAmigos") as? List<String> ?: emptyList()
             val friendsList = mutableListOf<Friend>()
             Log.d("ChallengeViewModel", "Friends IDs: $friendsIds")
-            Log.d("ChallengeViewModel", "Friends IDs size: ${friendsIds.size}")
 
-            // Por cada ID, recuperamos la información del amigo desde la colección "usuarios"
             for (friendId in friendsIds) {
                 val friendUserSnapshot = firestore.collection("usuarios")
                     .document(friendId)
@@ -71,30 +90,19 @@ class ChallengeViewModel : ViewModel() {
 
                 if (friendUserSnapshot.exists()) {
                     val friendName = friendUserSnapshot.getString("nombre") ?: "Usuario"
-
-                    friendsList.add(
-                        Friend(
-                            id = friendId,
-                            name = friendName,
-                        )
-                    )
+                    friendsList.add(Friend(id = friendId, name = friendName))
                 }
             }
-
-            // Actualizamos el StateFlow con la lista de amigos obtenida
             _userFriends.value = friendsList
-
         } catch (e: Exception) {
             Log.e("ChallengeViewModel", "Error loading friends: ${e.message}")
         }
     }
 
-
-
     suspend fun loadFriendsChallenges(userId: String) {
         try {
             val challengesSnapshot = firestore.collection("desafios")
-                .whereEqualTo("idCreador", userId)
+                .whereEqualTo("creador.id", userId)
                 .get()
                 .await()
 
@@ -106,23 +114,35 @@ class ChallengeViewModel : ViewModel() {
             val allChallenges = mutableListOf<Challenge>()
 
             challengesSnapshot.documents.mapNotNullTo(allChallenges) { document ->
+                val creatorProgress = (document.get("creador.progreso") as? Long)?.toInt() ?: 0
+                val participantProgress = (document.get("amigoInvitado.progreso") as? Long)?.toInt() ?: 0
                 Challenge(
                     id = document.id,
                     name = document.getString("titulo") ?: "",
                     description = document.getString("descripcion") ?: "",
-                    creatorId = document.getString("idCreador") ?: "",
-                    participantId = document.get("amigoInvitado.id") as? String ?: "",
+                    creatorId = document.getString("creador.id") ?: "",
+                    participantId = document.getString("amigoInvitado.id") ?: "",
+                    exercise = document.getString("ejercicio") ?: "",
+                    repetitions = (document.getLong("repeticiones") ?: 0).toInt(),
+                    creatorProgress = creatorProgress,
+                    participantProgress = participantProgress,
                     status = document.getString("status") ?: "PENDING"
                 )
             }
 
             participantChallengesSnapshot.documents.mapNotNullTo(allChallenges) { document ->
+                val creatorProgress = (document.get("creador.progreso") as? Long)?.toInt() ?: 0
+                val participantProgress = (document.get("amigoInvitado.progreso") as? Long)?.toInt() ?: 0
                 Challenge(
                     id = document.id,
                     name = document.getString("titulo") ?: "",
                     description = document.getString("descripcion") ?: "",
-                    creatorId = document.getString("idCreador") ?: "",
-                    participantId = document.get("amigoInvitado.id") as? String ?: "",
+                    creatorId = document.getString("creador.id") ?: "",
+                    participantId = document.getString("amigoInvitado.id") ?: "",
+                    exercise = document.getString("ejercicio") ?: "",
+                    repetitions = (document.getLong("repeticiones") ?: 0).toInt(),
+                    creatorProgress = creatorProgress,
+                    participantProgress = participantProgress,
                     status = document.getString("status") ?: "PENDING"
                 )
             }
@@ -135,38 +155,30 @@ class ChallengeViewModel : ViewModel() {
 
     suspend fun createChallenge(challenge: Challenge) {
         try {
-            // Generamos un ID único si aún no lo tiene
             val challengeData = if (challenge.id.isBlank()) {
                 challenge.copy(id = UUID.randomUUID().toString())
-            } else {
-                challenge
-            }
+            } else challenge
 
-            // Estructura de datos para la colección "desafios"
             val desafioData = mapOf(
-                "idCreador" to challengeData.creatorId,
+                "creador" to mapOf("id" to challengeData.creatorId, "progreso" to 0),
+                "amigoInvitado" to mapOf("id" to challengeData.participantId, "progreso" to 0),
                 "titulo" to challengeData.name,
                 "descripcion" to challengeData.description,
-                "amigoInvitado" to mapOf(
-                    "id" to challengeData.participantId
-                ),
+                "ejercicio" to challengeData.exercise,
+                "repeticiones" to challengeData.repetitions,
                 "status" to challengeData.status
             )
 
-            // Guardamos en la colección "desafios" usando el ID generado
             firestore.collection("desafios")
                 .document(challengeData.id)
                 .set(desafioData)
                 .await()
 
-            // Actualizamos la lista de desafíos (si la función loadFriendsChallenges utiliza la colección "desafios", asegúrate de modificarla)
             loadFriendsChallenges(challenge.creatorId)
         } catch (e: Exception) {
             Log.e("ChallengeViewModel", "Error creating challenge: ${e.message}")
         }
     }
-
-
 
     suspend fun updateChallengeStatus(challengeId: String, newStatus: String, userId: String) {
         try {
@@ -174,10 +186,61 @@ class ChallengeViewModel : ViewModel() {
                 .document(challengeId)
                 .update("status", newStatus)
                 .await()
-
             loadFriendsChallenges(userId)
         } catch (e: Exception) {
             Log.e("ChallengeViewModel", "Error updating challenge: ${e.message}")
+        }
+    }
+
+    suspend fun updateProgress(challengeId: String, userId: String, newProgress: Int) {
+        try {
+            val challengeDoc = firestore.collection("desafios")
+                .document(challengeId)
+                .get()
+                .await()
+
+            val creatorId = challengeDoc.get("creador.id") as? String
+            val participantId = challengeDoc.get("amigoInvitado.id") as? String
+
+            val updateField = when (userId) {
+                creatorId -> "creador.progreso"
+                participantId -> "amigoInvitado.progreso"
+                else -> throw Exception("Usuario no es parte de este desafío")
+            }
+
+            firestore.collection("desafios")
+                .document(challengeId)
+                .update(updateField, newProgress)
+                .await()
+
+            val repetitions = (challengeDoc.getLong("repeticiones") ?: 0).toInt()
+            if (newProgress >= repetitions) {
+                firestore.collection("desafios")
+                    .document(challengeId)
+                    .update("status", "COMPLETED")
+                    .await()
+            }
+            loadFriendsChallenges(userId)
+        } catch (e: Exception) {
+            Log.e("ChallengeViewModel", "Error updating progress: ${e.message}")
+        }
+    }
+
+    // Permite eliminar un desafío:
+    // - Si está en progreso: solo el creador puede eliminarlo.
+    // - Si está completado: cualquiera puede eliminarlo.
+    suspend fun deleteChallenge(challengeId: String, userId: String, challengeStatus: String, creatorId: String) {
+        try {
+            if (challengeStatus != "COMPLETED" && userId != creatorId) {
+                throw Exception("Solo el creador puede eliminar el desafío en progreso")
+            }
+            firestore.collection("desafios")
+                .document(challengeId)
+                .delete()
+                .await()
+            loadFriendsChallenges(userId)
+        } catch (e: Exception) {
+            Log.e("ChallengeViewModel", "Error deleting challenge: ${e.message}")
         }
     }
 }
@@ -191,15 +254,20 @@ fun DesafiosPage(
 ) {
     val challenges by viewModel.friendsChallenges.collectAsState(initial = emptyList())
     val friends by viewModel.userFriends.collectAsState(initial = emptyList())
+    val coroutineScope = rememberCoroutineScope()
 
     var showCreateDialog by remember { mutableStateOf(false) }
-    var selectedChallengeName by remember { mutableStateOf("") }
-    var selectedChallengeDescription by remember { mutableStateOf("") }
-    var selectedFriendId by remember { mutableStateOf("") }
-    var selectedFriendName by remember { mutableStateOf("Seleccionar amigo") }
+    var showProgressDialog by remember { mutableStateOf(false) }
+    var selectedChallenge by remember { mutableStateOf<Challenge?>(null) }
+    var newProgress by remember { mutableStateOf("0") }
 
-
-    val coroutineScope = rememberCoroutineScope()
+    // Para refrescar cada 5 segundos
+    LaunchedEffect(userId) {
+        while (true) {
+            viewModel.loadFriendsChallenges(userId)
+            delay(5000)
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -221,47 +289,105 @@ fun DesafiosPage(
             if (challenges.isEmpty()) {
                 EmptyState()
             } else {
-                ChallengesList(challenges = challenges, viewModel = viewModel, userId = userId)
-            }
-
-            // Dialog for creating challenges
-            if (showCreateDialog) {
-                CreateChallengeDialog(
-                    friends = friends,
-                    selectedFriendName = selectedFriendName,
-                    onDismiss = { showCreateDialog = false },
-                    onChallengeName = { selectedChallengeName = it },
-                    onChallengeDescription = { selectedChallengeDescription = it },
-                    onFriendSelected = { friendId, friendName ->
-                        selectedFriendId = friendId
-                        selectedFriendName = friendName
-                    },
-                    onCreateChallenge = {
+                ChallengesList(
+                    challenges = challenges,
+                    userId = userId,
+                    onAccept = { challenge ->
                         coroutineScope.launch {
-                            viewModel.createChallenge(
-                                Challenge(
-                                    name = selectedChallengeName,
-                                    description = selectedChallengeDescription,
-                                    creatorId = userId,
-                                    participantId = selectedFriendId,
-                                    status = "PENDING"
-                                )
-                            )
-                            showCreateDialog = false
-                            // Reseteamos los estados
-                            selectedChallengeName = ""
-                            selectedChallengeDescription = ""
-                            selectedFriendId = ""
-                            selectedFriendName = "Seleccionar amigo"
+                            viewModel.updateChallengeStatus(challenge.id, "ACCEPTED", userId)
+                        }
+                    },
+                    onUpdateProgress = { challenge ->
+                        selectedChallenge = challenge
+                        showProgressDialog = true
+                        val currentProgress = if (userId == challenge.creatorId) {
+                            challenge.creatorProgress
+                        } else {
+                            challenge.participantProgress
+                        }
+                        newProgress = currentProgress.toString()
+                    },
+                    onDeleteChallenge = { challenge ->
+                        coroutineScope.launch {
+                            viewModel.deleteChallenge(challenge.id, userId, challenge.status, challenge.creatorId)
                         }
                     }
                 )
             }
 
+            if (showProgressDialog && selectedChallenge != null) {
+                val challenge = selectedChallenge!!
+                val currentProgress = if (userId == challenge.creatorId) {
+                    challenge.creatorProgress
+                } else {
+                    challenge.participantProgress
+                }
+                AlertDialog(
+                    onDismissRequest = {
+                        showProgressDialog = false
+                        selectedChallenge = null
+                    },
+                    title = { Text("Actualizar progreso") },
+                    text = {
+                        Column {
+                            Text("Desafío: ${challenge.name}")
+                            Text("Ejercicio: ${challenge.exercise}")
+                            Text("Objetivo: ${challenge.repetitions} repeticiones")
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text("Progreso actual: $currentProgress")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            OutlinedTextField(
+                                value = newProgress,
+                                onValueChange = { newProgress = it.filter { char -> char.isDigit() } },
+                                label = { Text("Nuevo progreso") },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                coroutineScope.launch {
+                                    val progress = newProgress.toIntOrNull() ?: 0
+                                    viewModel.updateProgress(challenge.id, userId, progress)
+                                    showProgressDialog = false
+                                    selectedChallenge = null
+                                }
+                            }
+                        ) {
+                            Text("Guardar")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(
+                            onClick = {
+                                showProgressDialog = false
+                                selectedChallenge = null
+                            }
+                        ) {
+                            Text("Cancelar")
+                        }
+                    }
+                )
+            }
+
+            if (showCreateDialog) {
+                CreateChallengeDialog(
+                    currentUserId = userId,
+                    friends = friends,
+                    onDismiss = { showCreateDialog = false },
+                    onCreateChallenge = { challenge ->
+                        coroutineScope.launch {
+                            viewModel.createChallenge(challenge)
+                            showCreateDialog = false
+                        }
+                    }
+                )
+            }
         }
     }
 
-    // Load data when the page is first composed
     LaunchedEffect(userId) {
         viewModel.loadFriends(userId)
         viewModel.loadFriendsChallenges(userId)
@@ -299,11 +425,11 @@ fun EmptyState() {
 @Composable
 fun ChallengesList(
     challenges: List<Challenge>,
-    viewModel: ChallengeViewModel,
-    userId: String
+    userId: String,
+    onAccept: (Challenge) -> Unit,
+    onUpdateProgress: (Challenge) -> Unit,
+    onDeleteChallenge: (Challenge) -> Unit
 ) {
-    val scope = rememberCoroutineScope()
-
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -312,16 +438,10 @@ fun ChallengesList(
         items(challenges) { challenge ->
             ChallengeItem(
                 challenge = challenge,
-                onAccept = {
-                    scope.launch {
-                        viewModel.updateChallengeStatus(challenge.id, "ACCEPTED", userId)
-                    }
-                },
-                onComplete = {
-                    scope.launch {
-                        viewModel.updateChallengeStatus(challenge.id, "COMPLETED", userId)
-                    }
-                }
+                userId = userId,
+                onAccept = { onAccept(challenge) },
+                onUpdateProgress = { onUpdateProgress(challenge) },
+                onDeleteChallenge = { onDeleteChallenge(challenge) }
             )
         }
     }
@@ -330,44 +450,76 @@ fun ChallengesList(
 @Composable
 fun ChallengeItem(
     challenge: Challenge,
+    userId: String,
     onAccept: () -> Unit,
-    onComplete: () -> Unit
+    onUpdateProgress: () -> Unit,
+    onDeleteChallenge: () -> Unit
 ) {
+    val isCreator = userId == challenge.creatorId
+    val myProgress = if (isCreator) challenge.creatorProgress else challenge.participantProgress
+    val otherProgress = if (isCreator) challenge.participantProgress else challenge.creatorProgress
+    val otherName = if (isCreator) "Amigo" else "Creador"
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = challenge.name,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
-            )
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(text = challenge.name, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = challenge.description, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = challenge.description,
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+            Text(text = "Ejercicio: ${challenge.exercise}", fontSize = 15.sp, fontWeight = FontWeight.Medium)
+            Text(text = "Objetivo: ${challenge.repetitions} repeticiones", fontSize = 15.sp, fontWeight = FontWeight.Medium)
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(text = "Tu progreso: $myProgress / ${challenge.repetitions}", fontSize = 14.sp)
+            LinearProgressIndicator(
+                progress = { myProgress.toFloat() / challenge.repetitions },
+                modifier = Modifier.fillMaxWidth().height(8.dp).padding(vertical = 2.dp)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Progreso del $otherName: $otherProgress / ${challenge.repetitions}", fontSize = 14.sp)
+            LinearProgressIndicator(
+                progress = { otherProgress.toFloat() / challenge.repetitions },
+                modifier = Modifier.fillMaxWidth().height(8.dp).padding(vertical = 2.dp)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 StatusChip(status = challenge.status)
-                when (challenge.status) {
-                    "PENDING" -> OutlinedButton(onClick = onAccept) {
-                        Text("Aceptar")
+                if (challenge.status == "PENDING" && !isCreator) {
+                    OutlinedButton(onClick = onAccept) { Text("Aceptar") }
+                } else if (challenge.status == "ACCEPTED" || challenge.status == "IN_PROGRESS") {
+                    Button(onClick = onUpdateProgress, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)) {
+                        Icon(Icons.Default.Edit, contentDescription = null)
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("Progreso")
                     }
-                    "ACCEPTED" -> OutlinedButton(onClick = onComplete) {
-                        Text("Completar")
-                    }
-                    else -> {}
+                }
+            }
+            // Mostrar opciones de eliminación y ganador según el estado:
+            if (challenge.status == "COMPLETED") {
+                val winner = when {
+                    challenge.creatorProgress > challenge.participantProgress -> "Creador"
+                    challenge.participantProgress > challenge.creatorProgress -> "Amigo"
+                    else -> "Empate"
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(text = "Ganador: $winner", fontWeight = FontWeight.Medium, fontSize = 16.sp)
+                // Ambos pueden eliminar cuando esté completado
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedButton(onClick = onDeleteChallenge) {
+                    Text("Eliminar desafío")
+                }
+            } else if (challenge.status != "COMPLETED" && isCreator) {
+                // Durante el progreso, solo el creador puede eliminar
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedButton(onClick = onDeleteChallenge) {
+                    Text("Eliminar desafío")
                 }
             }
         }
@@ -378,11 +530,10 @@ fun ChallengeItem(
 fun StatusChip(status: String) {
     val (color, text) = when (status) {
         "PENDING" -> Pair(MaterialTheme.colorScheme.tertiary, "Pendiente")
-        "ACCEPTED" -> Pair(MaterialTheme.colorScheme.primary, "En progreso")
+        "ACCEPTED", "IN_PROGRESS" -> Pair(MaterialTheme.colorScheme.primary, "En progreso")
         "COMPLETED" -> Pair(MaterialTheme.colorScheme.secondary, "Completado")
         else -> Pair(MaterialTheme.colorScheme.error, "Desconocido")
     }
-
     Surface(
         color = color.copy(alpha = 0.1f),
         shape = MaterialTheme.shapes.small
@@ -400,17 +551,21 @@ fun StatusChip(status: String) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateChallengeDialog(
+    currentUserId: String,
     friends: List<Friend>,
-    selectedFriendName: String,
     onDismiss: () -> Unit,
-    onChallengeName: (String) -> Unit,
-    onChallengeDescription: (String) -> Unit,
-    onFriendSelected: (String, String) -> Unit, // Recibe id y nombre
-    onCreateChallenge: () -> Unit
+    onCreateChallenge: (Challenge) -> Unit
 ) {
     var challengeName by remember { mutableStateOf("") }
     var challengeDescription by remember { mutableStateOf("") }
-    var expanded by remember { mutableStateOf(false) }
+    var selectedFriendId by remember { mutableStateOf("") }
+    var selectedFriendName by remember { mutableStateOf("Seleccionar amigo") }
+    var selectedExercise by remember { mutableStateOf("") }
+    var repetitions by remember { mutableStateOf("") }
+
+    var expandedFriends by remember { mutableStateOf(false) }
+    // Estado para mostrar el diálogo de selección mejorada de ejercicio
+    var showEjerciciosDialog by remember { mutableStateOf(false) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -419,68 +574,337 @@ fun CreateChallengeDialog(
             Column {
                 OutlinedTextField(
                     value = challengeName,
-                    onValueChange = {
-                        challengeName = it
-                        onChallengeName(it)
-                    },
+                    onValueChange = { challengeName = it },
                     label = { Text("Nombre del desafío") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
                 )
                 OutlinedTextField(
                     value = challengeDescription,
-                    onValueChange = {
-                        challengeDescription = it
-                        onChallengeDescription(it)
-                    },
+                    onValueChange = { challengeDescription = it },
                     label = { Text("Descripción") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
                 )
+                // Selección de amigo
                 ExposedDropdownMenuBox(
-                    expanded = expanded,
-                    onExpandedChange = { expanded = !expanded }
+                    expanded = expandedFriends,
+                    onExpandedChange = { expandedFriends = !expandedFriends }
                 ) {
                     OutlinedTextField(
                         value = selectedFriendName,
                         onValueChange = {},
                         readOnly = true,
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .menuAnchor()
+                        label = { Text("Amigo") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedFriends) },
+                        modifier = Modifier.fillMaxWidth().menuAnchor().padding(vertical = 8.dp)
                     )
                     ExposedDropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
+                        expanded = expandedFriends,
+                        onDismissRequest = { expandedFriends = false }
                     ) {
                         friends.forEach { friend ->
                             DropdownMenuItem(
                                 text = { Text(friend.name) },
                                 onClick = {
-                                    onFriendSelected(friend.id, friend.name)
-                                    expanded = false
+                                    selectedFriendId = friend.id
+                                    selectedFriendName = friend.name
+                                    expandedFriends = false
                                 }
                             )
                         }
                     }
                 }
+                // Selección de ejercicio con estado visual más claro
+                Column(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+                    Text(
+                        text = "Ejercicio",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { showEjerciciosDialog = true },
+                        shape = MaterialTheme.shapes.small,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = if (selectedExercise.isNotBlank()) selectedExercise else "Seleccionar ejercicio",
+                                color = if (selectedExercise.isBlank()) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface
+                            )
+                            Icon(
+                                Icons.Default.Search,
+                                contentDescription = "Buscar ejercicio",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                }
+
+                OutlinedTextField(
+                    value = repetitions,
+                    onValueChange = { repetitions = it.filter { char -> char.isDigit() } },
+                    label = { Text("Repeticiones") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                )
             }
         },
         confirmButton = {
             Button(
-                onClick = onCreateChallenge,
-                enabled = challengeName.isNotBlank() && challengeDescription.isNotBlank() && selectedFriendName != "Seleccionar amigo"
+                onClick = {
+                    val reps = repetitions.toIntOrNull() ?: 0
+                    onCreateChallenge(
+                        Challenge(
+                            name = challengeName,
+                            description = challengeDescription,
+                            creatorId = currentUserId,
+                            participantId = selectedFriendId,
+                            exercise = selectedExercise,
+                            repetitions = reps,
+                            status = "PENDING"
+                        )
+                    )
+                },
+                enabled = challengeName.isNotBlank() &&
+                        challengeDescription.isNotBlank() &&
+                        selectedFriendId.isNotBlank() &&
+                        selectedExercise.isNotBlank() &&
+                        repetitions.isNotBlank() &&
+                        (repetitions.toIntOrNull() ?: 0) > 0
             ) {
                 Text("Crear")
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cancelar")
+            TextButton(onClick = onDismiss) { Text("Cancelar") }
+        }
+    )
+
+    // Diálogo de selección mejorada de ejercicio
+    if (showEjerciciosDialog) {
+        EjerciciosDialog(
+            onDismissRequest = { showEjerciciosDialog = false },
+            onEjercicioSelected = { ejercicio ->
+                selectedExercise = ejercicio
+                showEjerciciosDialog = false
+            }
+        )
+    }
+}
+
+// Ejemplo de diálogo de ejercicios (basado en tu código de "Añadir Ejercicios")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EjerciciosDialog(
+    onDismissRequest: () -> Unit,
+    onEjercicioSelected: (String) -> Unit
+) {
+    // Estados locales para la búsqueda y filtros
+    var buscarEjercicio by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf("Todos") }
+    // Suponemos que estas listas provienen de algún repositorio o están definidas en otro lado
+    val categories = listOf("Todos", "Cardio", "Fuerza", "Flexibilidad")
+    val ejerciciosData = availableExercises.map { title -> ExerciseData(title = title) }
+    val ejerciciosSeleccionados = remember { mutableStateListOf<String>() }
+
+    // Filtrado simple
+    val ejerciciosFiltrados = ejerciciosData.filter {
+        it.title.contains(buscarEjercicio, ignoreCase = true) &&
+                (selectedCategory == "Todos" || it.category == selectedCategory)
+    }
+
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.9f),
+        properties = DialogProperties(dismissOnClickOutside = true),
+        content = {
+            Card(
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    // Título y botón para cerrar
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "Añadir Ejercicios",
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        IconButton(onClick = onDismissRequest) {
+                            Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Barra de búsqueda
+                    OutlinedTextField(
+                        value = buscarEjercicio,
+                        onValueChange = { buscarEjercicio = it },
+                        label = { Text("Buscar ejercicio") },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        leadingIcon = {
+                            Icon(Icons.Default.Search, contentDescription = "Buscar")
+                        }
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Filtro por categoría con chips horizontales
+                    Text(
+                        "Categorías:",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .horizontalScroll(rememberScrollState())
+                            .padding(vertical = 4.dp)
+                    ) {
+                        categories.forEach { category ->
+                            FilterChip(
+                                selected = category == selectedCategory,
+                                onClick = { selectedCategory = category },
+                                label = { Text(category) },
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Lista de ejercicios filtrados
+                    if (ejerciciosFiltrados.isEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                "No se encontraron ejercicios",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            items(ejerciciosFiltrados) { ejercicio ->
+                                ExercisePreviewItem(
+                                    gifData = ejercicio,
+                                    isSelected = ejerciciosSeleccionados.contains(ejercicio.title),
+                                    onToggleSelect = { selected ->
+                                        if (selected) {
+                                            if (!ejerciciosSeleccionados.contains(ejercicio.title)) {
+                                                ejerciciosSeleccionados.add(ejercicio.title)
+                                            }
+                                        } else {
+                                            ejerciciosSeleccionados.remove(ejercicio.title)
+                                        }
+                                    },
+                                    onViewDetail = { /* Lógica para ver detalle */ }
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Botones de acción
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        TextButton(onClick = {
+                            onDismissRequest()
+                            buscarEjercicio = ""
+                            selectedCategory = "Todos"
+                        }) {
+                            Text("Cancelar")
+                        }
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Button(
+                            onClick = {
+                                if (ejerciciosSeleccionados.isNotEmpty()) {
+                                    onEjercicioSelected(ejerciciosSeleccionados.first())
+                                }
+                                onDismissRequest()
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary
+                            ),
+                            enabled = ejerciciosSeleccionados.isNotEmpty()
+                        ) {
+                            Text("Confirmar (${ejerciciosSeleccionados.size})")
+                        }
+                    }
+                }
             }
         }
     )
+}
+
+
+@Composable
+fun Dialog(onDismissRequest: () -> Unit, content: @Composable () -> Unit) {
+
+}
+
+// Datos de ejemplo para cada ejercicio (ajusta según tu modelo real)
+data class ExerciseData(
+    val title: String,
+    val category: String = "Todos"
+)
+
+@Composable
+fun ExercisePreviewItem(
+    gifData: ExerciseData,
+    isSelected: Boolean,
+    onToggleSelect: (Boolean) -> Unit,
+    onViewDetail: () -> Unit
+) {
+    // Ejemplo simple de item para mostrar un ejercicio
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .clip(MaterialTheme.shapes.small),
+        border = if (isSelected) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .clickable { onToggleSelect(!isSelected) },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = gifData.title, modifier = Modifier.weight(1f))
+            IconButton(onClick = onViewDetail) {
+                Icon(Icons.Default.Edit, contentDescription = "Detalle")
+            }
+        }
+    }
 }
