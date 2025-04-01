@@ -2321,26 +2321,29 @@
                 <secundario>Isquiotibiales</secundario>
             </musculos>
         </ejercicio>
-        <ejercicio>
-            <nombre>Curl de Piernas Acostado (máquina)</nombre>
-            <descripcion>Se efectúa en máquina para ofrecer un movimiento guiado que refuerza los músculos de la parte posterior de las piernas.</descripcion>
-            <gif>@drawable/curl_de_piernas_acostado__m_quina_</gif>
-            <pasos>
-                <paso numero="1">Ajustar la máquina de curl de piernas.</paso>
-                <paso numero="2">Acostarse y posicionar las piernas en el soporte.</paso>
-                <paso numero="3">Realizar el curl concentrándose en los femorales.</paso>
-                <paso numero="4">Regresar de forma controlada a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Ajusta la máquina a tu nivel de fuerza para un rango óptimo de movimiento.</item>
-                <item>Realiza el curl de forma lenta para maximizar la activación de los femorales.</item>
-                <item>Mantén una postura estable durante todo el ejercicio.</item>
-            </consejo>
-            <musculos>
-                <principal>Femorales</principal>
-                <secundario>Isquiotibiales</secundario>
-            </musculos>
-        </ejercicio>
+
+<!--        Este ejercicio da problemas, por que se reproduce muy rapido-->
+
+<!--        <ejercicio>-->
+<!--            <nombre>Curl de Piernas Acostado (máquina)</nombre>-->
+<!--            <descripcion>Se efectúa en máquina para ofrecer un movimiento guiado que refuerza los músculos de la parte posterior de las piernas.</descripcion>-->
+<!--            <gif>@drawable/curl_de_piernas_acostado__m_quina_</gif>-->
+<!--            <pasos>-->
+<!--                <paso numero="1">Ajustar la máquina de curl de piernas.</paso>-->
+<!--                <paso numero="2">Acostarse y posicionar las piernas en el soporte.</paso>-->
+<!--                <paso numero="3">Realizar el curl concentrándose en los femorales.</paso>-->
+<!--                <paso numero="4">Regresar de forma controlada a la posición inicial.</paso>-->
+<!--            </pasos>-->
+<!--            <consejo>-->
+<!--                <item>Ajusta la máquina a tu nivel de fuerza para un rango óptimo de movimiento.</item>-->
+<!--                <item>Realiza el curl de forma lenta para maximizar la activación de los femorales.</item>-->
+<!--                <item>Mantén una postura estable durante todo el ejercicio.</item>-->
+<!--            </consejo>-->
+<!--            <musculos>-->
+<!--                <principal>Femorales</principal>-->
+<!--                <secundario>Isquiotibiales</secundario>-->
+<!--            </musculos>-->
+<!--        </ejercicio>-->
         <ejercicio>
             <nombre>Curl de Piernas Declinada (mancuernas)</nombre>
             <descripcion>Con mancuernas y en posición declinada se aumenta el estiramiento y la activación de los femorales.</descripcion>

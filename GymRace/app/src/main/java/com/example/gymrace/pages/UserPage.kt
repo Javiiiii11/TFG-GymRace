@@ -146,7 +146,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                     userFitnessGoal = GLOBAL.objetivoFitness
                     userTrainingDays = GLOBAL.diasEntrenamientoPorSemana
                     userExperienceLevel = GLOBAL.nivelExperiencia
-
+7
 
 
                     println("User data loaded successfully: ${GLOBAL.nombre}")
