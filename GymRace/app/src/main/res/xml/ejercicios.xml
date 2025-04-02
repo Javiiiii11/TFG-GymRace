@@ -4723,4 +4723,259 @@
             </musculos>
         </ejercicio>
     </categoria>
+
+    <!-- Categoría: Trapecios-->
+    <categoria nombre="Trapecios">
+        <ejercicio>
+            <nombre>Cristos Inverso en Banco (polea)</nombre>
+            <descripcion>Ejercicio en banco con polea que trabaja la parte superior de la espalda, enfocándose en la contracción de los trapecios mediante un movimiento inverso de los brazos.</descripcion>
+            <gif>@drawable/cristos_inverso_en_banco__polea_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco y ajusta la polea a una posición media-alta.</paso>
+                <paso numero="2">Toma la manija con ambas manos y coloca los brazos extendidos hacia los lados.</paso>
+                <paso numero="3">Realiza un movimiento de cruce inverso, juntando las manos frente al pecho mientras contraes los trapecios.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta durante el movimiento.</item>
+                <item>Controla la velocidad para aislar los trapecios.</item>
+                <item>Utiliza un peso moderado para evitar compensaciones.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Inverso Inclinado (polea)</nombre>
+            <descripcion>Ejercicio realizado en polea con el cuerpo inclinado, que enfatiza la activación de los trapecios y la parte superior de la espalda.</descripcion>
+            <gif>@drawable/cristos_inverso_inclinado__polea_</gif>
+            <pasos>
+                <paso numero="1">Adopta una postura inclinada frente a la polea, con los pies firmemente plantados.</paso>
+                <paso numero="2">Sujeta la manija con ambas manos y extiende los brazos a los lados.</paso>
+                <paso numero="3">Realiza un cruce inverso de brazos, enfocándote en contraer los trapecios.</paso>
+                <paso numero="4">Vuelve lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Inclina el torso lo suficiente para aislar la zona superior de la espalda.</item>
+                <item>Mantén el movimiento fluido y controlado.</item>
+                <item>No uses un peso excesivo para evitar comprometer la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Inverso (mancuernas)</nombre>
+            <descripcion>Ejercicio con mancuernas que imita un cruce inverso para trabajar la parte superior de la espalda, especialmente los trapecios y deltoides posteriores.</descripcion>
+            <gif>@drawable/cristos_inverso__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Párate con las rodillas ligeramente flexionadas y sujeta una mancuerna en cada mano.</paso>
+                <paso numero="2">Inclina el torso ligeramente hacia adelante manteniendo la espalda recta.</paso>
+                <paso numero="3">Con los brazos extendidos, eleva las mancuernas hacia los lados realizando un cruce inverso.</paso>
+                <paso numero="4">Baja de forma controlada hasta la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Concéntrate en la contracción de los trapecios durante el movimiento.</item>
+                <item>Mantén una ligera flexión en los codos para proteger las articulaciones.</item>
+                <item>Controla el peso para evitar balanceos.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Inverso para Atrás (mancuernas)</nombre>
+            <descripcion>Variante con mancuernas donde el movimiento se dirige hacia atrás, enfatizando el trabajo de los trapecios y la parte posterior de los hombros.</descripcion>
+            <gif>@drawable/cristos_inverso_para_atr_s__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Párate con la postura adecuada y una ligera inclinación del torso.</paso>
+                <paso numero="2">Sujeta una mancuerna en cada mano con los brazos extendidos hacia adelante.</paso>
+                <paso numero="3">Lleva los brazos hacia atrás, realizando un movimiento de cruce inverso y contrayendo los trapecios.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el control del movimiento para maximizar la activación muscular.</item>
+                <item>Evita balancear el torso.</item>
+                <item>Utiliza un peso adecuado que permita buena técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Inverso (polea alta)</nombre>
+            <descripcion>Ejercicio realizado en polea alta que enfoca la tensión en los trapecios mediante un movimiento de cruce inverso desde una posición elevada.</descripcion>
+            <gif>@drawable/cristos_inverso__polea_alta_</gif>
+            <pasos>
+                <paso numero="1">Colócate de pie frente a la polea alta y selecciona el peso adecuado.</paso>
+                <paso numero="2">Sujeta la manija con ambas manos y extiende los brazos hacia los lados.</paso>
+                <paso numero="3">Realiza un cruce inverso bajando los brazos y contrayendo los trapecios.</paso>
+                <paso numero="4">Vuelve a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para una mayor estabilidad.</item>
+                <item>Realiza el movimiento lentamente para maximizar el aislamiento.</item>
+                <item>Ajusta el peso para evitar compensaciones.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Inverso Sentado (polea)</nombre>
+            <descripcion>Ejercicio realizado sentado en polea que permite aislar los trapecios y trabajar la parte superior de la espalda sin comprometer la postura.</descripcion>
+            <gif>@drawable/cristos_inverso_sentado__polea_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el banco frente a la máquina de polea.</paso>
+                <paso numero="2">Toma la manija con ambas manos y mantén la espalda recta.</paso>
+                <paso numero="3">Realiza un movimiento de cruce inverso, contrayendo los trapecios.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Apoya bien la espalda para evitar balanceos.</item>
+                <item>Concéntrate en la contracción de los trapecios durante cada repetición.</item>
+                <item>No utilices un peso excesivo.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral Curvada (mancuernas)</nombre>
+            <descripcion>Ejercicio con mancuernas realizado con el torso curvado para enfatizar la activación de los trapecios y deltoides posteriores.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_curvada__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Inclina el torso hacia adelante manteniendo la espalda recta.</paso>
+                <paso numero="2">Sostén una mancuerna en cada mano con los brazos colgando.</paso>
+                <paso numero="3">Eleva los brazos lateralmente en un movimiento controlado, contrayendo los trapecios.</paso>
+                <paso numero="4">Baja las mancuernas de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén una ligera flexión en los codos.</item>
+                <item>Enfócate en sentir la contracción en los trapecios.</item>
+                <item>Utiliza un peso moderado para mantener la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral en Banco Inclinado (mancuernas)</nombre>
+            <descripcion>Ejercicio realizado en banco inclinado que aísla los trapecios y deltoides posteriores a través de una elevación lateral controlada.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_en_banco_inclinado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco inclinado y apoya la espalda contra el respaldo.</paso>
+                <paso numero="2">Sostén una mancuerna en cada mano, con los brazos colgando.</paso>
+                <paso numero="3">Eleva los brazos lateralmente hasta que estén a la altura de los hombros.</paso>
+                <paso numero="4">Baja lentamente las mancuernas a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén una buena postura y el core activado.</item>
+                <item>Realiza el movimiento de forma lenta para aislar los músculos.</item>
+                <item>Utiliza un peso que te permita controlar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral Inclinada Apoyada en el Banco (mancuernas)</nombre>
+            <descripcion>Variante de elevación lateral en la que se apoya el torso en un banco, maximizando la activación de los trapecios y deltoides posteriores.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_inclinada_apoyada_en_el_banco__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate boca abajo sobre un banco inclinado.</paso>
+                <paso numero="2">Sostén una mancuerna en cada mano, con los brazos extendidos hacia abajo.</paso>
+                <paso numero="3">Eleva los brazos lateralmente contrayendo los trapecios.</paso>
+                <paso numero="4">Baja lentamente las mancuernas a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla el movimiento para evitar balanceos.</item>
+                <item>Concéntrate en la contracción de la parte superior de la espalda.</item>
+                <item>Utiliza un peso moderado para asegurar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Remo Inclinado (barra)</nombre>
+            <descripcion>Ejercicio con barra que trabaja intensamente la zona media de la espalda, enfocándose en la contracción de los trapecios y dorsales.</descripcion>
+            <gif>@drawable/remo_inclinado__barra_</gif>
+            <pasos>
+                <paso numero="1">Párate con los pies a la anchura de los hombros y flexiona el torso hacia adelante.</paso>
+                <paso numero="2">Sujeta la barra con agarre prono y mantén la espalda recta.</paso>
+                <paso numero="3">Tira de la barra hacia el abdomen contrayendo los trapecios.</paso>
+                <paso numero="4">Baja la barra de forma controlada hasta la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso estable y el core activado.</item>
+                <item>Evita redondear la espalda.</item>
+                <item>Utiliza un peso que permita realizar el movimiento con control.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Dorsales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Remo Sentado - agarre abierto (polea baja)</nombre>
+            <descripcion>Ejercicio en polea baja que, mediante un agarre amplio, favorece el trabajo de la parte superior de la espalda y el trapecio.</descripcion>
+            <gif>@drawable/remo_sentado___agarre_abierto__polea_baja_</gif>
+            <pasos>
+                <paso numero="1">Siéntate frente a la máquina de polea baja con la espalda recta.</paso>
+                <paso numero="2">Sujeta la manija con un agarre amplio.</paso>
+                <paso numero="3">Jala la manija hacia el pecho contrayendo los trapecios.</paso>
+                <paso numero="4">Extiende los brazos de forma controlada hasta la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta y el core activado.</item>
+                <item>Controla el movimiento en ambas direcciones.</item>
+                <item>No uses un peso excesivo para preservar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Dorsales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Remo Vertical (polea)</nombre>
+            <descripcion>Ejercicio en polea que realiza un movimiento vertical, ayudando a trabajar los trapecios y la parte media de la espalda a través de una extensión controlada.</descripcion>
+            <gif>@drawable/remo_vertical__polea_</gif>
+            <pasos>
+                <paso numero="1">Párate frente a la máquina de polea con los pies a la anchura de los hombros.</paso>
+                <paso numero="2">Toma la manija con ambas manos y coloca los codos ligeramente flexionados.</paso>
+                <paso numero="3">Jala la manija hacia arriba, concentrándote en la contracción de los trapecios.</paso>
+                <paso numero="4">Baja la manija de forma controlada hasta la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso erguido y el core activado.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Ajusta el peso para asegurar una ejecución correcta.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+    </categoria>
 </ejercicios>
