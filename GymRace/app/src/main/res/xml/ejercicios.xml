@@ -2566,6 +2566,7 @@
         </ejercicio>
     </categoria>
 
+
     <!-- Categoría: Gemelos -->
     <categoria nombre="Gemelos">
         <ejercicio>
@@ -2990,5 +2991,367 @@
             </musculos>
         </ejercicio>
     </categoria>
+
+
+    <!-- Categoría: Glúteos -->
+    <categoria nombre="Glúteos">
+        <ejercicio>
+            <nombre>Arranco con mancuernas</nombre>
+            <descripcion>Ejercicio que trabaja la potencia y coordinación a través de un arranque explosivo utilizando mancuernas, implicando un rápido movimiento desde la posición baja hasta la altura de los hombros.</descripcion>
+            <gif>@drawable/arranco__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Adopta una postura con pies a la anchura de los hombros y las mancuernas a los lados.</paso>
+                <paso numero="2">Flexiona ligeramente las rodillas y prepara el cuerpo para la explosión.</paso>
+                <paso numero="3">Realiza un movimiento explosivo elevando las mancuernas mientras extiendes las caderas.</paso>
+                <paso numero="4">Lleva las mancuernas hasta la altura de los hombros y estabiliza la posición.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado durante todo el movimiento.</item>
+                <item>Realiza un calentamiento previo para evitar lesiones.</item>
+                <item>Ejecuta el movimiento de forma controlada para mejorar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Piernas</principal>
+                <secundario>Espalda baja y hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Arranco y Arremesso con kettlebell</nombre>
+            <descripcion>Ejercicio combinado que mejora la explosividad y coordinación, utilizando kettlebell para efectuar tanto el arranque como el arremeso en un solo movimiento fluido.</descripcion>
+            <gif>@drawable/arranco_y_arremesso__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Colócate en posición con el kettlebell entre las piernas.</paso>
+                <paso numero="2">Realiza un swing explosivo hacia adelante para generar impulso.</paso>
+                <paso numero="3">Transfiere la fuerza para elevar la kettlebell, pasando por encima de la cabeza.</paso>
+                <paso numero="4">Finaliza el movimiento extendiendo completamente el cuerpo.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta durante el movimiento.</item>
+                <item>Utiliza el impulso de las caderas para maximizar la potencia.</item>
+                <item>Realiza un buen calentamiento para activar las articulaciones.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteos</principal>
+                <secundario>Hombros y core</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Buenos Días con barra</nombre>
+            <descripcion>Ejercicio clásico que fortalece la cadena posterior y mejora la flexibilidad de la zona lumbar, usando una barra colocada sobre los hombros.</descripcion>
+            <gif>@drawable/buenos_d_as__barra_</gif>
+            <pasos>
+                <paso numero="1">Coloca la barra sobre tus hombros, asegurándote de tenerla bien posicionada.</paso>
+                <paso numero="2">Adopta una postura con pies separados a la anchura de los hombros.</paso>
+                <paso numero="3">Flexiona las caderas lentamente manteniendo la espalda recta.</paso>
+                <paso numero="4">Vuelve a la posición inicial contrayendo glúteos y zona lumbar.</paso>
+            </pasos>
+            <consejo>
+                <item>No redondees la espalda para evitar lesiones.</item>
+                <item>Realiza el movimiento de forma controlada en ambas direcciones.</item>
+                <item>Activa el core para mantener estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Espalda baja</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Buenos Días Sentado con barra</nombre>
+            <descripcion>Variante del ejercicio "Buenos Días" realizado en posición sentada, que enfatiza la activación de la zona lumbar y los isquiotibiales mediante el uso de una barra.</descripcion>
+            <gif>@drawable/buenos_d_as_sentado__barra_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el borde de un banco con la espalda recta.</paso>
+                <paso numero="2">Coloca la barra sobre tus hombros de forma segura.</paso>
+                <paso numero="3">Inclina el torso hacia adelante desde las caderas, manteniendo la columna alineada.</paso>
+                <paso numero="4">Regresa a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén una postura erguida durante el ejercicio.</item>
+                <item>Evita movimientos bruscos que puedan comprometer la técnica.</item>
+                <item>Contrae el abdomen para proteger la zona lumbar.</item>
+            </consejo>
+            <musculos>
+                <principal>Espalda baja</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Buenos Días en Smith</nombre>
+            <descripcion>Ejercicio realizado en máquina Smith que facilita la ejecución del "Buenos Días", permitiendo trabajar la cadena posterior con mayor estabilidad y control.</descripcion>
+            <gif>@drawable/buenos_d_as__smith_</gif>
+            <pasos>
+                <paso numero="1">Posiciónate con los pies a la anchura de los hombros.</paso>
+                <paso numero="2">Coloca la barra en la parte superior de la espalda.</paso>
+                <paso numero="3">Flexiona las caderas de forma lenta y controlada, manteniendo la espalda recta.</paso>
+                <paso numero="4">Vuelve a la posición inicial apretando glúteos.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la barra a tu altura para un mejor control.</item>
+                <item>Realiza el movimiento con atención a la técnica.</item>
+                <item>Mantén el core activado durante todo el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Espalda baja</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación de Cadera Apoyada en el Banco</nombre>
+            <descripcion>Ejercicio enfocado en trabajar los glúteos y la zona lumbar, utilizando un banco para apoyar la espalda y aumentar el rango de movimiento.</descripcion>
+            <gif>@drawable/elevaci_n_de_cadera_apoyada_en_el_banco</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el banco y apoya la espalda de forma segura.</paso>
+                <paso numero="2">Coloca los pies firmemente en el suelo, separados al ancho de las caderas.</paso>
+                <paso numero="3">Eleva la cadera contrayendo los glúteos intensamente.</paso>
+                <paso numero="4">Baja la cadera sin perder la tensión muscular.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda en una posición neutra.</item>
+                <item>No bloquees las rodillas al extender.</item>
+                <item>Controla tanto la subida como la bajada.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteos</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación de Cadera con Pies Juntos y Disco</nombre>
+            <descripcion>Variante de elevación de cadera que intensifica el trabajo de glúteos y core al realizar el movimiento con los pies juntos y añadiendo peso con un disco.</descripcion>
+            <gif>@drawable/elevaci_n_de_cadera_con_pies_juntos___con_disco</gif>
+            <pasos>
+                <paso numero="1">Acuéstate con la espalda en el suelo y las rodillas flexionadas.</paso>
+                <paso numero="2">Coloca un disco sobre la cadera centralmente.</paso>
+                <paso numero="3">Une los pies y mantén las rodillas levemente flexionadas.</paso>
+                <paso numero="4">Eleva la cadera apretando intensamente los glúteos y baja de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta el peso del disco a tu nivel de fuerza.</item>
+                <item>Mantén los pies juntos para mayor intensidad.</item>
+                <item>Realiza el movimiento de forma controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación de Cadera de Pie con Polea</nombre>
+            <descripcion>Ejercicio dinámico que utiliza una polea para trabajar los glúteos y la zona lumbar, proporcionando resistencia ajustable durante el movimiento.</descripcion>
+            <gif>@drawable/elevaci_n_de_cadera_de_pie__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una altura baja y selecciona el peso adecuado.</paso>
+                <paso numero="2">Adopta una postura de pie con una pierna ligeramente adelantada.</paso>
+                <paso numero="3">Tira de la polea hacia la cadera concentrando el esfuerzo en los glúteos.</paso>
+                <paso numero="4">Regresa a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso erguido durante todo el movimiento.</item>
+                <item>Realiza el ejercicio lentamente para maximizar la tensión.</item>
+                <item>Ajusta la resistencia de la polea a tu nivel.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteos</principal>
+                <secundario>Espalda baja</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación de Cadera en Banco con Barra</nombre>
+            <descripcion>Variante de la elevación de cadera que incorpora una barra para añadir resistencia extra mientras se apoya en un banco.</descripcion>
+            <gif>@drawable/elevaci_n_de_cadera_en_banco__barra_</gif>
+            <pasos>
+                <paso numero="1">Posiciónate en un banco con la espalda apoyada y los pies firmemente en el suelo.</paso>
+                <paso numero="2">Coloca la barra sobre la cadera de manera segura.</paso>
+                <paso numero="3">Eleva la cadera apretando intensamente los glúteos.</paso>
+                <paso numero="4">Baja la cadera de forma controlada sin perder tensión.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegura la barra para evitar deslizamientos.</item>
+                <item>Ejecuta el movimiento lenta y controladamente.</item>
+                <item>Mantén el core activo para mayor estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteos</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación de Cadera en el Banco con Mancuernas</nombre>
+            <descripcion>Ejercicio similar a la elevación de cadera en banco, donde se utilizan mancuernas para incrementar la resistencia y potenciar la activación de los glúteos.</descripcion>
+            <gif>@drawable/elevaci_n_de_cadera_en_el_banco__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el banco y apoya la espalda firmemente.</paso>
+                <paso numero="2">Sostén una mancuerna sobre la cadera, con ambas manos o de forma unilateral.</paso>
+                <paso numero="3">Eleva la cadera contrayendo los glúteos intensamente.</paso>
+                <paso numero="4">Baja la cadera de manera controlada manteniendo la tensión.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la técnica correcta en todo momento.</item>
+                <item>No sobrecargues las mancuernas para evitar lesiones.</item>
+                <item>Realiza el movimiento con precisión y control.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteos</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación de Cadera Unilateral Apoyada en el Banco con Mancuernas</nombre>
+            <descripcion>Ejercicio unilateral que intensifica el trabajo en cada lado, mejorando la fuerza y estabilidad en los glúteos mediante el uso de mancuernas.</descripcion>
+            <gif>@drawable/elevaci_n_de_cadera_unilateral_apoyada_en_el_banco__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Apoya la espalda en un banco y prepara la posición.</paso>
+                <paso numero="2">Sostén una mancuerna sobre la cadera del lado a trabajar.</paso>
+                <paso numero="3">Eleva la cadera contrayendo fuertemente el glúteo del lado activo.</paso>
+                <paso numero="4">Baja la cadera lentamente manteniendo el control.</paso>
+            </pasos>
+            <consejo>
+                <item>Enfoca la atención en el lado trabajado para mayor activación.</item>
+                <item>Mantén el core firme durante el ejercicio.</item>
+                <item>Evita compensaciones con el lado opuesto.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteos</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación de Cadera Unilateral en el Banco con Barra</nombre>
+            <descripcion>Variante unipodal que utiliza una barra para incrementar la carga sobre cada lado, mejorando la fuerza y estabilidad de los glúteos.</descripcion>
+            <gif>@drawable/elevaci_n_de_cadera_unilateral_en_el_banco__barra_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el banco y coloca la barra sobre la cadera.</paso>
+                <paso numero="2">Separa ligeramente las piernas para mayor estabilidad.</paso>
+                <paso numero="3">Eleva la cadera del lado que trabajas concentrando el esfuerzo.</paso>
+                <paso numero="4">Regresa a la posición inicial de manera controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Alterna el ejercicio entre ambos lados en cada serie.</item>
+                <item>Mantén la estabilidad sin balancearte.</item>
+                <item>No utilices un peso excesivo para preservar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteos</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación de Cadera Unilateral en Máquina</nombre>
+            <descripcion>Ejercicio que utiliza una máquina para aislar y trabajar de forma unilateral los glúteos, permitiendo un control preciso de la resistencia.</descripcion>
+            <gif>@drawable/elevaci_n_de_cadera_unilateral__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la máquina a tus medidas y posición.</paso>
+                <paso numero="2">Coloca el pie de apoyo en la plataforma designada.</paso>
+                <paso numero="3">Eleva la cadera concentrando el esfuerzo en el glúteo del lado activo.</paso>
+                <paso numero="4">Baja la cadera lentamente sin perder el control.</paso>
+            </pasos>
+            <consejo>
+                <item>Configura la máquina correctamente para tu altura.</item>
+                <item>Mantén la técnica sin compensar con otros músculos.</item>
+                <item>Ejecuta el movimiento de forma lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteos</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Piernas con Polea</nombre>
+            <descripcion>Ejercicio enfocado en fortalecer los cuádriceps utilizando la resistencia de una polea, lo que ayuda a mejorar la fuerza en las piernas.</descripcion>
+            <gif>@drawable/extensi_n_de_piernas__polea_</gif>
+            <pasos>
+                <paso numero="1">Siéntate frente a la máquina de polea con la espalda recta.</paso>
+                <paso numero="2">Ajusta la máquina y coloca los pies en la plataforma.</paso>
+                <paso numero="3">Extiende las piernas de forma controlada, evitando bloquear las rodillas.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>No bloquees las rodillas al extender para proteger las articulaciones.</item>
+                <item>Ajusta el peso según tu nivel de fuerza.</item>
+                <item>Mantén la espalda recta durante todo el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión y Abducción de Cadera en el Suelo</nombre>
+            <descripcion>Ejercicio que combina extensión y abducción para trabajar de forma integrada la parte posterior y lateral de la cadera, favoreciendo la estabilidad y fuerza.</descripcion>
+            <gif>@drawable/extensi_n_y_abducci_n_de_cadera_en_el_suelo</gif>
+            <pasos>
+                <paso numero="1">Acuéstate boca abajo en el suelo con las piernas extendidas.</paso>
+                <paso numero="2">Flexiona ligeramente una pierna para preparar el movimiento.</paso>
+                <paso numero="3">Extiende y abre la pierna lateralmente contrayendo los músculos abductores.</paso>
+                <paso numero="4">Regresa a la posición inicial de manera controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento lentamente para maximizar la tensión muscular.</item>
+                <item>Mantén el control durante toda la ejecución.</item>
+                <item>Evita utilizar impulso para abrir la pierna.</item>
+            </consejo>
+            <musculos>
+                <principal>Glúteos</principal>
+                <secundario>Abductores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Hiperextensión Lumbar Reversa en Máquina</nombre>
+            <descripcion>Ejercicio que trabaja la zona lumbar de manera inversa, utilizando una máquina para un control preciso y seguro del movimiento.</descripcion>
+            <gif>@drawable/hiperextensi_n_lumbar_reversa_m_quina</gif>
+            <pasos>
+                <paso numero="1">Ajusta la máquina y coloca los pies firmemente en la plataforma.</paso>
+                <paso numero="2">Coloca las manos detrás de la cabeza o cruzadas sobre el pecho.</paso>
+                <paso numero="3">Flexiona el tronco hacia adelante de manera controlada.</paso>
+                <paso numero="4">Vuelve a la posición inicial contrayendo la zona lumbar.</paso>
+            </pasos>
+            <consejo>
+                <item>No fuerces el movimiento para evitar lesiones.</item>
+                <item>Mantén el cuello en posición neutral.</item>
+                <item>Controla la velocidad de la ejecución en todo momento.</item>
+            </consejo>
+            <musculos>
+                <principal>Espalda baja</principal>
+                <secundario>Glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto Rumano con Kettlebell</nombre>
+            <descripcion>Ejercicio enfocado en trabajar los isquiotibiales y glúteos, utilizando kettlebell para intensificar el movimiento y mejorar la fuerza del core.</descripcion>
+            <gif>@drawable/peso_muerto_rumano__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Coloca los pies a la anchura de los hombros.</paso>
+                <paso numero="2">Sostén la kettlebell frente a ti con ambas manos.</paso>
+                <paso numero="3">Flexiona ligeramente las rodillas y desliza la kettlebell bajando la cadera manteniendo la espalda recta.</paso>
+                <paso numero="4">Regresa a la posición inicial contrayendo los glúteos y extendiendo las caderas.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta en todo momento.</item>
+                <item>Evita redondear la zona lumbar durante la ejecución.</item>
+                <item>Realiza el movimiento con control para maximizar la activación muscular.</item>
+            </consejo>
+            <musculos>
+                <principal>Isquiotibiales</principal>
+                <secundario>Glúteos</secundario>
+            </musculos>
+        </ejercicio>
+    </categoria>
+
 
 </ejercicios>
