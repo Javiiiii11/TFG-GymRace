@@ -3864,7 +3864,7 @@
             <descripcion>Ejercicio que mejora la movilidad y estabilidad del hombro de forma unilateral, utilizando la resistencia de la polea para un movimiento controlado.</descripcion>
             <gif>@drawable/rotaci_n_de_hombros_unilateral_polea</gif>
             <pasos>
-                <paso numero="1">Ajusta la polea a una posición baja y selecciona un peso ligero.</paso>
+                <paso numero="1">Ajusta la polea a una posición baja o media altura y selecciona un peso ligero.</paso>
                 <paso numero="2">Toma la manija con una mano y párate con postura estable.</paso>
                 <paso numero="3">Realiza una rotación controlada del hombro manteniendo el codo fijo.</paso>
                 <paso numero="4">Vuelve lentamente a la posición inicial.</paso>
@@ -3877,6 +3877,849 @@
             <musculos>
                 <principal>Manguito rotador</principal>
                 <secundario>Deltoides</secundario>
+            </musculos>
+        </ejercicio>
+    </categoria>
+
+    <!-- Categoría: Tríceps-->
+    <categoria nombre="Tríceps">
+        <ejercicio>
+            <nombre>Arranco Unilateral (kettlebell)</nombre>
+            <descripcion>Ejercicio explosivo que mejora la potencia del tren superior y la estabilidad del core, implicando un movimiento unilateral que activa también los tríceps y hombros.</descripcion>
+            <gif>@drawable/arranco_unilateral__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Coloca el kettlebell entre las piernas, con el cuerpo en posición de semi-sentadilla.</paso>
+                <paso numero="2">Impulsa con las caderas y extiende el brazo que sostiene el kettlebell.</paso>
+                <paso numero="3">Lleva el kettlebell a posición frontal, manteniendo el brazo extendido.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para mayor estabilidad.</item>
+                <item>Controla el movimiento para evitar balanceos excesivos.</item>
+                <item>Utiliza un peso adecuado para mantener la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros y core</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Acostado (barra Z)</nombre>
+            <descripcion>Ejercicio clásico para aislar el tríceps, realizado tumbado con barra Z para trabajar de forma efectiva la cabeza larga del músculo.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_acostado__barra_z_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco plano y sujeta la barra Z con agarre prono.</paso>
+                <paso numero="2">Baja la barra controladamente hacia la frente flexionando los codos.</paso>
+                <paso numero="3">Extiende los brazos para volver a la posición inicial.</paso>
+                <paso numero="4">Repite el movimiento manteniendo la técnica.</paso>
+            </pasos>
+            <consejo>
+                <item>No bloquees los codos en la extensión.</item>
+                <item>Mantén el movimiento controlado y evita impulsos.</item>
+                <item>Utiliza un peso moderado para preservar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Antebrazos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Acostado (mancuernas)</nombre>
+            <descripcion>Variante con mancuernas que permite un rango de movimiento independiente para cada brazo, maximizando la activación del tríceps.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_acostado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco plano y sujeta una mancuerna en cada mano sobre la cabeza.</paso>
+                <paso numero="2">Baja las mancuernas flexionando los codos, manteniendo los brazos cerca de la cabeza.</paso>
+                <paso numero="3">Extiende los brazos para regresar a la posición inicial.</paso>
+                <paso numero="4">Realiza el movimiento de forma controlada y alternada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda apoyada en el banco en todo momento.</item>
+                <item>Concéntrate en la contracción del tríceps.</item>
+                <item>Utiliza un peso que permita una ejecución correcta.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps - agarre inverso (barra)</nombre>
+            <descripcion>Ejercicio para tríceps que utiliza un agarre inverso con barra, modificando la activación y el estímulo en el músculo.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps___agarre_inverso__barra_</gif>
+            <pasos>
+                <paso numero="1">Sostén la barra con agarre inverso (palmas hacia arriba).</paso>
+                <paso numero="2">Extiende los brazos sobre la cabeza en posición fija.</paso>
+                <paso numero="3">Baja la barra de forma controlada hasta que sientas el estiramiento en el tríceps.</paso>
+                <paso numero="4">Vuelve a extender los brazos hasta la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los codos fijos durante todo el movimiento.</item>
+                <item>No utilices cargas excesivas para evitar lesiones.</item>
+                <item>Concéntrate en el aislamiento del tríceps.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Antebrazos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps - agarre invertido (polea)</nombre>
+            <descripcion>Ejercicio en polea que emplea un agarre invertido para trabajar de forma diferenciada las fibras del tríceps.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps___agarre_invertido__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea con el peso adecuado y toma la manija con agarre invertido.</paso>
+                <paso numero="2">Coloca el codo junto al torso y extiende el brazo hacia abajo.</paso>
+                <paso numero="3">Regresa de forma lenta a la posición inicial.</paso>
+                <paso numero="4">Repite el movimiento de manera controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el codo en una posición fija.</item>
+                <item>Realiza el movimiento sin balancear el cuerpo.</item>
+                <item>Controla la resistencia de la polea.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Alternada Sentada (mancuernas)</nombre>
+            <descripcion>Ejercicio realizado sentado que permite trabajar cada tríceps de forma individual con mancuernas, promoviendo un buen aislamiento muscular.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_alternada_sentada__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco con respaldo y mantén la postura erguida.</paso>
+                <paso numero="2">Sostén una mancuerna con ambas manos detrás de la cabeza.</paso>
+                <paso numero="3">Extiende un brazo mientras mantienes el otro en posición fija.</paso>
+                <paso numero="4">Alterna el movimiento entre ambos brazos.</paso>
+            </pasos>
+            <consejo>
+                <item>Activa el core para estabilizar el cuerpo.</item>
+                <item>Realiza el movimiento de forma lenta y concentrada.</item>
+                <item>Evita balancear el torso.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Alternada Tumbado (mancuernas)</nombre>
+            <descripcion>Variante tumbada que permite trabajar de manera alternada cada tríceps, proporcionando un rango de movimiento completo.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_alternada_tumbado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco plano con la espalda apoyada.</paso>
+                <paso numero="2">Sostén una mancuerna con ambas manos sobre la cabeza.</paso>
+                <paso numero="3">Extiende un brazo mientras el otro se mantiene en posición, alternando cada repetición.</paso>
+                <paso numero="4">Controla la bajada y subida en cada extensión.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda completamente apoyada en el banco.</item>
+                <item>Realiza el movimiento de forma controlada.</item>
+                <item>Enfócate en la contracción del tríceps.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Antebrazos</secundario>
+            </musculos>
+        </ejercicio>
+<!--aqui-->
+        <ejercicio>
+            <nombre>Extensión de Tríceps - arrodillado (polea)</nombre>
+            <descripcion>Ejercicio en polea realizado en posición arrodillada que facilita el aislamiento del tríceps mediante un movimiento de extensión controlado.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps___arrodillado__polea_</gif>
+            <pasos>
+                <paso numero="1">Arrodíllate frente a la máquina de polea, manteniendo la espalda recta.</paso>
+                <paso numero="2">Toma la manija con ambas manos y posiciona el codo junto al torso.</paso>
+                <paso numero="3">Extiende el brazo hacia abajo de forma controlada.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la postura estable durante todo el ejercicio.</item>
+                <item>Controla la extensión y contracción del tríceps.</item>
+                <item>Utiliza un peso moderado para evitar compensaciones.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps - con cuerda sobre la cabeza (polea)</nombre>
+            <descripcion>Ejercicio en polea que utiliza una cuerda para ampliar el rango de movimiento sobre la cabeza, focalizando el trabajo en el tríceps.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps___con_cuerda_sobre_la_cabeza__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición alta y toma la cuerda con ambas manos.</paso>
+                <paso numero="2">Coloca la cuerda detrás de la cabeza con los codos flexionados.</paso>
+                <paso numero="3">Extiende los brazos hacia adelante, sintiendo la contracción en el tríceps.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los codos fijos y cerca de la cabeza.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Activa el core para mayor estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Curvada (mancuernas)</nombre>
+            <descripcion>Variante con mancuernas que enfatiza la contracción del tríceps manteniendo el codo en posición curvada.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_curvada__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate o ponte de pie con la espalda recta.</paso>
+                <paso numero="2">Sostén una mancuerna con ambas manos detrás de la cabeza.</paso>
+                <paso numero="3">Baja la mancuerna en un arco manteniendo los codos fijos.</paso>
+                <paso numero="4">Extiende los brazos para regresar a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla la bajada y evita movimientos bruscos.</item>
+                <item>Concéntrate en la contracción del tríceps.</item>
+                <item>Utiliza un peso que permita mantener la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Curvado (polea)</nombre>
+            <descripcion>Ejercicio en polea que mantiene el codo en posición curvada para maximizar el trabajo en la cabeza larga del tríceps.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_curvado__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea con un peso moderado y toma la manija con agarre prono.</paso>
+                <paso numero="2">Flexiona ligeramente el codo y baja la manija detrás de la cabeza.</paso>
+                <paso numero="3">Extiende el brazo de forma controlada hasta volver a la posición inicial.</paso>
+                <paso numero="4">Repite el movimiento manteniendo la tensión en el tríceps.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el codo fijo durante el ejercicio.</item>
+                <item>Realiza el movimiento sin prisa para concentrarte en la contracción.</item>
+                <item>Utiliza un peso que permita un control adecuado.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Antebrazos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Declinado - agarre cerrado (barra Z)</nombre>
+            <descripcion>Ejercicio declinado que utiliza la barra Z y un agarre cerrado para focalizar la carga en la parte medial del tríceps.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_declinado___agarre_cerrado__barra_z_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco declinado y sujeta la barra Z con un agarre cerrado.</paso>
+                <paso numero="2">Baja la barra de forma controlada hacia la frente.</paso>
+                <paso numero="3">Extiende los brazos para volver a la posición inicial.</paso>
+                <paso numero="4">Realiza el movimiento concentrándote en el tríceps.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los codos cerca del cuerpo.</item>
+                <item>Controla la bajada para evitar lesiones.</item>
+                <item>No utilices cargas excesivas.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Antebrazos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps en Banco Inclinado (polea)</nombre>
+            <descripcion>Ejercicio en polea realizado en banco inclinado que permite trabajar el tríceps desde un ángulo diferente para un mejor aislamiento.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_en_banco_inclinado__polea_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco inclinado frente a la máquina de polea.</paso>
+                <paso numero="2">Toma la manija con ambas manos y coloca los codos a la altura de la cabeza.</paso>
+                <paso numero="3">Extiende los brazos hacia abajo de forma controlada.</paso>
+                <paso numero="4">Regresa a la posición inicial concentrándote en el tríceps.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la inclinación del banco para mayor comodidad.</item>
+                <item>Realiza el movimiento lentamente para maximizar el aislamiento.</item>
+                <item>Evita balanceos en el torso.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Inclinada (polea)</nombre>
+            <descripcion>Variante en polea realizada en posición inclinada para modificar el ángulo de trabajo y enfatizar la contracción del tríceps.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_inclinada__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea y siéntate en un banco inclinado.</paso>
+                <paso numero="2">Toma la manija con agarre prono y posiciona los codos a la altura de la cabeza.</paso>
+                <paso numero="3">Extiende los brazos llevando la manija hacia abajo.</paso>
+                <paso numero="4">Vuelve lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso estable durante el movimiento.</item>
+                <item>Evita movimientos bruscos para preservar el aislamiento.</item>
+                <item>Concéntrate en la contracción del tríceps.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Inclinado (smith)</nombre>
+            <descripcion>Ejercicio realizado en máquina Smith que facilita la extensión de tríceps en posición inclinada, ofreciendo mayor control y estabilidad.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_inclinado__smith_</gif>
+            <pasos>
+                <paso numero="1">Colócate en el banco inclinado de la máquina Smith.</paso>
+                <paso numero="2">Sujeta la barra con un agarre prono y posiciónala sobre la frente.</paso>
+                <paso numero="3">Baja la barra de forma controlada.</paso>
+                <paso numero="4">Extiende los brazos para volver a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegura la barra antes de iniciar el movimiento.</item>
+                <item>Realiza el ejercicio de forma lenta y controlada.</item>
+                <item>Enfócate en la activación del tríceps.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Antebrazos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps (kettlebell)</nombre>
+            <descripcion>Variante de extensión de tríceps que utiliza kettlebell para incorporar un reto adicional de estabilidad y activación del core.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco con respaldo y sostiene el kettlebell con ambas manos detrás de la cabeza.</paso>
+                <paso numero="2">Baja el kettlebell flexionando los codos.</paso>
+                <paso numero="3">Extiende los brazos para regresar a la posición inicial.</paso>
+                <paso numero="4">Realiza el movimiento de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la técnica correcta para evitar lesiones.</item>
+                <item>Controla el movimiento en ambas direcciones.</item>
+                <item>Utiliza un peso que te permita una ejecución precisa.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Core</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps (mancuernas)</nombre>
+            <descripcion>Ejercicio clásico que permite trabajar el tríceps de forma bilateral utilizando mancuernas para un rango completo de extensión.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco plano y sujeta una mancuerna en cada mano sobre la cabeza.</paso>
+                <paso numero="2">Baja las mancuernas flexionando los codos de forma controlada.</paso>
+                <paso numero="3">Extiende los brazos para volver a la posición inicial.</paso>
+                <paso numero="4">Realiza el movimiento manteniendo la tensión en el tríceps.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda apoyada en el banco.</item>
+                <item>Controla la bajada y subida de las mancuernas.</item>
+                <item>Utiliza un peso moderado para una ejecución correcta.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps (máquina)</nombre>
+            <descripcion>Ejercicio asistido que utiliza una máquina para aislar y trabajar el tríceps de manera segura y controlada.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la máquina a tus medidas y posición.</paso>
+                <paso numero="2">Coloca los brazos en las manijas y sujeta la carga.</paso>
+                <paso numero="3">Extiende los brazos concentrándote en el tríceps.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegura que la máquina esté bien ajustada a tu altura.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Concéntrate en la contracción muscular.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps (polea baja)</nombre>
+            <descripcion>Ejercicio en polea baja que ofrece una resistencia constante para trabajar el tríceps con un movimiento enfocado y controlado.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps__polea_baja_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea baja con el peso adecuado.</paso>
+                <paso numero="2">Toma la manija con agarre prono y posiciona el codo junto al cuerpo.</paso>
+                <paso numero="3">Extiende el brazo manteniendo el codo fijo.</paso>
+                <paso numero="4">Regresa a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Evita balancear el cuerpo durante el movimiento.</item>
+                <item>Concéntrate en la extensión completa del tríceps.</item>
+                <item>Controla la resistencia en todo momento.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Antebrazos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps (polea)</nombre>
+            <descripcion>Ejercicio en polea que ofrece una resistencia constante a lo largo del movimiento para aislar eficazmente el tríceps.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a la altura adecuada y selecciona el peso correcto.</paso>
+                <paso numero="2">Sostén la manija con ambas manos y posiciona los codos cerca del cuerpo.</paso>
+                <paso numero="3">Extiende los brazos de forma controlada.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para evitar balanceos.</item>
+                <item>Realiza el movimiento de forma controlada.</item>
+                <item>Concéntrate en la contracción del tríceps.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps (polia alta)</nombre>
+            <descripcion>Variante en polea alta que permite trabajar el tríceps desde un ángulo diferente, enfatizando la parte larga del músculo.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps__polia_alta_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea alta y selecciona el peso adecuado.</paso>
+                <paso numero="2">Toma la manija y coloca el brazo en posición extendida.</paso>
+                <paso numero="3">Baja la manija de forma controlada.</paso>
+                <paso numero="4">Vuelve a la posición inicial concentrándote en el tríceps.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Mantén el codo fijo durante la extensión.</item>
+                <item>Utiliza un peso moderado para preservar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Antebrazos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Sentado (mancuernas)</nombre>
+            <descripcion>Ejercicio realizado sentado que aísla el tríceps utilizando mancuernas para un movimiento controlado sobre la cabeza.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_sentado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco con respaldo y mantén la postura erguida.</paso>
+                <paso numero="2">Sostén una mancuerna con ambas manos sobre la cabeza.</paso>
+                <paso numero="3">Flexiona los codos para bajar la mancuerna detrás de la cabeza.</paso>
+                <paso numero="4">Extiende los brazos para volver a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso estable y el core activado.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Utiliza un peso que permita una ejecución precisa.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Sentado - por encima de la cabeza (mancuernas)</nombre>
+            <descripcion>Variante del ejercicio sentado que enfatiza la extensión completa por encima de la cabeza para un mayor estímulo en el tríceps.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_sentado___por_encima_de_la_cabeza__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco con respaldo y mantén la postura erguida.</paso>
+                <paso numero="2">Sostén una mancuerna con ambas manos detrás de la cabeza.</paso>
+                <paso numero="3">Extiende completamente los brazos por encima de la cabeza.</paso>
+                <paso numero="4">Baja la mancuerna de forma controlada hasta la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los codos apuntando hacia adelante.</item>
+                <item>Controla la bajada para evitar lesiones.</item>
+                <item>Utiliza un peso moderado para preservar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Tumbado - agarre cerrado (barra Z)</nombre>
+            <descripcion>Ejercicio tumbado que utiliza la barra Z con agarre cerrado para focalizar el trabajo en la parte medial del tríceps.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_tumbado___agarre_cerrado__barra_z_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco plano y sujeta la barra Z con agarre cerrado.</paso>
+                <paso numero="2">Baja la barra controladamente hacia la frente flexionando los codos.</paso>
+                <paso numero="3">Extiende los brazos para regresar a la posición inicial.</paso>
+                <paso numero="4">Realiza el movimiento manteniendo el control en cada repetición.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los codos fijos durante el movimiento.</item>
+                <item>Realiza el movimiento de forma controlada para evitar lesiones.</item>
+                <item>No utilices cargas excesivas.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Antebrazos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Tumbado (barra)</nombre>
+            <descripcion>Ejercicio clásico tumbado que utiliza una barra para aislar y trabajar el tríceps de manera efectiva.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_tumbado__barra_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco plano y sujeta la barra con un agarre prono.</paso>
+                <paso numero="2">Baja la barra hacia la frente flexionando los codos.</paso>
+                <paso numero="3">Extiende los brazos para volver a la posición inicial.</paso>
+                <paso numero="4">Realiza el movimiento manteniendo el core activado.</paso>
+            </pasos>
+            <consejo>
+                <item>Ejecuta el movimiento de forma lenta y controlada.</item>
+                <item>Mantén la espalda apoyada en el banco.</item>
+                <item>Utiliza un peso adecuado para preservar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Antebrazos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Tumbado (kettlebell)</nombre>
+            <descripcion>Variante del ejercicio tumbado que utiliza kettlebell para agregar un desafío extra en estabilidad y activación del core.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_tumbado__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco plano y sujeta la kettlebell con ambas manos.</paso>
+                <paso numero="2">Baja la kettlebell controladamente hacia la frente flexionando los codos.</paso>
+                <paso numero="3">Extiende los brazos para regresar a la posición inicial.</paso>
+                <paso numero="4">Realiza el movimiento sin balancear el cuerpo.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado durante todo el ejercicio.</item>
+                <item>Controla la bajada y subida para evitar lesiones.</item>
+                <item>Utiliza un peso que permita una ejecución precisa.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Core</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Tumbado (polea)</nombre>
+            <descripcion>Ejercicio de tríceps tumbado en polea que ofrece una resistencia constante y un movimiento controlado para aislar el tríceps.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_tumbado__polea_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco plano frente a la máquina de polea.</paso>
+                <paso numero="2">Toma la manija con ambas manos, posicionando los codos fijos.</paso>
+                <paso numero="3">Baja la manija hacia la frente flexionando los codos.</paso>
+                <paso numero="4">Extiende los brazos para regresar a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Mantén los codos fijos durante todo el ejercicio.</item>
+                <item>Concéntrate en la contracción del tríceps.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Antebrazos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Tumbado Profundo (barra)</nombre>
+            <descripcion>Variante avanzada tumbada que enfatiza un rango de movimiento profundo para estirar y contraer el tríceps de forma intensa.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_tumbado_profundo__barra_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco plano y sujeta la barra con agarre prono.</paso>
+                <paso numero="2">Baja la barra llevando los codos a un ángulo mayor para un estiramiento profundo.</paso>
+                <paso numero="3">Extiende los brazos regresando a la posición inicial.</paso>
+                <paso numero="4">Realiza el movimiento con control y sin prisa.</paso>
+            </pasos>
+            <consejo>
+                <item>Ejecuta el movimiento lentamente para maximizar el estiramiento.</item>
+                <item>Utiliza un peso moderado para evitar lesiones.</item>
+                <item>Concéntrate en la contracción del tríceps durante la extensión.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Antebrazos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Unilateral por Detrás (polea)</nombre>
+            <descripcion>Ejercicio en polea realizado de forma unilateral que trabaja la parte trasera del tríceps desde un ángulo específico.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_unilateral_por_detr_s__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición media y selecciona el peso adecuado.</paso>
+                <paso numero="2">Toma la manija con una mano, posicionándola detrás de la cabeza.</paso>
+                <paso numero="3">Extiende el brazo manteniendo el codo fijo.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el movimiento concentrado en el tríceps.</item>
+                <item>Evita balancear el cuerpo para aislar mejor el músculo.</item>
+                <item>Realiza el ejercicio de forma lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Tríceps Unilateral Sentado (mancuernas)</nombre>
+            <descripcion>Ejercicio realizado sentado que permite trabajar de forma unilateral el tríceps, facilitando un buen aislamiento muscular.</descripcion>
+            <gif>@drawable/extensi_n_de_tr_ceps_unilateral_sentado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco con respaldo y mantén la postura erguida.</paso>
+                <paso numero="2">Sostén una mancuerna con una mano sobre la cabeza.</paso>
+                <paso numero="3">Flexiona el codo bajando la mancuerna detrás de la cabeza.</paso>
+                <paso numero="4">Extiende el brazo para volver a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso estable y el core activado.</item>
+                <item>Utiliza un peso moderado para controlar el movimiento.</item>
+                <item>Concéntrate en la contracción del tríceps.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Fondos de Tríceps en Banco</nombre>
+            <descripcion>Ejercicio con el propio peso corporal que trabaja intensamente el tríceps utilizando un banco para soporte.</descripcion>
+            <gif>@drawable/fondos_de_tr_ceps_en_banco</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el borde de un banco y coloca las manos a ambos lados del cuerpo.</paso>
+                <paso numero="2">Desliza el cuerpo fuera del banco, bajando flexionando los codos.</paso>
+                <paso numero="3">Baja hasta que los codos formen un ángulo de 90 grados.</paso>
+                <paso numero="4">Empuja para volver a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el cuerpo recto durante el movimiento.</item>
+                <item>Realiza el movimiento de forma controlada.</item>
+                <item>No bajes demasiado si sientes incomodidad en los hombros.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Pectorales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Tríceps en Banco (mancuernas)</nombre>
+            <descripcion>Ejercicio que combina el soporte del banco con el uso de mancuernas para aislar y trabajar el tríceps de forma efectiva.</descripcion>
+            <gif>@drawable/tr_ceps_en_banco__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco con respaldo y coloca una mancuerna en cada mano a la altura del pecho.</paso>
+                <paso numero="2">Extiende los brazos hacia adelante concentrándote en el tríceps.</paso>
+                <paso numero="3">Regresa a la posición inicial de forma controlada.</paso>
+                <paso numero="4">Mantén la tensión en el tríceps durante todo el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén una postura estable y evita balanceos.</item>
+                <item>Realiza el movimiento lentamente para maximizar la activación.</item>
+                <item>Utiliza un peso adecuado para tu nivel de fuerza.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Tríceps Francés Unilateral - con Fitball (mancuernas)</nombre>
+            <descripcion>Variante del tríceps francés realizado de forma unilateral, utilizando una fitball para mejorar la estabilidad y el equilibrio durante la extensión.</descripcion>
+            <gif>@drawable/tr_ceps_franc_s_unilateral___con_fitball__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Apoya la espalda en una fitball y siéntate de forma estable.</paso>
+                <paso numero="2">Sostén una mancuerna con una mano cerca de la frente.</paso>
+                <paso numero="3">Flexiona el codo para bajar la mancuerna controladamente.</paso>
+                <paso numero="4">Extiende el brazo para volver a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la estabilidad sobre la fitball.</item>
+                <item>Controla el movimiento sin dejar que el peso interfiera en la técnica.</item>
+                <item>Utiliza un peso ligero a moderado para mejorar la forma.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Core</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Tríceps Patada de Mula Alternado Sentado (mancuernas)</nombre>
+            <descripcion>Ejercicio realizado en posición sentada que aísla el tríceps mediante un movimiento de “patada de mula” de forma alternada.</descripcion>
+            <gif>@drawable/tr_ceps_patada_de_mula_alternado_sentado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco con respaldo e inclina ligeramente el torso hacia adelante.</paso>
+                <paso numero="2">Sostén una mancuerna con una mano, manteniendo el codo pegado al cuerpo.</paso>
+                <paso numero="3">Extiende el brazo hacia atrás concentrándote en la contracción del tríceps.</paso>
+                <paso numero="4">Alterna el movimiento con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso estable y evita balanceos.</item>
+                <item>Concéntrate en la contracción del tríceps en cada repetición.</item>
+                <item>Utiliza un peso moderado para mantener la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Tríceps Patada de Mula - con Fitball (mancuernas)</nombre>
+            <descripcion>Variante de la patada de mula que utiliza una fitball para mejorar la estabilidad y aumentar la activación del tríceps.</descripcion>
+            <gif>@drawable/tr_ceps_patada_de_mula___con_fitball__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Apoya la espalda en una fitball y siéntate de forma estable.</paso>
+                <paso numero="2">Sostén una mancuerna con una mano y coloca el codo pegado al torso.</paso>
+                <paso numero="3">Extiende el brazo hacia atrás, concentrándote en el tríceps.</paso>
+                <paso numero="4">Regresa a la posición inicial y alterna con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la estabilidad sobre la fitball.</item>
+                <item>Realiza el movimiento lentamente para aislar el tríceps.</item>
+                <item>Utiliza un peso ligero para enfocarte en la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Core</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Tríceps Patada de Mula Inclinado - agarre pronado (mancuernas)</nombre>
+            <descripcion>Variante inclinada de la patada de mula que utiliza mancuernas con agarre pronado para enfocar la extensión en el tríceps.</descripcion>
+            <gif>@drawable/tr_ceps_patada_de_mula_inclinado___agarre_pronado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Inclina el torso hacia adelante apoyándote en un banco.</paso>
+                <paso numero="2">Sostén una mancuerna con agarre pronado, manteniendo el codo pegado al cuerpo.</paso>
+                <paso numero="3">Extiende el brazo hacia atrás de forma controlada.</paso>
+                <paso numero="4">Regresa a la posición inicial y alterna con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta durante todo el ejercicio.</item>
+                <item>Controla la extensión para maximizar la contracción del tríceps.</item>
+                <item>Utiliza un peso moderado para preservar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Tríceps Patada de Mula Inclinado (mancuernas)</nombre>
+            <descripcion>Variante inclinada de la patada de mula realizada con mancuernas, enfocada en aislar y trabajar intensamente el tríceps.</descripcion>
+            <gif>@drawable/tr_ceps_patada_de_mula_inclinado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Inclina el torso apoyándote en un banco, manteniendo la espalda recta.</paso>
+                <paso numero="2">Sostén una mancuerna en cada mano, con los codos pegados al cuerpo.</paso>
+                <paso numero="3">Extiende ambos brazos hacia atrás concentrándote en el tríceps.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Activa el core para mantener la estabilidad.</item>
+                <item>Realiza el movimiento sin balanceos.</item>
+                <item>Utiliza un peso adecuado para ejecutar bien la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Tríceps Patada de Mula (mancuernas)</nombre>
+            <descripcion>Ejercicio clásico de patada de mula realizado con mancuernas para trabajar el tríceps de forma bilateral o unilateral.</descripcion>
+            <gif>@drawable/tr_ceps_patada_de_mula__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Inclina el torso ligeramente apoyándote en un banco para estabilidad.</paso>
+                <paso numero="2">Sostén una mancuerna en cada mano, con los codos pegados al cuerpo.</paso>
+                <paso numero="3">Extiende los brazos hacia atrás concentrándote en la contracción del tríceps.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso estable durante todo el movimiento.</item>
+                <item>Controla la extensión y evita balanceos.</item>
+                <item>Utiliza un peso moderado para enfocarte en la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Tríceps Patada de Mula (polea)</nombre>
+            <descripcion>Variante en polea de la patada de mula que proporciona una resistencia constante para trabajar el tríceps de forma efectiva.</descripcion>
+            <gif>@drawable/tr_ceps_patada_de_mula__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición baja y selecciona el peso adecuado.</paso>
+                <paso numero="2">Toma la manija con una mano, manteniendo el codo pegado al cuerpo.</paso>
+                <paso numero="3">Extiende el brazo hacia atrás de forma controlada.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla la resistencia para mantener la técnica.</item>
+                <item>Evita balancear el cuerpo durante el movimiento.</item>
+                <item>Concéntrate en la contracción del tríceps.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Tríceps Patada de Mula Unilateral (mancuernas)</nombre>
+            <descripcion>Ejercicio unilateral que aísla el tríceps, realizado con mancuernas para concentrar el esfuerzo en cada brazo por separado.</descripcion>
+            <gif>@drawable/tr_ceps_patada_de_mula_unilateral__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Colócate en posición de apoyo sobre un banco con el torso inclinado.</paso>
+                <paso numero="2">Sostén una mancuerna con una mano, con el codo pegado al cuerpo.</paso>
+                <paso numero="3">Extiende el brazo hacia atrás concentrándote en la contracción del tríceps.</paso>
+                <paso numero="4">Regresa a la posición inicial y repite con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso estable durante todo el ejercicio.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Evita compensaciones utilizando un peso excesivo.</item>
+            </consejo>
+            <musculos>
+                <principal>Tríceps</principal>
+                <secundario>Hombros</secundario>
             </musculos>
         </ejercicio>
     </categoria>
