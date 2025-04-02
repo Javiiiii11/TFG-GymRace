@@ -4978,4 +4978,532 @@
             </musculos>
         </ejercicio>
     </categoria>
+
+    <!-- Categoría: Pectorales-->
+    <categoria nombre="Pectorales">
+        <ejercicio>
+            <nombre>Cristos Alternado (mancuernas)</nombre>
+            <descripcion>Ejercicio unilateral que trabaja la parte interna y superior del pectoral, permitiendo corregir desequilibrios entre ambos lados.</descripcion>
+            <gif>@drawable/cristos_alternado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Párate con los pies a la anchura de los hombros y sujeta una mancuerna en cada mano.</paso>
+                <paso numero="2">Inclina ligeramente el torso hacia adelante y extiende los brazos a los lados.</paso>
+                <paso numero="3">Alterna el movimiento llevando una mancuerna hacia el centro, cruzando ligeramente el cuerpo.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial y repite con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento lentamente para maximizar la contracción.</item>
+                <item>Mantén el core activado para estabilizar el torso.</item>
+                <item>Utiliza un peso que permita ejecutar la técnica correctamente.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Alternado (polea)</nombre>
+            <descripcion>Ejercicio en polea que trabaja los pectorales de forma unilateral, permitiendo un rango de movimiento constante y controlado.</descripcion>
+            <gif>@drawable/cristos_alternado__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición media y selecciona el peso adecuado.</paso>
+                <paso numero="2">Párate erguido y toma la manija con una mano.</paso>
+                <paso numero="3">Realiza el movimiento cruzando el brazo hacia el centro, contrayendo el pectoral.</paso>
+                <paso numero="4">Vuelve de forma controlada a la posición inicial y repite con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla la velocidad para aislar bien el pectoral.</item>
+                <item>Mantén el codo ligeramente flexionado durante el movimiento.</item>
+                <item>Realiza el ejercicio con un peso moderado.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos con Brazos Flexionados - Mariposa (máquina)</nombre>
+            <descripcion>Ejercicio en máquina que simula el movimiento de mariposa, concentrando el esfuerzo en la contracción del pectoral mediante la flexión de brazos.</descripcion>
+            <gif>@drawable/cristos_con_brazos_flexionados___mariposa__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en la máquina y ajusta el asiento según tu altura.</paso>
+                <paso numero="2">Coloca los brazos en las almohadillas, con los codos ligeramente flexionados.</paso>
+                <paso numero="3">Junta las manos en el centro contrayendo los pectorales.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial manteniendo la tensión.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la máquina para que el movimiento sea cómodo.</item>
+                <item>No bloquees los codos durante el ejercicio.</item>
+                <item>Concéntrate en la contracción del pectoral en cada repetición.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Declinado (mancuernas)</nombre>
+            <descripcion>Ejercicio con mancuernas en banco declinado que enfatiza la parte inferior del pectoral y mejora la amplitud del movimiento.</descripcion>
+            <gif>@drawable/cristos_declinado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco declinado con una mancuerna en cada mano.</paso>
+                <paso numero="2">Extiende los brazos hacia los lados con una ligera flexión en los codos.</paso>
+                <paso numero="3">Lleva las mancuernas hacia el centro, contrayendo el pectoral inferior.</paso>
+                <paso numero="4">Regresa controladamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén una ejecución lenta para maximizar la contracción.</item>
+                <item>No sobrecargues las mancuernas para preservar la técnica.</item>
+                <item>Realiza el movimiento de forma fluida.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos de Pie - agarre neutro (polea)</nombre>
+            <descripcion>Ejercicio en polea con agarre neutro que trabaja los pectorales desde una posición de pie, enfatizando la contracción interna.</descripcion>
+            <gif>@drawable/cristos_de_pie___agarre_neutro__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición media y selecciona el peso adecuado.</paso>
+                <paso numero="2">Párate erguido y toma la manija con agarre neutro.</paso>
+                <paso numero="3">Realiza el movimiento llevando las manos hacia el centro del pecho.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso estable durante el ejercicio.</item>
+                <item>Controla la velocidad para maximizar la activación muscular.</item>
+                <item>Utiliza un peso que te permita ejecutar el movimiento correctamente.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos de pie (polea)</nombre>
+            <descripcion>Ejercicio en polea que trabaja el pectoral mediante un movimiento de cruce de brazos, enfatizando la contracción completa.</descripcion>
+            <gif>@drawable/cristos_de_pie__polea_</gif>
+            <pasos>
+                <paso numero="1">Colócate de pie frente a la polea con los pies a la anchura de los hombros.</paso>
+                <paso numero="2">Toma la manija con ambas manos y extiende los brazos lateralmente.</paso>
+                <paso numero="3">Cruza las manos frente al pecho contrayendo los pectorales.</paso>
+                <paso numero="4">Vuelve de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta y el core activado.</item>
+                <item>Realiza el movimiento sin impulso para maximizar el aislamiento.</item>
+                <item>Utiliza una carga adecuada para mantener la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos - de rodillas (polea)</nombre>
+            <descripcion>Ejercicio en polea realizado en posición de rodillas para mejorar el aislamiento del pectoral y minimizar la ayuda de las piernas.</descripcion>
+            <gif>@drawable/cristos___de_rodillas__polea_</gif>
+            <pasos>
+                <paso numero="1">Arrodíllate frente a la máquina de polea, manteniendo la espalda recta.</paso>
+                <paso numero="2">Toma la manija con ambas manos y extiende los brazos hacia los lados.</paso>
+                <paso numero="3">Cruza las manos frente al pecho concentrándote en la contracción del pectoral.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Mantén la postura para aislar bien el pectoral.</item>
+                <item>No utilices un peso excesivo.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Sentado (polea)</nombre>
+            <descripcion>Ejercicio en polea realizado sentado para trabajar el pectoral con un soporte que minimiza la intervención de la parte baja del cuerpo.</descripcion>
+            <gif>@drawable/cristos_sentado__polea_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el banco frente a la máquina de polea con la espalda erguida.</paso>
+                <paso numero="2">Toma la manija con ambas manos y extiende los brazos lateralmente.</paso>
+                <paso numero="3">Cruza las manos frente al pecho contrayendo los pectorales.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Apoya bien la espalda en el respaldo para estabilidad.</item>
+                <item>Concéntrate en el movimiento del pectoral.</item>
+                <item>Utiliza un peso moderado para mantener la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Unilateral de Pie (polea)</nombre>
+            <descripcion>Ejercicio en polea realizado de forma unilateral que permite aislar y trabajar cada pectoral de manera independiente.</descripcion>
+            <gif>@drawable/cristos_unilateral_de_pie__polea_</gif>
+            <pasos>
+                <paso numero="1">Párate de lado frente a la polea y ajusta el peso adecuado.</paso>
+                <paso numero="2">Toma la manija con la mano más cercana a la máquina.</paso>
+                <paso numero="3">Realiza el movimiento cruzando el brazo hacia el centro del cuerpo, contrayendo el pectoral.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial y repite con el otro lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el ejercicio de forma concentrada para aislar el pectoral.</item>
+                <item>Mantén el torso estable y el core activado.</item>
+                <item>Utiliza un peso moderado para controlar el movimiento.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca declinado - agarre neutro (mancuernas)</nombre>
+            <descripcion>Ejercicio en banco declinado con mancuernas que trabaja la parte inferior del pectoral, utilizando un agarre neutro para reducir la tensión en los hombros.</descripcion>
+            <gif>@drawable/press_de_banca_declinado___agarre_neutro__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco declinado con una mancuerna en cada mano.</paso>
+                <paso numero="2">Coloca las mancuernas a la altura del pecho con agarre neutro.</paso>
+                <paso numero="3">Empuja las mancuernas hacia arriba extendiendo los brazos.</paso>
+                <paso numero="4">Baja de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los codos ligeramente flexionados.</item>
+                <item>Controla el movimiento para evitar balanceos.</item>
+                <item>Utiliza un peso que te permita buena ejecución.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca declinado alternado (mancuernas)</nombre>
+            <descripcion>Variante alternada que permite trabajar cada pectoral de forma individual en banco declinado, mejorando el aislamiento y equilibrio muscular.</descripcion>
+            <gif>@drawable/press_de_banca_declinado_alternado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco declinado y sujeta una mancuerna en cada mano.</paso>
+                <paso numero="2">Empuja una mancuerna hacia arriba mientras la otra permanece en posición de inicio.</paso>
+                <paso numero="3">Alterna el movimiento entre ambos brazos.</paso>
+                <paso numero="4">Baja de forma controlada cada mancuerna a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Concéntrate en el aislamiento del pectoral de cada lado.</item>
+                <item>Activa el core para mantener la estabilidad.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca declinado (barra)</nombre>
+            <descripcion>Ejercicio clásico en banco declinado utilizando barra, enfocado en trabajar el pectoral inferior y activar también los tríceps.</descripcion>
+            <gif>@drawable/press_de_banca_declinado__barra_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco declinado y sujeta la barra con un agarre medio.</paso>
+                <paso numero="2">Baja la barra de forma controlada hasta el pecho.</paso>
+                <paso numero="3">Empuja la barra hacia arriba extendiendo los brazos.</paso>
+                <paso numero="4">Regresa a la posición inicial sin bloquear los codos.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda bien apoyada en el banco.</item>
+                <item>No bloquees los codos al extender los brazos.</item>
+                <item>Utiliza un peso adecuado para asegurar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca declinado (mancuernas)</nombre>
+            <descripcion>Variante del press de banca declinado con mancuernas que permite mayor rango de movimiento y activación de los pectorales inferiores.</descripcion>
+            <gif>@drawable/press_de_banca_declinado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco declinado con una mancuerna en cada mano.</paso>
+                <paso numero="2">Coloca las mancuernas a la altura del pecho con un agarre cómodo.</paso>
+                <paso numero="3">Empuja ambas mancuernas hacia arriba extendiendo los brazos.</paso>
+                <paso numero="4">Baja de forma controlada hasta la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los codos en línea con los hombros.</item>
+                <item>Realiza el movimiento de forma lenta para maximizar la tensión.</item>
+                <item>Utiliza un peso que te permita ejecutar el ejercicio con buena técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca declinado (máquina)</nombre>
+            <descripcion>Ejercicio en máquina que ofrece estabilidad y guía para trabajar el pectoral inferior en banco declinado.</descripcion>
+            <gif>@drawable/press_de_banca_declinado__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en la máquina y ajusta el asiento para un banco declinado.</paso>
+                <paso numero="2">Sujeta las manijas con un agarre cómodo.</paso>
+                <paso numero="3">Empuja hacia adelante extendiendo los brazos y contrayendo el pectoral.</paso>
+                <paso numero="4">Regresa controladamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la máquina para que se adapte a tu altura.</item>
+                <item>Realiza el movimiento de forma controlada.</item>
+                <item>Concéntrate en la contracción del pectoral durante el empuje.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca en máquina</nombre>
+            <descripcion>Ejercicio asistido que utiliza una máquina para trabajar el pectoral de forma controlada, minimizando la intervención del core.</descripcion>
+            <gif>@drawable/press_de_banca_en_m_quina</gif>
+            <pasos>
+                <paso numero="1">Siéntate en la máquina y ajusta el asiento.</paso>
+                <paso numero="2">Sujeta las manijas con un agarre adecuado.</paso>
+                <paso numero="3">Empuja hacia adelante extendiendo los brazos.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta durante el ejercicio.</item>
+                <item>Utiliza una carga que permita una ejecución fluida.</item>
+                <item>Concéntrate en la contracción del pectoral.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de Banca Inclinado - agarre invertido (mancuernas)</nombre>
+            <descripcion>Ejercicio en banco inclinado con mancuernas y agarre invertido, que enfatiza la parte superior del pectoral y reduce la tensión en los hombros.</descripcion>
+            <gif>@drawable/press_de_banca_inclinado___agarre_invertido__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco inclinado con una mancuerna en cada mano.</paso>
+                <paso numero="2">Coloca las mancuernas a la altura del pecho con agarre invertido.</paso>
+                <paso numero="3">Empuja las mancuernas hacia arriba extendiendo los brazos.</paso>
+                <paso numero="4">Baja de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para la estabilidad.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Utiliza un peso adecuado para la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales superiores</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca inclinado (smith)</nombre>
+            <descripcion>Ejercicio en máquina Smith que facilita la ejecución del press de banca inclinado, permitiendo un control total del movimiento.</descripcion>
+            <gif>@drawable/press_de_banca_inclinado__smith_</gif>
+            <pasos>
+                <paso numero="1">Colócate en un banco inclinado dentro de la máquina Smith.</paso>
+                <paso numero="2">Sujeta la barra con agarre medio y posiciónala a la altura del pecho.</paso>
+                <paso numero="3">Empuja la barra hacia arriba extendiendo los brazos.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla el movimiento para evitar compensaciones.</item>
+                <item>Mantén la espalda bien apoyada en el banco.</item>
+                <item>Utiliza un peso que te permita ejecutar la técnica correctamente.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales superiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca plano - agarre neutro (mancuernas)</nombre>
+            <descripcion>Ejercicio en banco plano con mancuernas y agarre neutro que enfatiza el pectoral central, favoreciendo un movimiento natural y equilibrado.</descripcion>
+            <gif>@drawable/press_de_banca_plano___agarre_neutro__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco plano y sujeta una mancuerna en cada mano.</paso>
+                <paso numero="2">Coloca las mancuernas a la altura del pecho con un agarre neutro.</paso>
+                <paso numero="3">Empuja las mancuernas hacia arriba extendiendo los brazos sin bloquear los codos.</paso>
+                <paso numero="4">Baja de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento de forma lenta para maximizar la contracción.</item>
+                <item>Mantén el core activado para estabilizar el cuerpo.</item>
+                <item>Utiliza un peso moderado que permita una técnica perfecta.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales centrales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de Banca Sentado con Manos Juntas (polea)</nombre>
+            <descripcion>Ejercicio en polea realizado sentado que enfatiza la contracción del pectoral al juntar las manos durante el empuje.</descripcion>
+            <gif>@drawable/press_de_banca_sentado_con_manos_juntas__polea_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en la máquina de polea con la espalda erguida.</paso>
+                <paso numero="2">Toma ambas manijas y junta las manos frente al pecho.</paso>
+                <paso numero="3">Empuja las manijas hacia adelante, extendiendo los brazos.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial manteniendo las manos juntas.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para una mayor estabilidad.</item>
+                <item>Realiza el movimiento sin balancear el torso.</item>
+                <item>Utiliza un peso que te permita controlar el movimiento.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de Banca Sentado (mancuernas)</nombre>
+            <descripcion>Ejercicio realizado sentado que trabaja el pectoral de forma segura con mancuernas, permitiendo un rango de movimiento controlado.</descripcion>
+            <gif>@drawable/press_de_banca_sentado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco con respaldo y sostén una mancuerna en cada mano a la altura del pecho.</paso>
+                <paso numero="2">Empuja las mancuernas hacia adelante extendiendo los brazos.</paso>
+                <paso numero="3">Mantén la contracción del pectoral en la parte superior del movimiento.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta y el core activado.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Utiliza un peso moderado para asegurar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de Banca Tumbado con Manos Juntas (polea)</nombre>
+            <descripcion>Ejercicio en polea tumbado que enfatiza la contracción central del pectoral al juntar las manos durante el empuje.</descripcion>
+            <gif>@drawable/press_de_banca_tumbado_con_manos_juntas__polea_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco plano frente a la máquina de polea.</paso>
+                <paso numero="2">Toma ambas manijas y junta las manos sobre el pecho.</paso>
+                <paso numero="3">Empuja las manijas hacia arriba extendiendo los brazos.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén una ejecución lenta para maximizar la tensión en el pectoral.</item>
+                <item>Evita balancear el torso durante el movimiento.</item>
+                <item>Utiliza un peso que permita mantener la técnica correcta.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de pecho - agarre neutro (máquina)</nombre>
+            <descripcion>Ejercicio en máquina que trabaja el pectoral central utilizando un agarre neutro para reducir la tensión en las articulaciones.</descripcion>
+            <gif>@drawable/press_de_pecho_agarre_neutro_m_quina</gif>
+            <pasos>
+                <paso numero="1">Siéntate en la máquina y ajusta el asiento según tu altura.</paso>
+                <paso numero="2">Sujeta las manijas con un agarre neutro y colócalas a la altura del pecho.</paso>
+                <paso numero="3">Empuja las manijas hacia adelante extendiendo los brazos.</paso>
+                <paso numero="4">Regresa controladamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la máquina para que se adapte a tu tamaño.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Concéntrate en la contracción del pectoral durante cada repetición.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de Pecho Declinado en Pie (polea)</nombre>
+            <descripcion>Ejercicio en polea de pie que trabaja la parte inferior del pectoral con un ángulo declinado, enfatizando el empuje y la contracción.</descripcion>
+            <gif>@drawable/press_de_pecho_declinado_en_pie_polea</gif>
+            <pasos>
+                <paso numero="1">Párate frente a la máquina de polea con los pies a la anchura de los hombros.</paso>
+                <paso numero="2">Sujeta la manija con ambas manos y adopta una postura estable.</paso>
+                <paso numero="3">Empuja la manija hacia adelante y ligeramente hacia abajo, contrayendo el pectoral inferior.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para estabilizar el cuerpo.</item>
+                <item>Realiza el movimiento sin balanceos.</item>
+                <item>Utiliza un peso moderado para controlar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de pecho declinado en polea de pie</nombre>
+            <descripcion>Variante en polea de pie que enfoca el trabajo en la parte inferior del pectoral, combinando estabilidad y fuerza.</descripcion>
+            <gif>@drawable/press_de_pecho_declinado_en_polea_de_pie</gif>
+            <pasos>
+                <paso numero="1">Párate erguido frente a la máquina de polea.</paso>
+                <paso numero="2">Sujeta la manija con ambas manos y adopta un agarre cómodo.</paso>
+                <paso numero="3">Empuja la manija hacia adelante y hacia abajo, contrayendo el pectoral inferior.</paso>
+                <paso numero="4">Regresa controladamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el equilibrio y activa el core.</item>
+                <item>Realiza el movimiento de forma lenta para maximizar el aislamiento.</item>
+                <item>Utiliza un peso adecuado para evitar compensaciones.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de pecho inclinado - agarre neutro (máquina)</nombre>
+            <descripcion>Ejercicio en máquina que trabaja la parte superior del pectoral en banco inclinado, utilizando un agarre neutro para reducir la tensión en los hombros.</descripcion>
+            <gif>@drawable/press_de_pecho_inclinado_agarre_neutro_m_quina</gif>
+            <pasos>
+                <paso numero="1">Siéntate en la máquina con el respaldo en posición inclinada.</paso>
+                <paso numero="2">Sujeta las manijas con un agarre neutro y colócalas a la altura del pecho.</paso>
+                <paso numero="3">Empuja las manijas hacia adelante extendiendo los brazos.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta el asiento y la inclinación para una ejecución óptima.</item>
+                <item>Realiza el movimiento con control para aislar el pectoral superior.</item>
+                <item>Utiliza un peso moderado que permita la técnica adecuada.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales superiores</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+    </categoria>
 </ejercicios>
