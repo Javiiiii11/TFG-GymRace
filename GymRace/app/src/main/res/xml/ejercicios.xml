@@ -23,27 +23,29 @@
             </musculos>
         </ejercicio>
 
-        <ejercicio>
-            <nombre>Abdominal bicicleta</nombre>
-            <descripcion>El ejercicio de abdominal bicicleta es excelente para trabajar los costados al simular un pedaleo mientras se alternan los codos y las rodillas en un movimiento controlado.</descripcion>
-            <gif>@drawable/abdominal_bicicleta</gif>
-            <pasos>
-                <paso numero="1">Colocar la colchoneta y posicionarse boca arriba.</paso>
-                <paso numero="2">Llevar la rodilla y el codo opuesto hacia el centro.</paso>
-                <paso numero="3">Alternar el movimiento como si se pedaleara.</paso>
-                <paso numero="4">Realizar el movimiento de forma controlada y mantener la contracción.</paso>
-            </pasos>
-            <consejo>
-                <item>Realiza el movimiento de forma fluida.</item>
-                <item>Evita forzar el cuello durante el ejercicio.</item>
-                <item>Mantén un ritmo constante para maximizar la contracción.</item>
-                <item>Concéntrate en el movimiento de los costados.</item>
-            </consejo>
-            <musculos>
-                <principal>Recto abdominal</principal>
-                <secundario>Oblicuos</secundario>
-            </musculos>
-        </ejercicio>
+<!--Duplicado en oblicuos-->
+
+<!--        <ejercicio>-->
+<!--            <nombre>Abdominal bicicleta</nombre>-->
+<!--            <descripcion>El ejercicio de abdominal bicicleta es excelente para trabajar los costados al simular un pedaleo mientras se alternan los codos y las rodillas en un movimiento controlado.</descripcion>-->
+<!--            <gif>@drawable/abdominal_bicicleta</gif>-->
+<!--            <pasos>-->
+<!--                <paso numero="1">Colocar la colchoneta y posicionarse boca arriba.</paso>-->
+<!--                <paso numero="2">Llevar la rodilla y el codo opuesto hacia el centro.</paso>-->
+<!--                <paso numero="3">Alternar el movimiento como si se pedaleara.</paso>-->
+<!--                <paso numero="4">Realizar el movimiento de forma controlada y mantener la contracción.</paso>-->
+<!--            </pasos>-->
+<!--            <consejo>-->
+<!--                <item>Realiza el movimiento de forma fluida.</item>-->
+<!--                <item>Evita forzar el cuello durante el ejercicio.</item>-->
+<!--                <item>Mantén un ritmo constante para maximizar la contracción.</item>-->
+<!--                <item>Concéntrate en el movimiento de los costados.</item>-->
+<!--            </consejo>-->
+<!--            <musculos>-->
+<!--                <principal>Recto abdominal</principal>-->
+<!--                <secundario>Oblicuos</secundario>-->
+<!--            </musculos>-->
+<!--        </ejercicio>-->
 
         <ejercicio>
             <nombre>Abdominal con Fitball</nombre>
@@ -357,26 +359,28 @@
             </musculos>
         </ejercicio>
 
-        <ejercicio>
-            <nombre>Abdominal Supra-infra alternado (mancuernas)</nombre>
-            <descripcion>Alterna la contracción entre la parte superior e inferior del abdomen, utilizando mancuernas para incrementar la resistencia.</descripcion>
-            <gif>@drawable/abdominal_supra_infra_alternado__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Seleccionar mancuernas de peso adecuado.</paso>
-                <paso numero="2">Acostarse o sentarse en una posición estable.</paso>
-                <paso numero="3">Alternar contracciones enfocando parte superior e inferior del abdomen.</paso>
-                <paso numero="4">Bajar el peso de manera controlada.</paso>
-            </pasos>
-            <consejo>
-                <item>Sincroniza bien las contracciones para un movimiento uniforme.</item>
-                <item>No apresures el movimiento para mantener la técnica.</item>
-                <item>Concéntrate en sentir el trabajo en ambas áreas del abdomen.</item>
-            </consejo>
-            <musculos>
-                <principal>Recto abdominal</principal>
-                <secundario>Abdominal inferior</secundario>
-            </musculos>
-        </ejercicio>
+<!--Duplicado en oblicuos-->
+
+<!--        <ejercicio>-->
+<!--            <nombre>Abdominal Supra-infra alternado (mancuernas)</nombre>-->
+<!--            <descripcion>Alterna la contracción entre la parte superior e inferior del abdomen, utilizando mancuernas para incrementar la resistencia.</descripcion>-->
+<!--            <gif>@drawable/abdominal_supra_infra_alternado__mancuernas_</gif>-->
+<!--            <pasos>-->
+<!--                <paso numero="1">Seleccionar mancuernas de peso adecuado.</paso>-->
+<!--                <paso numero="2">Acostarse o sentarse en una posición estable.</paso>-->
+<!--                <paso numero="3">Alternar contracciones enfocando parte superior e inferior del abdomen.</paso>-->
+<!--                <paso numero="4">Bajar el peso de manera controlada.</paso>-->
+<!--            </pasos>-->
+<!--            <consejo>-->
+<!--                <item>Sincroniza bien las contracciones para un movimiento uniforme.</item>-->
+<!--                <item>No apresures el movimiento para mantener la técnica.</item>-->
+<!--                <item>Concéntrate en sentir el trabajo en ambas áreas del abdomen.</item>-->
+<!--            </consejo>-->
+<!--            <musculos>-->
+<!--                <principal>Recto abdominal</principal>-->
+<!--                <secundario>Abdominal inferior</secundario>-->
+<!--            </musculos>-->
+<!--        </ejercicio>-->
 
         <ejercicio>
             <nombre>Abdominal Supra-infra (mancuernas)</nombre>
@@ -5503,6 +5507,408 @@
             <musculos>
                 <principal>Pectorales superiores</principal>
                 <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+    </categoria>
+
+    <!-- Categiría: Oblicuos-->
+    <categoria nombre="Oblicuos">
+        <ejercicio>
+            <nombre>Abdominal Alternado</nombre>
+            <descripcion>Ejercicio que alterna la contracción de los oblicuos y el recto abdominal, fortaleciendo la zona media y mejorando la estabilidad.</descripcion>
+            <gif>@drawable/abdominal_alternado_supra_infra</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en el suelo con las rodillas flexionadas y los pies apoyados.</paso>
+                <paso numero="2">Coloca las manos detrás de la cabeza o cruzadas sobre el pecho.</paso>
+                <paso numero="3">Levanta el torso alternando la contracción de cada oblicuo para acercar el codo a la rodilla opuesta.</paso>
+                <paso numero="4">Baja de forma controlada y repite el movimiento alternando lados.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el movimiento lento para maximizar la contracción muscular.</item>
+                <item>Activa el core durante todo el ejercicio.</item>
+                <item>No tires del cuello; enfócate en usar el abdomen.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Recto abdominal</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Abdominal Bicicleta</nombre>
+            <descripcion>Ejercicio dinámico que combina rotación y flexión, ideal para trabajar intensamente los oblicuos y mejorar la coordinación.</descripcion>
+            <gif>@drawable/abdominal_bicicleta</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en el suelo con las manos detrás de la cabeza.</paso>
+                <paso numero="2">Levanta las piernas y flexiona las rodillas en ángulo de 90°.</paso>
+                <paso numero="3">Gira el torso para tocar el codo con la rodilla opuesta, alternando lados.</paso>
+                <paso numero="4">Continúa alternando el movimiento de forma rítmica y controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda baja en contacto con el suelo.</item>
+                <item>Realiza el movimiento de forma fluida para evitar tirones.</item>
+                <item>Concéntrate en la contracción de los oblicuos.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Recto abdominal</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Abdominal con Golpe</nombre>
+            <descripcion>Ejercicio explosivo que integra un pequeño golpe al final de la contracción para aumentar la activación de los oblicuos y el core.</descripcion>
+            <gif>@drawable/abdominal_con_golpe</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en el suelo con las piernas flexionadas y los pies apoyados.</paso>
+                <paso numero="2">Realiza un crunch y, al llegar a la parte superior, extiende un brazo para dar un "golpe".</paso>
+                <paso numero="3">Regresa rápidamente a la posición inicial.</paso>
+                <paso numero="4">Alterna el golpe entre ambos brazos en cada repetición.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén un ritmo controlado para evitar lesiones.</item>
+                <item>Concéntrate en la contracción de los oblicuos al dar el golpe.</item>
+                <item>Respira adecuadamente durante el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Abdominal Supra-infra Alternado (mancuernas)</nombre>
+            <descripcion>Ejercicio que alterna la activación de la parte superior e inferior del abdomen, utilizando mancuernas para añadir resistencia y trabajar los oblicuos.</descripcion>
+            <gif>@drawable/abdominal_supra_infra_alternado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en el suelo con las piernas flexionadas y sujeta una mancuerna ligera con ambas manos.</paso>
+                <paso numero="2">Realiza un crunch elevando el torso y alterna levantando la mancuerna hacia la parte superior y luego hacia la inferior del abdomen.</paso>
+                <paso numero="3">Concéntrate en mantener la estabilidad durante cada contracción.</paso>
+                <paso numero="4">Baja lentamente y repite el movimiento alternadamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza un peso moderado para evitar comprometer la forma.</item>
+                <item>Activa el core durante todo el ejercicio.</item>
+                <item>Realiza el movimiento de forma controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales superiores e inferiores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Abdominal Tocar Talones</nombre>
+            <descripcion>Ejercicio que consiste en alcanzar los talones desde posición supina, activando intensamente los oblicuos y el recto abdominal.</descripcion>
+            <gif>@drawable/abdominal_tocar_talones</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en el suelo con las piernas estiradas o ligeramente flexionadas.</paso>
+                <paso numero="2">Levanta el torso y extiende los brazos hacia los talones.</paso>
+                <paso numero="3">Mantén la contracción en el abdomen durante el alcance.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Concéntrate en utilizar los músculos del core para el movimiento.</item>
+                <item>Evita forzar la espalda baja.</item>
+                <item>Respira de forma regular y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Recto abdominal</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Flexión Lateral del Tronco en Pie (mancuernas)</nombre>
+            <descripcion>Ejercicio de pie que utiliza mancuernas para realizar flexiones laterales, trabajando la fuerza y movilidad de los oblicuos.</descripcion>
+            <gif>@drawable/flexion_lateral_del_tronco_en_pie__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Párate erguido con los pies a la anchura de los hombros y sujeta una mancuerna en cada mano a los lados.</paso>
+                <paso numero="2">Inclinándote lateralmente, baja la mancuerna por un lado contrayendo el oblicuo.</paso>
+                <paso numero="3">Vuelve a la posición inicial de forma controlada.</paso>
+                <paso numero="4">Alterna el movimiento hacia el otro lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para estabilizar el torso.</item>
+                <item>No flexiones excesivamente la espalda.</item>
+                <item>Utiliza un peso que te permita mantener la técnica correcta.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales laterales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Flexión Lateral (kettlebell)</nombre>
+            <descripcion>Ejercicio que utiliza el kettlebell para aumentar la resistencia durante la flexión lateral, potenciando la activación de los oblicuos.</descripcion>
+            <gif>@drawable/flexi_n_lateral__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Párate con los pies a la anchura de los hombros y sujeta el kettlebell con una mano.</paso>
+                <paso numero="2">Inclinándote lateralmente, baja el kettlebell por un lado, contrayendo el oblicuo.</paso>
+                <paso numero="3">Vuelve a la posición inicial lentamente.</paso>
+                <paso numero="4">Cambia de mano y repite el ejercicio.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el tronco recto y el core activado.</item>
+                <item>Realiza el movimiento de forma controlada para aislar el oblicuo.</item>
+                <item>Utiliza un peso moderado para preservar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales laterales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Flexión Lateral (polea)</nombre>
+            <descripcion>Ejercicio en polea que proporciona una resistencia constante durante la flexión lateral, enfocándose en el fortalecimiento de los oblicuos.</descripcion>
+            <gif>@drawable/flexi_n_lateral__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición baja y selecciona el peso adecuado.</paso>
+                <paso numero="2">Párate erguido y toma la manija con una mano.</paso>
+                <paso numero="3">Realiza una flexión lateral llevando la manija hacia la cadera.</paso>
+                <paso numero="4">Vuelve de forma controlada a la posición inicial y repite con el otro lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la postura erguida durante el movimiento.</item>
+                <item>Activa el core para estabilizar el tronco.</item>
+                <item>Realiza el ejercicio de forma lenta para maximizar la contracción.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales laterales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Giro Ruso - con Disco</nombre>
+            <descripcion>Ejercicio rotacional que incorpora un disco para aumentar la carga, fortaleciendo los oblicuos y mejorando la estabilidad del core.</descripcion>
+            <gif>@drawable/giro_ruso___con_disco</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el suelo con las rodillas flexionadas y los pies ligeramente elevados.</paso>
+                <paso numero="2">Sostén un disco con ambas manos frente al pecho.</paso>
+                <paso numero="3">Gira el torso de un lado al otro, contrayendo los oblicuos.</paso>
+                <paso numero="4">Realiza el movimiento de forma controlada y sin impulsos.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta y el core activado.</item>
+                <item>No fuerces el giro para evitar lesiones.</item>
+                <item>Utiliza un disco con un peso adecuado.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Giro Ruso - con Pies en el Suelo (mancuernas)</nombre>
+            <descripcion>Variante del giro ruso en la que los pies permanecen apoyados, utilizando mancuernas para aumentar la resistencia y focalizar la activación de los oblicuos.</descripcion>
+            <gif>@drawable/giro_ruso___con_pies_en_el_suelo__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el suelo con las rodillas flexionadas y los pies apoyados firmemente.</paso>
+                <paso numero="2">Sostén una mancuerna con ambas manos frente al pecho.</paso>
+                <paso numero="3">Gira el torso hacia un lado, contrayendo los oblicuos.</paso>
+                <paso numero="4">Vuelve al centro y repite hacia el otro lado de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta y el core firme.</item>
+                <item>Realiza el movimiento sin forzar el cuello.</item>
+                <item>Controla la velocidad para aislar el músculo.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Giro Ruso (mancuernas)</nombre>
+            <descripcion>Ejercicio de rotación realizado con mancuernas para trabajar intensamente los oblicuos y mejorar la coordinación del core.</descripcion>
+            <gif>@drawable/giro_ruso__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el suelo con las rodillas flexionadas y los pies ligeramente elevados.</paso>
+                <paso numero="2">Sostén una mancuerna con ambas manos frente al pecho.</paso>
+                <paso numero="3">Gira el torso alternadamente de un lado al otro, contrayendo los oblicuos.</paso>
+                <paso numero="4">Realiza el movimiento de manera fluida y controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Activa el core para mantener la estabilidad.</item>
+                <item>No utilices un peso excesivo que comprometa la técnica.</item>
+                <item>Controla el ritmo para maximizar la contracción muscular.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Plancha Abdominal</nombre>
+            <descripcion>Ejercicio isométrico clásico que fortalece todo el core, incluyendo los oblicuos, manteniendo una posición de plancha durante un período prolongado.</descripcion>
+            <gif>@drawable/plancha_abdominal</gif>
+            <pasos>
+                <paso numero="1">Colócate en posición de plancha con los antebrazos apoyados en el suelo.</paso>
+                <paso numero="2">Asegúrate de que tu cuerpo forme una línea recta desde la cabeza hasta los pies.</paso>
+                <paso numero="3">Mantén la posición contrayendo el abdomen y los oblicuos.</paso>
+                <paso numero="4">Sostén la posición durante el tiempo deseado.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la respiración constante.</item>
+                <item>No dejes que la cadera caiga ni se eleve.</item>
+                <item>Activa los glúteos para mayor estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Abdominales</principal>
+                <secundario>Oblicuos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Plancha Frontal - con Disco</nombre>
+            <descripcion>Variante de la plancha frontal que incorpora un disco, aumentando la inestabilidad y forzando una mayor activación de los oblicuos.</descripcion>
+            <gif>@drawable/plancha_frontal___con_disco</gif>
+            <pasos>
+                <paso numero="1">Adopta la posición de plancha frontal con los antebrazos apoyados.</paso>
+                <paso numero="2">Coloca un disco bajo una de las manos para crear inestabilidad.</paso>
+                <paso numero="3">Mantén la posición, contrayendo el core y los oblicuos para estabilizar el cuerpo.</paso>
+                <paso numero="4">Cambia el disco de mano y repite el ejercicio.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla el movimiento para evitar balanceos excesivos.</item>
+                <item>Activa todo el core para mantener la estabilidad.</item>
+                <item>Utiliza un disco de peso moderado.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Plancha Lateral Abdominal</nombre>
+            <descripcion>Ejercicio isométrico enfocado en los oblicuos, realizado en posición lateral para fortalecer la zona media y mejorar la estabilidad.</descripcion>
+            <gif>@drawable/plancha_lateral_abdominal</gif>
+            <pasos>
+                <paso numero="1">Colócate de lado apoyando el antebrazo y el pie en el suelo.</paso>
+                <paso numero="2">Eleva la cadera hasta que tu cuerpo forme una línea recta.</paso>
+                <paso numero="3">Mantén la posición contrayendo los oblicuos.</paso>
+                <paso numero="4">Sostén la posición durante el tiempo deseado y cambia de lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el cuello en posición neutra.</item>
+                <item>Activa el core para mayor estabilidad.</item>
+                <item>No dejes que la cadera se hunda.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales laterales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Plancha Lateral</nombre>
+            <descripcion>Ejercicio isométrico en posición lateral que fortalece los oblicuos y mejora la estabilidad general del core.</descripcion>
+            <gif>@drawable/plancha_lateral</gif>
+            <pasos>
+                <paso numero="1">Apóyate sobre un antebrazo y el costado del pie, manteniendo el cuerpo en línea recta.</paso>
+                <paso numero="2">Activa el core y los oblicuos para sostener la posición.</paso>
+                <paso numero="3">Mantén la posición durante el tiempo deseado.</paso>
+                <paso numero="4">Cambia de lado y repite el ejercicio.</paso>
+            </pasos>
+            <consejo>
+                <item>Evita rotar el torso durante la plancha.</item>
+                <item>Mantén la respiración constante.</item>
+                <item>Concéntrate en la contracción de los oblicuos.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales laterales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Plancha Lateral (kettlebell)</nombre>
+            <descripcion>Variante de la plancha lateral que incorpora un kettlebell para incrementar la carga y desafiar la estabilidad de los oblicuos.</descripcion>
+            <gif>@drawable/plancha_lateral_kettlebell</gif>
+            <pasos>
+                <paso numero="1">Colócate en posición de plancha lateral con el antebrazo apoyado y un kettlebell sostenido en la mano libre.</paso>
+                <paso numero="2">Mantén el cuerpo en línea recta y contrae los oblicuos.</paso>
+                <paso numero="3">Sostén la posición durante el tiempo deseado.</paso>
+                <paso numero="4">Cambia de lado y repite el ejercicio.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza un kettlebell de peso moderado para mantener la técnica.</item>
+                <item>Mantén el core y los glúteos activados.</item>
+                <item>Realiza el ejercicio de forma controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales laterales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Rotación de Cadera de Pie (polea)</nombre>
+            <descripcion>Ejercicio en polea que enfatiza la rotación de la cadera para trabajar los oblicuos y mejorar la movilidad del core.</descripcion>
+            <gif>@drawable/rotaci_n_de_cadera_de_pie__polea_</gif>
+            <pasos>
+                <paso numero="1">Párate erguido frente a la máquina de polea con los pies a la anchura de los hombros.</paso>
+                <paso numero="2">Sujeta la manija con una mano y mantén el codo pegado al torso.</paso>
+                <paso numero="3">Gira el torso y la cadera de forma controlada, contrayendo los oblicuos.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial y repite con el otro lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Activa el core para mantener la estabilidad.</item>
+                <item>Realiza el movimiento sin prisa para maximizar la contracción.</item>
+                <item>Utiliza un peso moderado en la polea.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Rotación de Tronco (barra)</nombre>
+            <descripcion>Ejercicio que utiliza una barra para realizar rotaciones del tronco, enfocándose en fortalecer los oblicuos y mejorar la estabilidad general del core.</descripcion>
+            <gif>@drawable/rotaci_n_de_tronco__barra_</gif>
+            <pasos>
+                <paso numero="1">Párate con los pies a la anchura de los hombros y sujeta una barra ligera a la altura del pecho.</paso>
+                <paso numero="2">Mantén el torso recto y los codos ligeramente flexionados.</paso>
+                <paso numero="3">Gira el tronco de un lado al otro de forma controlada.</paso>
+                <paso numero="4">Regresa al centro y repite el movimiento alternadamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla la rotación para evitar movimientos bruscos.</item>
+                <item>Mantén el core firme durante el ejercicio.</item>
+                <item>Utiliza un peso que permita un movimiento controlado.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Rotación de Tronco - con Fitball (barra)</nombre>
+            <descripcion>Variante del ejercicio de rotación de tronco que incorpora una Fitball, aumentando la inestabilidad y la activación de los oblicuos durante la rotación.</descripcion>
+            <gif>@drawable/rotaci_n_de_tronco___con_fitball__barra_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el suelo y coloca una Fitball detrás de ti para apoyo.</paso>
+                <paso numero="2">Sujeta una barra ligera frente a ti y adopta una postura erguida.</paso>
+                <paso numero="3">Gira el tronco hacia un lado contrayendo los oblicuos, manteniendo la estabilidad sobre la Fitball.</paso>
+                <paso numero="4">Vuelve al centro y repite el movimiento hacia el otro lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Activa el core para controlar la inestabilidad.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Utiliza una barra de peso ligero para facilitar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
             </musculos>
         </ejercicio>
     </categoria>
