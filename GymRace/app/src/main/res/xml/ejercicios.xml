@@ -3354,4 +3354,530 @@
     </categoria>
 
 
+    <!-- Categoría: Hombros -->
+    <categoria nombre="Hombros">
+        <ejercicio>
+            <nombre>Cristos Inverso Cruzado Inclinado</nombre>
+            <descripcion>Ejercicio de pectorales realizado en polea que, mediante un cruce de cables en ángulo inclinado, enfatiza la contracción de la parte superior e interna del pecho.</descripcion>
+            <gif>@drawable/cristos_inverso_cruzado_inclinado__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición alta y selecciona el peso adecuado.</paso>
+                <paso numero="2">Colócate de pie con una ligera inclinación, manteniendo una postura estable.</paso>
+                <paso numero="3">Con los brazos ligeramente flexionados, cruza las manijas de manera controlada en frente del cuerpo.</paso>
+                <paso numero="4">Vuelve lentamente a la posición inicial manteniendo la tensión en los pectorales.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para estabilizar el torso.</item>
+                <item>Evita sobrecargar el peso para preservar la técnica.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Invertido de Pie</nombre>
+            <descripcion>Variación de crucifijo en polea realizada de pie, que trabaja el pectoral medio mediante un cruce controlado de brazos.</descripcion>
+            <gif>@drawable/cristos_invertido_de_pie__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a la altura de los hombros.</paso>
+                <paso numero="2">Párate erguido con los pies separados al ancho de los hombros.</paso>
+                <paso numero="3">Toma ambas manijas y cruza los brazos suavemente hacia el centro.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los hombros relajados durante el movimiento.</item>
+                <item>Evita balanceos para aislar mejor el pectoral.</item>
+                <item>Controla la velocidad de la ejecución.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Invertido en Banco Inclinado</nombre>
+            <descripcion>Ejercicio en polea realizado sobre un banco inclinado que permite un mayor aislamiento del pectoral medio e inferior.</descripcion>
+            <gif>@drawable/cristos_invertido_en_banco_inclinado__polea_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco inclinado y ajusta la posición de la polea.</paso>
+                <paso numero="2">Toma las manijas de la polea y colócate con la espalda apoyada.</paso>
+                <paso numero="3">Realiza un cruce de brazos manteniendo la tensión en el pecho.</paso>
+                <paso numero="4">Vuelve lentamente a la posición inicial sin soltar la tensión.</paso>
+            </pasos>
+            <consejo>
+                <item>Asegura una buena postura para maximizar el aislamiento muscular.</item>
+                <item>No uses un peso excesivo para evitar lesiones.</item>
+                <item>Concentra el esfuerzo en la contracción del pectoral.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Desarrollo Alternado Inclinado</nombre>
+            <descripcion>Ejercicio para trabajar los hombros de forma unilateral en banco inclinado, enfatizando la parte anterior del deltoides.</descripcion>
+            <gif>@drawable/desarrollo_alternado_inclinado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco inclinado con respaldo.</paso>
+                <paso numero="2">Sostén una mancuerna en cada mano a la altura de los hombros.</paso>
+                <paso numero="3">Eleva una mancuerna de forma alternada hasta extender completamente el brazo.</paso>
+                <paso numero="4">Baja lentamente y repite con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla el movimiento evitando balanceos.</item>
+                <item>Mantén la espalda recta durante el ejercicio.</item>
+                <item>No bloquees la articulación del codo al finalizar la extensión.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides anteriores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Desarrollo Alternado Sentado con Agarre Neutro</nombre>
+            <descripcion>Ejercicio de hombros realizado sentado, con agarre neutro para un rango de movimiento equilibrado y menor tensión en las muñecas.</descripcion>
+            <gif>@drawable/desarrollo_alternado_sentado___agarre_neutro__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco con respaldo y pies firmes en el suelo.</paso>
+                <paso numero="2">Sostén mancuernas con agarre neutro, palmas enfrentadas.</paso>
+                <paso numero="3">Eleva alternadamente cada mancuerna de manera controlada.</paso>
+                <paso numero="4">Baja lentamente y repite el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para estabilizar el cuerpo.</item>
+                <item>Realiza el movimiento sin impulsos.</item>
+                <item>Concentra el esfuerzo en el deltoides.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Desarrollo Anti Gravity</nombre>
+            <descripcion>Ejercicio con barra enfocado en fortalecer los hombros, desafiando la gravedad para potenciar la fuerza del deltoides.</descripcion>
+            <gif>@drawable/desarrollo_anti_gravity__barra_</gif>
+            <pasos>
+                <paso numero="1">Colócate de pie con la barra apoyada en la parte frontal de los hombros.</paso>
+                <paso numero="2">Agarra la barra con ambas manos en pronación.</paso>
+                <paso numero="3">Empuja la barra hacia arriba extendiendo completamente los brazos.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial sin bloquear los codos.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los codos ligeramente flexionados en la extensión.</item>
+                <item>No utilices un peso excesivo.</item>
+                <item>Activa el core para evitar balanceos.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Desarrollo Arnold con Brazos Abiertos</nombre>
+            <descripcion>Variante del desarrollo de hombros que incorpora un giro de muñeca, trabajando todas las porciones del deltoides con mayor amplitud.</descripcion>
+            <gif>@drawable/desarrollo_arnold_con_brazos_abiertos__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco con respaldo y toma una mancuerna en cada mano a la altura de los hombros.</paso>
+                <paso numero="2">Inicia con las palmas mirando hacia ti.</paso>
+                <paso numero="3">Gira los brazos mientras elevas las mancuernas hasta que queden extendidos por encima de la cabeza.</paso>
+                <paso numero="4">Vuelve a la posición inicial controlando el giro.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el movimiento fluido y controlado.</item>
+                <item>No apresures la rotación para evitar lesiones.</item>
+                <item>Utiliza un peso adecuado para la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides</principal>
+                <secundario>Pectoral superior</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Frontal con Barra</nombre>
+            <descripcion>Ejercicio para aislar y fortalecer la parte frontal de los hombros utilizando una barra para mayor estabilidad.</descripcion>
+            <gif>@drawable/elevaci_n_frontal__barra_</gif>
+            <pasos>
+                <paso numero="1">Párate erguido con los pies al ancho de los hombros y la barra descansando frente a los muslos.</paso>
+                <paso numero="2">Agarra la barra con ambas manos en pronación.</paso>
+                <paso numero="3">Eleva la barra de forma frontal hasta la altura de los hombros.</paso>
+                <paso numero="4">Baja la barra lentamente sin balancear el cuerpo.</paso>
+            </pasos>
+            <consejo>
+                <item>No eleves la barra más allá de la línea de los ojos.</item>
+                <item>Mantén una respiración constante.</item>
+                <item>Utiliza un peso moderado para un movimiento controlado.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides frontales</principal>
+                <secundario>Pectorales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Frontal con Cuerda</nombre>
+            <descripcion>Variante en polea de la elevación frontal que utiliza una cuerda para proporcionar una resistencia constante y un rango de movimiento ajustable.</descripcion>
+            <gif>@drawable/elevaci_n_frontal___con_cuerda__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición baja y selecciona el peso adecuado.</paso>
+                <paso numero="2">Sujeta la cuerda con ambas manos y párate con una postura estable.</paso>
+                <paso numero="3">Eleva la cuerda de forma frontal hasta la altura de los hombros.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los codos ligeramente flexionados.</item>
+                <item>Controla la velocidad del movimiento.</item>
+                <item>Activa el core para mayor estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides frontales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Frontal con Disco</nombre>
+            <descripcion>Ejercicio que utiliza un disco para variar el centro de gravedad y fortalecer de forma intensa los deltoides frontales.</descripcion>
+            <gif>@drawable/elevaci_n_frontal___con_disco</gif>
+            <pasos>
+                <paso numero="1">Párate con los pies separados al ancho de los hombros.</paso>
+                <paso numero="2">Sostén un disco con ambas manos frente a tu cuerpo.</paso>
+                <paso numero="3">Eleva el disco manteniendo los brazos extendidos hasta la altura de los hombros.</paso>
+                <paso numero="4">Baja el disco controladamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén un movimiento controlado y sin impulsos.</item>
+                <item>No balancees el cuerpo durante la ejecución.</item>
+                <item>Utiliza un disco con un peso adecuado.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides frontales</principal>
+                <secundario>Pectorales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Frontal con Mancuernas</nombre>
+            <descripcion>Ejercicio de aislamiento que fortalece los deltoides frontales, permitiendo trabajar cada brazo de forma individual.</descripcion>
+            <gif>@drawable/elevaci_n_frontal__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Párate con los pies firmes y sujeta una mancuerna en cada mano.</paso>
+                <paso numero="2">Eleva ambas mancuernas de forma frontal hasta la altura de los hombros.</paso>
+                <paso numero="3">Mantén la posición por un breve instante en la parte superior.</paso>
+                <paso numero="4">Baja lentamente las mancuernas a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Evita balancear el cuerpo para mantener el aislamiento muscular.</item>
+                <item>Utiliza un peso moderado para controlar la técnica.</item>
+                <item>Mantén la espalda recta durante el movimiento.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides frontales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Frontal en Polea</nombre>
+            <descripcion>Ejercicio en polea que ofrece una resistencia constante para trabajar eficazmente los deltoides frontales.</descripcion>
+            <gif>@drawable/elevaci_n_frontal__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición baja y selecciona el peso apropiado.</paso>
+                <paso numero="2">Toma la manija con ambas manos y párate con postura erguida.</paso>
+                <paso numero="3">Eleva la manija de forma frontal hasta la altura de los hombros.</paso>
+                <paso numero="4">Regresa de manera controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el tronco estable durante el ejercicio.</item>
+                <item>Evita movimientos bruscos para un control óptimo.</item>
+                <item>Activa el core para una mejor estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides frontales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Frontal Unilateral en Polea</nombre>
+            <descripcion>Variante unilateral que permite corregir desequilibrios musculares, concentrándose en la activación de cada deltoides frontal por separado.</descripcion>
+            <gif>@drawable/elevaci_n_frontal_unilateral__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición baja y selecciona el peso adecuado.</paso>
+                <paso numero="2">Toma la manija con una mano y párate con postura estable.</paso>
+                <paso numero="3">Eleva el brazo de forma frontal hasta alcanzar la altura del hombro.</paso>
+                <paso numero="4">Baja de forma controlada y repite con el otro lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta durante la ejecución.</item>
+                <item>Realiza el movimiento lentamente para maximizar el aislamiento.</item>
+                <item>Concentra el esfuerzo en el músculo trabajado.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides frontales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral Acostado</nombre>
+            <descripcion>Ejercicio de aislamiento para los deltoides laterales realizado en posición acostada, que minimiza el uso de impulso y maximiza la contracción.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_acostado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate de lado sobre un banco o colchoneta.</paso>
+                <paso numero="2">Sostén una mancuerna en la mano del lado superior.</paso>
+                <paso numero="3">Eleva el brazo lateralmente hasta alinear con el hombro.</paso>
+                <paso numero="4">Baja la mancuerna de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Enfócate en la contracción del deltoides lateral.</item>
+                <item>Realiza el movimiento sin balancear el torso.</item>
+                <item>Mantén una respiración constante.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides laterales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+        <ejercicio>
+            <nombre>Elevación Lateral Alternada</nombre>
+            <descripcion>Ejercicio para trabajar los deltoides laterales de manera individual, realizado de pie con mancuernas de forma alternada.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_alternada__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Párate erguido con una mancuerna en cada mano.</paso>
+                <paso numero="2">Eleva alternativamente cada brazo lateralmente hasta la altura del hombro.</paso>
+                <paso numero="3">Baja controladamente cada mancuerna a la posición inicial.</paso>
+                <paso numero="4">Alterna el movimiento manteniendo la estabilidad.</paso>
+            </pasos>
+            <consejo>
+                <item>Activa el core para evitar balanceos.</item>
+                <item>Utiliza un peso moderado para una técnica correcta.</item>
+                <item>Mantén la respiración constante.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides laterales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral con Brazos Extendidos</nombre>
+            <descripcion>Ejercicio que aísla los deltoides laterales usando mancuernas, realizado con los brazos extendidos a los lados para enfatizar la contracción.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_con_brazos_extendidos__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Párate con los pies al ancho de los hombros.</paso>
+                <paso numero="2">Sostén una mancuerna en cada mano con los brazos extendidos.</paso>
+                <paso numero="3">Eleva ambos brazos lateralmente hasta la altura del hombros.</paso>
+                <paso numero="4">Baja lentamente manteniendo el control.</paso>
+            </pasos>
+            <consejo>
+                <item>Evita balancear el cuerpo para aislar el músculo.</item>
+                <item>Controla el movimiento en ambas direcciones.</item>
+                <item>Mantén una postura erguida.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides laterales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral con Brazos Flexionados en Banco Inclinado</nombre>
+            <descripcion>Ejercicio realizado en banco inclinado que combina la elevación lateral con una ligera flexión en los brazos para variar el estímulo en los deltoides laterales.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_con_brazos_flexionados_inclinado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco inclinado con la espalda bien apoyada.</paso>
+                <paso numero="2">Sostén mancuernas con los brazos ligeramente flexionados.</paso>
+                <paso numero="3">Eleva los brazos lateralmente enfocándote en la contracción muscular.</paso>
+                <paso numero="4">Baja lentamente las mancuernas sin perder la tensión.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén una postura estable durante el movimiento.</item>
+                <item>Evita movimientos bruscos.</item>
+                <item>Concéntrate en la activación del deltoides lateral.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides laterales</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral en Máquina</nombre>
+            <descripcion>Ejercicio realizado en máquina que aísla los deltoides laterales, ofreciendo mayor control y seguridad durante el movimiento.</descripcion>
+            <gif>@drawable/elevaci_n_lateral__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en la máquina con la espalda firmemente apoyada.</paso>
+                <paso numero="2">Ajusta la carga y coloca los brazos en las manijas.</paso>
+                <paso numero="3">Eleva los brazos lateralmente hasta la altura del hombros.</paso>
+                <paso numero="4">Baja de forma controlada manteniendo la tensión en los músculos.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la máquina a tu medida para un movimiento óptimo.</item>
+                <item>Realiza el ejercicio con un ritmo controlado.</item>
+                <item>Concéntrate en la contracción del deltoides lateral.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides laterales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral en Polea</nombre>
+            <descripcion>Variante de elevación lateral en polea que proporciona resistencia constante para trabajar los deltoides laterales de forma efectiva.</descripcion>
+            <gif>@drawable/elevaci_n_lateral__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición baja y selecciona el peso adecuado.</paso>
+                <paso numero="2">Toma la manija con una mano y párate con buena postura.</paso>
+                <paso numero="3">Eleva el brazo lateralmente hasta alcanzar la altura del hombro.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso estable y evita balanceos.</item>
+                <item>Ejecuta el movimiento de forma lenta y controlada.</item>
+                <item>Enfócate en la contracción del deltoides lateral.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides laterales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral Unilateral en Banco</nombre>
+            <descripcion>Ejercicio unilateral apoyado en banco que aísla el deltoides lateral, ayudando a corregir desequilibrios musculares.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_unilateral_apoyada_en_el_banco__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Apoya un brazo en un banco para estabilizar el cuerpo.</paso>
+                <paso numero="2">Sostén una mancuerna en la mano opuesta.</paso>
+                <paso numero="3">Eleva el brazo lateralmente hasta la altura del hombro.</paso>
+                <paso numero="4">Baja de forma controlada manteniendo la tensión.</paso>
+            </pasos>
+            <consejo>
+                <item>Concéntrate en la contracción del hombro trabajado.</item>
+                <item>Evita balanceos para aislar mejor el músculo.</item>
+                <item>Mantén el core activado durante el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides laterales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral Unilateral Curvada</nombre>
+            <descripcion>Variante del ejercicio unilateral realizado con el torso inclinado, que permite un mayor aislamiento del deltoides lateral.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_unilateral_curvada__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Inclina el torso ligeramente hacia adelante manteniendo la espalda recta.</paso>
+                <paso numero="2">Sostén una mancuerna en la mano del lado a trabajar.</paso>
+                <paso numero="3">Eleva el brazo lateralmente manteniendo la inclinación del torso.</paso>
+                <paso numero="4">Baja la mancuerna de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Activa el core para mantener la estabilidad.</item>
+                <item>Realiza el movimiento de manera lenta y controlada.</item>
+                <item>Mantén una buena alineación corporal durante el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides laterales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral Unilateral Inclinada en Polea</nombre>
+            <descripcion>Ejercicio en polea realizado en posición inclinada que focaliza el trabajo unilateral sobre el deltoides lateral.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_unilateral_inclinada__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición baja.</paso>
+                <paso numero="2">Colócate en posición inclinada apoyándote contra un banco.</paso>
+                <paso numero="3">Toma la manija con una mano y eleva el brazo lateralmente.</paso>
+                <paso numero="4">Regresa controladamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la estabilidad durante el movimiento.</item>
+                <item>Realiza el ejercicio sin impulso para aislar el músculo.</item>
+                <item>Concéntrate en la contracción del deltoides lateral.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides laterales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral Unilateral en Polea</nombre>
+            <descripcion>Variante unilateral de elevación lateral en polea, ideal para trabajar y corregir desequilibrios en el deltoides lateral.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_unilateral__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición baja.</paso>
+                <paso numero="2">Toma la manija con una mano y párate con postura estable.</paso>
+                <paso numero="3">Eleva el brazo lateralmente hasta alcanzar la altura del hombro.</paso>
+                <paso numero="4">Baja lentamente y repite con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento de forma concentrada y controlada.</item>
+                <item>Mantén la espalda recta durante la ejecución.</item>
+                <item>Enfócate en aislar el deltoides lateral en cada repetición.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides laterales</principal>
+                <secundario>Trapecios</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Rotación de Hombros Tumbado con Brazos Extendidos</nombre>
+            <descripcion>Ejercicio para mejorar la movilidad y fortalecer los músculos del hombro, realizado tumbado con mancuernas ligeras y con los brazos extendidos.</descripcion>
+            <gif>@drawable/rotaci_n_de_hombros_tumbado_con_brazos_extendidos_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Acuéstate boca arriba sobre una superficie plana.</paso>
+                <paso numero="2">Sostén una mancuerna ligera en cada mano con los brazos extendidos.</paso>
+                <paso numero="3">Rota los brazos lateralmente de forma alternada manteniendo los codos extendidos.</paso>
+                <paso numero="4">Vuelve a la posición inicial controlando el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza un peso moderado para garantizar la técnica.</item>
+                <item>Enfócate en la movilidad y no en la carga.</item>
+                <item>Realiza el movimiento de forma lenta para proteger las articulaciones.</item>
+            </consejo>
+            <musculos>
+                <principal>Deltoides</principal>
+                <secundario>Manguito rotador</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Rotación de Hombros Unilateral en Polea</nombre>
+            <descripcion>Ejercicio que mejora la movilidad y estabilidad del hombro de forma unilateral, utilizando la resistencia de la polea para un movimiento controlado.</descripcion>
+            <gif>@drawable/rotaci_n_de_hombros_unilateral_polea</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición baja y selecciona un peso ligero.</paso>
+                <paso numero="2">Toma la manija con una mano y párate con postura estable.</paso>
+                <paso numero="3">Realiza una rotación controlada del hombro manteniendo el codo fijo.</paso>
+                <paso numero="4">Vuelve lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el movimiento suave y controlado.</item>
+                <item>No utilices cargas excesivas para proteger el manguito rotador.</item>
+                <item>Concéntrate en la técnica y la estabilidad del hombro.</item>
+            </consejo>
+            <musculos>
+                <principal>Manguito rotador</principal>
+                <secundario>Deltoides</secundario>
+            </musculos>
+        </ejercicio>
+    </categoria>
 </ejercicios>
