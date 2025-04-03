@@ -82,21 +82,16 @@ fun RegisterPage2(navController: NavController) {
                 val currentUser = FirebaseAuth.getInstance().currentUser
                 if (currentUser != null) {
                     val userId = currentUser.uid
-                    val profileData = hashMapOf(
-                        "nombre" to nombre,
-                        "peso" to peso.toFloat(),
-                        "altura" to altura.toFloat(),
-                        "edad" to año.toInt(),
-                        "objetivoFitness" to selectedGoal,
-                        "diasEntrenamiento" to selectedDays.toInt(),
-                        "nivelExperiencia" to selectedExperience
-                    )
-
-//                    Firebase.firestore.collection("perfilesUsuarios")
-//                        .document(userId)
-//                        .set(profileData)
-//                        .await()
-
+//                    // Crear el documento en Firestore si no existe
+//                    val profileData = hashMapOf(
+//                        "nombre" to nombre,
+//                        "peso" to peso.toFloat(),
+//                        "altura" to altura.toFloat(),
+//                        "edad" to año.toInt(),
+//                        "objetivoFitness" to selectedGoal,
+//                        "diasEntrenamiento" to selectedDays.toInt(),
+//                        "nivelExperiencia" to selectedExperience
+//                    )
                     GLOBAL.guardarDatosRegistro(
                         userId, nombre, peso, altura, año, selectedGoal, selectedDays, selectedExperience
                     ) {
@@ -115,13 +110,60 @@ fun RegisterPage2(navController: NavController) {
             }
         }
     }
+    fun Float?.isNullOrZero(): Boolean = this == null || this == 0f
+    fun Int?.isNullOrZero(): Boolean = this == null || this == 0
+
+    fun validateForm(): String {
+        return when {
+
+            nombre.isBlank() -> "Por favor, ingresa tu apodo."
+            nombre.length < 3 -> "El apodo debe tener al menos 3 caracteres."
+            nombre.length > 20 -> "El apodo no puede tener más de 20 caracteres."
+            !nombre.all { it.isLetter() || it.isWhitespace() } -> "El apodo solo puede contener letras y espacios."
+
+            año.isBlank() -> "Por favor, ingresa tu edad."
+            !año.all { it.isDigit() } -> "La edad debe ser un número."
+            !año.toIntOrNull().isNullOrZero() -> "La edad no puede ser cero."
+            año.toInt() < 0 -> "La edad no puede ser negativa."
+            año.toInt() == 0 -> "La edad no puede ser cero."
+
+            altura.isBlank() -> "Por favor, ingresa tu altura."
+            !altura.all { it.isDigit() } -> "La altura debe ser un número."
+            !altura.toFloatOrNull().isNullOrZero() -> "La altura no puede ser cero."
+            altura.toFloat() < 0 -> "La altura no puede ser negativa."
+            altura.toFloat() == 0f -> "La altura no puede ser cero."
+
+            peso.isBlank() -> "Por favor, ingresa tu peso."
+            !peso.all { it.isDigit() } -> "El peso debe ser un número."
+            !peso.toFloatOrNull().isNullOrZero() -> "El peso no puede ser cero."
+            peso.toFloat() < 0 -> "El peso no puede ser negativo."
+            peso.toFloat() == 0f -> "El peso no puede ser cero."
+
+
+            selectedGoal.isBlank() -> "Por favor, selecciona tu objetivo fitness."
+            selectedGoal.isEmpty() -> "Por favor, selecciona tu objetivo fitness."
+
+            selectedDays.isBlank() -> "Por favor, selecciona los días de entrenamiento."
+            selectedDays.isEmpty() -> "Por favor, selecciona los días de entrenamiento."
+
+            selectedExperience.isBlank() -> "Por favor, selecciona tu nivel de experiencia."
+            selectedExperience.isEmpty() -> "Por favor, selecciona tu nivel de experiencia."
+
+            selectedGoal == "Selecciona tu objetivo" -> "Por favor, selecciona tu objetivo fitness."
+            selectedDays == "Selecciona días" -> "Por favor, selecciona los días de entrenamiento."
+            selectedExperience == "Selecciona nivel" -> "Por favor, selecciona tu nivel de experiencia."
+
+            else -> "" // Todo está bien
+        }
+    }
+
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
             .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(scrollState),
+//            .verticalScroll(scrollState) // Descomentar si se necesita desplazamiento
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
 
@@ -131,7 +173,7 @@ fun RegisterPage2(navController: NavController) {
             text = "Tu Perfil Físico",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = (MaterialTheme.colorScheme.onBackground)
+            color = (MaterialTheme.colorScheme.primary) // Color del texto
 
         )
 
@@ -147,9 +189,9 @@ fun RegisterPage2(navController: NavController) {
             singleLine = true,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
-                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+                unfocusedBorderColor = Color(0xFF000000) // Color cuando no está enfocado
             ),
-            leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Apodo ") },
+            leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Apodo") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
 
@@ -326,13 +368,21 @@ fun RegisterPage2(navController: NavController) {
             }
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Botón de guardar
+
         Button(
-            onClick = { saveUserData() },
+            onClick = {
+                val validationMessage = validateForm()
+                if (validationMessage.isNotEmpty()) {
+                    Toast.makeText(contexto, validationMessage, Toast.LENGTH_SHORT).show()
+                } else {
+                    saveUserData()
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
-            enabled = isFormValid && !cargando,
+            enabled = !cargando, // Se deshabilita solo si está cargando, no por validación
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xffff9240))
         ) {
             if (cargando) {
@@ -342,6 +392,26 @@ fun RegisterPage2(navController: NavController) {
                 )
             } else {
                 Text(text = "Guardar y Continuar", color = Color.White)
+            }
+        }
+        //Continuar sin guardar datos
+        Button(
+            onClick = {
+                navController.navigate("main") {
+                    popUpTo("login") { inclusive = true }
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
+//            enabled = isFormValid && !cargando,
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xffff9240))
+        ) {
+            if (cargando) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(24.dp),
+                    color = Color(0xff7c461d)
+                )
+            } else {
+                Text(text = "Continuar sin guardar", color = Color.White)
             }
         }
 

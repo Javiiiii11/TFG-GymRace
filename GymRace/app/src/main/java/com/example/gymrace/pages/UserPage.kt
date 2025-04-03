@@ -39,9 +39,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -267,7 +269,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                         tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
-                // Menú desplegable para cambiar tema
+                // Menú desplegable para cambiar tema y mas funciones
                 DropdownMenu(
                     expanded = showThemeMenu,
                     onDismissRequest = { showThemeMenu = false },
@@ -300,6 +302,74 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                         },
                         onClick = {
                             onThemeChange()
+                            showThemeMenu = false
+                        }
+                    )
+                    Text(
+                        text = "Cuenta",
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                    Divider(
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
+                        thickness = 1.dp,
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+                    DropdownMenuItem(
+                        text = {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.logout),
+                                    contentDescription = "Cerrar Sesión",
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(text = "Cerrar Sesión")
+                            }
+                        },
+                        onClick = {
+                            cerrarSesion(context)
+                            Log.d("Si","Rutas del navController" + navController.currentBackStackEntry)
+                            navController.navigate("login") {
+                                popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
+                                Log.d("UserPage", "Cerrando sesión")
+                            }
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.delete),
+                                    contentDescription = "Borrar Cuenta",
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(text = "Borrar Cuenta")
+                            }
+                        },
+                        onClick = {
+//                            borrar cuenta de firebase
+                            val user = FirebaseAuth.getInstance().currentUser
+                            user?.delete()?.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Log.d("UserPage", "Cuenta eliminada")
+                                    // Redirigir a la página de inicio de sesión
+                                    navController.navigate("login") {
+                                        popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
+                                    }
+                                } else {
+                                    Log.d("UserPage", "Error al eliminar cuenta: ${task.exception?.message}")
+                                }
+                            }
+                            //borrar tambien datos de su cuenta
+                            Firebase.firestore.collection("usuarios").document(user!!.uid).delete()
+                            Firebase.firestore.collection("amigos").document(user!!.uid).delete()
+                            //borrar datos de la cuenta de firebase
+                            FirebaseAuth.getInstance().signOut()
+                            saveLoginState(context, false, "") // Guardar el estado de inicio de sesión
+                            clearFirestoreCache() // Limpiar la caché de Firestore
                             showThemeMenu = false
                         }
                     )

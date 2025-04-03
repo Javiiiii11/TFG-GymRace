@@ -3885,6 +3885,1195 @@
         </ejercicio>
     </categoria>
 
+
+    <!-- Categiría: Oblicuos-->
+    <categoria nombre="Oblicuos">
+        <ejercicio>
+            <nombre>Abdominal Alternado</nombre>
+            <descripcion>Ejercicio que alterna la contracción de los oblicuos y el recto abdominal, fortaleciendo la zona media y mejorando la estabilidad.</descripcion>
+            <gif>@drawable/abdominal_alternado_supra_infra</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en el suelo con las rodillas flexionadas y los pies apoyados.</paso>
+                <paso numero="2">Coloca las manos detrás de la cabeza o cruzadas sobre el pecho.</paso>
+                <paso numero="3">Levanta el torso alternando la contracción de cada oblicuo para acercar el codo a la rodilla opuesta.</paso>
+                <paso numero="4">Baja de forma controlada y repite el movimiento alternando lados.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el movimiento lento para maximizar la contracción muscular.</item>
+                <item>Activa el core durante todo el ejercicio.</item>
+                <item>No tires del cuello; enfócate en usar el abdomen.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Recto abdominal</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Abdominal Bicicleta</nombre>
+            <descripcion>Ejercicio dinámico que combina rotación y flexión, ideal para trabajar intensamente los oblicuos y mejorar la coordinación.</descripcion>
+            <gif>@drawable/abdominal_bicicleta</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en el suelo con las manos detrás de la cabeza.</paso>
+                <paso numero="2">Levanta las piernas y flexiona las rodillas en ángulo de 90°.</paso>
+                <paso numero="3">Gira el torso para tocar el codo con la rodilla opuesta, alternando lados.</paso>
+                <paso numero="4">Continúa alternando el movimiento de forma rítmica y controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda baja en contacto con el suelo.</item>
+                <item>Realiza el movimiento de forma fluida para evitar tirones.</item>
+                <item>Concéntrate en la contracción de los oblicuos.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Recto abdominal</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Abdominal con Golpe</nombre>
+            <descripcion>Ejercicio explosivo que integra un pequeño golpe al final de la contracción para aumentar la activación de los oblicuos y el core.</descripcion>
+            <gif>@drawable/abdominal_con_golpe</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en el suelo con las piernas flexionadas y los pies apoyados.</paso>
+                <paso numero="2">Realiza un crunch y, al llegar a la parte superior, extiende un brazo para dar un "golpe".</paso>
+                <paso numero="3">Regresa rápidamente a la posición inicial.</paso>
+                <paso numero="4">Alterna el golpe entre ambos brazos en cada repetición.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén un ritmo controlado para evitar lesiones.</item>
+                <item>Concéntrate en la contracción de los oblicuos al dar el golpe.</item>
+                <item>Respira adecuadamente durante el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Abdominal Supra-infra Alternado (mancuernas)</nombre>
+            <descripcion>Ejercicio que alterna la activación de la parte superior e inferior del abdomen, utilizando mancuernas para añadir resistencia y trabajar los oblicuos.</descripcion>
+            <gif>@drawable/abdominal_supra_infra_alternado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en el suelo con las piernas flexionadas y sujeta una mancuerna ligera con ambas manos.</paso>
+                <paso numero="2">Realiza un crunch elevando el torso y alterna levantando la mancuerna hacia la parte superior y luego hacia la inferior del abdomen.</paso>
+                <paso numero="3">Concéntrate en mantener la estabilidad durante cada contracción.</paso>
+                <paso numero="4">Baja lentamente y repite el movimiento alternadamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza un peso moderado para evitar comprometer la forma.</item>
+                <item>Activa el core durante todo el ejercicio.</item>
+                <item>Realiza el movimiento de forma controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales superiores e inferiores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Abdominal Tocar Talones</nombre>
+            <descripcion>Ejercicio que consiste en alcanzar los talones desde posición supina, activando intensamente los oblicuos y el recto abdominal.</descripcion>
+            <gif>@drawable/abdominal_tocar_talones</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en el suelo con las piernas estiradas o ligeramente flexionadas.</paso>
+                <paso numero="2">Levanta el torso y extiende los brazos hacia los talones.</paso>
+                <paso numero="3">Mantén la contracción en el abdomen durante el alcance.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Concéntrate en utilizar los músculos del core para el movimiento.</item>
+                <item>Evita forzar la espalda baja.</item>
+                <item>Respira de forma regular y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Recto abdominal</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Flexión Lateral del Tronco en Pie (mancuernas)</nombre>
+            <descripcion>Ejercicio de pie que utiliza mancuernas para realizar flexiones laterales, trabajando la fuerza y movilidad de los oblicuos.</descripcion>
+            <gif>@drawable/flexion_lateral_del_tronco_en_pie__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Párate erguido con los pies a la anchura de los hombros y sujeta una mancuerna en cada mano a los lados.</paso>
+                <paso numero="2">Inclinándote lateralmente, baja la mancuerna por un lado contrayendo el oblicuo.</paso>
+                <paso numero="3">Vuelve a la posición inicial de forma controlada.</paso>
+                <paso numero="4">Alterna el movimiento hacia el otro lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para estabilizar el torso.</item>
+                <item>No flexiones excesivamente la espalda.</item>
+                <item>Utiliza un peso que te permita mantener la técnica correcta.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales laterales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Flexión Lateral (kettlebell)</nombre>
+            <descripcion>Ejercicio que utiliza el kettlebell para aumentar la resistencia durante la flexión lateral, potenciando la activación de los oblicuos.</descripcion>
+            <gif>@drawable/flexi_n_lateral__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Párate con los pies a la anchura de los hombros y sujeta el kettlebell con una mano.</paso>
+                <paso numero="2">Inclinándote lateralmente, baja el kettlebell por un lado, contrayendo el oblicuo.</paso>
+                <paso numero="3">Vuelve a la posición inicial lentamente.</paso>
+                <paso numero="4">Cambia de mano y repite el ejercicio.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el tronco recto y el core activado.</item>
+                <item>Realiza el movimiento de forma controlada para aislar el oblicuo.</item>
+                <item>Utiliza un peso moderado para preservar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales laterales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Flexión Lateral (polea)</nombre>
+            <descripcion>Ejercicio en polea que proporciona una resistencia constante durante la flexión lateral, enfocándose en el fortalecimiento de los oblicuos.</descripcion>
+            <gif>@drawable/flexi_n_lateral__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición baja y selecciona el peso adecuado.</paso>
+                <paso numero="2">Párate erguido y toma la manija con una mano.</paso>
+                <paso numero="3">Realiza una flexión lateral llevando la manija hacia la cadera.</paso>
+                <paso numero="4">Vuelve de forma controlada a la posición inicial y repite con el otro lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la postura erguida durante el movimiento.</item>
+                <item>Activa el core para estabilizar el tronco.</item>
+                <item>Realiza el ejercicio de forma lenta para maximizar la contracción.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales laterales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Giro Ruso - con Disco</nombre>
+            <descripcion>Ejercicio rotacional que incorpora un disco para aumentar la carga, fortaleciendo los oblicuos y mejorando la estabilidad del core.</descripcion>
+            <gif>@drawable/giro_ruso___con_disco</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el suelo con las rodillas flexionadas y los pies ligeramente elevados.</paso>
+                <paso numero="2">Sostén un disco con ambas manos frente al pecho.</paso>
+                <paso numero="3">Gira el torso de un lado al otro, contrayendo los oblicuos.</paso>
+                <paso numero="4">Realiza el movimiento de forma controlada y sin impulsos.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta y el core activado.</item>
+                <item>No fuerces el giro para evitar lesiones.</item>
+                <item>Utiliza un disco con un peso adecuado.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Giro Ruso - con Pies en el Suelo (mancuernas)</nombre>
+            <descripcion>Variante del giro ruso en la que los pies permanecen apoyados, utilizando mancuernas para aumentar la resistencia y focalizar la activación de los oblicuos.</descripcion>
+            <gif>@drawable/giro_ruso___con_pies_en_el_suelo__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el suelo con las rodillas flexionadas y los pies apoyados firmemente.</paso>
+                <paso numero="2">Sostén una mancuerna con ambas manos frente al pecho.</paso>
+                <paso numero="3">Gira el torso hacia un lado, contrayendo los oblicuos.</paso>
+                <paso numero="4">Vuelve al centro y repite hacia el otro lado de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta y el core firme.</item>
+                <item>Realiza el movimiento sin forzar el cuello.</item>
+                <item>Controla la velocidad para aislar el músculo.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Giro Ruso (mancuernas)</nombre>
+            <descripcion>Ejercicio de rotación realizado con mancuernas para trabajar intensamente los oblicuos y mejorar la coordinación del core.</descripcion>
+            <gif>@drawable/giro_ruso__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el suelo con las rodillas flexionadas y los pies ligeramente elevados.</paso>
+                <paso numero="2">Sostén una mancuerna con ambas manos frente al pecho.</paso>
+                <paso numero="3">Gira el torso alternadamente de un lado al otro, contrayendo los oblicuos.</paso>
+                <paso numero="4">Realiza el movimiento de manera fluida y controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Activa el core para mantener la estabilidad.</item>
+                <item>No utilices un peso excesivo que comprometa la técnica.</item>
+                <item>Controla el ritmo para maximizar la contracción muscular.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Plancha Abdominal</nombre>
+            <descripcion>Ejercicio isométrico clásico que fortalece todo el core, incluyendo los oblicuos, manteniendo una posición de plancha durante un período prolongado.</descripcion>
+            <gif>@drawable/plancha_abdominal</gif>
+            <pasos>
+                <paso numero="1">Colócate en posición de plancha con los antebrazos apoyados en el suelo.</paso>
+                <paso numero="2">Asegúrate de que tu cuerpo forme una línea recta desde la cabeza hasta los pies.</paso>
+                <paso numero="3">Mantén la posición contrayendo el abdomen y los oblicuos.</paso>
+                <paso numero="4">Sostén la posición durante el tiempo deseado.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la respiración constante.</item>
+                <item>No dejes que la cadera caiga ni se eleve.</item>
+                <item>Activa los glúteos para mayor estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Abdominales</principal>
+                <secundario>Oblicuos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Plancha Frontal - con Disco</nombre>
+            <descripcion>Variante de la plancha frontal que incorpora un disco, aumentando la inestabilidad y forzando una mayor activación de los oblicuos.</descripcion>
+            <gif>@drawable/plancha_frontal___con_disco</gif>
+            <pasos>
+                <paso numero="1">Adopta la posición de plancha frontal con los antebrazos apoyados.</paso>
+                <paso numero="2">Coloca un disco bajo una de las manos para crear inestabilidad.</paso>
+                <paso numero="3">Mantén la posición, contrayendo el core y los oblicuos para estabilizar el cuerpo.</paso>
+                <paso numero="4">Cambia el disco de mano y repite el ejercicio.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla el movimiento para evitar balanceos excesivos.</item>
+                <item>Activa todo el core para mantener la estabilidad.</item>
+                <item>Utiliza un disco de peso moderado.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Plancha Lateral Abdominal</nombre>
+            <descripcion>Ejercicio isométrico enfocado en los oblicuos, realizado en posición lateral para fortalecer la zona media y mejorar la estabilidad.</descripcion>
+            <gif>@drawable/plancha_lateral_abdominal</gif>
+            <pasos>
+                <paso numero="1">Colócate de lado apoyando el antebrazo y el pie en el suelo.</paso>
+                <paso numero="2">Eleva la cadera hasta que tu cuerpo forme una línea recta.</paso>
+                <paso numero="3">Mantén la posición contrayendo los oblicuos.</paso>
+                <paso numero="4">Sostén la posición durante el tiempo deseado y cambia de lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el cuello en posición neutra.</item>
+                <item>Activa el core para mayor estabilidad.</item>
+                <item>No dejes que la cadera se hunda.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales laterales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Plancha Lateral</nombre>
+            <descripcion>Ejercicio isométrico en posición lateral que fortalece los oblicuos y mejora la estabilidad general del core.</descripcion>
+            <gif>@drawable/plancha_lateral</gif>
+            <pasos>
+                <paso numero="1">Apóyate sobre un antebrazo y el costado del pie, manteniendo el cuerpo en línea recta.</paso>
+                <paso numero="2">Activa el core y los oblicuos para sostener la posición.</paso>
+                <paso numero="3">Mantén la posición durante el tiempo deseado.</paso>
+                <paso numero="4">Cambia de lado y repite el ejercicio.</paso>
+            </pasos>
+            <consejo>
+                <item>Evita rotar el torso durante la plancha.</item>
+                <item>Mantén la respiración constante.</item>
+                <item>Concéntrate en la contracción de los oblicuos.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales laterales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Plancha Lateral (kettlebell)</nombre>
+            <descripcion>Variante de la plancha lateral que incorpora un kettlebell para incrementar la carga y desafiar la estabilidad de los oblicuos.</descripcion>
+            <gif>@drawable/plancha_lateral_kettlebell</gif>
+            <pasos>
+                <paso numero="1">Colócate en posición de plancha lateral con el antebrazo apoyado y un kettlebell sostenido en la mano libre.</paso>
+                <paso numero="2">Mantén el cuerpo en línea recta y contrae los oblicuos.</paso>
+                <paso numero="3">Sostén la posición durante el tiempo deseado.</paso>
+                <paso numero="4">Cambia de lado y repite el ejercicio.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza un kettlebell de peso moderado para mantener la técnica.</item>
+                <item>Mantén el core y los glúteos activados.</item>
+                <item>Realiza el ejercicio de forma controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales laterales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Rotación de Cadera de Pie (polea)</nombre>
+            <descripcion>Ejercicio en polea que enfatiza la rotación de la cadera para trabajar los oblicuos y mejorar la movilidad del core.</descripcion>
+            <gif>@drawable/rotaci_n_de_cadera_de_pie__polea_</gif>
+            <pasos>
+                <paso numero="1">Párate erguido frente a la máquina de polea con los pies a la anchura de los hombros.</paso>
+                <paso numero="2">Sujeta la manija con una mano y mantén el codo pegado al torso.</paso>
+                <paso numero="3">Gira el torso y la cadera de forma controlada, contrayendo los oblicuos.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial y repite con el otro lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Activa el core para mantener la estabilidad.</item>
+                <item>Realiza el movimiento sin prisa para maximizar la contracción.</item>
+                <item>Utiliza un peso moderado en la polea.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Rotación de Tronco (barra)</nombre>
+            <descripcion>Ejercicio que utiliza una barra para realizar rotaciones del tronco, enfocándose en fortalecer los oblicuos y mejorar la estabilidad general del core.</descripcion>
+            <gif>@drawable/rotaci_n_de_tronco__barra_</gif>
+            <pasos>
+                <paso numero="1">Párate con los pies a la anchura de los hombros y sujeta una barra ligera a la altura del pecho.</paso>
+                <paso numero="2">Mantén el torso recto y los codos ligeramente flexionados.</paso>
+                <paso numero="3">Gira el tronco de un lado al otro de forma controlada.</paso>
+                <paso numero="4">Regresa al centro y repite el movimiento alternadamente.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla la rotación para evitar movimientos bruscos.</item>
+                <item>Mantén el core firme durante el ejercicio.</item>
+                <item>Utiliza un peso que permita un movimiento controlado.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Rotación de Tronco - con Fitball (barra)</nombre>
+            <descripcion>Variante del ejercicio de rotación de tronco que incorpora una Fitball, aumentando la inestabilidad y la activación de los oblicuos durante la rotación.</descripcion>
+            <gif>@drawable/rotaci_n_de_tronco___con_fitball__barra_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el suelo y coloca una Fitball detrás de ti para apoyo.</paso>
+                <paso numero="2">Sujeta una barra ligera frente a ti y adopta una postura erguida.</paso>
+                <paso numero="3">Gira el tronco hacia un lado contrayendo los oblicuos, manteniendo la estabilidad sobre la Fitball.</paso>
+                <paso numero="4">Vuelve al centro y repite el movimiento hacia el otro lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Activa el core para controlar la inestabilidad.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Utiliza una barra de peso ligero para facilitar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Oblicuos</principal>
+                <secundario>Abdominales</secundario>
+            </musculos>
+        </ejercicio>
+    </categoria>
+
+
+    <!-- Categoría: Pectorales-->
+    <categoria nombre="Pectorales">
+        <ejercicio>
+            <nombre>Cristos Alternado (mancuernas)</nombre>
+            <descripcion>Ejercicio unilateral que trabaja la parte interna y superior del pectoral, permitiendo corregir desequilibrios entre ambos lados.</descripcion>
+            <gif>@drawable/cristos_alternado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Párate con los pies a la anchura de los hombros y sujeta una mancuerna en cada mano.</paso>
+                <paso numero="2">Inclina ligeramente el torso hacia adelante y extiende los brazos a los lados.</paso>
+                <paso numero="3">Alterna el movimiento llevando una mancuerna hacia el centro, cruzando ligeramente el cuerpo.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial y repite con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento lentamente para maximizar la contracción.</item>
+                <item>Mantén el core activado para estabilizar el torso.</item>
+                <item>Utiliza un peso que permita ejecutar la técnica correctamente.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Alternado (polea)</nombre>
+            <descripcion>Ejercicio en polea que trabaja los pectorales de forma unilateral, permitiendo un rango de movimiento constante y controlado.</descripcion>
+            <gif>@drawable/cristos_alternado__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición media y selecciona el peso adecuado.</paso>
+                <paso numero="2">Párate erguido y toma la manija con una mano.</paso>
+                <paso numero="3">Realiza el movimiento cruzando el brazo hacia el centro, contrayendo el pectoral.</paso>
+                <paso numero="4">Vuelve de forma controlada a la posición inicial y repite con el otro brazo.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla la velocidad para aislar bien el pectoral.</item>
+                <item>Mantén el codo ligeramente flexionado durante el movimiento.</item>
+                <item>Realiza el ejercicio con un peso moderado.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos con Brazos Flexionados - Mariposa (máquina)</nombre>
+            <descripcion>Ejercicio en máquina que simula el movimiento de mariposa, concentrando el esfuerzo en la contracción del pectoral mediante la flexión de brazos.</descripcion>
+            <gif>@drawable/cristos_con_brazos_flexionados___mariposa__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en la máquina y ajusta el asiento según tu altura.</paso>
+                <paso numero="2">Coloca los brazos en las almohadillas, con los codos ligeramente flexionados.</paso>
+                <paso numero="3">Junta las manos en el centro contrayendo los pectorales.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial manteniendo la tensión.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la máquina para que el movimiento sea cómodo.</item>
+                <item>No bloquees los codos durante el ejercicio.</item>
+                <item>Concéntrate en la contracción del pectoral en cada repetición.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Declinado (mancuernas)</nombre>
+            <descripcion>Ejercicio con mancuernas en banco declinado que enfatiza la parte inferior del pectoral y mejora la amplitud del movimiento.</descripcion>
+            <gif>@drawable/cristos_declinado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco declinado con una mancuerna en cada mano.</paso>
+                <paso numero="2">Extiende los brazos hacia los lados con una ligera flexión en los codos.</paso>
+                <paso numero="3">Lleva las mancuernas hacia el centro, contrayendo el pectoral inferior.</paso>
+                <paso numero="4">Regresa controladamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén una ejecución lenta para maximizar la contracción.</item>
+                <item>No sobrecargues las mancuernas para preservar la técnica.</item>
+                <item>Realiza el movimiento de forma fluida.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos de Pie - agarre neutro (polea)</nombre>
+            <descripcion>Ejercicio en polea con agarre neutro que trabaja los pectorales desde una posición de pie, enfatizando la contracción interna.</descripcion>
+            <gif>@drawable/cristos_de_pie___agarre_neutro__polea_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la polea a una posición media y selecciona el peso adecuado.</paso>
+                <paso numero="2">Párate erguido y toma la manija con agarre neutro.</paso>
+                <paso numero="3">Realiza el movimiento llevando las manos hacia el centro del pecho.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso estable durante el ejercicio.</item>
+                <item>Controla la velocidad para maximizar la activación muscular.</item>
+                <item>Utiliza un peso que te permita ejecutar el movimiento correctamente.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos de pie (polea)</nombre>
+            <descripcion>Ejercicio en polea que trabaja el pectoral mediante un movimiento de cruce de brazos, enfatizando la contracción completa.</descripcion>
+            <gif>@drawable/cristos_de_pie__polea_</gif>
+            <pasos>
+                <paso numero="1">Colócate de pie frente a la polea con los pies a la anchura de los hombros.</paso>
+                <paso numero="2">Toma la manija con ambas manos y extiende los brazos lateralmente.</paso>
+                <paso numero="3">Cruza las manos frente al pecho contrayendo los pectorales.</paso>
+                <paso numero="4">Vuelve de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta y el core activado.</item>
+                <item>Realiza el movimiento sin impulso para maximizar el aislamiento.</item>
+                <item>Utiliza una carga adecuada para mantener la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos - de rodillas (polea)</nombre>
+            <descripcion>Ejercicio en polea realizado en posición de rodillas para mejorar el aislamiento del pectoral y minimizar la ayuda de las piernas.</descripcion>
+            <gif>@drawable/cristos___de_rodillas__polea_</gif>
+            <pasos>
+                <paso numero="1">Arrodíllate frente a la máquina de polea, manteniendo la espalda recta.</paso>
+                <paso numero="2">Toma la manija con ambas manos y extiende los brazos hacia los lados.</paso>
+                <paso numero="3">Cruza las manos frente al pecho concentrándote en la contracción del pectoral.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Mantén la postura para aislar bien el pectoral.</item>
+                <item>No utilices un peso excesivo.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Sentado (polea)</nombre>
+            <descripcion>Ejercicio en polea realizado sentado para trabajar el pectoral con un soporte que minimiza la intervención de la parte baja del cuerpo.</descripcion>
+            <gif>@drawable/cristos_sentado__polea_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el banco frente a la máquina de polea con la espalda erguida.</paso>
+                <paso numero="2">Toma la manija con ambas manos y extiende los brazos lateralmente.</paso>
+                <paso numero="3">Cruza las manos frente al pecho contrayendo los pectorales.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Apoya bien la espalda en el respaldo para estabilidad.</item>
+                <item>Concéntrate en el movimiento del pectoral.</item>
+                <item>Utiliza un peso moderado para mantener la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Unilateral de Pie (polea)</nombre>
+            <descripcion>Ejercicio en polea realizado de forma unilateral que permite aislar y trabajar cada pectoral de manera independiente.</descripcion>
+            <gif>@drawable/cristos_unilateral_de_pie__polea_</gif>
+            <pasos>
+                <paso numero="1">Párate de lado frente a la polea y ajusta el peso adecuado.</paso>
+                <paso numero="2">Toma la manija con la mano más cercana a la máquina.</paso>
+                <paso numero="3">Realiza el movimiento cruzando el brazo hacia el centro del cuerpo, contrayendo el pectoral.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial y repite con el otro lado.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el ejercicio de forma concentrada para aislar el pectoral.</item>
+                <item>Mantén el torso estable y el core activado.</item>
+                <item>Utiliza un peso moderado para controlar el movimiento.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca declinado - agarre neutro (mancuernas)</nombre>
+            <descripcion>Ejercicio en banco declinado con mancuernas que trabaja la parte inferior del pectoral, utilizando un agarre neutro para reducir la tensión en los hombros.</descripcion>
+            <gif>@drawable/press_de_banca_declinado___agarre_neutro__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco declinado con una mancuerna en cada mano.</paso>
+                <paso numero="2">Coloca las mancuernas a la altura del pecho con agarre neutro.</paso>
+                <paso numero="3">Empuja las mancuernas hacia arriba extendiendo los brazos.</paso>
+                <paso numero="4">Baja de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los codos ligeramente flexionados.</item>
+                <item>Controla el movimiento para evitar balanceos.</item>
+                <item>Utiliza un peso que te permita buena ejecución.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca declinado alternado (mancuernas)</nombre>
+            <descripcion>Variante alternada que permite trabajar cada pectoral de forma individual en banco declinado, mejorando el aislamiento y equilibrio muscular.</descripcion>
+            <gif>@drawable/press_de_banca_declinado_alternado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco declinado y sujeta una mancuerna en cada mano.</paso>
+                <paso numero="2">Empuja una mancuerna hacia arriba mientras la otra permanece en posición de inicio.</paso>
+                <paso numero="3">Alterna el movimiento entre ambos brazos.</paso>
+                <paso numero="4">Baja de forma controlada cada mancuerna a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Concéntrate en el aislamiento del pectoral de cada lado.</item>
+                <item>Activa el core para mantener la estabilidad.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca declinado (barra)</nombre>
+            <descripcion>Ejercicio clásico en banco declinado utilizando barra, enfocado en trabajar el pectoral inferior y activar también los tríceps.</descripcion>
+            <gif>@drawable/press_de_banca_declinado__barra_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco declinado y sujeta la barra con un agarre medio.</paso>
+                <paso numero="2">Baja la barra de forma controlada hasta el pecho.</paso>
+                <paso numero="3">Empuja la barra hacia arriba extendiendo los brazos.</paso>
+                <paso numero="4">Regresa a la posición inicial sin bloquear los codos.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda bien apoyada en el banco.</item>
+                <item>No bloquees los codos al extender los brazos.</item>
+                <item>Utiliza un peso adecuado para asegurar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca declinado (mancuernas)</nombre>
+            <descripcion>Variante del press de banca declinado con mancuernas que permite mayor rango de movimiento y activación de los pectorales inferiores.</descripcion>
+            <gif>@drawable/press_de_banca_declinado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco declinado con una mancuerna en cada mano.</paso>
+                <paso numero="2">Coloca las mancuernas a la altura del pecho con un agarre cómodo.</paso>
+                <paso numero="3">Empuja ambas mancuernas hacia arriba extendiendo los brazos.</paso>
+                <paso numero="4">Baja de forma controlada hasta la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén los codos en línea con los hombros.</item>
+                <item>Realiza el movimiento de forma lenta para maximizar la tensión.</item>
+                <item>Utiliza un peso que te permita ejecutar el ejercicio con buena técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca declinado (máquina)</nombre>
+            <descripcion>Ejercicio en máquina que ofrece estabilidad y guía para trabajar el pectoral inferior en banco declinado.</descripcion>
+            <gif>@drawable/press_de_banca_declinado__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en la máquina y ajusta el asiento para un banco declinado.</paso>
+                <paso numero="2">Sujeta las manijas con un agarre cómodo.</paso>
+                <paso numero="3">Empuja hacia adelante extendiendo los brazos y contrayendo el pectoral.</paso>
+                <paso numero="4">Regresa controladamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la máquina para que se adapte a tu altura.</item>
+                <item>Realiza el movimiento de forma controlada.</item>
+                <item>Concéntrate en la contracción del pectoral durante el empuje.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca en máquina</nombre>
+            <descripcion>Ejercicio asistido que utiliza una máquina para trabajar el pectoral de forma controlada, minimizando la intervención del core.</descripcion>
+            <gif>@drawable/press_de_banca_en_m_quina</gif>
+            <pasos>
+                <paso numero="1">Siéntate en la máquina y ajusta el asiento.</paso>
+                <paso numero="2">Sujeta las manijas con un agarre adecuado.</paso>
+                <paso numero="3">Empuja hacia adelante extendiendo los brazos.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta durante el ejercicio.</item>
+                <item>Utiliza una carga que permita una ejecución fluida.</item>
+                <item>Concéntrate en la contracción del pectoral.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de Banca Inclinado - agarre invertido (mancuernas)</nombre>
+            <descripcion>Ejercicio en banco inclinado con mancuernas y agarre invertido, que enfatiza la parte superior del pectoral y reduce la tensión en los hombros.</descripcion>
+            <gif>@drawable/press_de_banca_inclinado___agarre_invertido__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco inclinado con una mancuerna en cada mano.</paso>
+                <paso numero="2">Coloca las mancuernas a la altura del pecho con agarre invertido.</paso>
+                <paso numero="3">Empuja las mancuernas hacia arriba extendiendo los brazos.</paso>
+                <paso numero="4">Baja de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para la estabilidad.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Utiliza un peso adecuado para la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales superiores</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca inclinado (smith)</nombre>
+            <descripcion>Ejercicio en máquina Smith que facilita la ejecución del press de banca inclinado, permitiendo un control total del movimiento.</descripcion>
+            <gif>@drawable/press_de_banca_inclinado__smith_</gif>
+            <pasos>
+                <paso numero="1">Colócate en un banco inclinado dentro de la máquina Smith.</paso>
+                <paso numero="2">Sujeta la barra con agarre medio y posiciónala a la altura del pecho.</paso>
+                <paso numero="3">Empuja la barra hacia arriba extendiendo los brazos.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla el movimiento para evitar compensaciones.</item>
+                <item>Mantén la espalda bien apoyada en el banco.</item>
+                <item>Utiliza un peso que te permita ejecutar la técnica correctamente.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales superiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de banca plano - agarre neutro (mancuernas)</nombre>
+            <descripcion>Ejercicio en banco plano con mancuernas y agarre neutro que enfatiza el pectoral central, favoreciendo un movimiento natural y equilibrado.</descripcion>
+            <gif>@drawable/press_de_banca_plano___agarre_neutro__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco plano y sujeta una mancuerna en cada mano.</paso>
+                <paso numero="2">Coloca las mancuernas a la altura del pecho con un agarre neutro.</paso>
+                <paso numero="3">Empuja las mancuernas hacia arriba extendiendo los brazos sin bloquear los codos.</paso>
+                <paso numero="4">Baja de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Realiza el movimiento de forma lenta para maximizar la contracción.</item>
+                <item>Mantén el core activado para estabilizar el cuerpo.</item>
+                <item>Utiliza un peso moderado que permita una técnica perfecta.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales centrales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de Banca Sentado con Manos Juntas (polea)</nombre>
+            <descripcion>Ejercicio en polea realizado sentado que enfatiza la contracción del pectoral al juntar las manos durante el empuje.</descripcion>
+            <gif>@drawable/press_de_banca_sentado_con_manos_juntas__polea_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en la máquina de polea con la espalda erguida.</paso>
+                <paso numero="2">Toma ambas manijas y junta las manos frente al pecho.</paso>
+                <paso numero="3">Empuja las manijas hacia adelante, extendiendo los brazos.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial manteniendo las manos juntas.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para una mayor estabilidad.</item>
+                <item>Realiza el movimiento sin balancear el torso.</item>
+                <item>Utiliza un peso que te permita controlar el movimiento.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de Banca Sentado (mancuernas)</nombre>
+            <descripcion>Ejercicio realizado sentado que trabaja el pectoral de forma segura con mancuernas, permitiendo un rango de movimiento controlado.</descripcion>
+            <gif>@drawable/press_de_banca_sentado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco con respaldo y sostén una mancuerna en cada mano a la altura del pecho.</paso>
+                <paso numero="2">Empuja las mancuernas hacia adelante extendiendo los brazos.</paso>
+                <paso numero="3">Mantén la contracción del pectoral en la parte superior del movimiento.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta y el core activado.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Utiliza un peso moderado para asegurar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de Banca Tumbado con Manos Juntas (polea)</nombre>
+            <descripcion>Ejercicio en polea tumbado que enfatiza la contracción central del pectoral al juntar las manos durante el empuje.</descripcion>
+            <gif>@drawable/press_de_banca_tumbado_con_manos_juntas__polea_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate en un banco plano frente a la máquina de polea.</paso>
+                <paso numero="2">Toma ambas manijas y junta las manos sobre el pecho.</paso>
+                <paso numero="3">Empuja las manijas hacia arriba extendiendo los brazos.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén una ejecución lenta para maximizar la tensión en el pectoral.</item>
+                <item>Evita balancear el torso durante el movimiento.</item>
+                <item>Utiliza un peso que permita mantener la técnica correcta.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de pecho - agarre neutro (máquina)</nombre>
+            <descripcion>Ejercicio en máquina que trabaja el pectoral central utilizando un agarre neutro para reducir la tensión en las articulaciones.</descripcion>
+            <gif>@drawable/press_de_pecho_agarre_neutro_m_quina</gif>
+            <pasos>
+                <paso numero="1">Siéntate en la máquina y ajusta el asiento según tu altura.</paso>
+                <paso numero="2">Sujeta las manijas con un agarre neutro y colócalas a la altura del pecho.</paso>
+                <paso numero="3">Empuja las manijas hacia adelante extendiendo los brazos.</paso>
+                <paso numero="4">Regresa controladamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta la máquina para que se adapte a tu tamaño.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Concéntrate en la contracción del pectoral durante cada repetición.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de Pecho Declinado en Pie (polea)</nombre>
+            <descripcion>Ejercicio en polea de pie que trabaja la parte inferior del pectoral con un ángulo declinado, enfatizando el empuje y la contracción.</descripcion>
+            <gif>@drawable/press_de_pecho_declinado_en_pie_polea</gif>
+            <pasos>
+                <paso numero="1">Párate frente a la máquina de polea con los pies a la anchura de los hombros.</paso>
+                <paso numero="2">Sujeta la manija con ambas manos y adopta una postura estable.</paso>
+                <paso numero="3">Empuja la manija hacia adelante y ligeramente hacia abajo, contrayendo el pectoral inferior.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para estabilizar el cuerpo.</item>
+                <item>Realiza el movimiento sin balanceos.</item>
+                <item>Utiliza un peso moderado para controlar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de pecho declinado en polea de pie</nombre>
+            <descripcion>Variante en polea de pie que enfoca el trabajo en la parte inferior del pectoral, combinando estabilidad y fuerza.</descripcion>
+            <gif>@drawable/press_de_pecho_declinado_en_polea_de_pie</gif>
+            <pasos>
+                <paso numero="1">Párate erguido frente a la máquina de polea.</paso>
+                <paso numero="2">Sujeta la manija con ambas manos y adopta un agarre cómodo.</paso>
+                <paso numero="3">Empuja la manija hacia adelante y hacia abajo, contrayendo el pectoral inferior.</paso>
+                <paso numero="4">Regresa controladamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el equilibrio y activa el core.</item>
+                <item>Realiza el movimiento de forma lenta para maximizar el aislamiento.</item>
+                <item>Utiliza un peso adecuado para evitar compensaciones.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales inferiores</principal>
+                <secundario>Tríceps</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Press de pecho inclinado - agarre neutro (máquina)</nombre>
+            <descripcion>Ejercicio en máquina que trabaja la parte superior del pectoral en banco inclinado, utilizando un agarre neutro para reducir la tensión en los hombros.</descripcion>
+            <gif>@drawable/press_de_pecho_inclinado_agarre_neutro_m_quina</gif>
+            <pasos>
+                <paso numero="1">Siéntate en la máquina con el respaldo en posición inclinada.</paso>
+                <paso numero="2">Sujeta las manijas con un agarre neutro y colócalas a la altura del pecho.</paso>
+                <paso numero="3">Empuja las manijas hacia adelante extendiendo los brazos.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Ajusta el asiento y la inclinación para una ejecución óptima.</item>
+                <item>Realiza el movimiento con control para aislar el pectoral superior.</item>
+                <item>Utiliza un peso moderado que permita la técnica adecuada.</item>
+            </consejo>
+            <musculos>
+                <principal>Pectorales superiores</principal>
+                <secundario>Deltoides anteriores</secundario>
+            </musculos>
+        </ejercicio>
+    </categoria>
+
+
+    <!-- Categoría: Trapecios-->
+    <categoria nombre="Trapecios">
+        <ejercicio>
+            <nombre>Cristos Inverso en Banco (polea)</nombre>
+            <descripcion>Ejercicio en banco con polea que trabaja la parte superior de la espalda, enfocándose en la contracción de los trapecios mediante un movimiento inverso de los brazos.</descripcion>
+            <gif>@drawable/cristos_inverso_en_banco__polea_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco y ajusta la polea a una posición media-alta.</paso>
+                <paso numero="2">Toma la manija con ambas manos y coloca los brazos extendidos hacia los lados.</paso>
+                <paso numero="3">Realiza un movimiento de cruce inverso, juntando las manos frente al pecho mientras contraes los trapecios.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta durante el movimiento.</item>
+                <item>Controla la velocidad para aislar los trapecios.</item>
+                <item>Utiliza un peso moderado para evitar compensaciones.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Inverso Inclinado (polea)</nombre>
+            <descripcion>Ejercicio realizado en polea con el cuerpo inclinado, que enfatiza la activación de los trapecios y la parte superior de la espalda.</descripcion>
+            <gif>@drawable/cristos_inverso_inclinado__polea_</gif>
+            <pasos>
+                <paso numero="1">Adopta una postura inclinada frente a la polea, con los pies firmemente plantados.</paso>
+                <paso numero="2">Sujeta la manija con ambas manos y extiende los brazos a los lados.</paso>
+                <paso numero="3">Realiza un cruce inverso de brazos, enfocándote en contraer los trapecios.</paso>
+                <paso numero="4">Vuelve lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Inclina el torso lo suficiente para aislar la zona superior de la espalda.</item>
+                <item>Mantén el movimiento fluido y controlado.</item>
+                <item>No uses un peso excesivo para evitar comprometer la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Inverso (mancuernas)</nombre>
+            <descripcion>Ejercicio con mancuernas que imita un cruce inverso para trabajar la parte superior de la espalda, especialmente los trapecios y deltoides posteriores.</descripcion>
+            <gif>@drawable/cristos_inverso__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Párate con las rodillas ligeramente flexionadas y sujeta una mancuerna en cada mano.</paso>
+                <paso numero="2">Inclina el torso ligeramente hacia adelante manteniendo la espalda recta.</paso>
+                <paso numero="3">Con los brazos extendidos, eleva las mancuernas hacia los lados realizando un cruce inverso.</paso>
+                <paso numero="4">Baja de forma controlada hasta la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Concéntrate en la contracción de los trapecios durante el movimiento.</item>
+                <item>Mantén una ligera flexión en los codos para proteger las articulaciones.</item>
+                <item>Controla el peso para evitar balanceos.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Inverso para Atrás (mancuernas)</nombre>
+            <descripcion>Variante con mancuernas donde el movimiento se dirige hacia atrás, enfatizando el trabajo de los trapecios y la parte posterior de los hombros.</descripcion>
+            <gif>@drawable/cristos_inverso_para_atr_s__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Párate con la postura adecuada y una ligera inclinación del torso.</paso>
+                <paso numero="2">Sujeta una mancuerna en cada mano con los brazos extendidos hacia adelante.</paso>
+                <paso numero="3">Lleva los brazos hacia atrás, realizando un movimiento de cruce inverso y contrayendo los trapecios.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el control del movimiento para maximizar la activación muscular.</item>
+                <item>Evita balancear el torso.</item>
+                <item>Utiliza un peso adecuado que permita buena técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Inverso (polea alta)</nombre>
+            <descripcion>Ejercicio realizado en polea alta que enfoca la tensión en los trapecios mediante un movimiento de cruce inverso desde una posición elevada.</descripcion>
+            <gif>@drawable/cristos_inverso__polea_alta_</gif>
+            <pasos>
+                <paso numero="1">Colócate de pie frente a la polea alta y selecciona el peso adecuado.</paso>
+                <paso numero="2">Sujeta la manija con ambas manos y extiende los brazos hacia los lados.</paso>
+                <paso numero="3">Realiza un cruce inverso bajando los brazos y contrayendo los trapecios.</paso>
+                <paso numero="4">Vuelve a la posición inicial de forma controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core activado para una mayor estabilidad.</item>
+                <item>Realiza el movimiento lentamente para maximizar el aislamiento.</item>
+                <item>Ajusta el peso para evitar compensaciones.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Cristos Inverso Sentado (polea)</nombre>
+            <descripcion>Ejercicio realizado sentado en polea que permite aislar los trapecios y trabajar la parte superior de la espalda sin comprometer la postura.</descripcion>
+            <gif>@drawable/cristos_inverso_sentado__polea_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en el banco frente a la máquina de polea.</paso>
+                <paso numero="2">Toma la manija con ambas manos y mantén la espalda recta.</paso>
+                <paso numero="3">Realiza un movimiento de cruce inverso, contrayendo los trapecios.</paso>
+                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Apoya bien la espalda para evitar balanceos.</item>
+                <item>Concéntrate en la contracción de los trapecios durante cada repetición.</item>
+                <item>No utilices un peso excesivo.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral Curvada (mancuernas)</nombre>
+            <descripcion>Ejercicio con mancuernas realizado con el torso curvado para enfatizar la activación de los trapecios y deltoides posteriores.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_curvada__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Inclina el torso hacia adelante manteniendo la espalda recta.</paso>
+                <paso numero="2">Sostén una mancuerna en cada mano con los brazos colgando.</paso>
+                <paso numero="3">Eleva los brazos lateralmente en un movimiento controlado, contrayendo los trapecios.</paso>
+                <paso numero="4">Baja las mancuernas de forma controlada a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén una ligera flexión en los codos.</item>
+                <item>Enfócate en sentir la contracción en los trapecios.</item>
+                <item>Utiliza un peso moderado para mantener la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral en Banco Inclinado (mancuernas)</nombre>
+            <descripcion>Ejercicio realizado en banco inclinado que aísla los trapecios y deltoides posteriores a través de una elevación lateral controlada.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_en_banco_inclinado__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Siéntate en un banco inclinado y apoya la espalda contra el respaldo.</paso>
+                <paso numero="2">Sostén una mancuerna en cada mano, con los brazos colgando.</paso>
+                <paso numero="3">Eleva los brazos lateralmente hasta que estén a la altura de los hombros.</paso>
+                <paso numero="4">Baja lentamente las mancuernas a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén una buena postura y el core activado.</item>
+                <item>Realiza el movimiento de forma lenta para aislar los músculos.</item>
+                <item>Utiliza un peso que te permita controlar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Elevación Lateral Inclinada Apoyada en el Banco (mancuernas)</nombre>
+            <descripcion>Variante de elevación lateral en la que se apoya el torso en un banco, maximizando la activación de los trapecios y deltoides posteriores.</descripcion>
+            <gif>@drawable/elevaci_n_lateral_inclinada_apoyada_en_el_banco__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Acuéstate boca abajo sobre un banco inclinado.</paso>
+                <paso numero="2">Sostén una mancuerna en cada mano, con los brazos extendidos hacia abajo.</paso>
+                <paso numero="3">Eleva los brazos lateralmente contrayendo los trapecios.</paso>
+                <paso numero="4">Baja lentamente las mancuernas a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Controla el movimiento para evitar balanceos.</item>
+                <item>Concéntrate en la contracción de la parte superior de la espalda.</item>
+                <item>Utiliza un peso moderado para asegurar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Remo Inclinado (barra)</nombre>
+            <descripcion>Ejercicio con barra que trabaja intensamente la zona media de la espalda, enfocándose en la contracción de los trapecios y dorsales.</descripcion>
+            <gif>@drawable/remo_inclinado__barra_</gif>
+            <pasos>
+                <paso numero="1">Párate con los pies a la anchura de los hombros y flexiona el torso hacia adelante.</paso>
+                <paso numero="2">Sujeta la barra con agarre prono y mantén la espalda recta.</paso>
+                <paso numero="3">Tira de la barra hacia el abdomen contrayendo los trapecios.</paso>
+                <paso numero="4">Baja la barra de forma controlada hasta la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso estable y el core activado.</item>
+                <item>Evita redondear la espalda.</item>
+                <item>Utiliza un peso que permita realizar el movimiento con control.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Dorsales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Remo Sentado - agarre abierto (polea baja)</nombre>
+            <descripcion>Ejercicio en polea baja que, mediante un agarre amplio, favorece el trabajo de la parte superior de la espalda y el trapecio.</descripcion>
+            <gif>@drawable/remo_sentado___agarre_abierto__polea_baja_</gif>
+            <pasos>
+                <paso numero="1">Siéntate frente a la máquina de polea baja con la espalda recta.</paso>
+                <paso numero="2">Sujeta la manija con un agarre amplio.</paso>
+                <paso numero="3">Jala la manija hacia el pecho contrayendo los trapecios.</paso>
+                <paso numero="4">Extiende los brazos de forma controlada hasta la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén la espalda recta y el core activado.</item>
+                <item>Controla el movimiento en ambas direcciones.</item>
+                <item>No uses un peso excesivo para preservar la técnica.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Dorsales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Remo Vertical (polea)</nombre>
+            <descripcion>Ejercicio en polea que realiza un movimiento vertical, ayudando a trabajar los trapecios y la parte media de la espalda a través de una extensión controlada.</descripcion>
+            <gif>@drawable/remo_vertical__polea_</gif>
+            <pasos>
+                <paso numero="1">Párate frente a la máquina de polea con los pies a la anchura de los hombros.</paso>
+                <paso numero="2">Toma la manija con ambas manos y coloca los codos ligeramente flexionados.</paso>
+                <paso numero="3">Jala la manija hacia arriba, concentrándote en la contracción de los trapecios.</paso>
+                <paso numero="4">Baja la manija de forma controlada hasta la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el torso erguido y el core activado.</item>
+                <item>Realiza el movimiento de forma lenta y controlada.</item>
+                <item>Ajusta el peso para asegurar una ejecución correcta.</item>
+            </consejo>
+            <musculos>
+                <principal>Trapecios</principal>
+                <secundario>Deltoides posteriores</secundario>
+            </musculos>
+        </ejercicio>
+    </categoria>
+
+
     <!-- Categoría: Tríceps-->
     <categoria nombre="Tríceps">
         <ejercicio>
@@ -4728,1188 +5917,5 @@
         </ejercicio>
     </categoria>
 
-    <!-- Categoría: Trapecios-->
-    <categoria nombre="Trapecios">
-        <ejercicio>
-            <nombre>Cristos Inverso en Banco (polea)</nombre>
-            <descripcion>Ejercicio en banco con polea que trabaja la parte superior de la espalda, enfocándose en la contracción de los trapecios mediante un movimiento inverso de los brazos.</descripcion>
-            <gif>@drawable/cristos_inverso_en_banco__polea_</gif>
-            <pasos>
-                <paso numero="1">Siéntate en un banco y ajusta la polea a una posición media-alta.</paso>
-                <paso numero="2">Toma la manija con ambas manos y coloca los brazos extendidos hacia los lados.</paso>
-                <paso numero="3">Realiza un movimiento de cruce inverso, juntando las manos frente al pecho mientras contraes los trapecios.</paso>
-                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén la espalda recta durante el movimiento.</item>
-                <item>Controla la velocidad para aislar los trapecios.</item>
-                <item>Utiliza un peso moderado para evitar compensaciones.</item>
-            </consejo>
-            <musculos>
-                <principal>Trapecios</principal>
-                <secundario>Deltoides posteriores</secundario>
-            </musculos>
-        </ejercicio>
 
-        <ejercicio>
-            <nombre>Cristos Inverso Inclinado (polea)</nombre>
-            <descripcion>Ejercicio realizado en polea con el cuerpo inclinado, que enfatiza la activación de los trapecios y la parte superior de la espalda.</descripcion>
-            <gif>@drawable/cristos_inverso_inclinado__polea_</gif>
-            <pasos>
-                <paso numero="1">Adopta una postura inclinada frente a la polea, con los pies firmemente plantados.</paso>
-                <paso numero="2">Sujeta la manija con ambas manos y extiende los brazos a los lados.</paso>
-                <paso numero="3">Realiza un cruce inverso de brazos, enfocándote en contraer los trapecios.</paso>
-                <paso numero="4">Vuelve lentamente a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Inclina el torso lo suficiente para aislar la zona superior de la espalda.</item>
-                <item>Mantén el movimiento fluido y controlado.</item>
-                <item>No uses un peso excesivo para evitar comprometer la técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Trapecios</principal>
-                <secundario>Deltoides posteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Cristos Inverso (mancuernas)</nombre>
-            <descripcion>Ejercicio con mancuernas que imita un cruce inverso para trabajar la parte superior de la espalda, especialmente los trapecios y deltoides posteriores.</descripcion>
-            <gif>@drawable/cristos_inverso__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Párate con las rodillas ligeramente flexionadas y sujeta una mancuerna en cada mano.</paso>
-                <paso numero="2">Inclina el torso ligeramente hacia adelante manteniendo la espalda recta.</paso>
-                <paso numero="3">Con los brazos extendidos, eleva las mancuernas hacia los lados realizando un cruce inverso.</paso>
-                <paso numero="4">Baja de forma controlada hasta la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Concéntrate en la contracción de los trapecios durante el movimiento.</item>
-                <item>Mantén una ligera flexión en los codos para proteger las articulaciones.</item>
-                <item>Controla el peso para evitar balanceos.</item>
-            </consejo>
-            <musculos>
-                <principal>Trapecios</principal>
-                <secundario>Deltoides posteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Cristos Inverso para Atrás (mancuernas)</nombre>
-            <descripcion>Variante con mancuernas donde el movimiento se dirige hacia atrás, enfatizando el trabajo de los trapecios y la parte posterior de los hombros.</descripcion>
-            <gif>@drawable/cristos_inverso_para_atr_s__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Párate con la postura adecuada y una ligera inclinación del torso.</paso>
-                <paso numero="2">Sujeta una mancuerna en cada mano con los brazos extendidos hacia adelante.</paso>
-                <paso numero="3">Lleva los brazos hacia atrás, realizando un movimiento de cruce inverso y contrayendo los trapecios.</paso>
-                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén el control del movimiento para maximizar la activación muscular.</item>
-                <item>Evita balancear el torso.</item>
-                <item>Utiliza un peso adecuado que permita buena técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Trapecios</principal>
-                <secundario>Deltoides posteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Cristos Inverso (polea alta)</nombre>
-            <descripcion>Ejercicio realizado en polea alta que enfoca la tensión en los trapecios mediante un movimiento de cruce inverso desde una posición elevada.</descripcion>
-            <gif>@drawable/cristos_inverso__polea_alta_</gif>
-            <pasos>
-                <paso numero="1">Colócate de pie frente a la polea alta y selecciona el peso adecuado.</paso>
-                <paso numero="2">Sujeta la manija con ambas manos y extiende los brazos hacia los lados.</paso>
-                <paso numero="3">Realiza un cruce inverso bajando los brazos y contrayendo los trapecios.</paso>
-                <paso numero="4">Vuelve a la posición inicial de forma controlada.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén el core activado para una mayor estabilidad.</item>
-                <item>Realiza el movimiento lentamente para maximizar el aislamiento.</item>
-                <item>Ajusta el peso para evitar compensaciones.</item>
-            </consejo>
-            <musculos>
-                <principal>Trapecios</principal>
-                <secundario>Deltoides posteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Cristos Inverso Sentado (polea)</nombre>
-            <descripcion>Ejercicio realizado sentado en polea que permite aislar los trapecios y trabajar la parte superior de la espalda sin comprometer la postura.</descripcion>
-            <gif>@drawable/cristos_inverso_sentado__polea_</gif>
-            <pasos>
-                <paso numero="1">Siéntate en el banco frente a la máquina de polea.</paso>
-                <paso numero="2">Toma la manija con ambas manos y mantén la espalda recta.</paso>
-                <paso numero="3">Realiza un movimiento de cruce inverso, contrayendo los trapecios.</paso>
-                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Apoya bien la espalda para evitar balanceos.</item>
-                <item>Concéntrate en la contracción de los trapecios durante cada repetición.</item>
-                <item>No utilices un peso excesivo.</item>
-            </consejo>
-            <musculos>
-                <principal>Trapecios</principal>
-                <secundario>Deltoides posteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Elevación Lateral Curvada (mancuernas)</nombre>
-            <descripcion>Ejercicio con mancuernas realizado con el torso curvado para enfatizar la activación de los trapecios y deltoides posteriores.</descripcion>
-            <gif>@drawable/elevaci_n_lateral_curvada__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Inclina el torso hacia adelante manteniendo la espalda recta.</paso>
-                <paso numero="2">Sostén una mancuerna en cada mano con los brazos colgando.</paso>
-                <paso numero="3">Eleva los brazos lateralmente en un movimiento controlado, contrayendo los trapecios.</paso>
-                <paso numero="4">Baja las mancuernas de forma controlada a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén una ligera flexión en los codos.</item>
-                <item>Enfócate en sentir la contracción en los trapecios.</item>
-                <item>Utiliza un peso moderado para mantener la técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Trapecios</principal>
-                <secundario>Deltoides posteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Elevación Lateral en Banco Inclinado (mancuernas)</nombre>
-            <descripcion>Ejercicio realizado en banco inclinado que aísla los trapecios y deltoides posteriores a través de una elevación lateral controlada.</descripcion>
-            <gif>@drawable/elevaci_n_lateral_en_banco_inclinado__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Siéntate en un banco inclinado y apoya la espalda contra el respaldo.</paso>
-                <paso numero="2">Sostén una mancuerna en cada mano, con los brazos colgando.</paso>
-                <paso numero="3">Eleva los brazos lateralmente hasta que estén a la altura de los hombros.</paso>
-                <paso numero="4">Baja lentamente las mancuernas a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén una buena postura y el core activado.</item>
-                <item>Realiza el movimiento de forma lenta para aislar los músculos.</item>
-                <item>Utiliza un peso que te permita controlar la técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Trapecios</principal>
-                <secundario>Deltoides posteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Elevación Lateral Inclinada Apoyada en el Banco (mancuernas)</nombre>
-            <descripcion>Variante de elevación lateral en la que se apoya el torso en un banco, maximizando la activación de los trapecios y deltoides posteriores.</descripcion>
-            <gif>@drawable/elevaci_n_lateral_inclinada_apoyada_en_el_banco__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Acuéstate boca abajo sobre un banco inclinado.</paso>
-                <paso numero="2">Sostén una mancuerna en cada mano, con los brazos extendidos hacia abajo.</paso>
-                <paso numero="3">Eleva los brazos lateralmente contrayendo los trapecios.</paso>
-                <paso numero="4">Baja lentamente las mancuernas a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Controla el movimiento para evitar balanceos.</item>
-                <item>Concéntrate en la contracción de la parte superior de la espalda.</item>
-                <item>Utiliza un peso moderado para asegurar la técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Trapecios</principal>
-                <secundario>Deltoides posteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Remo Inclinado (barra)</nombre>
-            <descripcion>Ejercicio con barra que trabaja intensamente la zona media de la espalda, enfocándose en la contracción de los trapecios y dorsales.</descripcion>
-            <gif>@drawable/remo_inclinado__barra_</gif>
-            <pasos>
-                <paso numero="1">Párate con los pies a la anchura de los hombros y flexiona el torso hacia adelante.</paso>
-                <paso numero="2">Sujeta la barra con agarre prono y mantén la espalda recta.</paso>
-                <paso numero="3">Tira de la barra hacia el abdomen contrayendo los trapecios.</paso>
-                <paso numero="4">Baja la barra de forma controlada hasta la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén el torso estable y el core activado.</item>
-                <item>Evita redondear la espalda.</item>
-                <item>Utiliza un peso que permita realizar el movimiento con control.</item>
-            </consejo>
-            <musculos>
-                <principal>Trapecios</principal>
-                <secundario>Dorsales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Remo Sentado - agarre abierto (polea baja)</nombre>
-            <descripcion>Ejercicio en polea baja que, mediante un agarre amplio, favorece el trabajo de la parte superior de la espalda y el trapecio.</descripcion>
-            <gif>@drawable/remo_sentado___agarre_abierto__polea_baja_</gif>
-            <pasos>
-                <paso numero="1">Siéntate frente a la máquina de polea baja con la espalda recta.</paso>
-                <paso numero="2">Sujeta la manija con un agarre amplio.</paso>
-                <paso numero="3">Jala la manija hacia el pecho contrayendo los trapecios.</paso>
-                <paso numero="4">Extiende los brazos de forma controlada hasta la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén la espalda recta y el core activado.</item>
-                <item>Controla el movimiento en ambas direcciones.</item>
-                <item>No uses un peso excesivo para preservar la técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Trapecios</principal>
-                <secundario>Dorsales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Remo Vertical (polea)</nombre>
-            <descripcion>Ejercicio en polea que realiza un movimiento vertical, ayudando a trabajar los trapecios y la parte media de la espalda a través de una extensión controlada.</descripcion>
-            <gif>@drawable/remo_vertical__polea_</gif>
-            <pasos>
-                <paso numero="1">Párate frente a la máquina de polea con los pies a la anchura de los hombros.</paso>
-                <paso numero="2">Toma la manija con ambas manos y coloca los codos ligeramente flexionados.</paso>
-                <paso numero="3">Jala la manija hacia arriba, concentrándote en la contracción de los trapecios.</paso>
-                <paso numero="4">Baja la manija de forma controlada hasta la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén el torso erguido y el core activado.</item>
-                <item>Realiza el movimiento de forma lenta y controlada.</item>
-                <item>Ajusta el peso para asegurar una ejecución correcta.</item>
-            </consejo>
-            <musculos>
-                <principal>Trapecios</principal>
-                <secundario>Deltoides posteriores</secundario>
-            </musculos>
-        </ejercicio>
-    </categoria>
-
-    <!-- Categoría: Pectorales-->
-    <categoria nombre="Pectorales">
-        <ejercicio>
-            <nombre>Cristos Alternado (mancuernas)</nombre>
-            <descripcion>Ejercicio unilateral que trabaja la parte interna y superior del pectoral, permitiendo corregir desequilibrios entre ambos lados.</descripcion>
-            <gif>@drawable/cristos_alternado__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Párate con los pies a la anchura de los hombros y sujeta una mancuerna en cada mano.</paso>
-                <paso numero="2">Inclina ligeramente el torso hacia adelante y extiende los brazos a los lados.</paso>
-                <paso numero="3">Alterna el movimiento llevando una mancuerna hacia el centro, cruzando ligeramente el cuerpo.</paso>
-                <paso numero="4">Regresa de forma controlada a la posición inicial y repite con el otro brazo.</paso>
-            </pasos>
-            <consejo>
-                <item>Realiza el movimiento lentamente para maximizar la contracción.</item>
-                <item>Mantén el core activado para estabilizar el torso.</item>
-                <item>Utiliza un peso que permita ejecutar la técnica correctamente.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales</principal>
-                <secundario>Deltoides anteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Cristos Alternado (polea)</nombre>
-            <descripcion>Ejercicio en polea que trabaja los pectorales de forma unilateral, permitiendo un rango de movimiento constante y controlado.</descripcion>
-            <gif>@drawable/cristos_alternado__polea_</gif>
-            <pasos>
-                <paso numero="1">Ajusta la polea a una posición media y selecciona el peso adecuado.</paso>
-                <paso numero="2">Párate erguido y toma la manija con una mano.</paso>
-                <paso numero="3">Realiza el movimiento cruzando el brazo hacia el centro, contrayendo el pectoral.</paso>
-                <paso numero="4">Vuelve de forma controlada a la posición inicial y repite con el otro brazo.</paso>
-            </pasos>
-            <consejo>
-                <item>Controla la velocidad para aislar bien el pectoral.</item>
-                <item>Mantén el codo ligeramente flexionado durante el movimiento.</item>
-                <item>Realiza el ejercicio con un peso moderado.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales</principal>
-                <secundario>Deltoides anteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Cristos con Brazos Flexionados - Mariposa (máquina)</nombre>
-            <descripcion>Ejercicio en máquina que simula el movimiento de mariposa, concentrando el esfuerzo en la contracción del pectoral mediante la flexión de brazos.</descripcion>
-            <gif>@drawable/cristos_con_brazos_flexionados___mariposa__m_quina_</gif>
-            <pasos>
-                <paso numero="1">Siéntate en la máquina y ajusta el asiento según tu altura.</paso>
-                <paso numero="2">Coloca los brazos en las almohadillas, con los codos ligeramente flexionados.</paso>
-                <paso numero="3">Junta las manos en el centro contrayendo los pectorales.</paso>
-                <paso numero="4">Regresa lentamente a la posición inicial manteniendo la tensión.</paso>
-            </pasos>
-            <consejo>
-                <item>Ajusta la máquina para que el movimiento sea cómodo.</item>
-                <item>No bloquees los codos durante el ejercicio.</item>
-                <item>Concéntrate en la contracción del pectoral en cada repetición.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales</principal>
-                <secundario>Deltoides anteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Cristos Declinado (mancuernas)</nombre>
-            <descripcion>Ejercicio con mancuernas en banco declinado que enfatiza la parte inferior del pectoral y mejora la amplitud del movimiento.</descripcion>
-            <gif>@drawable/cristos_declinado__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Acuéstate en un banco declinado con una mancuerna en cada mano.</paso>
-                <paso numero="2">Extiende los brazos hacia los lados con una ligera flexión en los codos.</paso>
-                <paso numero="3">Lleva las mancuernas hacia el centro, contrayendo el pectoral inferior.</paso>
-                <paso numero="4">Regresa controladamente a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén una ejecución lenta para maximizar la contracción.</item>
-                <item>No sobrecargues las mancuernas para preservar la técnica.</item>
-                <item>Realiza el movimiento de forma fluida.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales inferiores</principal>
-                <secundario>Deltoides anteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Cristos de Pie - agarre neutro (polea)</nombre>
-            <descripcion>Ejercicio en polea con agarre neutro que trabaja los pectorales desde una posición de pie, enfatizando la contracción interna.</descripcion>
-            <gif>@drawable/cristos_de_pie___agarre_neutro__polea_</gif>
-            <pasos>
-                <paso numero="1">Ajusta la polea a una posición media y selecciona el peso adecuado.</paso>
-                <paso numero="2">Párate erguido y toma la manija con agarre neutro.</paso>
-                <paso numero="3">Realiza el movimiento llevando las manos hacia el centro del pecho.</paso>
-                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén el torso estable durante el ejercicio.</item>
-                <item>Controla la velocidad para maximizar la activación muscular.</item>
-                <item>Utiliza un peso que te permita ejecutar el movimiento correctamente.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales</principal>
-                <secundario>Deltoides anteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Cristos de pie (polea)</nombre>
-            <descripcion>Ejercicio en polea que trabaja el pectoral mediante un movimiento de cruce de brazos, enfatizando la contracción completa.</descripcion>
-            <gif>@drawable/cristos_de_pie__polea_</gif>
-            <pasos>
-                <paso numero="1">Colócate de pie frente a la polea con los pies a la anchura de los hombros.</paso>
-                <paso numero="2">Toma la manija con ambas manos y extiende los brazos lateralmente.</paso>
-                <paso numero="3">Cruza las manos frente al pecho contrayendo los pectorales.</paso>
-                <paso numero="4">Vuelve de forma controlada a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén la espalda recta y el core activado.</item>
-                <item>Realiza el movimiento sin impulso para maximizar el aislamiento.</item>
-                <item>Utiliza una carga adecuada para mantener la técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales</principal>
-                <secundario>Deltoides anteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Cristos - de rodillas (polea)</nombre>
-            <descripcion>Ejercicio en polea realizado en posición de rodillas para mejorar el aislamiento del pectoral y minimizar la ayuda de las piernas.</descripcion>
-            <gif>@drawable/cristos___de_rodillas__polea_</gif>
-            <pasos>
-                <paso numero="1">Arrodíllate frente a la máquina de polea, manteniendo la espalda recta.</paso>
-                <paso numero="2">Toma la manija con ambas manos y extiende los brazos hacia los lados.</paso>
-                <paso numero="3">Cruza las manos frente al pecho concentrándote en la contracción del pectoral.</paso>
-                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Realiza el movimiento de forma lenta y controlada.</item>
-                <item>Mantén la postura para aislar bien el pectoral.</item>
-                <item>No utilices un peso excesivo.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales</principal>
-                <secundario>Deltoides anteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Cristos Sentado (polea)</nombre>
-            <descripcion>Ejercicio en polea realizado sentado para trabajar el pectoral con un soporte que minimiza la intervención de la parte baja del cuerpo.</descripcion>
-            <gif>@drawable/cristos_sentado__polea_</gif>
-            <pasos>
-                <paso numero="1">Siéntate en el banco frente a la máquina de polea con la espalda erguida.</paso>
-                <paso numero="2">Toma la manija con ambas manos y extiende los brazos lateralmente.</paso>
-                <paso numero="3">Cruza las manos frente al pecho contrayendo los pectorales.</paso>
-                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Apoya bien la espalda en el respaldo para estabilidad.</item>
-                <item>Concéntrate en el movimiento del pectoral.</item>
-                <item>Utiliza un peso moderado para mantener la técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales</principal>
-                <secundario>Deltoides anteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Cristos Unilateral de Pie (polea)</nombre>
-            <descripcion>Ejercicio en polea realizado de forma unilateral que permite aislar y trabajar cada pectoral de manera independiente.</descripcion>
-            <gif>@drawable/cristos_unilateral_de_pie__polea_</gif>
-            <pasos>
-                <paso numero="1">Párate de lado frente a la polea y ajusta el peso adecuado.</paso>
-                <paso numero="2">Toma la manija con la mano más cercana a la máquina.</paso>
-                <paso numero="3">Realiza el movimiento cruzando el brazo hacia el centro del cuerpo, contrayendo el pectoral.</paso>
-                <paso numero="4">Regresa lentamente a la posición inicial y repite con el otro lado.</paso>
-            </pasos>
-            <consejo>
-                <item>Realiza el ejercicio de forma concentrada para aislar el pectoral.</item>
-                <item>Mantén el torso estable y el core activado.</item>
-                <item>Utiliza un peso moderado para controlar el movimiento.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales</principal>
-                <secundario>Deltoides anteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de banca declinado - agarre neutro (mancuernas)</nombre>
-            <descripcion>Ejercicio en banco declinado con mancuernas que trabaja la parte inferior del pectoral, utilizando un agarre neutro para reducir la tensión en los hombros.</descripcion>
-            <gif>@drawable/press_de_banca_declinado___agarre_neutro__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Acuéstate en un banco declinado con una mancuerna en cada mano.</paso>
-                <paso numero="2">Coloca las mancuernas a la altura del pecho con agarre neutro.</paso>
-                <paso numero="3">Empuja las mancuernas hacia arriba extendiendo los brazos.</paso>
-                <paso numero="4">Baja de forma controlada a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén los codos ligeramente flexionados.</item>
-                <item>Controla el movimiento para evitar balanceos.</item>
-                <item>Utiliza un peso que te permita buena ejecución.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales inferiores</principal>
-                <secundario>Tríceps</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de banca declinado alternado (mancuernas)</nombre>
-            <descripcion>Variante alternada que permite trabajar cada pectoral de forma individual en banco declinado, mejorando el aislamiento y equilibrio muscular.</descripcion>
-            <gif>@drawable/press_de_banca_declinado_alternado__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Acuéstate en un banco declinado y sujeta una mancuerna en cada mano.</paso>
-                <paso numero="2">Empuja una mancuerna hacia arriba mientras la otra permanece en posición de inicio.</paso>
-                <paso numero="3">Alterna el movimiento entre ambos brazos.</paso>
-                <paso numero="4">Baja de forma controlada cada mancuerna a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Concéntrate en el aislamiento del pectoral de cada lado.</item>
-                <item>Activa el core para mantener la estabilidad.</item>
-                <item>Realiza el movimiento de forma lenta y controlada.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales inferiores</principal>
-                <secundario>Tríceps</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de banca declinado (barra)</nombre>
-            <descripcion>Ejercicio clásico en banco declinado utilizando barra, enfocado en trabajar el pectoral inferior y activar también los tríceps.</descripcion>
-            <gif>@drawable/press_de_banca_declinado__barra_</gif>
-            <pasos>
-                <paso numero="1">Acuéstate en un banco declinado y sujeta la barra con un agarre medio.</paso>
-                <paso numero="2">Baja la barra de forma controlada hasta el pecho.</paso>
-                <paso numero="3">Empuja la barra hacia arriba extendiendo los brazos.</paso>
-                <paso numero="4">Regresa a la posición inicial sin bloquear los codos.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén la espalda bien apoyada en el banco.</item>
-                <item>No bloquees los codos al extender los brazos.</item>
-                <item>Utiliza un peso adecuado para asegurar la técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales inferiores</principal>
-                <secundario>Tríceps</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de banca declinado (mancuernas)</nombre>
-            <descripcion>Variante del press de banca declinado con mancuernas que permite mayor rango de movimiento y activación de los pectorales inferiores.</descripcion>
-            <gif>@drawable/press_de_banca_declinado__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Acuéstate en un banco declinado con una mancuerna en cada mano.</paso>
-                <paso numero="2">Coloca las mancuernas a la altura del pecho con un agarre cómodo.</paso>
-                <paso numero="3">Empuja ambas mancuernas hacia arriba extendiendo los brazos.</paso>
-                <paso numero="4">Baja de forma controlada hasta la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén los codos en línea con los hombros.</item>
-                <item>Realiza el movimiento de forma lenta para maximizar la tensión.</item>
-                <item>Utiliza un peso que te permita ejecutar el ejercicio con buena técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales inferiores</principal>
-                <secundario>Tríceps</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de banca declinado (máquina)</nombre>
-            <descripcion>Ejercicio en máquina que ofrece estabilidad y guía para trabajar el pectoral inferior en banco declinado.</descripcion>
-            <gif>@drawable/press_de_banca_declinado__m_quina_</gif>
-            <pasos>
-                <paso numero="1">Siéntate en la máquina y ajusta el asiento para un banco declinado.</paso>
-                <paso numero="2">Sujeta las manijas con un agarre cómodo.</paso>
-                <paso numero="3">Empuja hacia adelante extendiendo los brazos y contrayendo el pectoral.</paso>
-                <paso numero="4">Regresa controladamente a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Ajusta la máquina para que se adapte a tu altura.</item>
-                <item>Realiza el movimiento de forma controlada.</item>
-                <item>Concéntrate en la contracción del pectoral durante el empuje.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales inferiores</principal>
-                <secundario>Tríceps</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de banca en máquina</nombre>
-            <descripcion>Ejercicio asistido que utiliza una máquina para trabajar el pectoral de forma controlada, minimizando la intervención del core.</descripcion>
-            <gif>@drawable/press_de_banca_en_m_quina</gif>
-            <pasos>
-                <paso numero="1">Siéntate en la máquina y ajusta el asiento.</paso>
-                <paso numero="2">Sujeta las manijas con un agarre adecuado.</paso>
-                <paso numero="3">Empuja hacia adelante extendiendo los brazos.</paso>
-                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén la espalda recta durante el ejercicio.</item>
-                <item>Utiliza una carga que permita una ejecución fluida.</item>
-                <item>Concéntrate en la contracción del pectoral.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales</principal>
-                <secundario>Tríceps</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de Banca Inclinado - agarre invertido (mancuernas)</nombre>
-            <descripcion>Ejercicio en banco inclinado con mancuernas y agarre invertido, que enfatiza la parte superior del pectoral y reduce la tensión en los hombros.</descripcion>
-            <gif>@drawable/press_de_banca_inclinado___agarre_invertido__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Acuéstate en un banco inclinado con una mancuerna en cada mano.</paso>
-                <paso numero="2">Coloca las mancuernas a la altura del pecho con agarre invertido.</paso>
-                <paso numero="3">Empuja las mancuernas hacia arriba extendiendo los brazos.</paso>
-                <paso numero="4">Baja de forma controlada a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén el core activado para la estabilidad.</item>
-                <item>Realiza el movimiento de forma lenta y controlada.</item>
-                <item>Utiliza un peso adecuado para la técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales superiores</principal>
-                <secundario>Deltoides anteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de banca inclinado (smith)</nombre>
-            <descripcion>Ejercicio en máquina Smith que facilita la ejecución del press de banca inclinado, permitiendo un control total del movimiento.</descripcion>
-            <gif>@drawable/press_de_banca_inclinado__smith_</gif>
-            <pasos>
-                <paso numero="1">Colócate en un banco inclinado dentro de la máquina Smith.</paso>
-                <paso numero="2">Sujeta la barra con agarre medio y posiciónala a la altura del pecho.</paso>
-                <paso numero="3">Empuja la barra hacia arriba extendiendo los brazos.</paso>
-                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Controla el movimiento para evitar compensaciones.</item>
-                <item>Mantén la espalda bien apoyada en el banco.</item>
-                <item>Utiliza un peso que te permita ejecutar la técnica correctamente.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales superiores</principal>
-                <secundario>Tríceps</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de banca plano - agarre neutro (mancuernas)</nombre>
-            <descripcion>Ejercicio en banco plano con mancuernas y agarre neutro que enfatiza el pectoral central, favoreciendo un movimiento natural y equilibrado.</descripcion>
-            <gif>@drawable/press_de_banca_plano___agarre_neutro__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Acuéstate en un banco plano y sujeta una mancuerna en cada mano.</paso>
-                <paso numero="2">Coloca las mancuernas a la altura del pecho con un agarre neutro.</paso>
-                <paso numero="3">Empuja las mancuernas hacia arriba extendiendo los brazos sin bloquear los codos.</paso>
-                <paso numero="4">Baja de forma controlada a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Realiza el movimiento de forma lenta para maximizar la contracción.</item>
-                <item>Mantén el core activado para estabilizar el cuerpo.</item>
-                <item>Utiliza un peso moderado que permita una técnica perfecta.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales centrales</principal>
-                <secundario>Deltoides anteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de Banca Sentado con Manos Juntas (polea)</nombre>
-            <descripcion>Ejercicio en polea realizado sentado que enfatiza la contracción del pectoral al juntar las manos durante el empuje.</descripcion>
-            <gif>@drawable/press_de_banca_sentado_con_manos_juntas__polea_</gif>
-            <pasos>
-                <paso numero="1">Siéntate en la máquina de polea con la espalda erguida.</paso>
-                <paso numero="2">Toma ambas manijas y junta las manos frente al pecho.</paso>
-                <paso numero="3">Empuja las manijas hacia adelante, extendiendo los brazos.</paso>
-                <paso numero="4">Regresa lentamente a la posición inicial manteniendo las manos juntas.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén el core activado para una mayor estabilidad.</item>
-                <item>Realiza el movimiento sin balancear el torso.</item>
-                <item>Utiliza un peso que te permita controlar el movimiento.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales</principal>
-                <secundario>Tríceps</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de Banca Sentado (mancuernas)</nombre>
-            <descripcion>Ejercicio realizado sentado que trabaja el pectoral de forma segura con mancuernas, permitiendo un rango de movimiento controlado.</descripcion>
-            <gif>@drawable/press_de_banca_sentado__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Siéntate en un banco con respaldo y sostén una mancuerna en cada mano a la altura del pecho.</paso>
-                <paso numero="2">Empuja las mancuernas hacia adelante extendiendo los brazos.</paso>
-                <paso numero="3">Mantén la contracción del pectoral en la parte superior del movimiento.</paso>
-                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén la espalda recta y el core activado.</item>
-                <item>Realiza el movimiento de forma lenta y controlada.</item>
-                <item>Utiliza un peso moderado para asegurar la técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales</principal>
-                <secundario>Deltoides anteriores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de Banca Tumbado con Manos Juntas (polea)</nombre>
-            <descripcion>Ejercicio en polea tumbado que enfatiza la contracción central del pectoral al juntar las manos durante el empuje.</descripcion>
-            <gif>@drawable/press_de_banca_tumbado_con_manos_juntas__polea_</gif>
-            <pasos>
-                <paso numero="1">Acuéstate en un banco plano frente a la máquina de polea.</paso>
-                <paso numero="2">Toma ambas manijas y junta las manos sobre el pecho.</paso>
-                <paso numero="3">Empuja las manijas hacia arriba extendiendo los brazos.</paso>
-                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén una ejecución lenta para maximizar la tensión en el pectoral.</item>
-                <item>Evita balancear el torso durante el movimiento.</item>
-                <item>Utiliza un peso que permita mantener la técnica correcta.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales</principal>
-                <secundario>Tríceps</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de pecho - agarre neutro (máquina)</nombre>
-            <descripcion>Ejercicio en máquina que trabaja el pectoral central utilizando un agarre neutro para reducir la tensión en las articulaciones.</descripcion>
-            <gif>@drawable/press_de_pecho_agarre_neutro_m_quina</gif>
-            <pasos>
-                <paso numero="1">Siéntate en la máquina y ajusta el asiento según tu altura.</paso>
-                <paso numero="2">Sujeta las manijas con un agarre neutro y colócalas a la altura del pecho.</paso>
-                <paso numero="3">Empuja las manijas hacia adelante extendiendo los brazos.</paso>
-                <paso numero="4">Regresa controladamente a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Ajusta la máquina para que se adapte a tu tamaño.</item>
-                <item>Realiza el movimiento de forma lenta y controlada.</item>
-                <item>Concéntrate en la contracción del pectoral durante cada repetición.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales</principal>
-                <secundario>Tríceps</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de Pecho Declinado en Pie (polea)</nombre>
-            <descripcion>Ejercicio en polea de pie que trabaja la parte inferior del pectoral con un ángulo declinado, enfatizando el empuje y la contracción.</descripcion>
-            <gif>@drawable/press_de_pecho_declinado_en_pie_polea</gif>
-            <pasos>
-                <paso numero="1">Párate frente a la máquina de polea con los pies a la anchura de los hombros.</paso>
-                <paso numero="2">Sujeta la manija con ambas manos y adopta una postura estable.</paso>
-                <paso numero="3">Empuja la manija hacia adelante y ligeramente hacia abajo, contrayendo el pectoral inferior.</paso>
-                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén el core activado para estabilizar el cuerpo.</item>
-                <item>Realiza el movimiento sin balanceos.</item>
-                <item>Utiliza un peso moderado para controlar la técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales inferiores</principal>
-                <secundario>Tríceps</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de pecho declinado en polea de pie</nombre>
-            <descripcion>Variante en polea de pie que enfoca el trabajo en la parte inferior del pectoral, combinando estabilidad y fuerza.</descripcion>
-            <gif>@drawable/press_de_pecho_declinado_en_polea_de_pie</gif>
-            <pasos>
-                <paso numero="1">Párate erguido frente a la máquina de polea.</paso>
-                <paso numero="2">Sujeta la manija con ambas manos y adopta un agarre cómodo.</paso>
-                <paso numero="3">Empuja la manija hacia adelante y hacia abajo, contrayendo el pectoral inferior.</paso>
-                <paso numero="4">Regresa controladamente a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén el equilibrio y activa el core.</item>
-                <item>Realiza el movimiento de forma lenta para maximizar el aislamiento.</item>
-                <item>Utiliza un peso adecuado para evitar compensaciones.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales inferiores</principal>
-                <secundario>Tríceps</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Press de pecho inclinado - agarre neutro (máquina)</nombre>
-            <descripcion>Ejercicio en máquina que trabaja la parte superior del pectoral en banco inclinado, utilizando un agarre neutro para reducir la tensión en los hombros.</descripcion>
-            <gif>@drawable/press_de_pecho_inclinado_agarre_neutro_m_quina</gif>
-            <pasos>
-                <paso numero="1">Siéntate en la máquina con el respaldo en posición inclinada.</paso>
-                <paso numero="2">Sujeta las manijas con un agarre neutro y colócalas a la altura del pecho.</paso>
-                <paso numero="3">Empuja las manijas hacia adelante extendiendo los brazos.</paso>
-                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Ajusta el asiento y la inclinación para una ejecución óptima.</item>
-                <item>Realiza el movimiento con control para aislar el pectoral superior.</item>
-                <item>Utiliza un peso moderado que permita la técnica adecuada.</item>
-            </consejo>
-            <musculos>
-                <principal>Pectorales superiores</principal>
-                <secundario>Deltoides anteriores</secundario>
-            </musculos>
-        </ejercicio>
-    </categoria>
-
-    <!-- Categiría: Oblicuos-->
-    <categoria nombre="Oblicuos">
-        <ejercicio>
-            <nombre>Abdominal Alternado</nombre>
-            <descripcion>Ejercicio que alterna la contracción de los oblicuos y el recto abdominal, fortaleciendo la zona media y mejorando la estabilidad.</descripcion>
-            <gif>@drawable/abdominal_alternado_supra_infra</gif>
-            <pasos>
-                <paso numero="1">Acuéstate en el suelo con las rodillas flexionadas y los pies apoyados.</paso>
-                <paso numero="2">Coloca las manos detrás de la cabeza o cruzadas sobre el pecho.</paso>
-                <paso numero="3">Levanta el torso alternando la contracción de cada oblicuo para acercar el codo a la rodilla opuesta.</paso>
-                <paso numero="4">Baja de forma controlada y repite el movimiento alternando lados.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén el movimiento lento para maximizar la contracción muscular.</item>
-                <item>Activa el core durante todo el ejercicio.</item>
-                <item>No tires del cuello; enfócate en usar el abdomen.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Recto abdominal</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Abdominal Bicicleta</nombre>
-            <descripcion>Ejercicio dinámico que combina rotación y flexión, ideal para trabajar intensamente los oblicuos y mejorar la coordinación.</descripcion>
-            <gif>@drawable/abdominal_bicicleta</gif>
-            <pasos>
-                <paso numero="1">Acuéstate en el suelo con las manos detrás de la cabeza.</paso>
-                <paso numero="2">Levanta las piernas y flexiona las rodillas en ángulo de 90°.</paso>
-                <paso numero="3">Gira el torso para tocar el codo con la rodilla opuesta, alternando lados.</paso>
-                <paso numero="4">Continúa alternando el movimiento de forma rítmica y controlada.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén la espalda baja en contacto con el suelo.</item>
-                <item>Realiza el movimiento de forma fluida para evitar tirones.</item>
-                <item>Concéntrate en la contracción de los oblicuos.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Recto abdominal</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Abdominal con Golpe</nombre>
-            <descripcion>Ejercicio explosivo que integra un pequeño golpe al final de la contracción para aumentar la activación de los oblicuos y el core.</descripcion>
-            <gif>@drawable/abdominal_con_golpe</gif>
-            <pasos>
-                <paso numero="1">Acuéstate en el suelo con las piernas flexionadas y los pies apoyados.</paso>
-                <paso numero="2">Realiza un crunch y, al llegar a la parte superior, extiende un brazo para dar un "golpe".</paso>
-                <paso numero="3">Regresa rápidamente a la posición inicial.</paso>
-                <paso numero="4">Alterna el golpe entre ambos brazos en cada repetición.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén un ritmo controlado para evitar lesiones.</item>
-                <item>Concéntrate en la contracción de los oblicuos al dar el golpe.</item>
-                <item>Respira adecuadamente durante el ejercicio.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Abdominal Supra-infra Alternado (mancuernas)</nombre>
-            <descripcion>Ejercicio que alterna la activación de la parte superior e inferior del abdomen, utilizando mancuernas para añadir resistencia y trabajar los oblicuos.</descripcion>
-            <gif>@drawable/abdominal_supra_infra_alternado__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Acuéstate en el suelo con las piernas flexionadas y sujeta una mancuerna ligera con ambas manos.</paso>
-                <paso numero="2">Realiza un crunch elevando el torso y alterna levantando la mancuerna hacia la parte superior y luego hacia la inferior del abdomen.</paso>
-                <paso numero="3">Concéntrate en mantener la estabilidad durante cada contracción.</paso>
-                <paso numero="4">Baja lentamente y repite el movimiento alternadamente.</paso>
-            </pasos>
-            <consejo>
-                <item>Utiliza un peso moderado para evitar comprometer la forma.</item>
-                <item>Activa el core durante todo el ejercicio.</item>
-                <item>Realiza el movimiento de forma controlada.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales superiores e inferiores</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Abdominal Tocar Talones</nombre>
-            <descripcion>Ejercicio que consiste en alcanzar los talones desde posición supina, activando intensamente los oblicuos y el recto abdominal.</descripcion>
-            <gif>@drawable/abdominal_tocar_talones</gif>
-            <pasos>
-                <paso numero="1">Acuéstate en el suelo con las piernas estiradas o ligeramente flexionadas.</paso>
-                <paso numero="2">Levanta el torso y extiende los brazos hacia los talones.</paso>
-                <paso numero="3">Mantén la contracción en el abdomen durante el alcance.</paso>
-                <paso numero="4">Regresa de forma controlada a la posición inicial.</paso>
-            </pasos>
-            <consejo>
-                <item>Concéntrate en utilizar los músculos del core para el movimiento.</item>
-                <item>Evita forzar la espalda baja.</item>
-                <item>Respira de forma regular y controlada.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Recto abdominal</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Flexión Lateral del Tronco en Pie (mancuernas)</nombre>
-            <descripcion>Ejercicio de pie que utiliza mancuernas para realizar flexiones laterales, trabajando la fuerza y movilidad de los oblicuos.</descripcion>
-            <gif>@drawable/flexion_lateral_del_tronco_en_pie__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Párate erguido con los pies a la anchura de los hombros y sujeta una mancuerna en cada mano a los lados.</paso>
-                <paso numero="2">Inclinándote lateralmente, baja la mancuerna por un lado contrayendo el oblicuo.</paso>
-                <paso numero="3">Vuelve a la posición inicial de forma controlada.</paso>
-                <paso numero="4">Alterna el movimiento hacia el otro lado.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén el core activado para estabilizar el torso.</item>
-                <item>No flexiones excesivamente la espalda.</item>
-                <item>Utiliza un peso que te permita mantener la técnica correcta.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales laterales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Flexión Lateral (kettlebell)</nombre>
-            <descripcion>Ejercicio que utiliza el kettlebell para aumentar la resistencia durante la flexión lateral, potenciando la activación de los oblicuos.</descripcion>
-            <gif>@drawable/flexi_n_lateral__kettlebell_</gif>
-            <pasos>
-                <paso numero="1">Párate con los pies a la anchura de los hombros y sujeta el kettlebell con una mano.</paso>
-                <paso numero="2">Inclinándote lateralmente, baja el kettlebell por un lado, contrayendo el oblicuo.</paso>
-                <paso numero="3">Vuelve a la posición inicial lentamente.</paso>
-                <paso numero="4">Cambia de mano y repite el ejercicio.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén el tronco recto y el core activado.</item>
-                <item>Realiza el movimiento de forma controlada para aislar el oblicuo.</item>
-                <item>Utiliza un peso moderado para preservar la técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales laterales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Flexión Lateral (polea)</nombre>
-            <descripcion>Ejercicio en polea que proporciona una resistencia constante durante la flexión lateral, enfocándose en el fortalecimiento de los oblicuos.</descripcion>
-            <gif>@drawable/flexi_n_lateral__polea_</gif>
-            <pasos>
-                <paso numero="1">Ajusta la polea a una posición baja y selecciona el peso adecuado.</paso>
-                <paso numero="2">Párate erguido y toma la manija con una mano.</paso>
-                <paso numero="3">Realiza una flexión lateral llevando la manija hacia la cadera.</paso>
-                <paso numero="4">Vuelve de forma controlada a la posición inicial y repite con el otro lado.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén la postura erguida durante el movimiento.</item>
-                <item>Activa el core para estabilizar el tronco.</item>
-                <item>Realiza el ejercicio de forma lenta para maximizar la contracción.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales laterales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Giro Ruso - con Disco</nombre>
-            <descripcion>Ejercicio rotacional que incorpora un disco para aumentar la carga, fortaleciendo los oblicuos y mejorando la estabilidad del core.</descripcion>
-            <gif>@drawable/giro_ruso___con_disco</gif>
-            <pasos>
-                <paso numero="1">Siéntate en el suelo con las rodillas flexionadas y los pies ligeramente elevados.</paso>
-                <paso numero="2">Sostén un disco con ambas manos frente al pecho.</paso>
-                <paso numero="3">Gira el torso de un lado al otro, contrayendo los oblicuos.</paso>
-                <paso numero="4">Realiza el movimiento de forma controlada y sin impulsos.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén la espalda recta y el core activado.</item>
-                <item>No fuerces el giro para evitar lesiones.</item>
-                <item>Utiliza un disco con un peso adecuado.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Giro Ruso - con Pies en el Suelo (mancuernas)</nombre>
-            <descripcion>Variante del giro ruso en la que los pies permanecen apoyados, utilizando mancuernas para aumentar la resistencia y focalizar la activación de los oblicuos.</descripcion>
-            <gif>@drawable/giro_ruso___con_pies_en_el_suelo__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Siéntate en el suelo con las rodillas flexionadas y los pies apoyados firmemente.</paso>
-                <paso numero="2">Sostén una mancuerna con ambas manos frente al pecho.</paso>
-                <paso numero="3">Gira el torso hacia un lado, contrayendo los oblicuos.</paso>
-                <paso numero="4">Vuelve al centro y repite hacia el otro lado de forma controlada.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén la espalda recta y el core firme.</item>
-                <item>Realiza el movimiento sin forzar el cuello.</item>
-                <item>Controla la velocidad para aislar el músculo.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Giro Ruso (mancuernas)</nombre>
-            <descripcion>Ejercicio de rotación realizado con mancuernas para trabajar intensamente los oblicuos y mejorar la coordinación del core.</descripcion>
-            <gif>@drawable/giro_ruso__mancuernas_</gif>
-            <pasos>
-                <paso numero="1">Siéntate en el suelo con las rodillas flexionadas y los pies ligeramente elevados.</paso>
-                <paso numero="2">Sostén una mancuerna con ambas manos frente al pecho.</paso>
-                <paso numero="3">Gira el torso alternadamente de un lado al otro, contrayendo los oblicuos.</paso>
-                <paso numero="4">Realiza el movimiento de manera fluida y controlada.</paso>
-            </pasos>
-            <consejo>
-                <item>Activa el core para mantener la estabilidad.</item>
-                <item>No utilices un peso excesivo que comprometa la técnica.</item>
-                <item>Controla el ritmo para maximizar la contracción muscular.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Plancha Abdominal</nombre>
-            <descripcion>Ejercicio isométrico clásico que fortalece todo el core, incluyendo los oblicuos, manteniendo una posición de plancha durante un período prolongado.</descripcion>
-            <gif>@drawable/plancha_abdominal</gif>
-            <pasos>
-                <paso numero="1">Colócate en posición de plancha con los antebrazos apoyados en el suelo.</paso>
-                <paso numero="2">Asegúrate de que tu cuerpo forme una línea recta desde la cabeza hasta los pies.</paso>
-                <paso numero="3">Mantén la posición contrayendo el abdomen y los oblicuos.</paso>
-                <paso numero="4">Sostén la posición durante el tiempo deseado.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén la respiración constante.</item>
-                <item>No dejes que la cadera caiga ni se eleve.</item>
-                <item>Activa los glúteos para mayor estabilidad.</item>
-            </consejo>
-            <musculos>
-                <principal>Abdominales</principal>
-                <secundario>Oblicuos</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Plancha Frontal - con Disco</nombre>
-            <descripcion>Variante de la plancha frontal que incorpora un disco, aumentando la inestabilidad y forzando una mayor activación de los oblicuos.</descripcion>
-            <gif>@drawable/plancha_frontal___con_disco</gif>
-            <pasos>
-                <paso numero="1">Adopta la posición de plancha frontal con los antebrazos apoyados.</paso>
-                <paso numero="2">Coloca un disco bajo una de las manos para crear inestabilidad.</paso>
-                <paso numero="3">Mantén la posición, contrayendo el core y los oblicuos para estabilizar el cuerpo.</paso>
-                <paso numero="4">Cambia el disco de mano y repite el ejercicio.</paso>
-            </pasos>
-            <consejo>
-                <item>Controla el movimiento para evitar balanceos excesivos.</item>
-                <item>Activa todo el core para mantener la estabilidad.</item>
-                <item>Utiliza un disco de peso moderado.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Plancha Lateral Abdominal</nombre>
-            <descripcion>Ejercicio isométrico enfocado en los oblicuos, realizado en posición lateral para fortalecer la zona media y mejorar la estabilidad.</descripcion>
-            <gif>@drawable/plancha_lateral_abdominal</gif>
-            <pasos>
-                <paso numero="1">Colócate de lado apoyando el antebrazo y el pie en el suelo.</paso>
-                <paso numero="2">Eleva la cadera hasta que tu cuerpo forme una línea recta.</paso>
-                <paso numero="3">Mantén la posición contrayendo los oblicuos.</paso>
-                <paso numero="4">Sostén la posición durante el tiempo deseado y cambia de lado.</paso>
-            </pasos>
-            <consejo>
-                <item>Mantén el cuello en posición neutra.</item>
-                <item>Activa el core para mayor estabilidad.</item>
-                <item>No dejes que la cadera se hunda.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales laterales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Plancha Lateral</nombre>
-            <descripcion>Ejercicio isométrico en posición lateral que fortalece los oblicuos y mejora la estabilidad general del core.</descripcion>
-            <gif>@drawable/plancha_lateral</gif>
-            <pasos>
-                <paso numero="1">Apóyate sobre un antebrazo y el costado del pie, manteniendo el cuerpo en línea recta.</paso>
-                <paso numero="2">Activa el core y los oblicuos para sostener la posición.</paso>
-                <paso numero="3">Mantén la posición durante el tiempo deseado.</paso>
-                <paso numero="4">Cambia de lado y repite el ejercicio.</paso>
-            </pasos>
-            <consejo>
-                <item>Evita rotar el torso durante la plancha.</item>
-                <item>Mantén la respiración constante.</item>
-                <item>Concéntrate en la contracción de los oblicuos.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales laterales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Plancha Lateral (kettlebell)</nombre>
-            <descripcion>Variante de la plancha lateral que incorpora un kettlebell para incrementar la carga y desafiar la estabilidad de los oblicuos.</descripcion>
-            <gif>@drawable/plancha_lateral_kettlebell</gif>
-            <pasos>
-                <paso numero="1">Colócate en posición de plancha lateral con el antebrazo apoyado y un kettlebell sostenido en la mano libre.</paso>
-                <paso numero="2">Mantén el cuerpo en línea recta y contrae los oblicuos.</paso>
-                <paso numero="3">Sostén la posición durante el tiempo deseado.</paso>
-                <paso numero="4">Cambia de lado y repite el ejercicio.</paso>
-            </pasos>
-            <consejo>
-                <item>Utiliza un kettlebell de peso moderado para mantener la técnica.</item>
-                <item>Mantén el core y los glúteos activados.</item>
-                <item>Realiza el ejercicio de forma controlada.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales laterales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Rotación de Cadera de Pie (polea)</nombre>
-            <descripcion>Ejercicio en polea que enfatiza la rotación de la cadera para trabajar los oblicuos y mejorar la movilidad del core.</descripcion>
-            <gif>@drawable/rotaci_n_de_cadera_de_pie__polea_</gif>
-            <pasos>
-                <paso numero="1">Párate erguido frente a la máquina de polea con los pies a la anchura de los hombros.</paso>
-                <paso numero="2">Sujeta la manija con una mano y mantén el codo pegado al torso.</paso>
-                <paso numero="3">Gira el torso y la cadera de forma controlada, contrayendo los oblicuos.</paso>
-                <paso numero="4">Regresa lentamente a la posición inicial y repite con el otro lado.</paso>
-            </pasos>
-            <consejo>
-                <item>Activa el core para mantener la estabilidad.</item>
-                <item>Realiza el movimiento sin prisa para maximizar la contracción.</item>
-                <item>Utiliza un peso moderado en la polea.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Rotación de Tronco (barra)</nombre>
-            <descripcion>Ejercicio que utiliza una barra para realizar rotaciones del tronco, enfocándose en fortalecer los oblicuos y mejorar la estabilidad general del core.</descripcion>
-            <gif>@drawable/rotaci_n_de_tronco__barra_</gif>
-            <pasos>
-                <paso numero="1">Párate con los pies a la anchura de los hombros y sujeta una barra ligera a la altura del pecho.</paso>
-                <paso numero="2">Mantén el torso recto y los codos ligeramente flexionados.</paso>
-                <paso numero="3">Gira el tronco de un lado al otro de forma controlada.</paso>
-                <paso numero="4">Regresa al centro y repite el movimiento alternadamente.</paso>
-            </pasos>
-            <consejo>
-                <item>Controla la rotación para evitar movimientos bruscos.</item>
-                <item>Mantén el core firme durante el ejercicio.</item>
-                <item>Utiliza un peso que permita un movimiento controlado.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales</secundario>
-            </musculos>
-        </ejercicio>
-
-        <ejercicio>
-            <nombre>Rotación de Tronco - con Fitball (barra)</nombre>
-            <descripcion>Variante del ejercicio de rotación de tronco que incorpora una Fitball, aumentando la inestabilidad y la activación de los oblicuos durante la rotación.</descripcion>
-            <gif>@drawable/rotaci_n_de_tronco___con_fitball__barra_</gif>
-            <pasos>
-                <paso numero="1">Siéntate en el suelo y coloca una Fitball detrás de ti para apoyo.</paso>
-                <paso numero="2">Sujeta una barra ligera frente a ti y adopta una postura erguida.</paso>
-                <paso numero="3">Gira el tronco hacia un lado contrayendo los oblicuos, manteniendo la estabilidad sobre la Fitball.</paso>
-                <paso numero="4">Vuelve al centro y repite el movimiento hacia el otro lado.</paso>
-            </pasos>
-            <consejo>
-                <item>Activa el core para controlar la inestabilidad.</item>
-                <item>Realiza el movimiento de forma lenta y controlada.</item>
-                <item>Utiliza una barra de peso ligero para facilitar la técnica.</item>
-            </consejo>
-            <musculos>
-                <principal>Oblicuos</principal>
-                <secundario>Abdominales</secundario>
-            </musculos>
-        </ejercicio>
-    </categoria>
 </ejercicios>

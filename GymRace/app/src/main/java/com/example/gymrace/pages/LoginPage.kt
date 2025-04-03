@@ -50,11 +50,13 @@ import androidx.compose.foundation.background
 import androidx.compose.material.icons.filled.Key
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginPage(navController: NavController) {
     val context = LocalContext.current
+
 
     // Variables de estado para el formulario
     var email by rememberSaveable { mutableStateOf("") }
@@ -107,7 +109,7 @@ fun LoginPage(navController: NavController) {
                                 popUpTo("login") { inclusive = true }
                             }
                         } else {
-                            Toast.makeText(context, "Has iniciado sesión con Google", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(context, "Has iniciado sesión con Google", Toast.LENGTH_SHORT).show()
                             navController.navigate("main") {
                                 popUpTo("login") { inclusive = true }
                             }
@@ -135,7 +137,6 @@ fun LoginPage(navController: NavController) {
 
     // Función para iniciar sesión con correo/contraseña
     fun loginWithEmailAndPassword(email: String, password: String) {
-        // (código sin cambios)
         isLoading = true
         loginError = ""
 
@@ -155,8 +156,15 @@ fun LoginPage(navController: NavController) {
                     isLoading = false
                     loginError = when {
                         e.message?.contains("password") == true -> "Contraseña incorrecta"
-                        e.message?.contains("no user record") == true -> "No existe cuenta con este correo"
-                        e.message?.contains("blocked") == true -> "Demasiados intentos fallidos. Intenta más tarde"
+                        e.message?.contains("no user record") == true -> {
+                            // Mensaje adicional si la cuenta no existe
+                            Toast.makeText(context, "La cuenta no existe. Por favor regístrate.", Toast.LENGTH_LONG).show()
+                            "No existe cuenta con este correo"
+                        }
+                        e.message?.contains("blocked") == true -> {
+                            delay(30000) // Espera 30 segundos antes de permitir otro intento
+                            "Demasiados intentos fallidos. Intenta más tarde"
+                        }                        e.message?.contains("The supplied auth credential is incorrect, malformed or has expired") == true -> "Las credenciales de autenticación son incorrectas o están mal formadas"
                         else -> e.message ?: "Error al iniciar sesión"
                     }
                     Toast.makeText(context, loginError, Toast.LENGTH_LONG).show()
@@ -191,6 +199,22 @@ fun LoginPage(navController: NavController) {
                 }
             }
     }
+    fun validateForm(): String {
+        return when {
+            email.isBlank() && password.isBlank() -> "Tienes que llenar todos los campos"
+
+            email.isBlank() -> "El correo electrónico no puede estar vacío"
+            !email.contains("@") || !email.contains(".") -> "El correo electrónico no es válido"
+            email.count { it == '@' } > 1 -> "El correo electrónico no es válido"
+            email.count { it == '.' } > 1 -> "El correo electrónico no es válido"
+
+            password.isBlank() -> "La contraseña no puede estar vacía"
+            password.length < 6 -> "La contraseña debe tener al menos 6 caracteres"
+            password.length > 20 -> "La contraseña no puede tener más de 20 caracteres"
+
+            else -> "" // Todo está bien
+        }
+    }
 
     // UI con Jetpack Compose
     Column(
@@ -207,7 +231,7 @@ fun LoginPage(navController: NavController) {
             text = "Iniciar Sesión",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -270,9 +294,16 @@ fun LoginPage(navController: NavController) {
 
         // Botón de inicio de sesión con email/contraseña
         Button(
-            onClick = { loginWithEmailAndPassword(email, password) },
+            onClick = {
+                val validationMessage = validateForm()
+                if (validationMessage.isNotEmpty()) {
+                    Toast.makeText(context, validationMessage, Toast.LENGTH_SHORT).show()
+                } else {
+                    loginWithEmailAndPassword(email, password)
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
-            enabled = isFormValid && !isLoading,
+//            enabled = isFormValid && !isLoading,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xffff9240))
         ) {
             if (isLoading) {
@@ -315,6 +346,7 @@ fun LoginPage(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp)
+                .background(MaterialTheme.colorScheme.surface)
                 .clip(RoundedCornerShape(4.dp))
                 .border(1.dp, Color.Gray.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
                 .clickable(enabled = !isLoading) { signInWithGoogle() },
@@ -335,7 +367,7 @@ fun LoginPage(navController: NavController) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "Continuar con Google",
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 16.sp
                 )
             }
@@ -351,7 +383,7 @@ fun LoginPage(navController: NavController) {
             // Enlace a la pantalla de registro
             Text(
                 text = "¿No tienes cuenta? Regístrate",
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 14.sp,
                 modifier = Modifier.clickable {
                     navController.navigate("register") {
@@ -389,7 +421,9 @@ fun LoginPage(navController: NavController) {
             },
             confirmButton = {
                 Button(
-                    onClick = { sendPasswordResetEmail(resetEmail) },
+                    onClick = {
+                        sendPasswordResetEmail(resetEmail)
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
                 ) {
                     Text("Enviar")
@@ -403,6 +437,9 @@ fun LoginPage(navController: NavController) {
         )
     }
 }
+
+
+
 
 // Función para guardar el estado de inicio de sesión (sin cambios)
 fun saveLoginState(context: Context, isLoggedIn: Boolean, account: String) {

@@ -1,8 +1,7 @@
 package com.example.gymrace.pages
 
 // Importaciones existentes
-import android.content.Context
-import android.os.Build
+import GLOBAL.Companion.crearUsuarioEnFirestore
 import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.compose.foundation.layout.*
@@ -27,7 +26,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
-import com.example.gymrace.MainScreen
 import com.google.firebase.Firebase
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
@@ -36,8 +34,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 // Nuevas importaciones para autenticación con Google
-import android.content.Intent
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -51,13 +47,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.FirebaseAuth
 import com.example.gymrace.R
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.delay
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,6 +66,7 @@ fun RegisterPage(navController: NavController) {
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var confirmPassword by rememberSaveable { mutableStateOf("") }
+
     var isLoading by remember { mutableStateOf(false) }
     var registrationError by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -111,12 +109,12 @@ fun RegisterPage(navController: NavController) {
                         val isNewUser = authTask.result?.additionalUserInfo?.isNewUser ?: false
 
                         if (isNewUser) {
-                            Toast.makeText(context, "Cuenta nueva, redirigiendo a registro", Toast.LENGTH_LONG).show()
+//                            Toast.makeText(context, "Cuenta nueva, redirigiendo a registro", Toast.LENGTH_LONG).show()
                             navController.navigate("register2") {
                                 popUpTo("login") { inclusive = true }
                             }
                         } else {
-                            Toast.makeText(context, "Has iniciado sesión con Google", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(context, "Has iniciado sesión con Google", Toast.LENGTH_SHORT).show()
                             navController.navigate("main") {
                                 popUpTo("login") { inclusive = true }
                             }
@@ -152,9 +150,10 @@ fun RegisterPage(navController: NavController) {
     }
 
     // Función para registrar con correo/contraseña
-    fun registerUser(name: String, email: String, password: String) {
+    fun registerUser(name: String, email: String, password: String, param: (Boolean) -> Unit) {
         isLoading = true
         registrationError = ""
+
         Firebase.auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 isLoading = false
@@ -163,13 +162,22 @@ fun RegisterPage(navController: NavController) {
                         UserProfileChangeRequest.Builder()
                             .setDisplayName(name)
                             .build()
-                    )
-                    navController.navigate("register2") {
-                        popUpTo("login") { inclusive = true }
+                    )?.addOnCompleteListener {
+                        // 🔹 Ahora sí llamamos al callback indicando éxito
+                        param(true)
+
+                        // 🔹 Navegación después de actualizar perfil
+                        navController.navigate("register2") {
+                            popUpTo("login") { inclusive = true }
+                        }
                     }
                 } else {
                     val errorMessage = task.exception?.message ?: "Error desconocido"
                     registrationError = errorMessage
+
+                    // 🔹 Llamamos al callback con `false` para indicar fallo
+                    param(false)
+
                     if (errorMessage.contains("The email address is already in use")) {
                         Toast.makeText(context, "Este email ya está en uso", Toast.LENGTH_LONG).show()
                     } else {
@@ -178,6 +186,52 @@ fun RegisterPage(navController: NavController) {
                 }
             }
     }
+    fun validateForm(): String {
+        return when {
+            //todos los campos tienen que ser llenados todos uno
+            name.isBlank() && email.isBlank() && password.isBlank() && confirmPassword.isBlank() -> "Todos los campos son obligatorios"
+
+            name.isBlank() -> "El nombre no puede estar vacío"
+            name.length < 3 -> "El nombre debe tener al menos 3 caracteres"
+            name.length > 20 -> "El nombre no puede tener más de 20 caracteres"
+            name.any { it.isDigit() } -> "El nombre no puede contener números"
+
+            email.isBlank() -> "El correo electrónico no puede estar vacío"
+            !email.contains("@") || !email.contains(".") -> "El correo electrónico no es válido"
+            email.count { it == '@' } > 1 -> "El correo electrónico no es válido"
+            email.count { it == '.' } > 1 -> "El correo electrónico no es válido"
+
+            password.isBlank() -> "La contraseña no puede estar vacía"
+            password.length < 6 -> "La contraseña debe tener al menos 6 caracteres"
+            password.length > 20 -> "La contraseña no puede tener más de 20 caracteres"
+
+            confirmPassword.isBlank() -> "La confirmación de contraseña no puede estar vacía"
+            confirmPassword.length < 6 -> "La confirmación de contraseña debe tener al menos 6 caracteres"
+            confirmPassword.length > 20 -> "La confirmación de contraseña no puede tener más de 20 caracteres"
+
+            password != confirmPassword -> "Las contraseñas no coinciden"
+
+
+
+            else -> "" // Todo está bien
+        }
+    }
+
+    fun checkIfEmailExists(email: String, callback: (Boolean) -> Unit) {
+        FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val existingMethods = task.result?.signInMethods
+                    // Si la lista no está vacía, significa que ya existe un usuario con ese correo
+                    callback(existingMethods?.isNotEmpty() == true)
+                } else {
+                    // Error en la consulta
+                    Log.e("Registro", "Error al verificar el correo: ${task.exception?.message}")
+                    callback(false)
+                }
+            }
+    }
+
 
     // UI con Jetpack Compose
     Column(
@@ -195,7 +249,7 @@ fun RegisterPage(navController: NavController) {
             text = "Crear Cuenta",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -283,12 +337,42 @@ fun RegisterPage(navController: NavController) {
         // Botón de registro con email/contraseña
         Button(
             onClick = {
-                CoroutineScope(Dispatchers.IO).launch {
-                    registerUser(name, email, password)
+                val validationMessage = validateForm()
+                if (validationMessage.isNotEmpty()) {
+                    Toast.makeText(context, validationMessage, Toast.LENGTH_SHORT).show()
+                } else {
+                    checkIfEmailExists(email) { emailExists ->
+                        if (emailExists) {
+                            Toast.makeText(context, "Este correo electrónico ya está en uso.", Toast.LENGTH_LONG).show()
+                        } else {
+                            Log.d("Firestore", "Intentando registrar usuario con email y contraseña")
+                            CoroutineScope(Dispatchers.IO).launch {
+                                GLOBAL.name = name
+                                GLOBAL.email = email
+                                GLOBAL.password = password
+
+                                registerUser(name, email, password) { isSuccess ->
+                                    if (isSuccess) {
+                                        FirebaseAuth.getInstance().currentUser?.reload()
+                                        val userId = Firebase.auth.currentUser?.uid
+
+                                        if (!userId.isNullOrEmpty()) {
+                                            crearUsuarioEnFirestore(userId, name) {
+                                                Log.d("Firestore", "✅ Usuario creado en Firestore correctamente.")
+                                            }
+                                        } else {
+                                            Log.e("Firestore", "⚠ Usuario no autenticado después del registro.")
+                                        }
+                                    } else {
+                                        Log.e("Registro", "❌ Error en el registro de usuario.")
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            enabled = isFormValid && !isLoading,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xffff9240))
         ) {
             if (isLoading) {
@@ -300,6 +384,11 @@ fun RegisterPage(navController: NavController) {
                 Text(text = "Registrarse", color = Color.White)
             }
         }
+
+
+
+
+
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -332,6 +421,7 @@ fun RegisterPage(navController: NavController) {
                 .fillMaxWidth()
                 .height(50.dp)
                 .clip(RoundedCornerShape(4.dp))
+                .background(MaterialTheme.colorScheme.surface)
                 .border(1.dp, Color.Gray.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
                 .clickable(enabled = !isLoading) { signInWithGoogle() },
             contentAlignment = Alignment.Center
@@ -342,7 +432,7 @@ fun RegisterPage(navController: NavController) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.logo_de_google), // Asegúrate de tener este recurso
+                    painter = painterResource(id = R.drawable.logo_de_google),
                     contentDescription = "Logo de Google",
                     modifier = Modifier.size(24.dp),
                     contentScale = ContentScale.Fit
@@ -350,7 +440,7 @@ fun RegisterPage(navController: NavController) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "Continuar con Google",
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 16.sp
                 )
             }
@@ -361,7 +451,7 @@ fun RegisterPage(navController: NavController) {
         // Enlace a la pantalla de login
         Text(
             text = "¿Ya tienes una cuenta? Inicia sesión",
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 14.sp,
             modifier = Modifier.clickable {
                 navController.navigate("login") {
@@ -372,19 +462,3 @@ fun RegisterPage(navController: NavController) {
     }
 
 }
-
-//// Función para guardar el estado de inicio de sesión
-//fun saveLoginState(context: Context, isLoggedIn: Boolean, account: String) {
-//    val sharedPreferences: SharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
-//    val editor = sharedPreferences.edit()
-//    editor.putBoolean("isLoggedIn", isLoggedIn)
-//    editor.putString("account", account)
-//    editor.apply()
-//}
-//// Función para obtener el estado de inicio de sesión
-//fun getLoginState(context: Context): Pair<Boolean, String?> {
-//    val sharedPreferences: SharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
-//    val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
-//    val account = sharedPreferences.getString("account", null)
-//    return Pair(isLoggedIn, account)
-//}

@@ -45,7 +45,6 @@ import com.example.gymrace.pages.ChallengeViewModel
 import com.example.gymrace.pages.DesafiosPage
 import com.example.gymrace.pages.DietasPage
 import com.example.gymrace.pages.getLoginState
-import com.example.gymrace.pages.prueba
 import com.example.gymrace.ui.theme.ThemeManager
 import com.example.gymrace.ui.theme.rememberThemeState
 import com.google.firebase.auth.FirebaseAuth

@@ -36,18 +36,23 @@ fun InitialScreen(navController: NavController) {
     )
 
     LaunchedEffect(key1 = true) {
-        startAnimation = true
-        delay(3000)
-        val current_user = FirebaseAuth.getInstance().currentUser
-        if (current_user != null) {
+        startAnimation = true // Inicia la animación de aparición gradual
+        delay(3000) // Espera 3 segundos antes de continuar
+
+        val auth = FirebaseAuth.getInstance() // Inicializa FirebaseAuth
+        val currentUser = auth.currentUser // Obtiene el usuario actual
+
+        if (currentUser != null && currentUser.isEmailVerified) { // Verifica si el usuario está autenticado y su correo electrónico está verificado
             navController.navigate("main") {
                 popUpTo("splash") { inclusive = true }
             }
-        } else
-        navController.navigate("login") {
-            popUpTo("splash") { inclusive = true }
+        } else { // Si el usuario no está autenticado o su correo electrónico no está verificado
+            navController.navigate("login") {
+                popUpTo("splash") { inclusive = true }
+            }
         }
     }
+    // Pantalla de carga con el GIF girando
 
     SplashContent(alpha = alphaAnim.value)
 }
