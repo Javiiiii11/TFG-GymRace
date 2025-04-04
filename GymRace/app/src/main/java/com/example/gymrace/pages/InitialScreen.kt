@@ -22,6 +22,7 @@ import coil.request.ImageRequest
 import com.example.gymrace.R
 import kotlinx.coroutines.delay
 import android.os.Build
+import android.util.Log
 import androidx.compose.material3.MaterialTheme
 import com.google.firebase.auth.FirebaseAuth
 

@@ -213,7 +213,7 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     Button(onClick = {
-                        navController.navigate("crear_rutina")
+                        navController.navigate("crearRutina")
                     }) {
                         Icon(Icons.Default.Add, contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))

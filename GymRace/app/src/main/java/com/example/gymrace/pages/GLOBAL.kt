@@ -102,5 +102,6 @@ class GLOBAL {
         var email: String = ""
         var password: String = ""
 
+
     }
 }

@@ -7,6 +7,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import coil.compose.rememberImagePainter
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import coil.compose.rememberImagePainter
@@ -279,10 +281,14 @@ fun DesafiosPage(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Desafíos") },
-                actions = {
-                    IconButton(onClick = { showCreateDialog = true }) {
-                        Icon(Icons.Default.Add, contentDescription = "Crear Desafío")
+                title = {
+                    Text("Desafíos",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground) },
+                        actions = {
+                        IconButton(onClick = { showCreateDialog = true }) {
+                            Icon(Icons.Default.Add, contentDescription = "Crear Desafío")
                     }
                 }
             )
@@ -292,6 +298,11 @@ fun DesafiosPage(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .padding(bottom = 75.dp)
+                .scrollable(
+                    state = rememberScrollState(),
+                    orientation = Orientation.Vertical
+                )
         ) {
             if (challenges.isEmpty()) {
                 EmptyState()
@@ -870,7 +881,8 @@ fun EjerciciosDialog(
                             ),
                             enabled = ejerciciosSeleccionados.isNotEmpty()
                         ) {
-                            Text("Confirmar (${ejerciciosSeleccionados.size})")
+//                            Text("Confirmar (${ejerciciosSeleccionados.size})")
+                            Text("Confirmar")
                         }
                     }
                 }

@@ -23,75 +23,6 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import np.com.bimalkafle.bottomnavigationdemo.pages.PredefinedRoutine
 
-//@RequiresApi(Build.VERSION_CODES.O)
-//class MainActivity : ComponentActivity() {
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        // Activar la SplashScreen para Android 12+
-//        installSplashScreen()
-//
-//        super.onCreate(savedInstanceState)
-//        setContent {
-//            GymRaceTheme {  // Cambiado de MaterialTheme a GymRaceTheme
-//                val navController = rememberNavController()
-//                NavHost(navController, startDestination = "splash") {
-//                    composable("splash") { InitialScreen(navController) }
-//                    composable("register") { RegisterPage(navController) }
-//                    composable("main") { MainScreen(navController) }
-//                    composable("login") { LoginPage(navController) }
-//                    composable("register2") { RegisterPage2(navController) }
-//                    composable("crearRutina") { CrearRutinaPage(navController) }
-//                    composable("misRutinas") { ListarMisRutinasPage(navController) }
-//                    composable("prueba") { prueba().prueba() }
-//                    // Actualizado: Ruta para ejecutar una rutina con ID
-//                    composable(
-//                        route = "ejecutar_rutina/{rutinaId}",
-//                        arguments = listOf(navArgument("rutinaId") { type = NavType.StringType })
-//                    ) { backStackEntry ->
-//                        val rutinaId = backStackEntry.arguments?.getString("rutinaId") ?: ""
-//                        EjecutarRutinaPage(navController = navController, rutinaId = rutinaId)
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-
-
-
-
-
-//Cosas por hacer
-
-//arreglar registro 2 y 1
-//editar rutina en listar mis rutinas
-//que al salir de crear rutinas vuelva a la pagina anterior y no a la de inicio
-//inicio guardado de usuario y tema
-//cambiar el color de dias del calendario segun algunas rutinas o algo
-//enlace a editar perfil en perfil
-// rutinas de amigos
-// xml de dietas
-// desafios entre amigos pagina
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -138,16 +69,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    /**
-     * Función para crear datos de prueba en Firestore
-     * Ejecuta esta función solo UNA VEZ y luego comenta la llamada
-     * para evitar duplicar los datos
-     */
-    /**
-     * Función para crear datos de prueba en Firestore
-     * Ejecuta esta función solo UNA VEZ y luego comenta la llamada
-     * para evitar duplicar los datos
-     */
 
 
 

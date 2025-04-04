@@ -46,6 +46,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -75,6 +76,9 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     var showThemeMenu by remember { mutableStateOf(false) }
+
+    // Estado para el diálogo de configuración
+    var showDeleteAccountDialog by remember { mutableStateOf(false) }
 
     // Estados para diálogos
     var showCommunityDialog by remember { mutableStateOf(false) }
@@ -261,6 +265,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                 color = MaterialTheme.colorScheme.onBackground
             )
 
+
             Box {
                 IconButton(onClick = { showThemeMenu = !showThemeMenu }) {
                     Icon(
@@ -269,7 +274,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                         tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
-                // Menú desplegable para cambiar tema y mas funciones
+                // Menú desplegable para cambiar tema y más funciones
                 DropdownMenu(
                     expanded = showThemeMenu,
                     onDismissRequest = { showThemeMenu = false },
@@ -330,7 +335,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                         },
                         onClick = {
                             cerrarSesion(context)
-                            Log.d("Si","Rutas del navController" + navController.currentBackStackEntry)
+                            Log.d("Si", "Rutas del navController" + navController.currentBackStackEntry)
                             navController.navigate("login") {
                                 popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
                                 Log.d("UserPage", "Cerrando sesión")
@@ -350,27 +355,49 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                             }
                         },
                         onClick = {
-//                            borrar cuenta de firebase
-                            val user = FirebaseAuth.getInstance().currentUser
-                            user?.delete()?.addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    Log.d("UserPage", "Cuenta eliminada")
-                                    // Redirigir a la página de inicio de sesión
-                                    navController.navigate("login") {
-                                        popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
-                                    }
-                                } else {
-                                    Log.d("UserPage", "Error al eliminar cuenta: ${task.exception?.message}")
-                                }
-                            }
-                            //borrar tambien datos de su cuenta
-                            Firebase.firestore.collection("usuarios").document(user!!.uid).delete()
-                            Firebase.firestore.collection("amigos").document(user!!.uid).delete()
-                            //borrar datos de la cuenta de firebase
-                            FirebaseAuth.getInstance().signOut()
-                            saveLoginState(context, false, "") // Guardar el estado de inicio de sesión
-                            clearFirestoreCache() // Limpiar la caché de Firestore
+                            showDeleteAccountDialog = true
                             showThemeMenu = false
+                        }
+                    )
+                }
+
+                // Diálogo de confirmación para eliminar la cuenta
+                if (showDeleteAccountDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showDeleteAccountDialog = false },
+                        title = { Text("Confirmación") },
+                        text = { Text("¿Estás seguro de que deseas borrar tu cuenta? Esta acción no se puede deshacer.") },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                val user = FirebaseAuth.getInstance().currentUser
+                                if (user != null) {
+                                    Firebase.firestore.collection("usuarios").document(user.uid).delete()
+                                    Firebase.firestore.collection("amigos").document(user.uid).delete()
+
+                                    user.delete().addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            Log.d("UserPage", "Cuenta eliminada")
+                                            navController.navigate("login") {
+                                                popUpTo(0) { inclusive = true }
+                                            }
+                                        } else {
+                                            Log.d("UserPage", "Error al eliminar cuenta: ${task.exception?.message}")
+                                        }
+                                    }
+
+                                    FirebaseAuth.getInstance().signOut()
+                                    saveLoginState(context, false, "")
+                                    clearFirestoreCache()
+                                }
+                                showDeleteAccountDialog = false
+                            }) {
+                                Text("Sí")
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showDeleteAccountDialog = false }) {
+                                Text("No")
+                            }
                         }
                     )
                 }
@@ -494,7 +521,11 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                 // Botón para Editar perfil
                 Button(
                     onClick = {
-                        // TODO: Implementar lógica para Editar perfil
+                        Log.d("UserPage", "Editando perfil")
+                        navController.navigate("register2") {
+                            popUpTo(0) { inclusive = false }
+                            Log.d("UserPage", "Editando perfil")
+                        }
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
@@ -718,7 +749,8 @@ fun UserListItem(
     ) {
         // Información del usuario
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.weight(1f)
         ) {
             // Avatar del usuario
             Box(
@@ -737,12 +769,16 @@ fun UserListItem(
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            // Datos del usuario
-            Column {
+            // Datos del usuario (nombre y objetivo)
+            Column(
+                modifier = Modifier.widthIn(max = 200.dp) // Limita ancho para no chocar con el botón
+            ) {
                 Text(
                     text = user.nombre,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = user.objetivoFitness,
@@ -772,6 +808,7 @@ fun UserListItem(
         }
     }
 }
+
 
 // Función para cargar todos los usuarios de la BD
 // Improved function to load all users from the database

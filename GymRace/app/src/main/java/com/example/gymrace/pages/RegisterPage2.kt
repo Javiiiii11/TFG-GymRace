@@ -1,6 +1,7 @@
 package com.example.gymrace.pages
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -66,13 +67,13 @@ fun RegisterPage2(navController: NavController) {
     )
 
     // Validación del formulario
-    val isFormValid = peso.isNotBlank() &&
-            altura.isNotBlank() &&
-            nombre.isNotBlank() &&
-            año.isNotBlank() &&
-            selectedGoal != "Selecciona tu objetivo" &&
-            selectedDays != "Selecciona días" &&
-            selectedExperience != "Selecciona nivel"
+//    val isFormValid = peso.isNotBlank() &&
+//            altura.isNotBlank() &&
+//            nombre.isNotBlank() &&
+//            año.isNotBlank() &&
+//            selectedGoal != "Selecciona tu objetivo" &&
+//            selectedDays != "Selecciona días" &&
+//            selectedExperience != "Selecciona nivel"
 
     // Función para guardar datos del usuario
     fun saveUserData() {
@@ -82,29 +83,20 @@ fun RegisterPage2(navController: NavController) {
                 val currentUser = FirebaseAuth.getInstance().currentUser
                 if (currentUser != null) {
                     val userId = currentUser.uid
-//                    // Crear el documento en Firestore si no existe
-//                    val profileData = hashMapOf(
-//                        "nombre" to nombre,
-//                        "peso" to peso.toFloat(),
-//                        "altura" to altura.toFloat(),
-//                        "edad" to año.toInt(),
-//                        "objetivoFitness" to selectedGoal,
-//                        "diasEntrenamiento" to selectedDays.toInt(),
-//                        "nivelExperiencia" to selectedExperience
-//                    )
                     GLOBAL.guardarDatosRegistro(
                         userId, nombre, peso, altura, año, selectedGoal, selectedDays, selectedExperience
                     ) {
                         navController.navigate("main") {
                             popUpTo("login") { inclusive = true }
                         }
-                        Toast.makeText(contexto, "Perfil guardado con éxito", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(contexto, "Perfil fitnes actualizado", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     Toast.makeText(contexto, "No se ha podido identificar al usuario", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(contexto, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(contexto, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e("Firestore", "Error al guardar datos del usuario: ${e.message}")
             } finally {
                 cargando = false
             }
@@ -119,23 +111,19 @@ fun RegisterPage2(navController: NavController) {
             nombre.isBlank() -> "Por favor, ingresa tu apodo."
             nombre.length < 3 -> "El apodo debe tener al menos 3 caracteres."
             nombre.length > 20 -> "El apodo no puede tener más de 20 caracteres."
-            !nombre.all { it.isLetter() || it.isWhitespace() } -> "El apodo solo puede contener letras y espacios."
 
             año.isBlank() -> "Por favor, ingresa tu edad."
             !año.all { it.isDigit() } -> "La edad debe ser un número."
-            !año.toIntOrNull().isNullOrZero() -> "La edad no puede ser cero."
             año.toInt() < 0 -> "La edad no puede ser negativa."
             año.toInt() == 0 -> "La edad no puede ser cero."
 
             altura.isBlank() -> "Por favor, ingresa tu altura."
             !altura.all { it.isDigit() } -> "La altura debe ser un número."
-            !altura.toFloatOrNull().isNullOrZero() -> "La altura no puede ser cero."
             altura.toFloat() < 0 -> "La altura no puede ser negativa."
             altura.toFloat() == 0f -> "La altura no puede ser cero."
 
             peso.isBlank() -> "Por favor, ingresa tu peso."
             !peso.all { it.isDigit() } -> "El peso debe ser un número."
-            !peso.toFloatOrNull().isNullOrZero() -> "El peso no puede ser cero."
             peso.toFloat() < 0 -> "El peso no puede ser negativo."
             peso.toFloat() == 0f -> "El peso no puede ser cero."
 

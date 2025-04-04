@@ -1,6 +1,7 @@
 package com.example.gymrace.pages
 
 // Importaciones existentes
+import GLOBAL
 import GLOBAL.Companion.crearUsuarioEnFirestore
 import android.widget.Toast
 import androidx.compose.runtime.*
@@ -26,7 +27,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
-import com.google.firebase.Firebase
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.CoroutineScope
@@ -53,8 +53,11 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.example.gymrace.R
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -103,23 +106,41 @@ fun RegisterPage(navController: NavController) {
             val credential = GoogleAuthProvider.getCredential(account.idToken, null)
             Firebase.auth.signInWithCredential(credential)
                 .addOnCompleteListener { authTask ->
-                    isLoading = false
                     if (authTask.isSuccessful) {
-                        // Verificar si es un usuario nuevo
-                        val isNewUser = authTask.result?.additionalUserInfo?.isNewUser ?: false
-
-                        if (isNewUser) {
-//                            Toast.makeText(context, "Cuenta nueva, redirigiendo a registro", Toast.LENGTH_LONG).show()
-                            navController.navigate("register2") {
-                                popUpTo("login") { inclusive = true }
-                            }
+                        val user = Firebase.auth.currentUser
+                        val uid = user?.uid
+                        if (uid != null) {
+                            // Verificar si el usuario ya existe en Firestore
+                            Firebase.firestore.collection("usuarios").document(uid)
+                                .get()
+                                .addOnSuccessListener { document ->
+                                    isLoading = false
+                                    if (document.exists()) {
+                                        // Usuario existente, navegar a main
+                                        navController.navigate("main") {
+                                            popUpTo("login") { inclusive = true }
+                                        }
+                                    } else {
+                                        // Usuario nuevo: primero se crea en Firestore usando la cuenta de Google,
+                                        // luego se navega a register2
+                                        crearUsuarioEnFirestore(uid, account.displayName ?: "") {
+                                            navController.navigate("register2?uid=$uid&nombre=${account.displayName}") {
+                                                popUpTo("login") { inclusive = true }
+                                            }
+                                        }
+                                    }
+                                }
+                                .addOnFailureListener { e ->
+                                    isLoading = false
+                                    Log.e("Firestore", "Error al verificar usuario en Firestore", e)
+                                    Toast.makeText(context, "Error al verificar usuario", Toast.LENGTH_LONG).show()
+                                }
                         } else {
-//                            Toast.makeText(context, "Has iniciado sesión con Google", Toast.LENGTH_SHORT).show()
-                            navController.navigate("main") {
-                                popUpTo("login") { inclusive = true }
-                            }
+                            isLoading = false
+                            Toast.makeText(context, "Error: UID de usuario no disponible", Toast.LENGTH_LONG).show()
                         }
                     } else {
+                        isLoading = false
                         registrationError = authTask.exception?.message ?: "Error al iniciar sesión con Google"
                         Toast.makeText(context, registrationError, Toast.LENGTH_LONG).show()
                     }
@@ -163,10 +184,9 @@ fun RegisterPage(navController: NavController) {
                             .setDisplayName(name)
                             .build()
                     )?.addOnCompleteListener {
-                        // 🔹 Ahora sí llamamos al callback indicando éxito
+                        // Llamamos al callback indicando éxito
                         param(true)
-
-                        // 🔹 Navegación después de actualizar perfil
+                        // Navegación después de actualizar perfil
                         navController.navigate("register2") {
                             popUpTo("login") { inclusive = true }
                         }
@@ -174,10 +194,7 @@ fun RegisterPage(navController: NavController) {
                 } else {
                     val errorMessage = task.exception?.message ?: "Error desconocido"
                     registrationError = errorMessage
-
-                    // 🔹 Llamamos al callback con `false` para indicar fallo
                     param(false)
-
                     if (errorMessage.contains("The email address is already in use")) {
                         Toast.makeText(context, "Este email ya está en uso", Toast.LENGTH_LONG).show()
                     } else {
@@ -186,33 +203,25 @@ fun RegisterPage(navController: NavController) {
                 }
             }
     }
+
     fun validateForm(): String {
         return when {
-            //todos los campos tienen que ser llenados todos uno
             name.isBlank() && email.isBlank() && password.isBlank() && confirmPassword.isBlank() -> "Todos los campos son obligatorios"
-
             name.isBlank() -> "El nombre no puede estar vacío"
             name.length < 3 -> "El nombre debe tener al menos 3 caracteres"
             name.length > 20 -> "El nombre no puede tener más de 20 caracteres"
             name.any { it.isDigit() } -> "El nombre no puede contener números"
-
             email.isBlank() -> "El correo electrónico no puede estar vacío"
             !email.contains("@") || !email.contains(".") -> "El correo electrónico no es válido"
             email.count { it == '@' } > 1 -> "El correo electrónico no es válido"
             email.count { it == '.' } > 1 -> "El correo electrónico no es válido"
-
             password.isBlank() -> "La contraseña no puede estar vacía"
             password.length < 6 -> "La contraseña debe tener al menos 6 caracteres"
             password.length > 20 -> "La contraseña no puede tener más de 20 caracteres"
-
             confirmPassword.isBlank() -> "La confirmación de contraseña no puede estar vacía"
             confirmPassword.length < 6 -> "La confirmación de contraseña debe tener al menos 6 caracteres"
             confirmPassword.length > 20 -> "La confirmación de contraseña no puede tener más de 20 caracteres"
-
             password != confirmPassword -> "Las contraseñas no coinciden"
-
-
-
             else -> "" // Todo está bien
         }
     }
@@ -222,16 +231,13 @@ fun RegisterPage(navController: NavController) {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val existingMethods = task.result?.signInMethods
-                    // Si la lista no está vacía, significa que ya existe un usuario con ese correo
                     callback(existingMethods?.isNotEmpty() == true)
                 } else {
-                    // Error en la consulta
                     Log.e("Registro", "Error al verificar el correo: ${task.exception?.message}")
                     callback(false)
                 }
             }
     }
-
 
     // UI con Jetpack Compose
     Column(
@@ -241,8 +247,6 @@ fun RegisterPage(navController: NavController) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-
-
     ) {
         // Título de la página
         Text(
@@ -261,8 +265,8 @@ fun RegisterPage(navController: NavController) {
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
-                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+                focusedBorderColor = Color(0xFFFF9240),
+                unfocusedBorderColor = Color(0xff000000)
             ),
             leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Nombre") }
         )
@@ -276,8 +280,8 @@ fun RegisterPage(navController: NavController) {
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
-                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+                focusedBorderColor = Color(0xFFFF9240),
+                unfocusedBorderColor = Color(0xff000000)
             ),
             leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
@@ -293,10 +297,10 @@ fun RegisterPage(navController: NavController) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            leadingIcon = { Icon(Icons.Default.Key, contentDescription = "Email") },
+            leadingIcon = { Icon(Icons.Default.Key, contentDescription = "Contraseña") },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
-                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+                focusedBorderColor = Color(0xFFFF9240),
+                unfocusedBorderColor = Color(0xff000000)
             ),
             trailingIcon = {
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -318,10 +322,10 @@ fun RegisterPage(navController: NavController) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            leadingIcon = { Icon(Icons.Default.Key, contentDescription = "Email") },
+            leadingIcon = { Icon(Icons.Default.Key, contentDescription = "Confirmar contraseña") },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
-                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
+                focusedBorderColor = Color(0xFFFF9240),
+                unfocusedBorderColor = Color(0xff000000)
             ),
             trailingIcon = {
                 IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
@@ -355,7 +359,6 @@ fun RegisterPage(navController: NavController) {
                                     if (isSuccess) {
                                         FirebaseAuth.getInstance().currentUser?.reload()
                                         val userId = Firebase.auth.currentUser?.uid
-
                                         if (!userId.isNullOrEmpty()) {
                                             crearUsuarioEnFirestore(userId, name) {
                                                 Log.d("Firestore", "✅ Usuario creado en Firestore correctamente.")
@@ -384,11 +387,6 @@ fun RegisterPage(navController: NavController) {
                 Text(text = "Registrarse", color = Color.White)
             }
         }
-
-
-
-
-
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -460,5 +458,4 @@ fun RegisterPage(navController: NavController) {
             }
         )
     }
-
 }
