@@ -42,6 +42,8 @@ fun CrearRutinaPage(navController: NavHostController) {
     var selectedDificultad by remember { mutableStateOf("Medio") }
     val dificultades = listOf("Fácil", "Medio", "Difícil")
     val ejerciciosSeleccionados = remember { mutableStateListOf<String>() }
+    // Nueva variable para compartir con amigos
+    var compartirConAmigos by remember { mutableStateOf(false) }
     // Tema oscuro
     val currentColorScheme = MaterialTheme.colorScheme == darkColorScheme()
     Log.d("ColorScheme", currentColorScheme.toString())
@@ -168,6 +170,33 @@ fun CrearRutinaPage(navController: NavHostController) {
                         }
                     }
                 }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Checkbox para compartir con amigos
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(
+                            checked = compartirConAmigos,
+                            onCheckedChange = { compartirConAmigos = it },
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = MaterialTheme.colorScheme.primary
+                            )
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Visible para amigos",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -260,7 +289,8 @@ fun CrearRutinaPage(navController: NavHostController) {
                             "dificultad" to selectedDificultad,
                             "ejercicios" to ejerciciosSeleccionados.toList(),
                             "usuarioId" to userId,
-                            "fechaCreacion" to Timestamp.now()
+                            "fechaCreacion" to Timestamp.now(),
+                            "compartirConAmigos" to compartirConAmigos // Nueva propiedad
                         )
 
                         scope.launch {
@@ -284,11 +314,9 @@ fun CrearRutinaPage(navController: NavHostController) {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
-                    )
-                    ,
+                    ),
                     modifier = Modifier.fillMaxWidth(),
                     enabled = !isLoading
-
                 ) {
                     if (isLoading) {
                         CircularProgressIndicator(
@@ -437,13 +465,13 @@ fun CrearRutinaPage(navController: NavHostController) {
 
                         Spacer(modifier = Modifier.width(8.dp))
 
-                        Button(onClick = {
-                            showEjerciciosDialog = false
-                        },
+                        Button(
+                            onClick = {
+                                showEjerciciosDialog = false
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.primary
                             )
-
                         ) {
                             Text("Confirmar (${ejerciciosSeleccionados.size})")
                         }
@@ -481,7 +509,8 @@ fun CrearRutinaPage(navController: NavHostController) {
                     showSuccessDialog = false
                     navController.navigate("main") {
                         popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
-                    }                }) {
+                    }
+                }) {
                     Text("Aceptar")
                 }
             }

@@ -55,6 +55,7 @@ class MainActivity : ComponentActivity() {
                     composable("register2") { RegisterPage2(navController) }
                     composable("crearRutina") { CrearRutinaPage(navController) }
                     composable("misRutinas") { ListarMisRutinasPage(navController) }
+                    composable("rutinasAmigos") { ListarRutinasAmigosPage(navController) }
                     composable("dietas") { DietasPage() }  // Añadir ruta para la página de dietas
                     // Actualizado: Ruta para ejecutar una rutina con ID
                     composable(

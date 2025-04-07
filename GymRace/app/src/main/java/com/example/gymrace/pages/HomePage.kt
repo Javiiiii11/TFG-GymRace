@@ -454,8 +454,8 @@ fun CustomRoutineSection(navController: NavController) {
                     .height(180.dp)
                     .padding(start = 8.dp)
                     .clickable {
-                        Log.d("Navigation", "Navegando a la página de crear rutina")
-                        navController.navigate("misRutinas") {
+                        Log.d("Navigation", "Navegando a rutinas de amigos")
+                        navController.navigate("rutinasAmigos") {
                             popUpTo("main") {
                                 inclusive = false
                             } // Borra todo el historial de navegación
