@@ -29,34 +29,42 @@ import com.google.firebase.auth.FirebaseAuth
 @Composable
 fun InitialScreen(navController: NavController) {
     var startAnimation by remember { mutableStateOf(false) }
-    val alphaAnim = animateFloatAsState(
+    val alphaAnim by animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(
-            durationMillis = 1000
-        )
+        animationSpec = tween(durationMillis = 1000),
+        label = "splashAlpha"
     )
 
     LaunchedEffect(key1 = true) {
-        startAnimation = true // Inicia la animación de aparición gradual
-        delay(3000) // Espera 3 segundos antes de continuar
+        startAnimation = true // Inicia la animación
+        delay(3000) // Espera 3 segundos
 
-        val auth = FirebaseAuth.getInstance() // Inicializa FirebaseAuth
+        val auth = FirebaseAuth.getInstance() // Obtiene la instancia de FirebaseAuth
         val currentUser = auth.currentUser // Obtiene el usuario actual
 
-        if (currentUser != null && currentUser.isEmailVerified) { // Verifica si el usuario está autenticado y su correo electrónico está verificado
+        currentUser?.reload() // Recarga el estado del usuario
+
+        // Verifica si el usuario está autenticado y si su email está verificado
+        Log.d("Firebase", "currentUser: ${currentUser?.email}")
+        Log.d("Firebase", "isEmailVerified: ${currentUser?.isEmailVerified}")
+
+        // Si el usuario está autenticado y su email está verificado, navega a la pantalla principal
+        if (currentUser != null /* && currentUser.isEmailVerified */) {
+            // Si quieres verificar el email, descomenta la condición anterior
             navController.navigate("main") {
                 popUpTo("splash") { inclusive = true }
             }
-        } else { // Si el usuario no está autenticado o su correo electrónico no está verificado
+        } else {
             navController.navigate("login") {
                 popUpTo("splash") { inclusive = true }
             }
         }
     }
-    // Pantalla de carga con el GIF girando
 
-    SplashContent(alpha = alphaAnim.value)
+    // Pantalla de carga
+    SplashContent(alpha = alphaAnim)
 }
+
 
 @Composable
 fun SplashContent(alpha: Float) {
