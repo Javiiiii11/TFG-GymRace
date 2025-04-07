@@ -83,6 +83,7 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
     var selectedRutina by remember { mutableStateOf<RutinaAmigo?>(null) }
     var isCopying by remember { mutableStateOf(false) }
     var successMessage by remember { mutableStateOf<String?>(null) }
+    var errorMessage2 by remember { mutableStateOf<String?>(null) }
 
     // Cargar rutinas de amigos agrupadas por usuario
     LaunchedEffect(userId) {
@@ -452,6 +453,43 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
                         }
                     }
 
+                    //Espacio para el mensaje de error
+                    AnimatedVisibility(
+                        visible = errorMessage2 != null,
+                        enter = fadeIn() + expandVertically(),
+                        exit = fadeOut() + shrinkVertically()
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Error,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = errorMessage2 ?: "Error desconocido",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+
+                        // Iniciar corrutina para eliminar el mensaje de error después de un tiempo
+                        LaunchedEffect(errorMessage2) {
+                            if (errorMessage2 != null) {
+                                scope.launch {
+                                    delay(2000) // Esperar 2 segundos
+                                    errorMessage2 = null
+                                }
+                            }
+                        }
+                    }
+
                     if (selectedRutina!!.descripcion.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
@@ -539,12 +577,12 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
 
                                         if (!querySnapshot.isEmpty) {
                                             isCopying = false
-                                            successMessage = "Ya tienes una rutina con este nombre"
+                                            errorMessage2 = "Ya tienes una rutina con este nombre"
                                             Log.w("ListarRutinasAmigosPage", "Rutina duplicada: ${rutinaAmigo.nombre}")
                                             scope.launch {
                                                 delay(2000)
                                                 if (showDetailDialog) {
-                                                    successMessage = null
+                                                    errorMessage2 = null
                                                 }
                                             }
                                             return@launch
