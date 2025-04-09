@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -19,10 +20,10 @@ import com.example.gymrace.pages.LoginPage
 import com.example.gymrace.pages.RegisterPage
 import com.example.gymrace.pages.RegisterPage2
 import com.example.gymrace.ui.theme.GymRaceTheme
+import com.example.gymrace.ui.theme.ThemeManager
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import np.com.bimalkafle.bottomnavigationdemo.pages.PredefinedRoutine
-
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -49,14 +50,30 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(navController, startDestination = "splash") {
                     composable("splash") { InitialScreen(navController) }
-                    composable("register") { RegisterPage(navController) }
+                    composable("register") {
+                        RegisterPage(
+                            navController = navController,
+                            onThemeChange = {
+                                // ThemeManager accederá al contexto desde dentro del RegisterPage
+                                ThemeManager.toggleTheme(LocalContext.current)
+                            }
+                        )
+                    }
                     composable("main") { MainScreen(navController) }
-                    composable("login") { LoginPage(navController) }
+                    composable("login") {
+                        LoginPage(
+                            navController = navController,
+                            onThemeChange = {
+                                // ThemeManager accederá al contexto desde dentro del LoginPage
+                                ThemeManager.toggleTheme(LocalContext.current)
+                            }
+                        )
+                    }
                     composable("register2") { RegisterPage2(navController) }
                     composable("crearRutina") { CrearRutinaPage(navController) }
                     composable("misRutinas") { ListarMisRutinasPage(navController) }
                     composable("rutinasAmigos") { ListarRutinasAmigosPage(navController) }
-                    composable("dietas") { DietasPage() }  // Añadir ruta para la página de dietas
+                    composable("dietas") { DietasPage() }
                     // Actualizado: Ruta para ejecutar una rutina con ID
                     composable(
                         route = "ejecutar_rutina/{rutinaId}",

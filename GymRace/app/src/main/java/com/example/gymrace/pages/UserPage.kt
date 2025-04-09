@@ -25,8 +25,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material.icons.filled.Settings
@@ -54,6 +56,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.compose.rememberNavController
 import com.example.gymrace.R
 import com.example.gymrace.pages.saveLoginState
+import com.example.gymrace.ui.theme.ThemeManager.isDarkTheme
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -296,10 +299,19 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                     DropdownMenuItem(
                         text = {
                             Row(verticalAlignment = Alignment.CenterVertically) {
+//                                Icon(
+//                                    imageVector = Icons.Outlined.DarkMode,
+//                                    contentDescription = "Cambiar tema",
+//                                    modifier = Modifier.size(20.dp)
+//                                )
                                 Icon(
-                                    imageVector = Icons.Outlined.DarkMode,
+                                    imageVector = if (isDarkTheme.value) {
+                                        Icons.Default.LightMode // Icono para modo oscuro (cuando está en claro)
+                                    } else {
+                                        Icons.Default.DarkMode // Icono para modo claro (cuando está en oscuro)
+                                    },
                                     contentDescription = "Cambiar tema",
-                                    modifier = Modifier.size(20.dp)
+//                                    tint = MaterialTheme.colorScheme.primary // Opcionalmente cambiar el color
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(text = "Cambiar tema")

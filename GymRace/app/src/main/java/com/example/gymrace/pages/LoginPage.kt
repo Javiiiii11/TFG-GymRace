@@ -16,8 +16,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
@@ -37,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gymrace.R
+import com.example.gymrace.ui.theme.ThemeManager
+import com.example.gymrace.ui.theme.rememberThemeState
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
@@ -53,8 +57,9 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginPage(navController: NavController) {
+fun LoginPage(navController: NavController, onThemeChange: @Composable () -> Unit) {
     val context = LocalContext.current
+    val isDarkTheme = rememberThemeState().value // Obtener el estado actual del tema
 
     // Variables de estado para el formulario y datos del usuario
     var email by rememberSaveable { mutableStateOf("") }
@@ -217,170 +222,195 @@ fun LoginPage(navController: NavController) {
     }
 
     // UI con Jetpack Compose
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
-        // Título de la página
-        Text(
-            text = "Iniciar Sesión",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Campos de entrada para login con email/contraseña
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Correo electrónico") },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFFFF9240),
-                unfocusedBorderColor = Color(0xff000000)
-            )
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Contraseña") },
-            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            leadingIcon = { Icon(Icons.Default.Key, contentDescription = "Contraseña") },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFFFF9240),
-                unfocusedBorderColor = Color(0xff000000)
-            ),
-            trailingIcon = {
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(
-                        if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                        contentDescription = if (passwordVisible) "Ocultar contraseña" else "Mostrar contraseña"
-                    )
-                }
-            }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Enlace para recuperar contraseña
-        Box(modifier = Modifier.fillMaxWidth()) {
-            TextButton(
-                onClick = {
-                    resetEmail = email // Pre-llenar con el email actual si existe
-                    showPasswordResetDialog = true
-                },
-                modifier = Modifier.align(Alignment.CenterEnd)
-            ) {
-                Text(text = "¿Olvidaste tu contraseña?", color = Color(0xFF1976D2))
-            }
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Botón de inicio de sesión con email/contraseña
-        Button(
+        // Botón de cambio de tema en la esquina superior derecha
+        IconButton(
             onClick = {
-                val validationMessage = validateForm()
-                if (validationMessage.isNotEmpty()) {
-                    Toast.makeText(context, validationMessage, Toast.LENGTH_SHORT).show()
-                } else {
-                    loginWithEmailAndPassword(email, password)
-                }
+                ThemeManager.toggleTheme(context)
             },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xffff9240))
-        ) {
-            if (isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    color = Color(0xff7c461d)
-                )
-            } else {
-                Text(text = "Iniciar Sesión", color = Color.White)
-            }
-        }
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Separador para las opciones de inicio de sesión
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Divider(
-                modifier = Modifier.weight(1f),
-                color = Color.Gray.copy(alpha = 0.5f)
-            )
-            Text(
-                text = " O CONTINÚA CON ",
-                fontSize = 12.sp,
-                color = Color.Gray,
-                modifier = Modifier.padding(horizontal = 8.dp)
-            )
-            Divider(
-                modifier = Modifier.weight(1f),
-                color = Color.Gray.copy(alpha = 0.5f)
-            )
-        }
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Botón de inicio de sesión con Google
-        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .background(MaterialTheme.colorScheme.surface)
-                .clip(RoundedCornerShape(4.dp))
-                .border(1.dp, Color.Gray.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
-                .clickable(enabled = !isLoading) { signInWithGoogle() },
-            contentAlignment = Alignment.Center
+                .padding(16.dp)
+                .align(Alignment.TopEnd)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_de_google),
-                    contentDescription = "Logo de Google",
-                    modifier = Modifier.size(24.dp),
-                    contentScale = ContentScale.Fit
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Continuar con Google",
-                    color = MaterialTheme.colorScheme.onBackground,
-                    fontSize = 16.sp
-                )
-            }
+            Icon(
+                imageVector = if (isDarkTheme) {
+                    Icons.Default.LightMode // Icono para modo oscuro (cuando está en claro)
+                } else {
+                    Icons.Default.DarkMode // Icono para modo claro (cuando está en oscuro)
+                },
+                contentDescription = "Cambiar tema",
+                tint = MaterialTheme.colorScheme.primary
+            )
         }
-        Spacer(modifier = Modifier.height(16.dp))
 
-        // Enlace para registrarse
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
+            // Título de la página
             Text(
-                text = "¿No tienes cuenta? Regístrate",
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 14.sp,
-                modifier = Modifier.clickable {
-                    navController.navigate("register") {
-                        popUpTo("login") { inclusive = true }
+                text = "Iniciar Sesión",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Campos de entrada para login con email/contraseña
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Correo electrónico") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0xFFFF9240),
+                    unfocusedBorderColor = Color(0xff000000)
+                )
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Contraseña") },
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                leadingIcon = { Icon(Icons.Default.Key, contentDescription = "Contraseña") },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0xFFFF9240),
+                    unfocusedBorderColor = Color(0xff000000)
+                ),
+                trailingIcon = {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(
+                            if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                            contentDescription = if (passwordVisible) "Ocultar contraseña" else "Mostrar contraseña"
+                        )
                     }
                 }
             )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Enlace para recuperar contraseña
+            Box(modifier = Modifier.fillMaxWidth()) {
+                TextButton(
+                    onClick = {
+                        resetEmail = email // Pre-llenar con el email actual si existe
+                        showPasswordResetDialog = true
+                    },
+                    modifier = Modifier.align(Alignment.CenterEnd)
+                ) {
+                    Text(text = "¿Olvidaste tu contraseña?", color = Color(0xFF1976D2))
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Botón de inicio de sesión con email/contraseña
+            Button(
+                onClick = {
+                    val validationMessage = validateForm()
+                    if (validationMessage.isNotEmpty()) {
+                        Toast.makeText(context, validationMessage, Toast.LENGTH_SHORT).show()
+                    } else {
+                        loginWithEmailAndPassword(email, password)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xffff9240))
+            ) {
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        color = Color(0xff7c461d)
+                    )
+                } else {
+                    Text(text = "Iniciar Sesión", color = Color.White)
+                }
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Separador para las opciones de inicio de sesión
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Divider(
+                    modifier = Modifier.weight(1f),
+                    color = Color.Gray.copy(alpha = 0.5f)
+                )
+                Text(
+                    text = " O CONTINÚA CON ",
+                    fontSize = 12.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                )
+                Divider(
+                    modifier = Modifier.weight(1f),
+                    color = Color.Gray.copy(alpha = 0.5f)
+                )
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Botón de inicio de sesión con Google
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .background(MaterialTheme.colorScheme.surface)
+                    .clip(RoundedCornerShape(4.dp))
+                    .border(1.dp, Color.Gray.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
+                    .clickable(enabled = !isLoading) { signInWithGoogle() },
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo_de_google),
+                        contentDescription = "Logo de Google",
+                        modifier = Modifier.size(24.dp),
+                        contentScale = ContentScale.Fit
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Continuar con Google",
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontSize = 16.sp
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Enlace para registrarse
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "¿No tienes cuenta? Regístrate",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 14.sp,
+                    modifier = Modifier.clickable {
+                        navController.navigate("register") {
+                            popUpTo("login") { inclusive = true }
+                        }
+                    }
+                )
+            }
         }
     }
 
