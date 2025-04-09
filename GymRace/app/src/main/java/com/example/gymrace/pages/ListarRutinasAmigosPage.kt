@@ -629,7 +629,7 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     Button(onClick = {
-                        navController.navigate("lista_amigos")
+                        showCommunityDialog = true
                     }) {
                         Icon(Icons.Default.PersonAdd, contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))

@@ -283,7 +283,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                         .width(200.dp)
                 ) {
                     Text(
-                        text = "Ajustes",
+                        text = "Tema",
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)

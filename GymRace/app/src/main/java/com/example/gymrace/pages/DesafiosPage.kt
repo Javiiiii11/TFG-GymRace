@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -38,7 +39,11 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.ViewModel
 import com.example.gymrace.GifData
 import com.example.gymrace.R
+import com.example.gymrace.addFriend
+import com.example.gymrace.loadAllUsers
+import com.example.gymrace.loadFriendsList
 import com.example.gymrace.loadGifsFromXml
+import com.example.gymrace.removeFriend
 import com.example.gymrace.showExerciseDetail
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
@@ -46,6 +51,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import np.com.bimalkafle.bottomnavigationdemo.pages.User
+import np.com.bimalkafle.bottomnavigationdemo.pages.UsersDialog
 import java.util.UUID
 
 // Modelos de datos
@@ -67,7 +74,6 @@ data class Friend(
     val name: String,
     val profilePicUrl: String? = null
 )
-
 
 // ViewModel para Desafíos
 class ChallengeViewModel : ViewModel() {
@@ -269,7 +275,33 @@ fun DesafiosPage(
     var selectedChallenge by remember { mutableStateOf<Challenge?>(null) }
     var newProgress by remember { mutableStateOf("0") }
 
+    // Estados para diálogos
+    var showCommunityDialog by remember { mutableStateOf(false) }
 
+    // Estados para el diálogo de comunidad y usuarios
+    var allUsers by remember { mutableStateOf<List<User>>(emptyList()) }
+    var isLoadingUsers by remember { mutableStateOf(false) }
+    var friendsList by remember { mutableStateOf<List<User>>(emptyList()) }
+    var showFriendsListDialog by remember { mutableStateOf(false) }
+    var successMessage by remember { mutableStateOf<String?>(null) }
+    val scope = rememberCoroutineScope()
+
+
+    // Al abrir el diálogo de comunidad, cargar la lista de usuarios y amigos
+    LaunchedEffect(showCommunityDialog) {
+        if (showCommunityDialog) {
+            isLoadingUsers = true
+            loadAllUsers { users ->
+                // Filtramos para excluir al usuario actual
+                allUsers = users.filter { it.id != userId }
+                isLoadingUsers = false
+                Log.d("ListarRutinasAmigosPage", "Usuarios cargados para comunidad: ${allUsers.size}")
+            }
+            loadFriendsList(userId) { friends ->
+                friendsList = friends
+            }
+        }
+    }
     // Para refrescar cada 5 segundos
     LaunchedEffect(userId) {
         while (true) {
@@ -305,8 +337,8 @@ fun DesafiosPage(
                 )
         ) {
             if (challenges.isEmpty()) {
-                EmptyState()
-            } else {
+                EmptyState(onBuscarAmigos = { showCommunityDialog = true })
+            }else {
                 ChallengesList(
                     challenges = challenges,
                     userId = userId,
@@ -410,18 +442,55 @@ fun DesafiosPage(
         viewModel.loadFriends(userId)
         viewModel.loadFriendsChallenges(userId)
     }
+    // Diálogo de comunidad (buscar usuarios)
+    if (showCommunityDialog) {
+        UsersDialog(
+            title = "Comunidad GymRace",
+            users = allUsers,
+            isLoading = isLoadingUsers,
+            onDismiss = { showCommunityDialog = false },
+            onUserAction = { friendId ->
+                // Verificar si ya es amigo
+                val friendIds = friendsList.map { it.id }
+                if (friendIds.contains(friendId)) {
+                    // Eliminar amigo
+                    scope.launch {
+                        removeFriend(userId, friendId) {
+                            // Actualizar lista de amigos
+                            loadFriendsList(userId) { friends ->
+                                friendsList = friends
+                                successMessage = "Usuario eliminado de amigos"
+                            }
+                        }
+                    }
+                } else {
+                    // Agregar amigo
+                    scope.launch {
+                        addFriend(userId, friendId) {
+                            // Actualizar lista de amigos
+                            loadFriendsList(userId) { friends ->
+                                friendsList = friends
+                                successMessage = "Usuario agregado a amigos"
+                            }
+                        }
+                    }
+                }
+            },
+            showAddButton = true,
+            currentFriends = friendsList.map { it.id }
+        )
+    }
 }
 
 @Composable
-fun EmptyState() {
-
+fun EmptyState(onBuscarAmigos: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.fuego), //imagen central
+            imageVector = ImageVector.vectorResource(id = R.drawable.fuego), // imagen central
             contentDescription = null,
             modifier = Modifier.size(80.dp),
             tint = MaterialTheme.colorScheme.primary
@@ -438,8 +507,15 @@ fun EmptyState() {
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+        Spacer(modifier = Modifier.height(24.dp))
+        Button(onClick = onBuscarAmigos) {
+            Icon(Icons.Default.PersonAdd, contentDescription = null)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Buscar Amigos")
+        }
     }
 }
+
 
 @Composable
 fun ChallengesList(
@@ -715,6 +791,7 @@ fun CreateChallengeDialog(
             }
         )
     }
+
 }
 
 // Ejemplo de diálogo de ejercicios (basado en tu código de "Añadir Ejercicios")
