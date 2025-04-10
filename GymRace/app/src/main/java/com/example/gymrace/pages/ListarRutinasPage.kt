@@ -226,6 +226,7 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                         .fillMaxSize()
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
+// Dentro de LazyColumn en ListarMisRutinasPage:
                     items(rutinas) { rutina ->
                         RutinaCard(
                             rutina = rutina,
@@ -240,6 +241,10 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                             onPlayClick = {
                                 // Navegar a la pantalla de ejecución de rutina
                                 navController.navigate("ejecutar_rutina/${rutina.id}")
+                            },
+                            onEditClick = {
+                                // Navegar a la pantalla de edición con el ID de la rutina
+                                navController.navigate("editar_rutina/${rutina.id}")
                             }
                         )
                     }
@@ -540,6 +545,17 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                     ) {
                         Button(
                             onClick = {
+                                // Navegar a la pantalla de edición con el ID de la rutina
+                                navController.navigate("editar_rutina/${currentRutina.id}")
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                        ) {
+                            Icon(Icons.Default.Edit, contentDescription = null)
+                            Spacer(modifier = Modifier.width(1.dp))
+                        }
+                        Spacer(modifier = Modifier.width(15.dp))
+                        Button(
+                            onClick = {
                                 // Navegar a ejecutar_rutina con el ID de la rutina seleccionada
                                 if (selectedRutina != null) {
                                     val rutinaId = currentRutina.id
@@ -569,7 +585,8 @@ fun RutinaCard(
     rutina: Rutina,
     onRutinaClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onPlayClick: () -> Unit
+    onPlayClick: () -> Unit,
+    onEditClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -580,7 +597,9 @@ fun RutinaCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .padding(16.dp)
+                .height(140.dp) // Establece una altura fija para todas las tarjetas
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -638,31 +657,55 @@ fun RutinaCard(
                     }
                 }
 
-                // Botón de play para iniciar la rutina
-                IconButton(
-                    onClick = onPlayClick,
-                    modifier = Modifier
-                        .size(40.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = "Iniciar Rutina",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
+                // Fila de botones de acción
+                Row {
+                    // Botón de editar
+                    IconButton(
+                        onClick = onEditClick,
+                        modifier = Modifier.size(40.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Editar Rutina",
+                            tint = MaterialTheme.colorScheme.secondary
+                        )
+                    }
+
+                    // Botón de play para iniciar la rutina
+                    IconButton(
+                        onClick = onPlayClick,
+                        modifier = Modifier.size(40.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.PlayArrow,
+                            contentDescription = "Iniciar Rutina",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
             }
 
-            if (rutina.descripcion.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
+            // Siempre mostrar el espacio para la descripción
+            Spacer(modifier = Modifier.height(8.dp))
+            Box(
+                modifier = Modifier
+                    .height(40.dp) // Altura fija para la descripción
+                    .fillMaxWidth()
+            ) {
                 Text(
-                    text = rutina.descripcion,
+                    text = if (rutina.descripcion.isNotEmpty()) rutina.descripcion else "Sin descripción",
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = if (rutina.descripcion.isNotEmpty())
+                        MaterialTheme.colorScheme.onSurface
+                    else
+                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f) // Color más claro para el placeholder
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            // Espaciador para empujar el botón eliminar hacia abajo
+            Spacer(modifier = Modifier.weight(1f))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -686,4 +729,3 @@ fun RutinaCard(
         }
     }
 }
-

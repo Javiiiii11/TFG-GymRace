@@ -46,10 +46,12 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-            GymRaceTheme {  // Cambiado de MaterialTheme a GymRaceTheme
+            GymRaceTheme {
                 val navController = rememberNavController()
                 NavHost(navController, startDestination = "splash") {
+                    // Composable para la pantalla de inicio
                     composable("splash") { InitialScreen(navController) }
+                    // Composable para la página de registro
                     composable("register") {
                         RegisterPage(
                             navController = navController,
@@ -60,21 +62,35 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable("main") { MainScreen(navController) }
+                    // Composable para la página de inicio de sesión
                     composable("login") {
                         LoginPage(
                             navController = navController,
                             onThemeChange = {
-                                // ThemeManager accederá al contexto desde dentro del LoginPage
                                 ThemeManager.toggleTheme(LocalContext.current)
                             }
                         )
                     }
                     composable("register2") { RegisterPage2(navController) }
-                    composable("crearRutina") { CrearRutinaPage(navController) }
+                    // Composable para la página de detalles de rutina predefinida
+                    composable(
+                        "editar_rutina/{rutinaId}",
+                        arguments = listOf(navArgument("rutinaId") { type = NavType.StringType })
+                    ) { backStackEntry ->
+                        val rutinaId = backStackEntry.arguments?.getString("rutinaId")
+                        CrearRutinaPage(navController = navController, rutinaId = rutinaId)
+                    }
+                    // Composable para la página de crear rutina
+                    composable("crearRutina") {
+                        CrearRutinaPage(navController = navController)
+                    }
+                    // Composable para la página de listar rutinas
                     composable("misRutinas") { ListarMisRutinasPage(navController) }
+                    // Composable para la página de listar rutinas de amigos
                     composable("rutinasAmigos") { ListarRutinasAmigosPage(navController) }
+                    // Composable para la página de listar rutinas predefinidas
                     composable("dietas") { DietasPage() }
-                    // Actualizado: Ruta para ejecutar una rutina con ID
+                    // Composable para la página de detalles de dieta
                     composable(
                         route = "ejecutar_rutina/{rutinaId}",
                         arguments = listOf(navArgument("rutinaId") { type = NavType.StringType })

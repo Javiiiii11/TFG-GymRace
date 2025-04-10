@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -31,41 +32,47 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CrearRutinaPage(navController: NavHostController) {
+fun CrearRutinaPage(
+    navController: NavHostController,
+    rutinaId: String? = null // Nuevo parámetro opcional
+) {
     val db = FirebaseFirestore.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    // Estado para determinar si estamos en modo edición
+    var isEditMode by remember { mutableStateOf(rutinaId != null) }
+    var isLoading by remember { mutableStateOf(true) }
+    var errorMessage by remember { mutableStateOf("") }
+    var showErrorDialog by remember { mutableStateOf(false) }
+    var showSuccessDialog by remember { mutableStateOf(false) }
+    var successMessage by remember { mutableStateOf("") }
+
+    // Estados para los campos del formulario
     var rutinaNombre by remember { mutableStateOf(TextFieldValue()) }
     var rutinaDescripcion by remember { mutableStateOf(TextFieldValue()) }
     var selectedDificultad by remember { mutableStateOf("Medio") }
     val dificultades = listOf("Fácil", "Medio", "Difícil")
     val ejerciciosSeleccionados = remember { mutableStateListOf<String>() }
-    // Nueva variable para compartir con amigos
     var compartirConAmigos by remember { mutableStateOf(false) }
-    // Tema oscuro
-    val currentColorScheme = MaterialTheme.colorScheme == darkColorScheme()
-    Log.d("ColorScheme", currentColorScheme.toString())
-    // Estados de error, carga y éxito
-    var showErrorDialog by remember { mutableStateOf(false) }
-    var errorMessage by remember { mutableStateOf("") }
-    var isLoading by remember { mutableStateOf(false) }
-    var showSuccessDialog by remember { mutableStateOf(false) }
 
     // Estados para búsqueda y selección de ejercicios
     var buscarEjercicio by remember { mutableStateOf(TextFieldValue()) }
     var showEjerciciosDialog by remember { mutableStateOf(false) }
+    var selectedCategory by remember { mutableStateOf("Todos") }
+    var selectedExerciseDetail by remember { mutableStateOf<GifData?>(null) }
 
-    // Cargar ejercicios desde XML (asegúrate de tener implementada la función loadGifsFromXml)
-    val context = LocalContext.current
+    // Cargar ejercicios desde XML
     val (ejerciciosData, _) = remember {
         loadGifsFromXml(context.resources.getXml(R.xml.ejercicios), context)
     }
 
-    // Lista de ejercicios disponibles desde el XML y categorías
-    val ejerciciosDisponibles = ejerciciosData.map { it.title }
-    var selectedCategory by remember { mutableStateOf("Todos") }
+    // Lista de categorías
     val categories = listOf("Todos") + ejerciciosData.map { it.category }.distinct()
 
     // Filtrar ejercicios según búsqueda y categoría
@@ -74,15 +81,55 @@ fun CrearRutinaPage(navController: NavHostController) {
                 it.title.contains(buscarEjercicio.text, ignoreCase = true)
     }.map { it.title }
 
-    val scope = rememberCoroutineScope()
+    // Efecto para cargar la rutina si estamos en modo edición
+    LaunchedEffect(rutinaId) {
+        if (rutinaId != null) {
+            isLoading = true
+            try {
+                val document = db.collection("rutinas").document(rutinaId).get().await()
+                if (document.exists()) {
+                    val data = document.data
+                    if (data != null) {
+                        // Actualizar estados con los datos de la rutina
+                        rutinaNombre = TextFieldValue(data["nombre"] as? String ?: "")
+                        rutinaDescripcion = TextFieldValue(data["descripcion"] as? String ?: "")
+                        selectedDificultad = data["dificultad"] as? String ?: "Medio"
+                        compartirConAmigos = data["compartirConAmigos"] as? Boolean ?: false
 
-    // Estado para ver detalles del ejercicio seleccionado
-    var selectedExerciseDetail by remember { mutableStateOf<GifData?>(null) }
+                        // Cargar ejercicios seleccionados
+                        val ejercicios = (data["ejercicios"] as? List<*>)?.filterIsInstance<String>() ?: emptyList()
+                        ejerciciosSeleccionados.clear()
+                        ejerciciosSeleccionados.addAll(ejercicios)
+
+                        // Verificar que la rutina pertenece al usuario actual
+                        val rutinaUserId = data["usuarioId"] as? String ?: ""
+                        if (rutinaUserId != userId) {
+                            errorMessage = "No tienes permiso para editar esta rutina"
+                            showErrorDialog = true
+                            isLoading = false
+                            return@LaunchedEffect
+                        }
+                    }
+                } else {
+                    errorMessage = "La rutina no existe"
+                    showErrorDialog = true
+                }
+                isLoading = false
+            } catch (e: Exception) {
+                errorMessage = "Error al cargar la rutina: ${e.message}"
+                showErrorDialog = true
+                isLoading = false
+            }
+        } else {
+            // No estamos en modo edición, solo desactivamos el indicador de carga
+            isLoading = false
+        }
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Crear Nueva Rutina") },
+                title = { Text(if (isEditMode) "Editar Rutina" else "Crear Nueva Rutina") },
                 navigationIcon = {
                     IconButton(onClick = {
                         val previousBackStackEntry = navController.previousBackStackEntry
@@ -100,233 +147,284 @@ fun CrearRutinaPage(navController: NavHostController) {
             )
         }
     ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxSize()
-            ) {
-                OutlinedTextField(
-                    value = rutinaNombre,
-                    onValueChange = { rutinaNombre = it },
-                    label = { Text("Nombre de la Rutina*") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    isError = rutinaNombre.text.isBlank() && errorMessage.isNotEmpty()
-                )
-                if (rutinaNombre.text.isBlank() && errorMessage.isNotEmpty()) {
-                    Text(
-                        text = "El nombre es obligatorio",
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(start = 16.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                OutlinedTextField(
-                    value = rutinaDescripcion,
-                    onValueChange = { rutinaDescripcion = it },
-                    label = { Text("Descripción (Opcional)") },
-                    modifier = Modifier.fillMaxWidth(),
-                    minLines = 2
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp)
+        Box(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+        ) {
+            if (isLoading) {
+                // Pantalla de carga
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        CircularProgressIndicator()
+                        Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            "Dificultad",
+                            text = if (isEditMode) "Cargando rutina..." else "Preparando...",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+            } else {
+                // Contenido principal
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxSize()
+                ) {
+                    OutlinedTextField(
+                        value = rutinaNombre,
+                        onValueChange = { rutinaNombre = it },
+                        label = { Text("Nombre de la Rutina*") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth(),
+                        isError = rutinaNombre.text.isBlank() && errorMessage.isNotEmpty()
+                    )
+                    if (rutinaNombre.text.isBlank() && errorMessage.isNotEmpty()) {
+                        Text(
+                            text = "El nombre es obligatorio",
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    OutlinedTextField(
+                        value = rutinaDescripcion,
+                        onValueChange = { rutinaDescripcion = it },
+                        label = { Text("Descripción (Opcional)") },
+                        modifier = Modifier.fillMaxWidth(),
+                        minLines = 2
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(
+                                "Dificultad",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                dificultades.forEach { dificultad ->
+                                    FilterChip(
+                                        selected = dificultad == selectedDificultad,
+                                        onClick = { selectedDificultad = dificultad },
+                                        label = {
+                                            Text(
+                                                dificultad,
+                                                color = if (dificultad == selectedDificultad)
+                                                    MaterialTheme.colorScheme.onPrimary
+                                                else
+                                                    LocalContentColor.current
+                                            )
+                                        },
+                                        colors = FilterChipDefaults.filterChipColors(
+                                            selectedContainerColor = MaterialTheme.colorScheme.primary
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Checkbox para compartir con amigos
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(
+                                checked = compartirConAmigos,
+                                onCheckedChange = { compartirConAmigos = it },
+                                colors = CheckboxDefaults.colors(
+                                    checkedColor = MaterialTheme.colorScheme.primary
+                                )
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Visible para amigos",
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "Ejercicios",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
 
-                        Row(
+                        Button(
+                            onClick = { showEjerciciosDialog = true },
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+                        ) {
+                            Icon(Icons.Default.Add, contentDescription = "Añadir ejercicio")
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Añadir")
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Lista de ejercicios seleccionados
+                    if (ejerciciosSeleccionados.isEmpty()) {
+                        Card(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 8.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            )
                         ) {
-                            dificultades.forEach { dificultad ->
-                                FilterChip(
-                                    selected = dificultad == selectedDificultad,
-                                    onClick = { selectedDificultad = dificultad },
-                                    label = {
-                                        Text(
-                                            dificultad,
-                                            color = if (dificultad == selectedDificultad) MaterialTheme.colorScheme.onPrimary else LocalContentColor.current
-                                        )
-                                    },
-                                    colors = FilterChipDefaults.filterChipColors(
-                                        selectedContainerColor = MaterialTheme.colorScheme.primary
-                                    )
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(24.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    "No hay ejercicios seleccionados",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                        ) {
+                            items(ejerciciosSeleccionados) { ejercicio ->
+                                ExerciseCard(
+                                    ejercicio = ejercicio,
+                                    ejerciciosData = ejerciciosData,
+                                    ejerciciosSeleccionados = ejerciciosSeleccionados,
+                                    onShowExerciseDetail = { nombreEjercicio ->
+                                        showExerciseDetail(nombreEjercicio, ejerciciosData) {
+                                            selectedExerciseDetail = it
+                                        }
+                                    }
                                 )
                             }
                         }
                     }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
 
-                // Checkbox para compartir con amigos
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = compartirConAmigos,
-                            onCheckedChange = { compartirConAmigos = it },
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = MaterialTheme.colorScheme.primary
-                            )
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Visible para amigos",
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    }
-                }
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        "Ejercicios",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-
+                    // Botón para guardar o actualizar
                     Button(
-                        onClick = { showEjerciciosDialog = true },
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
-                    ) {
-                        Icon(Icons.Default.Add, contentDescription = "Añadir ejercicio")
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text("Añadir")
-                    }
-                }
+                        onClick = {
+                            if (rutinaNombre.text.isBlank()) {
+                                errorMessage = "Por favor, introduzca un nombre para la rutina"
+                                showErrorDialog = true
+                                return@Button
+                            }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                            if (ejerciciosSeleccionados.isEmpty()) {
+                                errorMessage = "Por favor, añada al menos un ejercicio"
+                                showErrorDialog = true
+                                return@Button
+                            }
 
-                // Lista de ejercicios seleccionados usando ExerciseCard
-                if (ejerciciosSeleccionados.isEmpty()) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant
-                        )
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(24.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                "No hay ejercicios seleccionados",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            isLoading = true
+
+                            val rutina = hashMapOf(
+                                "nombre" to rutinaNombre.text,
+                                "descripcion" to rutinaDescripcion.text,
+                                "dificultad" to selectedDificultad,
+                                "ejercicios" to ejerciciosSeleccionados.toList(),
+                                "usuarioId" to userId,
+                                "compartirConAmigos" to compartirConAmigos
                             )
-                        }
-                    }
-                } else {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                    ) {
-                        items(ejerciciosSeleccionados) { ejercicio ->
-                            ExerciseCard(
-                                ejercicio = ejercicio,
-                                ejerciciosData = ejerciciosData,
-                                ejerciciosSeleccionados = ejerciciosSeleccionados,
-                                onShowExerciseDetail = { nombreEjercicio ->
-                                    showExerciseDetail(nombreEjercicio, ejerciciosData) { selectedExerciseDetail = it }
-                                }
-                            )
-                        }
-                    }
-                }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                            // Si estamos en modo edición, actualizamos la fecha de modificación
+                            // Si no, establecemos la fecha de creación
+                            if (isEditMode) {
+                                rutina["fechaModificacion"] = Timestamp.now()
+                            } else {
+                                rutina["fechaCreacion"] = Timestamp.now()
+                            }
 
-                Button(
-                    onClick = {
-                        if (rutinaNombre.text.isBlank()) {
-                            errorMessage = "Por favor, introduzca un nombre para la rutina"
-                            showErrorDialog = true
-                            return@Button
-                        }
+                            scope.launch {
+                                try {
+                                    if (isEditMode && rutinaId != null) {
+                                        // Actualizar rutina existente
+                                        db.collection("rutinas").document(rutinaId)
+                                            .update(rutina as Map<String, Any>)
+                                            .await()
 
-                        if (ejerciciosSeleccionados.isEmpty()) {
-                            errorMessage = "Por favor, añada al menos un ejercicio"
-                            showErrorDialog = true
-                            return@Button
-                        }
-
-                        isLoading = true
-
-                        val rutina = hashMapOf(
-                            "nombre" to rutinaNombre.text,
-                            "descripcion" to rutinaDescripcion.text,
-                            "dificultad" to selectedDificultad,
-                            "ejercicios" to ejerciciosSeleccionados.toList(),
-                            "usuarioId" to userId,
-                            "fechaCreacion" to Timestamp.now(),
-                            "compartirConAmigos" to compartirConAmigos // Nueva propiedad
-                        )
-
-                        scope.launch {
-                            try {
-                                db.collection("rutinas").add(rutina)
-                                    .addOnSuccessListener {
                                         isLoading = false
+                                        successMessage = "Rutina actualizada correctamente"
+                                        showSuccessDialog = true
+                                    } else {
+                                        // Crear nueva rutina
+                                        db.collection("rutinas").add(rutina)
+                                            .await()
+
+                                        isLoading = false
+                                        successMessage = "Rutina creada correctamente"
                                         showSuccessDialog = true
                                     }
-                                    .addOnFailureListener { e ->
-                                        isLoading = false
-                                        errorMessage = "Error: ${e.message}"
-                                        showErrorDialog = true
-                                    }
-                            } catch (e: Exception) {
-                                isLoading = false
-                                errorMessage = "Error: ${e.message}"
-                                showErrorDialog = true
+                                } catch (e: Exception) {
+                                    isLoading = false
+                                    errorMessage = "Error: ${e.message}"
+                                    showErrorDialog = true
+                                }
                             }
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        ),
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = !isLoading
+                    ) {
+                        if (isLoading) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(24.dp),
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                strokeWidth = 2.dp
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
                         }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    ),
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = !isLoading
-                ) {
-                    if (isLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(24.dp),
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            strokeWidth = 2.dp
+                        Icon(
+                            imageVector = if (isEditMode) Icons.Default.Edit else Icons.Default.Add,
+                            contentDescription = null
                         )
                         Spacer(modifier = Modifier.width(8.dp))
+                        Text(if (isEditMode) "Actualizar Rutina" else "Guardar Rutina")
                     }
-                    Text("Guardar Rutina")
                 }
             }
         }
@@ -440,7 +538,9 @@ fun CrearRutinaPage(navController: NavHostController) {
                                             }
                                         },
                                         onViewDetail = {
-                                            showExerciseDetail(ejercicioNombre, ejerciciosData) { selectedExerciseDetail = it }
+                                            showExerciseDetail(ejercicioNombre, ejerciciosData) {
+                                                selectedExerciseDetail = it
+                                            }
                                         }
                                     )
                                 }
@@ -500,15 +600,25 @@ fun CrearRutinaPage(navController: NavHostController) {
         AlertDialog(
             onDismissRequest = {
                 showSuccessDialog = false
-                navController.popBackStack()
+                if (isEditMode) {
+                    navController.popBackStack()
+                } else {
+                    navController.navigate("main") {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             },
             title = { Text("Éxito") },
-            text = { Text("Rutina creada correctamente") },
+            text = { Text(successMessage) },
             confirmButton = {
                 Button(onClick = {
                     showSuccessDialog = false
-                    navController.navigate("main") {
-                        popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
+                    if (isEditMode) {
+                        navController.popBackStack()
+                    } else {
+                        navController.navigate("main") {
+                            popUpTo(0) { inclusive = true }
+                        }
                     }
                 }) {
                     Text("Aceptar")
