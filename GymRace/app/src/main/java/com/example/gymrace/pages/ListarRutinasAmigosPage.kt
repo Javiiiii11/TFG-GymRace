@@ -1122,7 +1122,9 @@ fun RutinaAmigoCard(
                     )
                 }
                 Spacer(modifier = Modifier.width(12.dp))
-                Column {
+                Column(
+                    modifier = Modifier.weight(1f)  // Asigna peso para controlar el espacio
+                ) {
                     Text(
                         text = rutina.nombre,
                         style = MaterialTheme.typography.titleMedium,
@@ -1136,24 +1138,22 @@ fun RutinaAmigoCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-                Spacer(modifier = Modifier.weight(1f))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    AssistChip(
-                        onClick = { },
-                        label = { Text(rutina.dificultad) },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = when(rutina.dificultad) {
-                                    "Fácil" -> Icons.Default.Star
-                                    "Difícil" -> Icons.Default.StarRate
-                                    else -> Icons.Default.StarHalf
-                                },
-                                contentDescription = null,
-                                modifier = Modifier.size(18.dp)
-                            )
-                        }
-                    )
-                }
+                Spacer(modifier = Modifier.width(8.dp))  // Espacio fijo entre el texto y el chip
+                AssistChip(
+                    onClick = { },
+                    label = { Text(rutina.dificultad) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = when(rutina.dificultad) {
+                                "Fácil" -> Icons.Default.Star
+                                "Difícil" -> Icons.Default.StarRate
+                                else -> Icons.Default.StarHalf
+                            },
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                )
             }
 
             if (rutina.descripcion.isNotEmpty()) {

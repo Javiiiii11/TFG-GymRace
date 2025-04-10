@@ -318,12 +318,24 @@ fun DesafiosPage(
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground) },
-                        actions = {
-                        IconButton(onClick = { showCreateDialog = true }) {
-                            Icon(Icons.Default.Add, contentDescription = "Crear Desafío")
+                actions = {
+                    IconButton(onClick = { showCreateDialog = true }) {
+                        Icon(Icons.Default.Add, contentDescription = "Crear Desafío")
                     }
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { showCreateDialog = true },
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier
+                    .padding(bottom = 80.dp, end = 8.dp)
+                    .navigationBarsPadding()
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Crear Desafío")
+            }
         }
     ) { paddingValues ->
         Box(
