@@ -192,13 +192,12 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                             .clip(RoundedCornerShape(3.dp))
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp)) // Reducido de 16.dp a 8.dp
+                    Spacer(modifier = Modifier.height(32.dp)) // Reducido de 16.dp a 8.dp
 
                     // Nombre del ejercicio actual y número de serie
-                    Row(
+                    Column(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
                             text = currentExerciseName ?: "Ejercicio",
@@ -206,25 +205,10 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
-
-                        Spacer(modifier = Modifier.width(4.dp)) // Reducido de 8.dp a 4.dp
-
-                        // Chip para indicar la serie actual
-                        Surface(
-                            shape = RoundedCornerShape(16.dp),
-                            color = MaterialTheme.colorScheme.secondaryContainer,
-                            modifier = Modifier.padding(start = 4.dp)
-                        ) {
-                            Text(
-                                text = "Serie $currentSeries",
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp) // Padding reducido
-                            )
-                        }
                     }
 
-                    Spacer(modifier = Modifier.height(4.dp)) // Reducido de 8.dp a 4.dp
+
+                    Spacer(modifier = Modifier.height(32.dp)) // Reducido de 8.dp a 4.dp
 
                     // Visualización del ejercicio (GIF)
                     Box(
