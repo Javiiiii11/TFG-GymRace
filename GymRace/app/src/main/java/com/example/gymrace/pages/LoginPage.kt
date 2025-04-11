@@ -207,19 +207,18 @@ fun LoginPage(navController: NavController, onThemeChange: @Composable () -> Uni
             }
     }
 
-    fun validateForm(): String {
-        return when {
-            email.isBlank() && password.isBlank() -> "Tienes que llenar todos los campos"
-            email.isBlank() -> "El correo electrónico no puede estar vacío"
-            !email.contains("@") || !email.contains(".") -> "El correo electrónico no es válido"
-            email.count { it == '@' } > 1 -> "El correo electrónico no es válido"
-            email.count { it == '.' } > 1 -> "El correo electrónico no es válido"
-            password.isBlank() -> "La contraseña no puede estar vacía"
-            password.length < 6 -> "La contraseña debe tener al menos 6 caracteres"
-            password.length > 20 -> "La contraseña no puede tener más de 20 caracteres"
-            else -> "" // Todo está bien
-        }
+fun validateForm(): String {
+    email = email.trim() // Remove leading and trailing spaces
+    return when {
+        email.isBlank() && password.isBlank() -> "Tienes que llenar todos los campos"
+        email.isBlank() -> "El correo electrónico no puede estar vacío"
+        !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "El correo electrónico no es válido"
+        password.isBlank() -> "La contraseña no puede estar vacía"
+        password.length < 6 -> "La contraseña debe tener al menos 6 caracteres"
+//        password.length > 20 -> "La contraseña no puede tener más de 20 caracteres"
+        else -> "" // Everything is valid
     }
+}
 
     // UI con Jetpack Compose
     Box(
