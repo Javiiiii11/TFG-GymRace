@@ -1,5 +1,6 @@
 package np.com.bimalkafle.bottomnavigationdemo.pages
 
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -34,14 +36,11 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.example.gymrace.MainActivity
 import com.example.gymrace.R
 import com.example.gymrace.RutinaLauncher
-import com.example.gymrace.pages.Exercise
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.time.YearMonth
@@ -58,7 +57,7 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, onThem
             .padding(0.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Espaciado inicial
+        // Bienvenida
         item {
             Spacer(modifier = Modifier.height(64.dp))
             TitleSection()
@@ -68,7 +67,6 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, onThem
         // Cargar rutinas predefinidas desde Firestore
         item {
             LoadPredefinedRoutinesFromFirestore(navController)
-
         }
 
         // Sección de rutina personalizada
@@ -89,11 +87,8 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, onThem
 }
 
 
-
-
 // Rutinas Predefinidas
-
-// Firestore Data Classes
+// Esta clase representa una rutina predefinida
 data class PredefinedRoutine(
     val id: String = "",
     val title: String = "",
@@ -102,11 +97,13 @@ data class PredefinedRoutine(
     val exercises: List<MainActivity.ExerciseDetail> = emptyList()
 )
 
+// Esta función muestra una tarjeta para cada rutina predefinida
 @Composable
 fun PredefinedRoutineCard(
     routine: PredefinedRoutine,
     navController: NavController
 ) {
+    // Estado para mostrar el diálogo
     var showDialog by remember { mutableStateOf(false) }
 
     // Obtención del recurso de imagen basado en el nombre
@@ -120,6 +117,7 @@ fun PredefinedRoutineCard(
         else -> R.drawable.default_image
     }
 
+    // Tarjeta de rutina predefinida
     Card(
         modifier = Modifier
             .width(300.dp)
@@ -143,7 +141,7 @@ fun PredefinedRoutineCard(
                     .fillMaxSize()
                     .background(Color(0x80000000))
             )
-            // Contenido: título y botón (este último se puede omitir, ya que el diálogo se abre al hacer clic en la tarjeta)
+            // Contenido: título y botón
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -172,7 +170,7 @@ fun PredefinedRoutineCard(
             }
         }
     }
-
+    // Diálogo de detalles de la rutina
     if (showDialog) {
         PredefinedRoutineDetailDialog(
             routine = routine,
@@ -183,12 +181,27 @@ fun PredefinedRoutineCard(
 }
 
 
-
+// Esta función muestra la sección de rutinas predefinidas
 @Composable
 fun PredefinedRoutinesSection(
     routines: List<PredefinedRoutine>,
     navController: NavController
 ) {
+    // Si no hay rutinas, muestra un mensaje
+    if (routines.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "No hay rutinas predefinidas disponibles.",
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
+        return
+    }
+    // Título de la sección
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -216,13 +229,16 @@ fun PredefinedRoutinesSection(
     }
 }
 
-
+// Esta función carga las rutinas predefinidas desde Firestore
 @Composable
 fun LoadPredefinedRoutinesFromFirestore(navController: NavController) {
+    // Inicializa Firestore
     val db = FirebaseFirestore.getInstance()
+    // Lista mutable para almacenar las rutinas
     val routines = remember { mutableStateListOf<PredefinedRoutine>() }
+    // Estado para mostrar el indicador de carga
     val isLoading = remember { mutableStateOf(true) }
-
+    // Efecto para cargar las rutinas al iniciar
     LaunchedEffect(true) {
         try {
             val result = db.collection("rutinaspredefinidas")
@@ -240,31 +256,29 @@ fun LoadPredefinedRoutinesFromFirestore(navController: NavController) {
             isLoading.value = false
         }
     }
-
+    // Muestra un indicador de carga mientras se obtienen los datos
     if (isLoading.value) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator()
+            CircularProgressIndicator() // Indicador de carga
         }
     } else {
-        PredefinedRoutinesSection(routines, navController)
+        PredefinedRoutinesSection(routines, navController) // Muestra las rutinas cargadas
     }
 }
 
-
+// Esta función muestra un diálogo con los detalles de la rutina predefinida
 @Composable
 fun PredefinedRoutineDetailDialog(
     routine: PredefinedRoutine,
     navController: NavController,
     onDismissRequest: () -> Unit
 ) {
-    // Utiliza la clase RutinaLauncher que ya tienes para iniciar la rutina.
-    // Nota: Asegúrate de que la ruta utilizada en RutinaLauncher ("ejecutar_rutina/$rutinaId")
-    // sea la misma que espera EjecutarRutinaPage en tu NavHost.
+    // Estado para el lanzador de rutina
     val rutinaLauncher = remember { RutinaLauncher(navController, routine.id) }
-
+    // Diálogo de detalles
     AlertDialog(
         onDismissRequest = onDismissRequest,
         title = {
@@ -274,7 +288,7 @@ fun PredefinedRoutineDetailDialog(
                 fontSize = 20.sp
             )
         },
-        text = {
+        text = { // Contenido del diálogo
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 // Muestra la descripción de la rutina
                 Text(text = routine.description)
@@ -287,6 +301,7 @@ fun PredefinedRoutineDetailDialog(
                         fontSize = 16.sp
                     )
                     Spacer(modifier = Modifier.height(8.dp))
+                    // Muestra cada ejercicio
                     routine.exercises.forEach { exercise ->
                         Row() {
                             Icon(imageVector = Icons.Default.FitnessCenter, contentDescription = null)
@@ -301,6 +316,7 @@ fun PredefinedRoutineDetailDialog(
                 }
             }
         },
+        // Botón de confirmación
         confirmButton = {
             // Al presionar este botón se lanza la rutina usando tu RutinaLauncher
             rutinaLauncher.LaunchButton(
@@ -308,6 +324,7 @@ fun PredefinedRoutineDetailDialog(
                 text = "Iniciar Rutina"
             )
         },
+        // Botón de cancelar
         dismissButton = {
             TextButton(onClick = onDismissRequest) {
                 Text(text = "Cerrar")
@@ -317,71 +334,10 @@ fun PredefinedRoutineDetailDialog(
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Rutinas por  Personalizadas
-
+// Esta función muestra la sección de rutinas personalizadas
 @Composable
 fun CustomRoutineSection(navController: NavController) {
+    // Título de la sección
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -396,7 +352,7 @@ fun CustomRoutineSection(navController: NavController) {
             modifier = Modifier.padding(bottom = 16.dp)
         )
     }
-
+    // Tarjetas para las rutinas personalizadas
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -414,6 +370,7 @@ fun CustomRoutineSection(navController: NavController) {
                     .height(180.dp)
                     .padding(end = 8.dp)
                     .clickable {
+                        // Navega a la página de mis rutinas
                         Log.d("Navigation", "Navegando a mis rutinas")
                         navController.navigate("misRutinas")
                     },
@@ -454,6 +411,7 @@ fun CustomRoutineSection(navController: NavController) {
                     .height(180.dp)
                     .padding(start = 8.dp)
                     .clickable {
+                        // Navega a la página de rutinas de amigos
                         Log.d("Navigation", "Navegando a rutinas de amigos")
                         navController.navigate("rutinasAmigos") {
                             popUpTo("main") {
@@ -494,11 +452,12 @@ fun CustomRoutineSection(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Crear Rutina (mantiene la funcionalidad existente)
+        // Crear Rutina
         Card(
             modifier = Modifier
                 .size(180.dp)
                 .clickable {
+                    // Navega a la página de crear rutina
                     Log.d("Navigation", "Navegando a la página de crear rutina")
                     navController.navigate("crearRutina") {
                         launchSingleTop = true
@@ -535,9 +494,10 @@ fun CustomRoutineSection(navController: NavController) {
     }
 }
 
-
+// Esta función muestra el título de la aplicación
 @Composable
 fun TitleSection() {
+    // Título de la aplicación
     Text(
         text = "Bienvenido a Gym Race",
         fontSize = 28.sp,
@@ -547,11 +507,11 @@ fun TitleSection() {
     Spacer(modifier = Modifier.height(0.dp))
 }
 
-
+// Esta función muestra el calendario
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarSection() {
-    val today = remember { LocalDate.now() }
+//    val today = remember { LocalDate.now() }
     Column {
         Box(
             modifier = Modifier
@@ -559,6 +519,7 @@ fun CalendarSection() {
                 .fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
+            // Calendario
             ImprovedCalendar(
                 modifier = Modifier
                     .fillMaxWidth(0.7f)
@@ -567,6 +528,7 @@ fun CalendarSection() {
                     .height(380.dp),
                 onDateSelected = { day -> println("Día seleccionado: $day") }
             )
+            // Imagen decorativa del calendario
             Image(
                 painter = painterResource(id = R.drawable.deco4),
                 contentDescription = "Imagen calendario",
@@ -582,50 +544,70 @@ fun CalendarSection() {
     }
 }
 
-
+// Esta función muestra el calendario mejorado
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ImprovedCalendar(modifier: Modifier, onDateSelected: (Int) -> Unit) {
+    // Estado para el mes y año actuales
     var currentYearMonth by remember { mutableStateOf(YearMonth.now()) }
+    // Estado para el día seleccionado
     val today = remember { LocalDate.now() }
+    // Obtener el mes y año actuales
     val isCurrentMonth = currentYearMonth.year == today.year && currentYearMonth.month == today.month
+    // Obtener el número de días en el mes actual
     val daysInMonth = currentYearMonth.lengthOfMonth()
+    // Obtener el primer día de la semana del mes actual
     val firstDayOfMonth = currentYearMonth.atDay(1).dayOfWeek.value
     Column(modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        // Encabezado del calendario
         CalendarHeader(
             currentYearMonth,
             onPrevious = { currentYearMonth = currentYearMonth.minusMonths(1) },
             onNext = { currentYearMonth = currentYearMonth.plusMonths(1) }
         )
+        // Rejilla del calendario
         CalendarGrid(daysInMonth, firstDayOfMonth, isCurrentMonth, today, onDateSelected)
     }
 }
 
+// Esta función muestra el encabezado del calendario
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarHeader(currentYearMonth: YearMonth, onPrevious: () -> Unit, onNext: () -> Unit) {
+    // Encabezado del calendario
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        // Botones para retroceder al mes anterior
         IconButton(onClick = onPrevious) { Icon(Icons.Default.KeyboardArrowLeft, contentDescription = "Prev") }
+        // Título del mes y año
         Text(
             text = "${currentYearMonth.month.getDisplayName(TextStyle.FULL, Locale("es", "ES"))} ${currentYearMonth.year}",
             fontSize = 18.sp
         )
+        // Botón para avanzar al siguiente mes
         IconButton(onClick = onNext) { Icon(Icons.Default.KeyboardArrowRight, contentDescription = "Next") }
     }
 }
 
+// Esta función muestra la rejilla del calendario
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarGrid(daysInMonth: Int, firstDayOfMonth: Int, isCurrentMonth: Boolean, today: LocalDate, onDateSelected: (Int) -> Unit) {
+    // Días de la semana
     val days = listOf("L", "M", "X", "J", "V", "S", "D")
+    // Encabezado de los días de la semana
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         days.forEach { Text( it, fontWeight = FontWeight.Bold)}
     }
+    // Rejilla del calendario
     LazyVerticalGrid(columns = GridCells.Fixed(7)) {
+        // Espacios en blanco para los días antes del primer día del mes
         items(firstDayOfMonth - 1) { Box(modifier = Modifier.aspectRatio(1f)) }
         items(daysInMonth) { day ->
+            // Espacio para cada día
             val dayNumber = day + 1
+            // Verifica si el día es hoy
             val isToday = isCurrentMonth && dayNumber == today.dayOfMonth
+            // Cuadro para cada día
             Box(
                 modifier = Modifier
                     .padding(0.dp)
@@ -641,15 +623,19 @@ fun CalendarGrid(daysInMonth: Int, firstDayOfMonth: Int, isCurrentMonth: Boolean
     }
 }
 
+// Esta función muestra la sección de más opciones
 @Composable
 fun Masoptions() {
+    // Manejo de URI y contexto
     val uriHandler = LocalUriHandler.current
+    // Contexto de la aplicación
+    val context = LocalContext.current
+    // Sección de más opciones
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start,
         modifier = Modifier
             .fillMaxWidth()
-//            .padding(horizontal = 16.dp, vertical = 16.dp)
             .background(Color(0x001976d2)),
     ) {
         Text(
@@ -659,7 +645,7 @@ fun Masoptions() {
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
         )
-
+        // Tarjeta para compartir la aplicación
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -669,30 +655,37 @@ fun Masoptions() {
                 containerColor = MaterialTheme.colorScheme.surfaceVariant
             ),
             elevation = CardDefaults.cardElevation(4.dp)
-
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
+                // Texto para compartir la aplicación
                 Text(
                     text = buildAnnotatedString {
-                        append("Unete a nuestra comunidad en ")
-                        pushStringAnnotation(tag = "URL", annotation = "https://discord.gg/GwKP9ghQSg")
+                        append("Comparte nuestra app ")
                         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.secondary, textDecoration = TextDecoration.Underline)) {
-                            append("discord")
+                            append("con tus amigos")
                         }
-                        pop()
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { uriHandler.openUri("https://discord.gg/GwKP9ghQSg") },
+                        .clickable {
+                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_SUBJECT, "¡Mira esta app!")
+                                putExtra(Intent.EXTRA_TEXT, "¡Descarga esta fantástica aplicación! https://www.gymrace.sytes.net")
+//                                putExtra(Intent.EXTRA_TEXT, "¡Descarga esta fantástica aplicación! https://play.google.com/store/apps/details?id=com.tuempresa.tuapp")
+                            }
+                            context.startActivity(Intent.createChooser(shareIntent, "Compartir usando"))
+                        },
                     fontSize = 16.sp
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
+                // Texto para visitar la página web
                 Text(
                     text = buildAnnotatedString {
                         append("Visita nuestra ")
-                        pushStringAnnotation(tag = "URL", annotation = "https://www.ejemplo.com")
+                        pushStringAnnotation(tag = "URL", annotation = "https://www.gymrace.sytes.net")
                         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.secondary, textDecoration = TextDecoration.Underline)) {
                             append("página web")
                         }
@@ -700,12 +693,12 @@ fun Masoptions() {
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { uriHandler.openUri("https://www.ejemplo.com") },
+                        .clickable { uriHandler.openUri("https://www.gymrace.sytes.net") },
                     fontSize = 16.sp
                 )
             }
         }
-
+        // Fondo decorativo
         Image(
             painter = painterResource(id = R.drawable.deco2),
             contentDescription = "Imagen abajo inicio",

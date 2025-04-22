@@ -1,6 +1,5 @@
 package com.example.gymrace.pages
 
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
@@ -58,8 +57,10 @@ import kotlinx.coroutines.withContext
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginPage(navController: NavController, onThemeChange: @Composable () -> Unit) {
+    // Obtener el contexto de la actividad
     val context = LocalContext.current
-    val isDarkTheme = rememberThemeState().value // Obtener el estado actual del tema
+    // Obtener el estado del tema (claro/oscuro)
+    val isDarkTheme = rememberThemeState().value
 
     // Variables de estado para el formulario y datos del usuario
     var email by rememberSaveable { mutableStateOf("") }
@@ -69,15 +70,10 @@ fun LoginPage(navController: NavController, onThemeChange: @Composable () -> Uni
     var passwordVisible by remember { mutableStateOf(false) }
     var userName by remember { mutableStateOf("") }  // Variable para guardar el nombre del usuario
 
-    // Variables para el diálogo de recuperación de contraseña
+    // Variable para mostrar el diálogo de recuperación de contraseña
     var showPasswordResetDialog by remember { mutableStateOf(false) }
+    // Variable para guardar el correo electrónico de recuperación
     var resetEmail by remember { mutableStateOf("") }
-
-    // Validación del formulario
-    val isFormValid = email.isNotBlank() &&
-            email.contains("@") &&
-            email.contains(".") &&
-            password.isNotBlank()
 
     // Configuración para GoogleSignIn
     val googleSignInClient = remember {
@@ -149,11 +145,14 @@ fun LoginPage(navController: NavController, onThemeChange: @Composable () -> Uni
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                // Intentar iniciar sesión con Firebase
                 Firebase.auth.signInWithEmailAndPassword(email, password).await()
                 withContext(Dispatchers.Main) {
+                    // Si el inicio de sesión es exitoso, guardar el estado
                     isLoading = false
                     saveLoginState(context, true, email)
                     Toast.makeText(context, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
+                    Log.d("Navigation", "Navegando a la pantalla principal")
                     navController.navigate("main") {
                         popUpTo("login") { inclusive = true }
                     }
@@ -171,11 +170,13 @@ fun LoginPage(navController: NavController, onThemeChange: @Composable () -> Uni
                             delay(30000) // Espera 30 segundos antes de permitir otro intento
                             "Demasiados intentos fallidos. Intenta más tarde"
                         }
-                        e.message?.contains("The supplied auth credential is incorrect, malformed or has expired") == true ->
+                        e.message?.contains("Las credenciales de autenticación son incorrectas o están mal formadas") == true ->
                             "Las credenciales de autenticación son incorrectas o están mal formadas"
                         else -> e.message ?: "Error al iniciar sesión"
                     }
-                    Toast.makeText(context, loginError, Toast.LENGTH_LONG).show()
+                    // Mostrar mensaje de error
+                    Log.e("Error", loginError)
+                    Toast.makeText(context, "Error al iniciar sesión", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -191,11 +192,12 @@ fun LoginPage(navController: NavController, onThemeChange: @Composable () -> Uni
 
     // Función para enviar correo de recuperación de contraseña
     fun sendPasswordResetEmail(email: String) {
+        // Validar el correo electrónico
         if (email.isBlank() || !email.contains("@") || !email.contains(".")) {
             Toast.makeText(context, "Ingresa un correo electrónico válido", Toast.LENGTH_LONG).show()
             return
         }
-
+        // Mostrar mensaje de carga
         Firebase.auth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -207,20 +209,20 @@ fun LoginPage(navController: NavController, onThemeChange: @Composable () -> Uni
             }
     }
 
+// Función para validar el formulario de inicio de sesión
 fun validateForm(): String {
-    email = email.trim() // Remove leading and trailing spaces
+    email = email.trim() // Eliminar espacios en blanco al inicio y al final
     return when {
         email.isBlank() && password.isBlank() -> "Tienes que llenar todos los campos"
         email.isBlank() -> "El correo electrónico no puede estar vacío"
         !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "El correo electrónico no es válido"
         password.isBlank() -> "La contraseña no puede estar vacía"
         password.length < 6 -> "La contraseña debe tener al menos 6 caracteres"
-//        password.length > 20 -> "La contraseña no puede tener más de 20 caracteres"
-        else -> "" // Everything is valid
+        else -> "" // No hay errores de validación
     }
 }
 
-    // UI con Jetpack Compose
+    //Contenido de la página de inicio de sesión
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -245,7 +247,6 @@ fun validateForm(): String {
                 tint = MaterialTheme.colorScheme.primary
             )
         }
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -263,6 +264,7 @@ fun validateForm(): String {
             Spacer(modifier = Modifier.height(24.dp))
 
             // Campos de entrada para login con email/contraseña
+            // Correo electrónico
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
@@ -277,7 +279,7 @@ fun validateForm(): String {
                 )
             )
             Spacer(modifier = Modifier.height(8.dp))
-
+            // Contraseña
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
@@ -319,7 +321,9 @@ fun validateForm(): String {
             // Botón de inicio de sesión con email/contraseña
             Button(
                 onClick = {
+                    // Validar el formulario antes de iniciar sesión
                     val validationMessage = validateForm()
+                    // Si hay un mensaje de validación, mostrarlo
                     if (validationMessage.isNotEmpty()) {
                         Toast.makeText(context, validationMessage, Toast.LENGTH_SHORT).show()
                     } else {
@@ -329,6 +333,7 @@ fun validateForm(): String {
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xffff9240))
             ) {
+                // Mostrar un indicador de carga si isLoading es verdadero
                 if (isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
@@ -378,6 +383,7 @@ fun validateForm(): String {
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
+                    // Icono de Google
                     Image(
                         painter = painterResource(id = R.drawable.logo_de_google),
                         contentDescription = "Logo de Google",
@@ -405,6 +411,8 @@ fun validateForm(): String {
                     fontSize = 14.sp,
                     modifier = Modifier.clickable {
                         navController.navigate("register") {
+                            // Limpiar la pila de navegación para evitar volver a la página de inicio de sesión
+                            Log.d("Navigation", "Navegando a la pantalla de registro")
                             popUpTo("login") { inclusive = true }
                         }
                     }
@@ -438,6 +446,7 @@ fun validateForm(): String {
                 }
             },
             confirmButton = {
+                // Botón para enviar el correo de recuperación
                 Button(
                     onClick = { sendPasswordResetEmail(resetEmail) },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1976D2))
@@ -446,6 +455,7 @@ fun validateForm(): String {
                 }
             },
             dismissButton = {
+                // Botón para cancelar el diálogo
                 TextButton(onClick = { showPasswordResetDialog = false }) {
                     Text("Cancelar")
                 }
@@ -461,13 +471,4 @@ fun saveLoginState(context: Context, isLoggedIn: Boolean, account: String) {
     editor.putBoolean("isLoggedIn", isLoggedIn)
     editor.putString("account", account)
     editor.apply()
-}
-
-// Función para obtener el estado de inicio de sesión
-fun getLoginState(context: Context): Pair<Boolean, String?> {
-    val sharedPreferences: SharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
-    val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
-    val account = sharedPreferences.getString("account", null)
-    Log.d("LoginState", "isLoggedIn: $isLoggedIn, account: $account")
-    return Pair(isLoggedIn, account)
 }
