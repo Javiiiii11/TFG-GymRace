@@ -107,4 +107,10 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+data class ExerciseDetail(
+        val name: String = "",
+        val repetitions: Int = 0,
+        val sets: Int = 0
+    )
 }
