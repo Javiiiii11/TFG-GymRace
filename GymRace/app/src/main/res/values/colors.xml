@@ -15,7 +15,4 @@
     <color name="onBackground_dark">#FFFFFF</color>
     <color name="onSurface_light">#000000</color>
     <color name="onSurface_dark">#FFFFFF</color>
-    <!--esto es para quitar la transicion de inicio-->
-    <!--    <color name="backgroundColor">#FFFFFF</color> &lt;!&ndash; Fondo blanco para la SplashScreen &ndash;&gt;-->
-
 </resources>

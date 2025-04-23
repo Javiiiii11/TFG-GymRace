@@ -2,15 +2,3 @@
 <resources>
     <style name="Theme.GymRace" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>
-
-<!--esto es para quitar la transicion de inicio-->
-<!--    <resources>-->
-<!--        &lt;!&ndash; Tema claro &ndash;&gt;-->
-<!--        <style name="Theme.GymRace" parent="android:Theme.Material.Light.NoActionBar">-->
-<!--            &lt;!&ndash; Otros atributos de tu tema... &ndash;&gt;-->
-
-<!--            &lt;!&ndash; Configuración de fondo para la Splash Screen &ndash;&gt;-->
-<!--            <item name="android:windowBackground">@color/backgroundColor</item>-->
-<!--            <item name="android:windowDisablePreview">true</item>-->
-<!--        </style>-->
-<!--    </resources>-->

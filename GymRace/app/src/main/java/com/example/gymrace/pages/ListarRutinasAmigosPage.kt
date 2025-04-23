@@ -24,34 +24,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import np.com.bimalkafle.bottomnavigationdemo.pages.User
 import np.com.bimalkafle.bottomnavigationdemo.pages.UsersDialog
 
+// Definimos la clase Usuario con un nuevo campo para el objetivo fitness
 data class Usuario(
     val id: String = "",
     val nombre: String = "",
     val fotoPerfil: String = "",
     val email: String = "",
     val objetivoFitness: String = "Mantener forma física" // Añadido campo de objetivo fitness
-)
-
-data class Amigo(
-    val id: String = "",
-    val usuarioId: String = "",
-    val amigoId: String = "",
-    val fechaAgregado: Timestamp = Timestamp.now()
 )
 
 // Ampliamos la definición de Rutina para incluir la opción de compartir
@@ -73,8 +64,7 @@ data class RutinasPorUsuario(
     val rutinas: List<RutinaAmigo>
 )
 
-// ----- Funciones Auxiliares para la Comunidad -----
-// Estas funciones utilizan Firebase y deben contar con la configuración de tu proyecto.
+// Función para cargar todos los usuarios de la base de datos
 fun loadAllUsers(callback: (List<User>) -> Unit) {
     val db = FirebaseFirestore.getInstance()
     db.collection("usuarios")
@@ -99,6 +89,7 @@ fun loadAllUsers(callback: (List<User>) -> Unit) {
         }
 }
 
+// Función para cargar la lista de amigos de un usuario
 fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
     val db = FirebaseFirestore.getInstance()
     db.collection("amigos")
@@ -153,6 +144,7 @@ fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
         }
 }
 
+// Funciones para agregar amigos
 fun addFriend(userId: String, friendId: String, callback: () -> Unit) {
     val db = FirebaseFirestore.getInstance()
     db.collection("amigos")
@@ -183,6 +175,7 @@ fun addFriend(userId: String, friendId: String, callback: () -> Unit) {
         .addOnFailureListener { callback() }
 }
 
+// Función para eliminar amigos
 fun removeFriend(userId: String, friendId: String, callback: () -> Unit) {
     val db = FirebaseFirestore.getInstance()
     db.collection("amigos")
@@ -204,163 +197,12 @@ fun removeFriend(userId: String, friendId: String, callback: () -> Unit) {
         .addOnFailureListener { callback() }
 }
 
-// ----- Diálogo de Usuarios (Comunidad) -----
-// Se reutiliza la lógica de tu otro archivo (UserPage.kt).
-@Composable
-fun UsersDialog(
-    title: String,
-    users: List<User>,
-    isLoading: Boolean,
-    onDismiss: () -> Unit,
-    onUserAction: (String) -> Unit,
-    showAddButton: Boolean,
-    currentFriends: List<String> = emptyList()
-) {
-    Dialog(
-        onDismissRequest = onDismiss
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "$title (${users.size})",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    IconButton(onClick = onDismiss) {
-                        Icon(Icons.Default.Close, contentDescription = "Cerrar")
-                    }
-                }
-                Divider()
-                if (isLoading) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(300.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                } else if (users.isEmpty()) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = if (showAddButton)
-                                "No hay usuarios disponibles"
-                            else "No tienes amigos aún",
-                            fontSize = 16.sp
-                        )
-                    }
-                } else {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(300.dp)
-                    ) {
-                        items(users) { user ->
-                            UserListItem(
-                                user = user,
-                                onAction = { onUserAction(user.id) },
-                                showAddButton = showAddButton,
-                                isAlreadyFriend = currentFriends.contains(user.id)
-                            )
-                            Divider()
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(
-                    onClick = onDismiss,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Cerrar")
-                }
-            }
-        }
-    }
-}
 
-@Composable
-fun UserListItem(
-    user: User,
-    onAction: () -> Unit,
-    showAddButton: Boolean,
-    isAlreadyFriend: Boolean = false
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 12.dp, horizontal = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row(
-            modifier = Modifier.weight(1f),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = user.nombre.firstOrNull()?.toString() ?: "?",
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-            Spacer(modifier = Modifier.width(12.dp))
-            Column {
-                Text(
-                    text = user.nombre,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-                if (user.objetivoFitness.isNotEmpty()) {
-                    Text(
-                        text = user.objetivoFitness,
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-                    )
-                }
-            }
-        }
-        IconButton(
-            onClick = onAction
-        ) {
-            Icon(
-                imageVector = if (showAddButton) {
-                    if (isAlreadyFriend) Icons.Default.PersonRemove else Icons.Default.PersonAdd
-                } else Icons.Default.PersonRemove,
-                contentDescription = if (showAddButton) {
-                    if (isAlreadyFriend) "Eliminar amigo" else "Agregar amigo"
-                } else "Eliminar amigo",
-                tint = if (showAddButton && !isAlreadyFriend) MaterialTheme.colorScheme.primary else Color.Red
-            )
-        }
-    }
-}
-
-
+// Componente principal de la página
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListarRutinasAmigosPage(navController: NavHostController) {
+    // Inicializamos Firebase Firestore y Firebase Auth
     val db = FirebaseFirestore.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     val scope = rememberCoroutineScope()
@@ -978,7 +820,7 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
 }
 
 
-
+// Componente para mostrar la cabecera del amigo
 @Composable
 fun AmigoCabecera(usuario: Usuario) {
     Column(
@@ -1035,6 +877,7 @@ fun AmigoCabecera(usuario: Usuario) {
     }
 }
 
+// Componente para mostrar la tarjeta de rutina de un amigo
 @Composable
 fun RutinaAmigoCard(
     rutina: RutinaAmigo,

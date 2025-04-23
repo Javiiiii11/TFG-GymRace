@@ -6,34 +6,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-//private val LightColors = lightColorScheme(
-//    primary = Color(0xffff9241),
-//    onPrimary = Color(0xFFFFFFFF),
-//    secondary = Color(0xFF03DAC5),
-//    onSecondary = Color(0xffff00fc),
-//    background = Color(0xffffffff),
-//    onBackground = Color(0xff000000),
-//    surface = Color(0xffcccccc),
-//    onSurface = Color(0xff000000),
-//    error = Color(0xFFB00020),
-//    outline = Color(0xFF000000),
-//)
-//
-//private val DarkColors = darkColorScheme(
-//    primary = Color(0xffff9241),
-//    onPrimary = Color(0xFFFFFFFF),
-//    secondary = Color(0xFF03DAC5),
-//    onSecondary = Color(0xFFFFFFFF),
-//    background = Color(0xFF121212),
-//    onBackground = Color(0xFFFFFFFF),
-//    surface = Color(0xff505050),
-//    onSurface = Color(0xFFFFFFFF),
-//    error = Color(0xff831022),
-//    outline = Color(0xFFFFFFFF),
-//)
-
-// ESQUEMA DE COLORES COMPLETO PARA MATERIAL DESIGN 3
-
 // TEMA CLARO
 private val LightColors = lightColorScheme(
     // Colores primarios
@@ -131,7 +103,7 @@ private val DarkColors = darkColorScheme(
 )
 
 
-
+// Función para aplicar el tema
 @Composable
 fun GymRaceTheme(content: @Composable () -> Unit) {
     // Usar el estado del tema desde el ThemeManager

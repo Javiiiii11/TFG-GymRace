@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ejercicios>
+
+
     <!-- Categoría: Abdominales -->
     <categoria nombre="Abdominales">
         <ejercicio>
@@ -22,30 +24,6 @@
                 <secundario>Oblicuos</secundario>
             </musculos>
         </ejercicio>
-
-<!--Duplicado en oblicuos-->
-
-<!--        <ejercicio>-->
-<!--            <nombre>Abdominal bicicleta</nombre>-->
-<!--            <descripcion>El ejercicio de abdominal bicicleta es excelente para trabajar los costados al simular un pedaleo mientras se alternan los codos y las rodillas en un movimiento controlado.</descripcion>-->
-<!--            <gif>@drawable/abdominal_bicicleta</gif>-->
-<!--            <pasos>-->
-<!--                <paso numero="1">Colocar la colchoneta y posicionarse boca arriba.</paso>-->
-<!--                <paso numero="2">Llevar la rodilla y el codo opuesto hacia el centro.</paso>-->
-<!--                <paso numero="3">Alternar el movimiento como si se pedaleara.</paso>-->
-<!--                <paso numero="4">Realizar el movimiento de forma controlada y mantener la contracción.</paso>-->
-<!--            </pasos>-->
-<!--            <consejo>-->
-<!--                <item>Realiza el movimiento de forma fluida.</item>-->
-<!--                <item>Evita forzar el cuello durante el ejercicio.</item>-->
-<!--                <item>Mantén un ritmo constante para maximizar la contracción.</item>-->
-<!--                <item>Concéntrate en el movimiento de los costados.</item>-->
-<!--            </consejo>-->
-<!--            <musculos>-->
-<!--                <principal>Recto abdominal</principal>-->
-<!--                <secundario>Oblicuos</secundario>-->
-<!--            </musculos>-->
-<!--        </ejercicio>-->
 
         <ejercicio>
             <nombre>Abdominal con Fitball</nombre>
@@ -358,29 +336,6 @@
                 <secundario>Core</secundario>
             </musculos>
         </ejercicio>
-
-<!--Duplicado en oblicuos-->
-
-<!--        <ejercicio>-->
-<!--            <nombre>Abdominal Supra-infra alternado (mancuernas)</nombre>-->
-<!--            <descripcion>Alterna la contracción entre la parte superior e inferior del abdomen, utilizando mancuernas para incrementar la resistencia.</descripcion>-->
-<!--            <gif>@drawable/abdominal_supra_infra_alternado__mancuernas_</gif>-->
-<!--            <pasos>-->
-<!--                <paso numero="1">Seleccionar mancuernas de peso adecuado.</paso>-->
-<!--                <paso numero="2">Acostarse o sentarse en una posición estable.</paso>-->
-<!--                <paso numero="3">Alternar contracciones enfocando parte superior e inferior del abdomen.</paso>-->
-<!--                <paso numero="4">Bajar el peso de manera controlada.</paso>-->
-<!--            </pasos>-->
-<!--            <consejo>-->
-<!--                <item>Sincroniza bien las contracciones para un movimiento uniforme.</item>-->
-<!--                <item>No apresures el movimiento para mantener la técnica.</item>-->
-<!--                <item>Concéntrate en sentir el trabajo en ambas áreas del abdomen.</item>-->
-<!--            </consejo>-->
-<!--            <musculos>-->
-<!--                <principal>Recto abdominal</principal>-->
-<!--                <secundario>Abdominal inferior</secundario>-->
-<!--            </musculos>-->
-<!--        </ejercicio>-->
 
         <ejercicio>
             <nombre>Abdominal Supra-infra (mancuernas)</nombre>
@@ -5916,6 +5871,5 @@
             </musculos>
         </ejercicio>
     </categoria>
-
 
 </ejercicios>

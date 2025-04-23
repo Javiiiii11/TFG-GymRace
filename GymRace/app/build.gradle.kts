@@ -1,4 +1,5 @@
 
+//Plugin de Gradle para Android
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -9,7 +10,7 @@ plugins {
 android {
     namespace = "com.example.gymrace"
     compileSdk = 35
-
+    // Configuración de la aplicación
     defaultConfig {
         applicationId = "com.example.gymrace"
         minSdk = 24
@@ -19,7 +20,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    // Configuración de la compilación
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -33,16 +34,17 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    // Configuración de Kotlin
     kotlinOptions {
         jvmTarget = "11"
     }
+    // Configuración de Compose
     buildFeatures {
         compose = true
     }
 }
-
+//Definición de las versiones de las librerías
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -62,32 +64,16 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-//    implementation(libs.coil.compose)
-//    implementation (libs.coil.gif)
-
-    //Gifs
     implementation("io.coil-kt:coil-compose:2.2.2")
     implementation ("io.coil-kt:coil-gif:2.1.0")
-
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.extended)
-
-    implementation(libs.threetenabp) // Add this line
-
+    implementation(libs.threetenabp)
     implementation(libs.androidx.navigation.compose)
-
-    //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
-    // Dependencias de Firebase Auth (ya deberías tenerlas)
     implementation("com.google.firebase:firebase-auth-ktx")
-
-    // Dependencias para Google Sign-In
     implementation("com.google.android.gms:play-services-auth:20.7.0")
-
-    //esto es la transicion de inicio
     implementation("androidx.core:core-splashscreen:1.0.1")
-
-
 
 }

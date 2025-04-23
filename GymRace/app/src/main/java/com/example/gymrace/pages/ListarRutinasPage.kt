@@ -1,7 +1,6 @@
 package com.example.gymrace
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -33,6 +32,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
+// Data class para representar una rutina
 data class Rutina(
     val id: String = "",
     val nombre: String = "",
@@ -43,13 +43,16 @@ data class Rutina(
     val fechaCreacion: Timestamp = Timestamp.now()
 )
 
+// Pantalla para listar las rutinas del usuario
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListarMisRutinasPage(navController: NavHostController) {
+    // Obtener la instancia de Firestore y el ID del usuario actual
     val db = FirebaseFirestore.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     val scope = rememberCoroutineScope()
 
+    // Estado para manejar la lista de rutinas, el estado de carga y mensajes de error
     var rutinas by remember { mutableStateOf<List<Rutina>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
@@ -226,15 +229,16 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                         .fillMaxSize()
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
-// Dentro de LazyColumn en ListarMisRutinasPage:
                     items(rutinas) { rutina ->
                         RutinaCard(
                             rutina = rutina,
                             onRutinaClick = {
+                                // Mostrar detalles de la rutina
                                 selectedRutina = rutina
                                 showDetailDialog = true
                             },
                             onDeleteClick = {
+                                // Mostrar diálogo de confirmación de eliminación
                                 rutinaToDelete = rutina
                                 showDeleteDialog = true
                             },
@@ -285,6 +289,7 @@ fun ListarMisRutinasPage(navController: NavHostController) {
             },
             dismissButton = {
                 TextButton(onClick = {
+                    // Cerrar el diálogo sin eliminar
                     showDeleteDialog = false
                     rutinaToDelete = null
                 }) {
@@ -486,7 +491,7 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                             }
                         }
                     }
-
+                    // Mostrar descripción de la rutina
                     if (currentRutina.descripcion.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
@@ -510,6 +515,7 @@ fun ListarMisRutinasPage(navController: NavHostController) {
 
                     Spacer(modifier = Modifier.height(8.dp))
 
+                    // Mostrar lista de ejercicios
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -539,6 +545,7 @@ fun ListarMisRutinasPage(navController: NavHostController) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
+                    // Botones de acción
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
@@ -560,7 +567,7 @@ fun ListarMisRutinasPage(navController: NavHostController) {
                                 if (selectedRutina != null) {
                                     val rutinaId = currentRutina.id
                                     navController.navigate("ejecutar_rutina/$rutinaId")
-                                    Log.d("ListarMisRutinasPage", "Ejecutar rutina: $rutinaId")
+                                    Log.d("Navigation", "Ejecutar rutina: $rutinaId")
 
                                     // Limpiar después de la navegación
                                     showDetailDialog = false
@@ -580,6 +587,7 @@ fun ListarMisRutinasPage(navController: NavHostController) {
     }
 }
 
+// Composable para mostrar una tarjeta de rutina
 @Composable
 fun RutinaCard(
     rutina: Rutina,
@@ -588,6 +596,7 @@ fun RutinaCard(
     onPlayClick: () -> Unit,
     onEditClick: () -> Unit
 ) {
+    // Tarjeta que muestra la información de la rutina
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -599,7 +608,7 @@ fun RutinaCard(
         Column(
             modifier = Modifier
                 .padding(16.dp)
-                .height(140.dp) // Establece una altura fija para todas las tarjetas
+                .height(140.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),

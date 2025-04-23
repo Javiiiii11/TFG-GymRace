@@ -581,7 +581,11 @@ fun CalendarHeader(currentYearMonth: YearMonth, onPrevious: () -> Unit, onNext: 
         // Título del mes y año
         Text(
             text = "${currentYearMonth.month.getDisplayName(TextStyle.FULL, Locale("es", "ES"))} ${currentYearMonth.year}",
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            modifier = Modifier
+                .padding(0.dp)
+                .wrapContentHeight()
+                .align(Alignment.CenterVertically),
         )
         // Botón para avanzar al siguiente mes
         IconButton(onClick = onNext) { Icon(Icons.Default.KeyboardArrowRight, contentDescription = "Next") }
