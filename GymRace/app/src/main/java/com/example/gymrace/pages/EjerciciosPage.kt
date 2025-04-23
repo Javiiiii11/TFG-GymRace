@@ -2,13 +2,8 @@ package com.example.gymrace
 
 import android.content.res.XmlResourceParser
 import android.os.Build.VERSION.SDK_INT
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -29,7 +24,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
@@ -40,6 +34,7 @@ import coil.size.Size
 import com.example.gymrace.ui.theme.GymRaceTheme
 import org.xmlpull.v1.XmlPullParser
 
+// Informacion de los ejercicios
 data class GifData(
     val category: String,
     val title: String,
@@ -51,16 +46,19 @@ data class GifData(
     val secondaryMuscles: String = ""
 )
 
+// Informacion de los pasos
 data class Step(
     val number: Int,
     val description: String
 )
 
+// Pagina de ejercicios
 @Composable
 fun EjerciciosPage(modifier: Modifier = Modifier) {
     Content(modifier)
 }
 
+// Barra de filtro
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterBar(
@@ -68,6 +66,7 @@ fun FilterBar(
     selectedCategory: MutableState<String>,
     categories: List<String>
 ) {
+    // Estado para la categoría seleccionada
     var expanded by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -115,16 +114,22 @@ fun FilterBar(
     }
 }
 
+// Composable principal
 @Composable
 fun Content(modifier: Modifier = Modifier) {
+    // Obtenemos el contexto de la aplicación
     val context = LocalContext.current
+    // Cargamos los GIFs desde el XML
     val (gifs, missingGifs) = remember { loadGifsFromXml(context.resources.getXml(R.xml.ejercicios), context) }
+    // Lista de GIFs que faltan
     val missingGifsText = remember { mutableStateOf(missingGifs.joinToString(", ")) }
-
+    // Estado para la búsqueda y la categoría seleccionada
     val searchQuery = remember { mutableStateOf("") }
+    // Estado para la categoría seleccionada
     val selectedCategory = remember { mutableStateOf("Todos") }
+    // Lista de categorías
     val categories = listOf("Todos") + gifs.map { it.category }.distinct()
-
+    // Estado para los GIFs filtrados
     val filteredGifs = gifs.filter { gif ->
         (selectedCategory.value == "Todos" || gif.category == selectedCategory.value) &&
                 (searchQuery.value.isEmpty() ||
@@ -139,6 +144,7 @@ fun Content(modifier: Modifier = Modifier) {
         FilterBar(searchQuery = searchQuery, selectedCategory = selectedCategory, categories = categories)
         Spacer(modifier = Modifier.height(32.dp))
 
+        // Mensaje de error si faltan GIFs
         if (missingGifsText.value.isNotEmpty()) {
             Text(
                 text = "Missing GIFs: ${missingGifsText.value}",
@@ -148,6 +154,7 @@ fun Content(modifier: Modifier = Modifier) {
             )
         }
 
+        // Mensaje de error si no se encuentran GIFs
         if (filteredGifs.isEmpty()) {
             Text(
                 text = "No se encontraron ejercicios",
@@ -155,6 +162,7 @@ fun Content(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(16.dp)
             )
         } else {
+            // Grid de GIFs
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = Modifier.weight(1f),
@@ -170,10 +178,12 @@ fun Content(modifier: Modifier = Modifier) {
     }
 }
 
+// Composable para mostrar cada GIF
 @Composable
 fun GifBox(gifData: GifData) {
+    // Estado para mostrar el detalle del GIF
     var showDetail by remember { mutableStateOf(false) }
-
+    // Contenedor del GIF
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -206,7 +216,7 @@ fun GifBox(gifData: GifData) {
             }
         }
     }
-
+    // Mostrar el detalle del GIF al hacer clic
     if (showDetail) {
         ExerciseDetailDialog(
             gifData = gifData,
@@ -215,11 +225,13 @@ fun GifBox(gifData: GifData) {
     }
 }
 
+// Composable para mostrar el detalle del GIF
 @Composable
 fun ExerciseDetailDialog(
     gifData: GifData,
     onDismiss: () -> Unit
 ) {
+    // Mostrar el diálogo con los detalles del GIF
     Dialog(onDismissRequest = onDismiss) {
         Card(
             modifier = Modifier
@@ -360,10 +372,12 @@ fun ExerciseDetailDialog(
     }
 }
 
-
+// Composable para mostrar el GIF
 @Composable
 fun GifImage(modifier: Modifier = Modifier, gif: Int) {
+    // Obtenemos el contexto de la aplicación
     val context = LocalContext.current
+    // Configuración del ImageLoader para manejar GIFs
     val imageLoader = ImageLoader.Builder(context)
         .components {
             if (SDK_INT >= 28) {
@@ -373,6 +387,7 @@ fun GifImage(modifier: Modifier = Modifier, gif: Int) {
             }
         }
         .build()
+    // Cargamos el GIF usando Coil
     Image(
         painter = rememberAsyncImagePainter(
             ImageRequest.Builder(context)
@@ -386,13 +401,17 @@ fun GifImage(modifier: Modifier = Modifier, gif: Int) {
     )
 }
 
+// Función para cargar los GIFs desde el XML
 fun loadGifsFromXml(
     parser: XmlResourceParser,
     context: android.content.Context
 ): Pair<List<GifData>, List<String>> {
+    // Lista para almacenar los GIFs
     val gifs = mutableListOf<GifData>()
+    // Lista para almacenar los GIFs que faltan
     val missingGifs = mutableListOf<String>()
 
+    // Variables para almacenar los datos del GIF actual
     var eventType = parser.eventType
     var currentTag: String? = null
     var currentCategory = ""
@@ -408,6 +427,7 @@ fun loadGifsFromXml(
     var currentStepNumber = 0
     var currentStepDesc = ""
 
+    // Iteramos a través del XML
     while (eventType != XmlPullParser.END_DOCUMENT) {
         when (eventType) {
             XmlPullParser.START_TAG -> {
@@ -479,6 +499,7 @@ fun loadGifsFromXml(
     return Pair(gifs, missingGifs)
 }
 
+// Preview de la página de ejercicios
 @Preview(showBackground = true)
 @Composable
 fun ContentPreview() {

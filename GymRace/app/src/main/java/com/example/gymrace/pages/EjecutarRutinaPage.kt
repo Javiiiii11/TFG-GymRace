@@ -1,5 +1,6 @@
 package com.example.gymrace
 
+import android.util.Log
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -33,9 +34,12 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
+    // Inicializa Firebase Firestore
     val db = FirebaseFirestore.getInstance()
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
+
+    // Inicializa el controlador de la corutina
+//    val scope = rememberCoroutineScope()
 
     // Estados para la rutina
     var rutina by remember { mutableStateOf<Rutina?>(null) }
@@ -101,11 +105,15 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                 }
                 isLoading = false
             } else {
+                // Si no se encontró la rutina en ninguna colección
                 errorMessage = "No se encontró la rutina"
+                Log.d("Error", "Rutina no encontrada")
                 isLoading = false
             }
         } catch (e: Exception) {
+            // Manejo de errores al cargar la rutina
             errorMessage = "Error al cargar la rutina: ${e.message}"
+            Log.e("Error", "Error al cargar la rutina: ${e.message}")
             isLoading = false
         }
     }
@@ -120,8 +128,6 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
             // Completar ejercicio cuando termina el temporizador
             isExerciseCompleted = true
             isTimerRunning = false
-            // Guardar el último tiempo usado
-            lastTimeUsed = exerciseTimer + 1 // +1 porque acabamos de restar
         }
     }
 
@@ -180,7 +186,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 12.dp, vertical = 8.dp), // Reducido padding
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     // Barra de progreso para toda la rutina
@@ -192,7 +198,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                             .clip(RoundedCornerShape(3.dp))
                     )
 
-                    Spacer(modifier = Modifier.height(32.dp)) // Reducido de 16.dp a 8.dp
+                    Spacer(modifier = Modifier.height(32.dp))
 
                     // Nombre del ejercicio actual y número de serie
                     Column(
@@ -208,13 +214,13 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                     }
 
 
-                    Spacer(modifier = Modifier.height(32.dp)) // Reducido de 8.dp a 4.dp
+                    Spacer(modifier = Modifier.height(32.dp))
 
                     // Visualización del ejercicio (GIF)
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(280.dp) // Reducido de 280.dp a 220.dp
+                            .height(280.dp)
                             .background(
                                 MaterialTheme.colorScheme.surfaceVariant,
                                 RoundedCornerShape(12.dp)
@@ -224,7 +230,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                         if (currentExerciseData != null) {
                             GifImage(
                                 modifier = Modifier
-                                    .size(240.dp) // Reducido de 240.dp a 200.dp
+                                    .size(240.dp)
                                     .clip(RoundedCornerShape(12.dp)),
                                 gif = currentExerciseData.resource
                             )
@@ -232,21 +238,21 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                             Icon(
                                 imageVector = Icons.Default.FitnessCenter,
                                 contentDescription = null,
-                                modifier = Modifier.size(80.dp), // Reducido de 80.dp a 60.dp
+                                modifier = Modifier.size(80.dp),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp)) // Reducido de 16.dp a 8.dp
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     // Detalle del ejercicio actual
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp) // Reducido de 16.dp a 12.dp
+                        shape = RoundedCornerShape(12.dp)
                     ) {
                         Column(
-                            modifier = Modifier.padding(10.dp) // Reducido de 16.dp a 10.dp
+                            modifier = Modifier.padding(10.dp)
                         ) {
                             if (currentExerciseData != null) {
                                 Text(
@@ -255,7 +261,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                     fontWeight = FontWeight.Bold
                                 )
 
-                                Spacer(modifier = Modifier.height(4.dp)) // Reducido de 8.dp a 4.dp
+                                Spacer(modifier = Modifier.height(4.dp))
 
                                 Text(
                                     text = "Categoría: ${currentExerciseData.category}",
@@ -265,8 +271,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                         }
                     }
 
-                    // Esto empuja los elementos siguientes hacia abajo con menos espacio
-                    Spacer(modifier = Modifier.weight(0.5f)) // Reducido de 1f a 0.5f
+                    Spacer(modifier = Modifier.weight(0.5f))
 
                     // Temporizador y botones pegados abajo
                     Column(
@@ -278,7 +283,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                             // Temporizador clickable para abrir el diálogo de ajuste
                             Box(
                                 modifier = Modifier
-                                    .size(130.dp) // Reducido de 120.dp a 100.dp
+                                    .size(130.dp)
                                     .clip(CircleShape)
                                     .background(MaterialTheme.colorScheme.primaryContainer)
                                     .clickable(enabled = !isTimerRunning) {
@@ -293,7 +298,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                 ) {
                                     Text(
                                         text = exerciseTimer.toString(),
-                                        fontSize = 40.sp, // Cambia el tamaño de la fuente a 40sp
+                                        fontSize = 40.sp,
                                         style = MaterialTheme.typography.headlineLarge,
                                         color = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
@@ -309,20 +314,20 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                 }
                             }
 
-                            Spacer(modifier = Modifier.height(8.dp)) // Reducido de 16.dp a 8.dp
+                            Spacer(modifier = Modifier.height(8.dp))
 
                             // Botón de inicio/pausa
                             Button(
                                 onClick = { isTimerRunning = !isTimerRunning },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(40.dp) // Reducido de 45.dp a 40.dp
+                                    .height(40.dp)
                             ) {
                                 Icon(
                                     imageVector = if (isTimerRunning) Icons.Default.Pause else Icons.Default.PlayArrow,
                                     contentDescription = null
                                 )
-                                Spacer(modifier = Modifier.width(4.dp)) // Reducido de 8.dp a 4.dp
+                                Spacer(modifier = Modifier.width(4.dp))
                                 Text(if (isTimerRunning) "Pausar" else "Iniciar")
                             }
                         } else {
@@ -336,11 +341,10 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                     onClick = {
                                         currentSeries++
                                         isExerciseCompleted = false
-//                                        exerciseTimer = lastTimeUsed // Usar el último tiempo configurado
                                     },
                                     modifier = Modifier
                                         .weight(1f)
-                                        .height(48.dp), // Reducido de 56.dp a 48.dp
+                                        .height(48.dp),
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = MaterialTheme.colorScheme.secondaryContainer,
                                         contentColor = MaterialTheme.colorScheme.onSecondaryContainer
@@ -366,7 +370,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                     },
                                     modifier = Modifier
                                         .weight(1f)
-                                        .height(48.dp), // Reducido de 56.dp a 48.dp
+                                        .height(48.dp),
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = MaterialTheme.colorScheme.primary
                                     )
@@ -384,7 +388,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                             }
 
                             // Información sobre series completadas
-                            Spacer(modifier = Modifier.height(4.dp)) // Reducido de 8.dp a 4.dp
+                            Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = "$currentSeries series completadas",
                                 style = MaterialTheme.typography.bodyMedium,
@@ -404,7 +408,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
             title = { Text("Ajustar tiempo") },
             text = {
                 Column(
-                    modifier = Modifier.padding(4.dp), // Reducido de 8.dp a 4.dp
+                    modifier = Modifier.padding(4.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     // Valor actual grande
@@ -412,10 +416,10 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                         text = "$exerciseTimer s",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(vertical = 4.dp) // Reducido de 8.dp a 4.dp
+                        modifier = Modifier.padding(vertical = 4.dp)
                     )
 
-                    Spacer(modifier = Modifier.height(4.dp)) // Reducido de 8.dp a 4.dp
+                    Spacer(modifier = Modifier.height(4.dp))
 
                     // Control de ajuste del temporizador
                     Row(
@@ -427,16 +431,16 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                         Row {
                             OutlinedIconButton(
                                 onClick = { exerciseTimer = (exerciseTimer - 10).coerceAtLeast(minTime) },
-                                modifier = Modifier.size(36.dp) // Reducido de 40.dp a 36.dp
+                                modifier = Modifier.size(36.dp)
                             ) {
                                 Text("-10", style = MaterialTheme.typography.labelMedium)
                             }
 
-                            Spacer(modifier = Modifier.width(4.dp)) // Reducido de 8.dp a 4.dp
+                            Spacer(modifier = Modifier.width(4.dp))
 
                             OutlinedIconButton(
                                 onClick = { exerciseTimer = (exerciseTimer - 5).coerceAtLeast(minTime) },
-                                modifier = Modifier.size(36.dp) // Reducido de 40.dp a 36.dp
+                                modifier = Modifier.size(36.dp)
                             ) {
                                 Text("-5", style = MaterialTheme.typography.labelMedium)
                             }
@@ -446,23 +450,23 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                         Row {
                             OutlinedIconButton(
                                 onClick = { exerciseTimer = (exerciseTimer + 5).coerceAtMost(maxTime) },
-                                modifier = Modifier.size(36.dp) // Reducido de 40.dp a 36.dp
+                                modifier = Modifier.size(36.dp)
                             ) {
                                 Text("+5", style = MaterialTheme.typography.labelMedium)
                             }
 
-                            Spacer(modifier = Modifier.width(4.dp)) // Reducido de 8.dp a 4.dp
+                            Spacer(modifier = Modifier.width(4.dp))
 
                             OutlinedIconButton(
                                 onClick = { exerciseTimer = (exerciseTimer + 10).coerceAtMost(maxTime) },
-                                modifier = Modifier.size(36.dp) // Reducido de 40.dp a 36.dp
+                                modifier = Modifier.size(36.dp)
                             ) {
                                 Text("+10", style = MaterialTheme.typography.labelMedium)
                             }
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp)) // Reducido de 16.dp a 8.dp
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     // Slider para ajuste fino
                     Slider(
@@ -524,6 +528,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
     }
 }
 
+// Composable para mostrar un mensaje de error
 @Composable
 fun ErrorMessage(message: String, onRetry: () -> Unit) {
     Column(
@@ -536,11 +541,11 @@ fun ErrorMessage(message: String, onRetry: () -> Unit) {
         Icon(
             imageVector = Icons.Default.Error,
             contentDescription = null,
-            modifier = Modifier.size(64.dp), // Reducido de 80.dp a 64.dp
+            modifier = Modifier.size(64.dp),
             tint = MaterialTheme.colorScheme.error
         )
 
-        Spacer(modifier = Modifier.height(8.dp)) // Reducido de 16.dp a 8.dp
+        Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             text = message,
@@ -548,7 +553,7 @@ fun ErrorMessage(message: String, onRetry: () -> Unit) {
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(8.dp)) // Reducido de 16.dp a 8.dp
+        Spacer(modifier = Modifier.height(8.dp))
 
         Button(onClick = onRetry) {
             Text("Reintentar")
@@ -556,9 +561,14 @@ fun ErrorMessage(message: String, onRetry: () -> Unit) {
     }
 }
 
+// Composable para mostrar la pantalla de rutina completada
 @Composable
 fun RutinaCompletada(rutina: Rutina, onFinish: () -> Unit) {
+
+    // Animación de escala infinita
+    // Se utiliza para hacer que el icono de verificación crezca y decrezca
     val infiniteTransition = rememberInfiniteTransition()
+    // Se define la animación de escala
     val scale by infiniteTransition.animateFloat(
         initialValue = 1f,
         targetValue = 1.2f,
@@ -571,18 +581,18 @@ fun RutinaCompletada(rutina: Rutina, onFinish: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(12.dp), // Reducido de 16.dp a 12.dp
+            .padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Icon(
             imageVector = Icons.Default.CheckCircle,
             contentDescription = null,
-            modifier = Modifier.size(100.dp * scale), // Reducido de 120.dp a 100.dp
+            modifier = Modifier.size(100.dp * scale),
             tint = MaterialTheme.colorScheme.primary
         )
 
-        Spacer(modifier = Modifier.height(16.dp)) // Reducido de 24.dp a 16.dp
+        Spacer(modifier = Modifier.height(16.dp))
 
         Text(
             text = "¡Rutina Completada!",
@@ -591,7 +601,7 @@ fun RutinaCompletada(rutina: Rutina, onFinish: () -> Unit) {
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(8.dp)) // Reducido de 16.dp a 8.dp
+        Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             text = "¡Felicidades! Has completado \"${rutina.nombre}\"",
@@ -599,7 +609,7 @@ fun RutinaCompletada(rutina: Rutina, onFinish: () -> Unit) {
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(4.dp)) // Reducido de 8.dp a 4.dp
+        Spacer(modifier = Modifier.height(4.dp))
 
         Text(
             text = "Completaste ${rutina.ejercicios.size} ejercicios",
@@ -607,13 +617,13 @@ fun RutinaCompletada(rutina: Rutina, onFinish: () -> Unit) {
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(16.dp)) // Reducido de 32.dp a 16.dp
+        Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = onFinish,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp) // Reducido de 56.dp a 48.dp
+                .height(48.dp)
         ) {
             Icon(Icons.Default.Home, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
@@ -653,37 +663,4 @@ class RutinaLauncher(
             Text(text)
         }
     }
-}
-
-// Uso de ejemplo en un composable:
-@Composable
-fun RutinaDetailDialog(
-    rutina: Rutina,
-    onDismiss: () -> Unit,
-    navController: NavHostController
-) {
-    val rutinaLauncher = remember { RutinaLauncher(navController, rutina.id) }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(rutina.nombre) },
-        text = {
-            Column {
-                Text(rutina.descripcion)
-                Text("Dificultad: ${rutina.dificultad}")
-                Text("Ejercicios: ${rutina.ejercicios.size}")
-            }
-        },
-        confirmButton = {
-            rutinaLauncher.LaunchButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = "Iniciar Rutina"
-            )
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cerrar")
-            }
-        }
-    )
 }

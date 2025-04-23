@@ -1,8 +1,5 @@
 package com.example.gymrace.pages
 
-// Importaciones existentes
-import GLOBAL
-import GLOBAL.Companion.crearUsuarioEnFirestore
 import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.compose.foundation.layout.*
@@ -28,12 +25,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.auth.auth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
-// Nuevas importaciones para autenticación con Google
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -53,15 +47,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.example.gymrace.R
+import com.example.gymrace.pages.GLOBAL.Companion.crearUsuarioEnFirestore
 import com.example.gymrace.ui.theme.ThemeManager
 import com.example.gymrace.ui.theme.rememberThemeState
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

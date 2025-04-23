@@ -7,6 +7,8 @@ import com.example.gymrace.pages.saveLoginState
 import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent
 import android.util.Log
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
@@ -40,6 +42,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -59,6 +62,7 @@ import com.example.gymrace.pages.saveLoginState
 import com.example.gymrace.ui.theme.ThemeManager.isDarkTheme
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
@@ -74,8 +78,22 @@ data class User(
     val nivelExperiencia: String
 )
 
+// Esta función debe ir fuera del composable UserPage, al mismo nivel
+private fun animateSettingsIcon(
+    rotationState: androidx.compose.animation.core.Animatable<Float, androidx.compose.animation.core.AnimationVector1D>,
+    opening: Boolean,
+    coroutineScope: kotlinx.coroutines.CoroutineScope
+) {
+    coroutineScope.launch {
+        rotationState.animateTo(
+            targetValue = if (opening) 180f else 0f,
+            animationSpec = tween(300, easing = FastOutSlowInEasing)
+        )
+    }
+}
+
 @Composable
-fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navController: NavController) {
+fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navController: NavController) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     var showThemeMenu by remember { mutableStateOf(false) }
@@ -105,11 +123,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
     // Estado para saber si el usuario está registrado con Google
     var isGoogleUser by remember { mutableStateOf(false) }
 
-
-
-
     // Efecto para cargar los datos del usuario desde Firebase
-// Efecto para cargar los datos del usuario desde Firebase
     LaunchedEffect(key1 = Unit) {
         try {
             val currentUser = FirebaseAuth.getInstance().currentUser
@@ -129,7 +143,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                 if (userDocument.exists()) {
                     println("User document exists - loading data")
 
-// Actualizar variables globales
+                    // Actualizar variables globales
                     GLOBAL.id = currentUser.uid
                     GLOBAL.nombre = userDocument.getString("nombre") ?: ""
                     GLOBAL.peso = userDocument.getString("peso") ?: ""
@@ -138,7 +152,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                     GLOBAL.objetivoFitness = userDocument.getString("objetivoFitness") ?: ""
                     GLOBAL.diasEntrenamientoPorSemana = userDocument.getString("diasEntrenamientoPorSemana") ?: ""
 
-// Transformar el valor de nivelExperiencia al momento de asignarlo
+                    // Transformar el valor de nivelExperiencia al momento de asignarlo
                     val rawNivelExperiencia = userDocument.getString("nivelExperiencia") ?: ""
                     GLOBAL.nivelExperiencia = when (rawNivelExperiencia) {
                         "Avanzado (más de 2 años)" -> "Avanzado"
@@ -147,7 +161,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                         else -> rawNivelExperiencia  // En caso de otro valor, se mantiene el original
                     }
 
-// Actualizar estado local
+                    // Actualizar estado local
                     userName = GLOBAL.nombre
                     userWeight = GLOBAL.peso
                     userHeight = GLOBAL.altura
@@ -155,8 +169,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                     userFitnessGoal = GLOBAL.objetivoFitness
                     userTrainingDays = GLOBAL.diasEntrenamientoPorSemana
                     userExperienceLevel = GLOBAL.nivelExperiencia
-
-
 
                     println("User data loaded successfully: ${GLOBAL.nombre}")
 
@@ -184,8 +196,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
         }
     }
 
-
-// Mostrar diálogo de comunidad
+    // Mostrar diálogo de comunidad
     if (showCommunityDialog) {
         LaunchedEffect(key1 = showCommunityDialog) {
             isLoadingUsers = true
@@ -225,7 +236,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
         )
     }
 
-// Mostrar diálogo de amigos
+    // Mostrar diálogo de amigos
     if (showFriendsDialog) {
         UsersDialog(
             title = "Mis Amigos",
@@ -243,7 +254,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
             showAddButton = false
         )
     }
-
 
     Column(
         modifier = Modifier
@@ -268,19 +278,32 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                 color = MaterialTheme.colorScheme.onBackground
             )
 
-
             Box {
-                IconButton(onClick = { showThemeMenu = !showThemeMenu }) {
+                // Añade este estado para controlar la rotación del icono
+                val rotationState = remember { androidx.compose.animation.core.Animatable(0f) }
+                val coroutineScope = rememberCoroutineScope()
+
+                IconButton(onClick = {
+                    showThemeMenu = !showThemeMenu
+                    // Usa la función de animación
+                    animateSettingsIcon(rotationState, showThemeMenu, coroutineScope)
+                }) {
                     Icon(
                         imageVector = Icons.Default.Settings,
                         contentDescription = "Configuración",
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.rotate(rotationState.value) // Aplica la rotación actual
                     )
                 }
+
                 // Menú desplegable para cambiar tema y más funciones
                 DropdownMenu(
                     expanded = showThemeMenu,
-                    onDismissRequest = { showThemeMenu = false },
+                    onDismissRequest = {
+                        showThemeMenu = false
+                        // También activa la animación cuando se cierra el menú por dismissal
+                        animateSettingsIcon(rotationState, false, coroutineScope)
+                    },
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.surface)
                         .width(200.dp)
@@ -299,11 +322,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                     DropdownMenuItem(
                         text = {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-//                                Icon(
-//                                    imageVector = Icons.Outlined.DarkMode,
-//                                    contentDescription = "Cambiar tema",
-//                                    modifier = Modifier.size(20.dp)
-//                                )
                                 Icon(
                                     imageVector = if (isDarkTheme.value) {
                                         Icons.Default.LightMode // Icono para modo oscuro (cuando está en claro)
@@ -311,7 +329,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                                         Icons.Default.DarkMode // Icono para modo claro (cuando está en oscuro)
                                     },
                                     contentDescription = "Cambiar tema",
-//                                    tint = MaterialTheme.colorScheme.primary // Opcionalmente cambiar el color
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(text = "Cambiar tema")
@@ -320,6 +337,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                         onClick = {
                             onThemeChange()
                             showThemeMenu = false
+                            // Anima el icono de vuelta a la posición original al cerrar el menú
+                            animateSettingsIcon(rotationState, false, coroutineScope)
                         }
                     )
                     Text(
@@ -369,6 +388,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit,navControl
                         onClick = {
                             showDeleteAccountDialog = true
                             showThemeMenu = false
+                            // Anima el icono al cerrar el menú para abrir el diálogo
+                            animateSettingsIcon(rotationState, false, coroutineScope)
                         }
                     )
                 }

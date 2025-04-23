@@ -1,26 +1,38 @@
+package com.example.gymrace.pages
+
 import android.util.Log
-import android.widget.Toast
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-
+// Clase GLOBAL para manejar datos globales y operaciones de Firestore
 class GLOBAL {
-
-
-
+    // Variables globales para almacenar datos del usuario
     companion object {
 
+        //Variables globales para almacenar datos del usuario
+        var id: String = ""
+        var nombre: String = ""
+        var peso: String = ""
+        var altura: String = ""
+        var edad: String = ""
+        var objetivoFitness: String = ""
+        var diasEntrenamientoPorSemana: String = ""
+        var nivelExperiencia: String = ""
+
+        // Variables para el registro de usuario
+        var name: String = ""
+        var email: String = ""
+        var password: String = ""
+
+        // Función para crear un usuario en Firestore con valores iniciales
         fun crearUsuarioEnFirestore(userId: String,nombre: String, onComplete: () -> Unit) {
+            // Crear un nuevo usuario en Firestore con valores iniciales
             if (userId.isEmpty()) {
                 Log.e("Firestore", "El ID de usuario está vacío, no se puede crear en Firestore.")
                 return
             }
-
+            // Crear un HashMap con los datos iniciales del usuario
             val datosIniciales = hashMapOf(
                 "id" to userId,
                 "nombre" to nombre,
@@ -31,7 +43,7 @@ class GLOBAL {
                 "diasEntrenamientoPorSemana" to "0",
                 "nivelExperiencia" to "Sin nivel"
             )
-
+            // Guardar los datos en Firestore
             Firebase.firestore.collection("usuarios")
                 .document(userId)
                 .set(datosIniciales)
@@ -44,7 +56,7 @@ class GLOBAL {
                 }
         }
 
-
+        // Función para guardar los datos del registro del usuario en Firestore
         fun guardarDatosRegistro(
             id: String,
             nombre: String,
@@ -87,21 +99,5 @@ class GLOBAL {
                 println("Usuario no autenticado")
             }
         }
-
-
-        var id: String = ""
-        var nombre: String = ""
-        var peso: String = ""
-        var altura: String = ""
-        var edad: String = ""
-        var objetivoFitness: String = ""
-        var diasEntrenamientoPorSemana: String = ""
-        var nivelExperiencia: String = ""
-
-        var name: String = ""
-        var email: String = ""
-        var password: String = ""
-
-
     }
 }

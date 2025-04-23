@@ -23,9 +23,9 @@ import com.example.gymrace.R
 import kotlinx.coroutines.delay
 import android.os.Build
 import android.util.Log
-import androidx.compose.material3.MaterialTheme
 import com.google.firebase.auth.FirebaseAuth
 
+// Composable para la pantalla de inicio (carga inicial)
 @Composable
 fun InitialScreen(navController: NavController) {
     var startAnimation by remember { mutableStateOf(false) }
@@ -49,13 +49,14 @@ fun InitialScreen(navController: NavController) {
         Log.d("Firebase", "isEmailVerified: ${currentUser?.isEmailVerified}")
 
         // Si el usuario está autenticado y su email está verificado, navega a la pantalla principal
-        if (currentUser != null /* && currentUser.isEmailVerified */) {
-            // Si quieres verificar el email, descomenta la condición anterior
+        if (currentUser != null) {
             navController.navigate("main") {
+                Log.d("Navigation", "Navegando a home")
                 popUpTo("splash") { inclusive = true }
             }
         } else {
             navController.navigate("login") {
+                Log.d("Navigation", "Navegando a login")
                 popUpTo("splash") { inclusive = true }
             }
         }
@@ -65,7 +66,7 @@ fun InitialScreen(navController: NavController) {
     SplashContent(alpha = alphaAnim)
 }
 
-
+// Composable para el contenido de la pantalla de carga
 @Composable
 fun SplashContent(alpha: Float) {
     val context = LocalContext.current
