@@ -92,6 +92,7 @@ private fun animateSettingsIcon(
     }
 }
 
+
 @Composable
 fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navController: NavController) {
     val context = LocalContext.current
