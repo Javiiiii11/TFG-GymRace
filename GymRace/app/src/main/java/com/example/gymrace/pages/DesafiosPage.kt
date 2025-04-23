@@ -1,7 +1,6 @@
 package com.example.gymrace.pages
 
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -11,7 +10,6 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import coil.compose.rememberImagePainter
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -69,6 +67,7 @@ data class Challenge(
     val status: String // PENDING, ACCEPTED, IN_PROGRESS, COMPLETED
 )
 
+// Modelo de datos para amigos
 data class Friend(
     val id: String,
     val name: String,
@@ -77,31 +76,36 @@ data class Friend(
 
 // ViewModel para Desafíos
 class ChallengeViewModel : ViewModel() {
+    // Inicializa Firebase Firestore
     private val firestore = FirebaseFirestore.getInstance()
-
+    // StateFlow para almacenar la lista de amigos y desafíos
     private val _userFriends = MutableStateFlow<List<Friend>>(emptyList())
+    // Exposición de la lista de amigos como StateFlow
     val userFriends: StateFlow<List<Friend>> = _userFriends
-
+    // StateFlow para almacenar la lista de desafíos
     private val _friendsChallenges = MutableStateFlow<List<Challenge>>(emptyList())
+    // Exposición de la lista de desafíos como StateFlow
     val friendsChallenges: StateFlow<List<Challenge>> = _friendsChallenges
-
+    // Función para cargar amigos de un usuario
     suspend fun loadFriends(userId: String) {
         try {
+            // Obtiene la lista de amigos del usuario
             val amigosDocSnapshot = firestore.collection("amigos")
                 .document(userId)
                 .get()
                 .await()
-
+            // Verifica si el documento existe
             val friendsIds = amigosDocSnapshot.get("listaAmigos") as? List<String> ?: emptyList()
+            // Crea una lista mutable para almacenar los amigos
             val friendsList = mutableListOf<Friend>()
             Log.d("ChallengeViewModel", "Friends IDs: $friendsIds")
-
+            // Itera sobre los IDs de amigos y obtiene sus datos
             for (friendId in friendsIds) {
                 val friendUserSnapshot = firestore.collection("usuarios")
                     .document(friendId)
                     .get()
                     .await()
-
+                // Verifica si el documento del amigo existe
                 if (friendUserSnapshot.exists()) {
                     val friendName = friendUserSnapshot.getString("nombre") ?: "Usuario"
                     friendsList.add(Friend(id = friendId, name = friendName))
@@ -109,27 +113,32 @@ class ChallengeViewModel : ViewModel() {
             }
             _userFriends.value = friendsList
         } catch (e: Exception) {
-            Log.e("ChallengeViewModel", "Error loading friends: ${e.message}")
+            // Manejo de errores al cargar amigos
+            Log.e("ChallengeViewModel", "Error al cargar los amigos: ${e.message}")
         }
     }
-
+    // Función para cargar desafíos de amigos
     suspend fun loadFriendsChallenges(userId: String) {
         try {
+            // Obtiene la lista de desafíos creados por el usuario
             val challengesSnapshot = firestore.collection("desafios")
                 .whereEqualTo("creador.id", userId)
                 .get()
                 .await()
-
+            // Obtiene la lista de desafíos en los que el usuario es participante
             val participantChallengesSnapshot = firestore.collection("desafios")
                 .whereEqualTo("amigoInvitado.id", userId)
                 .get()
                 .await()
-
+            // Crea una lista mutable para almacenar todos los desafíos
             val allChallenges = mutableListOf<Challenge>()
-
+            // Mapea los documentos de desafíos a objetos Challenge
             challengesSnapshot.documents.mapNotNullTo(allChallenges) { document ->
+                // Extrae los datos del documento y maneja posibles errores
                 val creatorProgress = (document.get("creador.progreso") as? Long)?.toInt() ?: 0
+                // Maneja el progreso del participante
                 val participantProgress = (document.get("amigoInvitado.progreso") as? Long)?.toInt() ?: 0
+                // Crea un objeto Challenge a partir de los datos del documento
                 Challenge(
                     id = document.id,
                     name = document.getString("titulo") ?: "",
@@ -143,10 +152,13 @@ class ChallengeViewModel : ViewModel() {
                     status = document.getString("status") ?: "PENDING"
                 )
             }
-
+            // Mapea los documentos de desafíos en los que el usuario es participante
             participantChallengesSnapshot.documents.mapNotNullTo(allChallenges) { document ->
+                // Extrae los datos del documento y maneja posibles errores
                 val creatorProgress = (document.get("creador.progreso") as? Long)?.toInt() ?: 0
+                // Maneja el progreso del creador
                 val participantProgress = (document.get("amigoInvitado.progreso") as? Long)?.toInt() ?: 0
+                // Crea un objeto Challenge a partir de los datos del documento
                 Challenge(
                     id = document.id,
                     name = document.getString("titulo") ?: "",
@@ -163,16 +175,18 @@ class ChallengeViewModel : ViewModel() {
 
             _friendsChallenges.value = allChallenges
         } catch (e: Exception) {
-            Log.e("ChallengeViewModel", "Error loading challenges: ${e.message}")
+            // Manejo de errores al cargar desafíos
+            Log.e("Error", "Error al cargar los desafios de los amigos: ${e.message}")
         }
     }
-
+    // Función para crear un nuevo desafío
     suspend fun createChallenge(challenge: Challenge) {
         try {
+            // Verifica si el ID del desafío está vacío y genera uno nuevo
             val challengeData = if (challenge.id.isBlank()) {
                 challenge.copy(id = UUID.randomUUID().toString())
             } else challenge
-
+            // Crea un mapa con los datos del desafío
             val desafioData = mapOf(
                 "creador" to mapOf("id" to challengeData.creatorId, "progreso" to 0),
                 "amigoInvitado" to mapOf("id" to challengeData.participantId, "progreso" to 0),
@@ -182,7 +196,7 @@ class ChallengeViewModel : ViewModel() {
                 "repeticiones" to challengeData.repetitions,
                 "status" to challengeData.status
             )
-
+            // Guarda el desafío en Firestore
             firestore.collection("desafios")
                 .document(challengeData.id)
                 .set(desafioData)
@@ -190,71 +204,84 @@ class ChallengeViewModel : ViewModel() {
 
             loadFriendsChallenges(challenge.creatorId)
         } catch (e: Exception) {
-            Log.e("ChallengeViewModel", "Error creating challenge: ${e.message}")
+            // Manejo de errores al crear un desafío
+            Log.e("Error", "Error al crear el desafio: ${e.message}")
         }
     }
 
+    // Función para actualizar el estado de un desafío
     suspend fun updateChallengeStatus(challengeId: String, newStatus: String, userId: String) {
         try {
+            // Verifica si el nuevo estado es "COMPLETED" y actualiza el progreso
             firestore.collection("desafios")
                 .document(challengeId)
                 .update("status", newStatus)
                 .await()
             loadFriendsChallenges(userId)
         } catch (e: Exception) {
-            Log.e("ChallengeViewModel", "Error updating challenge: ${e.message}")
+            // Manejo de errores al actualizar el estado del desafío
+            Log.e("Error", "Error al actualizar el estado: ${e.message}")
         }
     }
 
+    // Función para actualizar el progreso de un desafío
     suspend fun updateProgress(challengeId: String, userId: String, newProgress: Int) {
         try {
+            // Obtiene el documento del desafío
             val challengeDoc = firestore.collection("desafios")
                 .document(challengeId)
                 .get()
                 .await()
-
+            // Verifica si el documento existe
             val creatorId = challengeDoc.get("creador.id") as? String
+            // Verifica si el creador es el usuario actual
             val participantId = challengeDoc.get("amigoInvitado.id") as? String
-
+            // Verifica si el participante es el usuario actual
             val updateField = when (userId) {
                 creatorId -> "creador.progreso"
                 participantId -> "amigoInvitado.progreso"
                 else -> throw Exception("Usuario no es parte de este desafío")
             }
-
+            // Actualiza el progreso del desafío
             firestore.collection("desafios")
                 .document(challengeId)
                 .update(updateField, newProgress)
                 .await()
-
+            // Verifica si el progreso alcanzó el objetivo
             val repetitions = (challengeDoc.getLong("repeticiones") ?: 0).toInt()
+            // Si el progreso es igual o mayor al objetivo, actualiza el estado a "COMPLETED"
             if (newProgress >= repetitions) {
                 firestore.collection("desafios")
                     .document(challengeId)
                     .update("status", "COMPLETED")
                     .await()
             }
+            // Recarga la lista de desafíos
             loadFriendsChallenges(userId)
         } catch (e: Exception) {
-            Log.e("ChallengeViewModel", "Error updating progress: ${e.message}")
+            // Manejo de errores al actualizar el progreso
+            Log.e("Error", "Error al actualizar el desafio: ${e.message}")
         }
     }
 
     // Permite eliminar un desafío:
     // - Si está en progreso: solo el creador puede eliminarlo.
-    // - Si está completado: cualquiera puede eliminarlo.
+    // - Si está completado: cualquiera de los 2 puede eliminarlo.
     suspend fun deleteChallenge(challengeId: String, userId: String, challengeStatus: String, creatorId: String) {
         try {
+            // Verifica si el desafío está en progreso y si el usuario es el creador
             if (challengeStatus != "COMPLETED" && userId != creatorId) {
                 throw Exception("Solo el creador puede eliminar el desafío en progreso")
             }
+            // Elimina el desafío de Firestore
             firestore.collection("desafios")
                 .document(challengeId)
                 .delete()
                 .await()
             loadFriendsChallenges(userId)
         } catch (e: Exception) {
-            Log.e("ChallengeViewModel", "Error deleting challenge: ${e.message}")
+            // Manejo de errores al eliminar el desafío
+            Log.e("Error", "Error al eliminar el desafio: ${e.message}")
         }
     }
 }
@@ -266,24 +293,37 @@ fun DesafiosPage(
     viewModel: ChallengeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     userId: String
 ) {
+    // Recupera el contexto de la aplicación
     val challenges by viewModel.friendsChallenges.collectAsState(initial = emptyList())
+    // Recupera la lista de amigos del ViewModel
     val friends by viewModel.userFriends.collectAsState(initial = emptyList())
+    // Inicializa la base de datos Firestore
     val coroutineScope = rememberCoroutineScope()
 
-    var showCreateDialog by remember { mutableStateOf(false) }
-    var showProgressDialog by remember { mutableStateOf(false) }
-    var selectedChallenge by remember { mutableStateOf<Challenge?>(null) }
-    var newProgress by remember { mutableStateOf("0") }
-
     // Estados para diálogos
+    // Estado para el diálogo de creación de desafío
+    var showCreateDialog by remember { mutableStateOf(false) }
+    // Estado para el diálogo de progreso
+    var showProgressDialog by remember { mutableStateOf(false) }
+    // Estado para el desafío seleccionado
+    var selectedChallenge by remember { mutableStateOf<Challenge?>(null) }
+    // Estado para el progreso del desafío
+    var newProgress by remember { mutableStateOf("0") }
+    // Estado para el diálogo de comunidad
     var showCommunityDialog by remember { mutableStateOf(false) }
 
     // Estados para el diálogo de comunidad y usuarios
+    // Estado para la lista de usuarios
     var allUsers by remember { mutableStateOf<List<User>>(emptyList()) }
+    // Estado para la carga de usuarios
     var isLoadingUsers by remember { mutableStateOf(false) }
+    // Estado para la lista de amigos
     var friendsList by remember { mutableStateOf<List<User>>(emptyList()) }
+    // Estado para mostrar el diálogo de lista de amigos
     var showFriendsListDialog by remember { mutableStateOf(false) }
+    // Estado para mostrar el mensaje de éxito
     var successMessage by remember { mutableStateOf<String?>(null) }
+    // Estado para mostrar el diálogo de progreso
     val scope = rememberCoroutineScope()
 
 
@@ -309,7 +349,7 @@ fun DesafiosPage(
             delay(5000)
         }
     }
-
+    // Pantalla principal
     Scaffold(
         topBar = {
             TopAppBar(
@@ -410,6 +450,7 @@ fun DesafiosPage(
                     confirmButton = {
                         Button(
                             onClick = {
+                                // Validar el nuevo progreso
                                 coroutineScope.launch {
                                     val progress = newProgress.toIntOrNull() ?: 0
                                     viewModel.updateProgress(challenge.id, userId, progress)
@@ -424,6 +465,7 @@ fun DesafiosPage(
                     dismissButton = {
                         TextButton(
                             onClick = {
+                                // Cerrar el diálogo sin guardar cambios
                                 showProgressDialog = false
                                 selectedChallenge = null
                             }
@@ -494,6 +536,7 @@ fun DesafiosPage(
     }
 }
 
+// Composable para el estado vacío (si no hay desafíos)
 @Composable
 fun EmptyState(onBuscarAmigos: () -> Unit) {
     Column(
@@ -501,8 +544,9 @@ fun EmptyState(onBuscarAmigos: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        // Imagen central
         Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.fuego), // imagen central
+            imageVector = ImageVector.vectorResource(id = R.drawable.fuego),
             contentDescription = null,
             modifier = Modifier.size(80.dp),
             tint = MaterialTheme.colorScheme.primary
@@ -520,6 +564,7 @@ fun EmptyState(onBuscarAmigos: () -> Unit) {
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(24.dp))
+        // Botón para buscar amigos
         Button(onClick = onBuscarAmigos) {
             Icon(Icons.Default.PersonAdd, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
@@ -528,7 +573,7 @@ fun EmptyState(onBuscarAmigos: () -> Unit) {
     }
 }
 
-
+// Composable para la lista de desafíos
 @Composable
 fun ChallengesList(
     challenges: List<Challenge>,
@@ -537,11 +582,13 @@ fun ChallengesList(
     onUpdateProgress: (Challenge) -> Unit,
     onDeleteChallenge: (Challenge) -> Unit
 ) {
+    // Lista de desafíos
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        // Itera sobre la lista de desafíos y crea un ChallengeItem para cada uno
         items(challenges) { challenge ->
             ChallengeItem(
                 challenge = challenge,
@@ -554,6 +601,7 @@ fun ChallengesList(
     }
 }
 
+// Composable para cada desafío
 @Composable
 fun ChallengeItem(
     challenge: Challenge,
@@ -562,9 +610,12 @@ fun ChallengeItem(
     onUpdateProgress: () -> Unit,
     onDeleteChallenge: () -> Unit
 ) {
+    // Determina si el usuario es el creador del desafío
     val isCreator = userId == challenge.creatorId
+    // Determina el progreso del creador y del participante
     val myProgress = if (isCreator) challenge.creatorProgress else challenge.participantProgress
     val otherProgress = if (isCreator) challenge.participantProgress else challenge.creatorProgress
+    // Determina el nombre del otro participante
     val otherName = if (isCreator) "Amigo" else "Creador"
 
     Card(
@@ -573,6 +624,7 @@ fun ChallengeItem(
             .padding(vertical = 4.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
+        // Contenido del desafío
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = challenge.name, fontWeight = FontWeight.Bold, fontSize = 18.sp)
             Spacer(modifier = Modifier.height(4.dp))
@@ -633,8 +685,10 @@ fun ChallengeItem(
     }
 }
 
+// Composable para el chip de estado
 @Composable
 fun StatusChip(status: String) {
+    // Determina el color y el texto del chip según el estado
     val (color, text) = when (status) {
         "PENDING" -> Pair(MaterialTheme.colorScheme.tertiary, "Pendiente")
         "ACCEPTED", "IN_PROGRESS" -> Pair(MaterialTheme.colorScheme.primary, "En progreso")
@@ -655,6 +709,7 @@ fun StatusChip(status: String) {
     }
 }
 
+// Composable para el diálogo de creación de desafío
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateChallengeDialog(
@@ -663,13 +718,14 @@ fun CreateChallengeDialog(
     onDismiss: () -> Unit,
     onCreateChallenge: (Challenge) -> Unit
 ) {
+    // Variables de estado para los campos del formulario
     var challengeName by remember { mutableStateOf("") }
     var challengeDescription by remember { mutableStateOf("") }
     var selectedFriendId by remember { mutableStateOf("") }
     var selectedFriendName by remember { mutableStateOf("Seleccionar amigo") }
     var selectedExercise by remember { mutableStateOf("") }
     var repetitions by remember { mutableStateOf("") }
-
+    // Estado para mostrar el menú desplegable de amigos
     var expandedFriends by remember { mutableStateOf(false) }
     // Estado para mostrar el diálogo de selección mejorada de ejercicio
     var showEjerciciosDialog by remember { mutableStateOf(false) }
@@ -763,6 +819,7 @@ fun CreateChallengeDialog(
             }
         },
         confirmButton = {
+            // Botón de creación del desafío
             Button(
                 onClick = {
                     val reps = repetitions.toIntOrNull() ?: 0
@@ -788,6 +845,7 @@ fun CreateChallengeDialog(
                 Text("Crear")
             }
         },
+        // Botón de cancelación
         dismissButton = {
             TextButton(onClick = onDismiss) { Text("Cancelar") }
         }
@@ -806,21 +864,22 @@ fun CreateChallengeDialog(
 
 }
 
-// Ejemplo de diálogo de ejercicios (basado en tu código de "Añadir Ejercicios")
+// Función para mostrar el diálogo de selección de ejercicios
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EjerciciosDialog(
     onDismissRequest: () -> Unit,
     onEjercicioSelected: (String) -> Unit
 ) {
+    // Variables de estado para la búsqueda y la categoría seleccionada
     var buscarEjercicio by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Todos") }
-
+    // Variables de estado para la lista de ejercicios y el detalle del ejercicio
     val context = LocalContext.current
     val (ejerciciosData, _) = remember {
         loadGifsFromXml(context.resources.getXml(R.xml.ejercicios), context)
     }
-
+    // Cargar los datos de los ejercicios desde el XML
     val categories = listOf("Todos") + ejerciciosData.map { it.category }.distinct()
     val ejerciciosSeleccionados = remember { mutableStateListOf<GifData>() }
     var selectedExerciseDetail by remember { mutableStateOf<GifData?>(null) }
@@ -847,6 +906,7 @@ fun EjerciciosDialog(
                         .fillMaxSize()
                         .padding(16.dp)
                 ) {
+                    // Contenido del diálogo
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -981,13 +1041,7 @@ fun EjerciciosDialog(
 }
 
 
-// Datos de ejemplo para cada ejercicio (ajusta según tu modelo real)
-//data class ExerciseData(
-//    val title: String,
-//    val category: String = "Todos"
-//)
-
-// Chip de filtro para categorías
+// Composable para mostrar un ejercicio en la lista
 @Composable
 fun ExercisePreviewItem(
     gifData: GifData,
@@ -995,6 +1049,7 @@ fun ExercisePreviewItem(
     onToggleSelect: (Boolean) -> Unit,
     onViewDetail: () -> Unit
 ) {
+    // Tarjeta que muestra el ejercicio
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -1003,6 +1058,7 @@ fun ExercisePreviewItem(
             .clickable { onToggleSelect(!isSelected) },
         border = if (isSelected) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null
     ) {
+        // Contenido de la tarjeta
         Row(
             modifier = Modifier
                 .fillMaxWidth()

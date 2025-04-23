@@ -1,14 +1,12 @@
 package com.example.gymrace.pages
 
 import android.content.Intent
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -36,27 +34,26 @@ import kotlinx.coroutines.withContext
 
 // Modelo de datos actualizado para representar una dieta completa
 data class Dieta(
-    val id: String = "",                     // ID único de la dieta en Firestore
-    val nombre: String = "",                 // Nombre de la dieta
-    val tipo: String = "",                   // Tipo de dieta (Proteica, Vegana, etc.)
-    val objetivo: String = "",               // Objetivo principal de la dieta
+    val id: String = "",                                // ID único de la dieta en Firestore
+    val nombre: String = "",                            // Nombre de la dieta
+    val tipo: String = "",                              // Tipo de dieta (Proteica, Vegana, etc.)
+    val objetivo: String = "",                          // Objetivo principal de la dieta
     val macronutrientes: Map<String, String> = mapOf(), // Distribución de macronutrientes
-    val calorias: String = "",               // Rango de calorías diarias
-    val comidas: String = "",                // Número y distribución de comidas
-    val alimentosPermitidos: List<String> = listOf(), // Lista de alimentos permitidos
-    val alimentosProhibidos: List<String> = listOf(), // Lista de alimentos prohibidos
-    val ejemploMenu: Map<String, String> = mapOf(), // Ejemplo de menú diario
-    val suplementacion: List<String> = listOf(), // Suplementos recomendados
-    val consejos: List<String> = listOf(),   // Consejos adicionales
-    val descripcion: String = "",            // Descripción detallada de la dieta
-    val estra: String = "",                  // Campo para estrategia o características adicionales
-    val imagenUrl: String = "",              // URL de la imagen de la dieta
+    val calorias: String = "",                          // Rango de calorías diarias
+    val comidas: String = "",                           // Número y distribución de comidas
+    val alimentosPermitidos: List<String> = listOf(),   // Lista de alimentos permitidos
+    val alimentosProhibidos: List<String> = listOf(),   // Lista de alimentos prohibidos
+    val ejemploMenu: Map<String, String> = mapOf(),     // Ejemplo de menú diario
+    val suplementacion: List<String> = listOf(),        // Suplementos recomendados
+    val consejos: List<String> = listOf(),              // Consejos adicionales
+    val descripcion: String = "",                       // Descripción detallada de la dieta
+    val estra: String = "",                             // Campo para estrategia o características adicionales
+    val imagenUrl: String = "",                         // URL de la imagen de la dieta
     val enlaceWeb: String = "https://example.com/dietas" // Enlace web para más información
 )
 
-/**
- * Página principal que muestra la lista de dietas con modal de detalles
- */
+
+//Página principal que muestra la lista de dietas con modal de detalles
 @Composable
 fun DietasPage() {
     val context = LocalContext.current
@@ -586,6 +583,7 @@ fun DietaCard(
     dieta: Dieta,
     onClick: () -> Unit
 ) {
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -647,12 +645,12 @@ fun DietaCard(
  */
 private fun getImagenPorTipo(tipo: String): String {
     return when (tipo.lowercase()) {
-        "mediterránea" -> "https://cdn-icons-png.freepik.com/512/2902/2902208.png"
-        "proteica" -> "https://example.com/images/proteica.jpg"
-        "vegana" -> "https://example.com/images/vegana.jpg"
-        "vegetariana" -> "https://example.com/images/vegetariana.jpg"
-        "keto" -> "https://example.com/images/keto.jpg"
-        "paleo" -> "https://example.com/images/paleo.jpg"
-        else -> "https://example.com/images/default.jpg"
+//        "mediterránea" -> "https://cdn-icons-png.freepik.com/512/2902/2902208.png"
+//        "proteica" -> "https://example.com/images/proteica.jpg"
+//        "vegana" -> "https://example.com/images/vegana.jpg"
+//        "vegetariana" -> "https://example.com/images/vegetariana.jpg"
+//        "keto" -> "https://example.com/images/keto.jpg"
+//        "paleo" -> "https://example.com/images/paleo.jpg"
+        else -> "https://cdn-icons-png.flaticon.com/512/1410/1410596.png"
     }
 }

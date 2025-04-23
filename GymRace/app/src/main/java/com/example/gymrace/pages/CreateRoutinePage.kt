@@ -19,7 +19,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -30,7 +29,6 @@ import androidx.navigation.NavHostController
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -38,20 +36,27 @@ import kotlinx.coroutines.tasks.await
 @Composable
 fun CrearRutinaPage(
     navController: NavHostController,
-    rutinaId: String? = null // Nuevo parámetro opcional
+    rutinaId: String? = null
 ) {
+    // Inicializar Firebase Firestore
     val db = FirebaseFirestore.getInstance()
+    // Obtener el ID del usuario actual
     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    // Obtener el contexto de la aplicación
     val context = LocalContext.current
+    // Inicializar la corutina
     val scope = rememberCoroutineScope()
 
     // Estado para determinar si estamos en modo edición
     var isEditMode by remember { mutableStateOf(rutinaId != null) }
+    // Estado para manejar la carga de datos
     var isLoading by remember { mutableStateOf(true) }
+    // Estados para mostrar mensajes de error y éxito
     var errorMessage by remember { mutableStateOf("") }
+    var successMessage by remember { mutableStateOf("") }
+    // Estados para mostrar diálogos de error y éxito
     var showErrorDialog by remember { mutableStateOf(false) }
     var showSuccessDialog by remember { mutableStateOf(false) }
-    var successMessage by remember { mutableStateOf("") }
 
     // Estados para los campos del formulario
     var rutinaNombre by remember { mutableStateOf(TextFieldValue()) }
@@ -61,10 +66,13 @@ fun CrearRutinaPage(
     val ejerciciosSeleccionados = remember { mutableStateListOf<String>() }
     var compartirConAmigos by remember { mutableStateOf(false) }
 
-    // Estados para búsqueda y selección de ejercicios
+    // Estado para la barra de búsqueda
     var buscarEjercicio by remember { mutableStateOf(TextFieldValue()) }
+    // Estado para mostrar el diálogo de ejercicios
     var showEjerciciosDialog by remember { mutableStateOf(false) }
+    // Estado para la categoría seleccionada
     var selectedCategory by remember { mutableStateOf("Todos") }
+    // Estado para mostrar los detalles del ejercicio
     var selectedExerciseDetail by remember { mutableStateOf<GifData?>(null) }
 
     // Cargar ejercicios desde XML
@@ -86,6 +94,7 @@ fun CrearRutinaPage(
         if (rutinaId != null) {
             isLoading = true
             try {
+                // Obtener la rutina de Firestore
                 val document = db.collection("rutinas").document(rutinaId).get().await()
                 if (document.exists()) {
                     val data = document.data
@@ -111,12 +120,16 @@ fun CrearRutinaPage(
                         }
                     }
                 } else {
+                    // La rutina no existe
                     errorMessage = "La rutina no existe"
+                    Log.e("Error", "La rutina no existe")
                     showErrorDialog = true
                 }
                 isLoading = false
             } catch (e: Exception) {
+                // Manejar errores al cargar la rutina
                 errorMessage = "Error al cargar la rutina: ${e.message}"
+                Log.e("Error", "Error al cargar la rutina: ${e.message}")
                 showErrorDialog = true
                 isLoading = false
             }
@@ -125,10 +138,11 @@ fun CrearRutinaPage(
             isLoading = false
         }
     }
-
+    // Pantalla principal
     Scaffold(
         topBar = {
             TopAppBar(
+                // Título de la barra superior
                 title = { Text(if (isEditMode) "Editar Rutina" else "Crear Nueva Rutina") },
                 navigationIcon = {
                     IconButton(onClick = {
@@ -176,6 +190,7 @@ fun CrearRutinaPage(
                         .padding(16.dp)
                         .fillMaxSize()
                 ) {
+                    // Título de la página
                     OutlinedTextField(
                         value = rutinaNombre,
                         onValueChange = { rutinaNombre = it },
@@ -184,6 +199,7 @@ fun CrearRutinaPage(
                         modifier = Modifier.fillMaxWidth(),
                         isError = rutinaNombre.text.isBlank() && errorMessage.isNotEmpty()
                     )
+                    // Mensaje de error si el nombre está vacío
                     if (rutinaNombre.text.isBlank() && errorMessage.isNotEmpty()) {
                         Text(
                             text = "El nombre es obligatorio",
@@ -195,6 +211,7 @@ fun CrearRutinaPage(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
+                    // Descripción de la rutina
                     OutlinedTextField(
                         value = rutinaDescripcion,
                         onValueChange = { rutinaDescripcion = it },
@@ -205,6 +222,7 @@ fun CrearRutinaPage(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
+                    // Filtro de dificultad con chips
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp)
@@ -274,6 +292,7 @@ fun CrearRutinaPage(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
+                    // Título de la sección de ejercicios
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -346,6 +365,7 @@ fun CrearRutinaPage(
                     // Botón para guardar o actualizar
                     Button(
                         onClick = {
+                            // Validar campos antes de guardar
                             if (rutinaNombre.text.isBlank()) {
                                 errorMessage = "Por favor, introduzca un nombre para la rutina"
                                 showErrorDialog = true
@@ -411,6 +431,7 @@ fun CrearRutinaPage(
                         enabled = !isLoading
                     ) {
                         if (isLoading) {
+                            // Mostrar un indicador de carga en el botón
                             CircularProgressIndicator(
                                 modifier = Modifier.size(24.dp),
                                 color = MaterialTheme.colorScheme.onPrimary,
@@ -430,7 +451,7 @@ fun CrearRutinaPage(
         }
     }
 
-    // Dialog para añadir ejercicios (versión mejorada)
+    // Dialog para añadir ejercicios
     if (showEjerciciosDialog) {
         Dialog(
             onDismissRequest = { showEjerciciosDialog = false }
@@ -486,6 +507,7 @@ fun CrearRutinaPage(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
+                    // Fila de chips para categorías
                     Row(
                         modifier = Modifier
                             .horizontalScroll(rememberScrollState())
@@ -642,7 +664,9 @@ fun showExerciseDetail(
     ejercicios: List<GifData>,
     setSelectedExerciseDetail: (GifData?) -> Unit
 ) {
+    // Buscar el ejercicio en la lista de ejercicios
     val ejercicio = ejercicios.find { it.title == ejercicioNombre }
+    // Si se encuentra el ejercicio, mostrar sus detalles
     if (ejercicio != null) {
         setSelectedExerciseDetail(ejercicio)
     }
@@ -678,6 +702,7 @@ fun ExerciseCard(
                 overflow = TextOverflow.Ellipsis
             )
             Row {
+                // Botones para ver detalles y eliminar el ejercicio
                 IconButton(onClick = { onShowExerciseDetail(ejercicio) }) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -729,10 +754,12 @@ fun ExercisePreviewItem(
             Spacer(modifier = Modifier.width(12.dp))
 
             Column(modifier = Modifier.weight(1f)) {
+                // Título del ejercicio
                 Text(
                     text = gifData.title,
                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                 )
+                // Descripción del ejercicio
                 Text(
                     text = "Músculo: ${gifData.mainMuscle}",
                     style = MaterialTheme.typography.bodySmall,
