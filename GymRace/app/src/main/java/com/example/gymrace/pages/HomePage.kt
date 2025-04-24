@@ -80,9 +80,9 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, onThem
         }
 
         // Espaciado adicional al final
-        item {
-            Spacer(modifier = Modifier.height(60.dp))
-        }
+//        item {
+//            Spacer(modifier = Modifier.height(60.dp))
+//        }
     }
 }
 

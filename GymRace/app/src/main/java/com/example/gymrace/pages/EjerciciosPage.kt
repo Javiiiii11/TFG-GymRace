@@ -173,7 +173,7 @@ fun Content(modifier: Modifier = Modifier) {
                     GifBox(gifData = gifData)
                 }
             }
-            Spacer(modifier = Modifier.height(68.dp))
+//            Spacer(modifier = Modifier.height(68.dp))
         }
     }
 }

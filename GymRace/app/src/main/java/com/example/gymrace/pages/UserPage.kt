@@ -573,7 +573,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             }
         )
 
-        Spacer(modifier = Modifier.height(75.dp))
+//        Spacer(modifier = Modifier.height(75.dp))
     }
 }
 

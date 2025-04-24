@@ -47,7 +47,7 @@ androidx-navigation-runtime-android = { group = "androidx.navigation", name = "n
 firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
-
+accompanist-navigation-animation = "com.google.accompanist:accompanist-navigation-animation:0.34.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

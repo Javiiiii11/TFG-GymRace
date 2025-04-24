@@ -371,7 +371,7 @@ fun DesafiosPage(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier
-                    .padding(bottom = 80.dp, end = 8.dp)
+                    .padding(bottom = 8.dp, end = 8.dp)
                     .navigationBarsPadding()
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Crear Desafío")
@@ -382,7 +382,7 @@ fun DesafiosPage(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(bottom = 75.dp)
+                .padding(bottom = 8.dp)
                 .scrollable(
                     state = rememberScrollState(),
                     orientation = Orientation.Vertical
