@@ -31,6 +31,14 @@ import com.google.firebase.firestore.Query
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
+import com.example.gymrace.pages.GLOBAL
+
 
 // Data class para representar una rutina
 data class Rutina(
@@ -42,6 +50,34 @@ data class Rutina(
     val usuarioId: String = "",
     val fechaCreacion: Timestamp = Timestamp.now()
 )
+
+
+
+
+
+@Composable
+fun BouncyFAB(navController: NavHostController) {
+    val scope = rememberCoroutineScope()
+    val scale = remember { Animatable(1f) }
+
+    FloatingActionButton(
+        onClick = {
+            scope.launch {
+                scale.animateTo(0.85f, animationSpec = tween(100))
+                scale.animateTo(1f, animationSpec = tween(100))
+                navController.navigate("crearRutina") {
+                    popUpTo("listarRutinas") { inclusive = true }
+                }
+            }
+        },
+        containerColor = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.scale(scale.value)
+    ) {
+        Icon(Icons.Default.Add, contentDescription = "Crear Rutina")
+    }
+}
+
+
 
 // Pantalla para listar las rutinas del usuario
 @OptIn(ExperimentalMaterial3Api::class)
@@ -118,13 +154,10 @@ fun ListarMisRutinasPage(navController: NavHostController) {
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { navController.navigate("crearRutina") },
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Crear Rutina")
-            }
+            BouncyFAB(navController)
         }
+
+
     ) { paddingValues ->
         Box(
             modifier = Modifier

@@ -2,6 +2,8 @@ package com.example.gymrace.pages
 
 import android.util.Log
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import coil.compose.rememberImagePainter
@@ -26,6 +28,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
@@ -35,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.gymrace.GifData
 import com.example.gymrace.R
 import com.example.gymrace.addFriend
@@ -286,11 +291,12 @@ class ChallengeViewModel : ViewModel() {
     }
 }
 
+
 // Pantalla de Desafíos
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DesafiosPage(
-    viewModel: ChallengeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    viewModel: ChallengeViewModel = viewModel(),
     userId: String
 ) {
     // Recupera el contexto de la aplicación
@@ -366,16 +372,33 @@ fun DesafiosPage(
             )
         },
         floatingActionButton = {
+            val scope = rememberCoroutineScope()
+            val scale = remember { Animatable(1f) }
+
             FloatingActionButton(
-                onClick = { showCreateDialog = true },
+                onClick = {
+                    scope.launch {
+                        scale.animateTo(0.85f, animationSpec = tween(100))
+                        scale.animateTo(1f, animationSpec = tween(100))
+                        showCreateDialog = true
+                    }
+                },
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier
-                    .padding(bottom = 8.dp, end = 8.dp)
-                    .navigationBarsPadding()
+                modifier = Modifier.scale(scale.value)
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Crear Desafío")
+                Icon(Icons.Default.Add, contentDescription = "Crear Rutina")
             }
+            // sin animacion
+//            FloatingActionButton(
+//                onClick = { showCreateDialog = true },
+//                containerColor = MaterialTheme.colorScheme.primary,
+//                contentColor = MaterialTheme.colorScheme.onPrimary,
+//                modifier = Modifier
+//                    .padding(bottom = 8.dp, end = 8.dp)
+//                    .navigationBarsPadding()
+//            ) {
+//                Icon(Icons.Default.Add, contentDescription = "Crear Desafío")
+//            }
         }
     ) { paddingValues ->
         Box(
