@@ -5,6 +5,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.example.gymrace.pages.saveLoginState
 import com.google.firebase.firestore.FirebaseFirestore
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.*
@@ -1082,23 +1084,24 @@ fun StatItem(count: String, label: String) {
 @Composable
 fun ProfileSection(
     title: String,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     content: @Composable () -> Unit
 ) {
-    // Estado para expandir/colapsar la sección
     var expanded by remember { mutableStateOf(true) }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .border(1.dp, MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12f), RoundedCornerShape(16.dp)),
+            .border(
+                1.dp,
+                MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12f),
+                RoundedCornerShape(16.dp)
+            )
+            .animateContentSize(animationSpec = tween(durationMillis = 50)), // ANIMACIÓN SUAVE
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape = RoundedCornerShape(16.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            // Section header with expand/collapse
+        Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -1128,14 +1131,17 @@ fun ProfileSection(
                 )
             }
 
-            // Section content
-            if (expanded) {
-                Spacer(modifier = Modifier.height(16.dp))
-                content()
+            // ANIMACIÓN DE APARICIÓN / DESAPARICIÓN
+            AnimatedVisibility(visible = expanded) {
+                Column {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    content()
+                }
             }
         }
     }
 }
+
 
 // Composable para mostrar un elemento de información
 @Composable
