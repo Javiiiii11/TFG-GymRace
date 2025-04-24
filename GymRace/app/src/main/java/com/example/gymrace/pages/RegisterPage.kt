@@ -56,11 +56,14 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+//Composable para la página de registro
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterPage(navController: NavController, onThemeChange: @Composable () -> Unit) {
+    // Obtener el contexto de la actividad
     val context = LocalContext.current
-    val isDarkTheme = rememberThemeState().value // Obtener el estado actual del tema
+    // Obtener el estado del tema
+    val isDarkTheme = rememberThemeState().value
 
     // Variables de estado para el formulario
     var name by rememberSaveable { mutableStateOf("") }
@@ -68,19 +71,11 @@ fun RegisterPage(navController: NavController, onThemeChange: @Composable () -> 
     var password by rememberSaveable { mutableStateOf("") }
     var confirmPassword by rememberSaveable { mutableStateOf("") }
 
+    // Variables de estado para la carga y errores
     var isLoading by remember { mutableStateOf(false) }
     var registrationError by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
-
-    // Validación del formulario
-    val isFormValid = name.isNotBlank() &&
-            email.isNotBlank() &&
-            email.contains("@") &&
-            email.contains(".") &&
-            password.isNotBlank() &&
-            password.length >= 6 &&
-            password == confirmPassword
 
     // Configuración para GoogleSignIn
     val googleSignInClient = remember {
@@ -123,27 +118,34 @@ fun RegisterPage(navController: NavController, onThemeChange: @Composable () -> 
                                         // luego se navega a register2
                                         crearUsuarioEnFirestore(uid, account.displayName ?: "") {
                                             navController.navigate("register2?uid=$uid&nombre=${account.displayName}") {
+                                                Log.d("Navigation", "Usuario creado en Firestore, navegando a register2")
                                                 popUpTo("login") { inclusive = true }
                                             }
                                         }
                                     }
                                 }
                                 .addOnFailureListener { e ->
+                                    // Error al verificar el usuario en Firestore
                                     isLoading = false
-                                    Log.e("Firestore", "Error al verificar usuario en Firestore", e)
+                                    Log.e("Error", "Error al verificar usuario en Firestore", e)
                                     Toast.makeText(context, "Error al verificar usuario", Toast.LENGTH_LONG).show()
                                 }
                         } else {
+                            // UID de usuario no disponible
+                            Log.e("Error", "UID de usuario no disponible")
                             isLoading = false
                             Toast.makeText(context, "Error: UID de usuario no disponible", Toast.LENGTH_LONG).show()
                         }
                     } else {
+                        // Error al autenticar con Firebase
+                        Log.e("Error", "Error al autenticar con Firebase: ${authTask.exception?.message}")
                         isLoading = false
                         registrationError = authTask.exception?.message ?: "Error al iniciar sesión con Google"
                         Toast.makeText(context, registrationError, Toast.LENGTH_LONG).show()
                     }
                 }
         } catch (e: ApiException) {
+            // Error al obtener la cuenta de Google
             isLoading = false
             Log.e("GoogleSignIn", "Google sign in failed with error code: ${e.statusCode}")
             when (e.statusCode) {
@@ -201,7 +203,7 @@ fun RegisterPage(navController: NavController, onThemeChange: @Composable () -> 
                 }
             }
     }
-
+    // Función para validar el formulario
     fun validateForm(): String {
         return when {
             name.isBlank() && email.isBlank() && password.isBlank() && confirmPassword.isBlank() -> "Todos los campos son obligatorios"
@@ -223,7 +225,7 @@ fun RegisterPage(navController: NavController, onThemeChange: @Composable () -> 
             else -> "" // Todo está bien
         }
     }
-
+    // Función para verificar si el correo electrónico ya existe
     fun checkIfEmailExists(email: String, callback: (Boolean) -> Unit) {
         FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email)
             .addOnCompleteListener { task ->

@@ -1,13 +1,11 @@
 package com.example.gymrace.pages
 
-import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -23,16 +21,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
+
+//Composable para la pagina de registro 2 (fittness profile)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterPage2(navController: NavController) {
+    // Variables de estado
     val contexto = LocalContext.current
-    val scrollState = rememberScrollState()
     val alcanceCorrutina = rememberCoroutineScope()
 
     // Estado del formulario
@@ -42,7 +39,7 @@ fun RegisterPage2(navController: NavController) {
     var nombre by rememberSaveable { mutableStateOf("") }
     var cargando by remember { mutableStateOf(false) }
 
-    // Estado del menú desplegable
+    // Estado del menú desplegable de objetivo fitness
     var expandedGoalMenu by remember { mutableStateOf(false) }
     var selectedGoal by rememberSaveable { mutableStateOf("Selecciona tu objetivo") }
     val goals = listOf(
@@ -53,11 +50,12 @@ fun RegisterPage2(navController: NavController) {
         "Mejorar salud general",
         "Preparación para competición"
     )
-
+    // Estado del menú desplegable de días de entrenamiento
     var expandedDaysMenu by remember { mutableStateOf(false) }
     var selectedDays by rememberSaveable { mutableStateOf("Selecciona días") }
     val trainingDays = listOf("1", "2", "3", "4", "5", "6", "7")
 
+    // Estado del menú desplegable de nivel de experiencia
     var expandedExperienceMenu by remember { mutableStateOf(false) }
     var selectedExperience by rememberSaveable { mutableStateOf("Selecciona nivel") }
     val experienceLevels = listOf(
@@ -65,15 +63,6 @@ fun RegisterPage2(navController: NavController) {
         "Intermedio (6 meses - 2 años)",
         "Avanzado (más de 2 años)"
     )
-
-    // Validación del formulario
-//    val isFormValid = peso.isNotBlank() &&
-//            altura.isNotBlank() &&
-//            nombre.isNotBlank() &&
-//            año.isNotBlank() &&
-//            selectedGoal != "Selecciona tu objetivo" &&
-//            selectedDays != "Selecciona días" &&
-//            selectedExperience != "Selecciona nivel"
 
     // Función para guardar datos del usuario
     fun saveUserData() {
@@ -102,9 +91,8 @@ fun RegisterPage2(navController: NavController) {
             }
         }
     }
-    fun Float?.isNullOrZero(): Boolean = this == null || this == 0f
-    fun Int?.isNullOrZero(): Boolean = this == null || this == 0
 
+    // validación del formulario
     fun validateForm(): String {
         return when {
 

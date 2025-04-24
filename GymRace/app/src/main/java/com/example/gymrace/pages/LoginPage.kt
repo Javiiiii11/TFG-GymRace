@@ -54,6 +54,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
+// Composable para la página de inicio de sesión
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginPage(navController: NavController, onThemeChange: @Composable () -> Unit) {
@@ -110,36 +111,48 @@ fun LoginPage(navController: NavController, onThemeChange: @Composable () -> Uni
                             // Llama a la función para crear el usuario en Firestore
                             GLOBAL.crearUsuarioEnFirestore(userId, userName) {
                                 navController.navigate("register2") {
+                                    Log.d("Navigation", "Navegando a la pantalla de registro")
                                     popUpTo("login") { inclusive = true }
                                 }
                             }
                         } else {
+                            // Si el usuario ya existe, te lleva a la pantalla principal
                             navController.navigate("main") {
+                                Log.d("Navigation", "Navegando a la pantalla principal")
                                 popUpTo("login") { inclusive = true }
                             }
                         }
                     } else {
+                        // Manejar el error de inicio de sesión
+                        Log.e("Error", "Google sign in failed: ${authTask.exception?.message}")
                         loginError = authTask.exception?.message ?: "Error al iniciar sesión con Google"
                         Toast.makeText(context, loginError, Toast.LENGTH_LONG).show()
                     }
                 }
         } catch (e: ApiException) {
+            // Manejar el error de inicio de sesión
             isLoading = false
             Log.e("GoogleSignIn", "Google sign in failed with error code: ${e.statusCode}")
             when (e.statusCode) {
                 GoogleSignInStatusCodes.DEVELOPER_ERROR -> {
+                    // Manejar el error de configuración del cliente
+                    Log.e("Error", "Developer error: ${e.message}")
                     loginError = "Error de configuración en Google Sign-In. Código: 10"
                 }
                 else -> {
+                    // Manejar otros errores de Google Sign-In
+                    Log.e("Error", "Google sign in failed: ${e.message}")
                     loginError = "Error al iniciar sesión con Google: ${e.statusCode}"
                 }
             }
-            Toast.makeText(context, loginError, Toast.LENGTH_LONG).show()
+            // Mostrar mensaje de error
+            Log.e("Error", loginError)
         }
     }
 
     // Función para iniciar sesión con correo/contraseña
     fun loginWithEmailAndPassword(email: String, password: String) {
+        // Validar el correo electrónico y la contraseña
         isLoading = true
         loginError = ""
 
@@ -184,6 +197,7 @@ fun LoginPage(navController: NavController, onThemeChange: @Composable () -> Uni
 
     // Función para iniciar el proceso de registro con Google
     fun signInWithGoogle() {
+        // Mostrar mensaje de carga
         googleSignInClient.signOut().addOnCompleteListener {
             val signInIntent = googleSignInClient.signInIntent
             launcher.launch(signInIntent)
@@ -466,6 +480,7 @@ fun validateForm(): String {
 
 // Función para guardar el estado de inicio de sesión
 fun saveLoginState(context: Context, isLoggedIn: Boolean, account: String) {
+    // Guardar el estado de inicio de sesión en SharedPreferences
     val sharedPreferences: SharedPreferences = context.getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE)
     val editor = sharedPreferences.edit()
     editor.putBoolean("isLoggedIn", isLoggedIn)

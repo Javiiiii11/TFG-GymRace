@@ -1,11 +1,9 @@
 package np.com.bimalkafle.bottomnavigationdemo.pages
 
 import android.content.Context
-import com.example.gymrace.pages.RegisterPage
 import com.google.firebase.auth.FirebaseAuth
 import com.example.gymrace.pages.saveLoginState
 import com.google.firebase.firestore.FirebaseFirestore
-import android.content.Intent
 import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -34,11 +32,8 @@ import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,7 +41,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -56,9 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.navigation.compose.rememberNavController
 import com.example.gymrace.R
-import com.example.gymrace.pages.saveLoginState
 import com.example.gymrace.ui.theme.ThemeManager.isDarkTheme
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -78,21 +70,8 @@ data class User(
     val nivelExperiencia: String
 )
 
-// Esta función debe ir fuera del composable UserPage, al mismo nivel
-private fun animateSettingsIcon(
-    rotationState: androidx.compose.animation.core.Animatable<Float, androidx.compose.animation.core.AnimationVector1D>,
-    opening: Boolean,
-    coroutineScope: kotlinx.coroutines.CoroutineScope
-) {
-    coroutineScope.launch {
-        rotationState.animateTo(
-            targetValue = if (opening) 180f else 0f,
-            animationSpec = tween(300, easing = FastOutSlowInEasing)
-        )
-    }
-}
 
-
+// Función principal de la página de usuario
 @Composable
 fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navController: NavController) {
     val context = LocalContext.current
@@ -605,14 +584,26 @@ fun cerrarSesion(context: Context) {
 
 }
 
+// Función para limpiar la caché de Firestore
 fun clearFirestoreCache() {
     FirebaseFirestore.getInstance().clearPersistence()
 }
 
-
+// Función para animar el icono de configuración
+private fun animateSettingsIcon(
+    rotationState: androidx.compose.animation.core.Animatable<Float, androidx.compose.animation.core.AnimationVector1D>,
+    opening: Boolean,
+    coroutineScope: kotlinx.coroutines.CoroutineScope
+) {
+    coroutineScope.launch {
+        rotationState.animateTo(
+            targetValue = if (opening) 180f else 0f,
+            animationSpec = tween(300, easing = FastOutSlowInEasing)
+        )
+    }
+}
 
 // Diálogo para mostrar usuarios (amigos o comunidad)
-// Improved User Dialog to better handle loading states and empty lists
 @Composable
 fun UsersDialog(
     title: String,
@@ -766,6 +757,7 @@ fun UsersDialog(
         }
     }
 }
+
 // Elemento de lista de usuario
 @Composable
 fun UserListItem(
@@ -805,7 +797,7 @@ fun UserListItem(
 
             // Datos del usuario (nombre y objetivo)
             Column(
-                modifier = Modifier.widthIn(max = 200.dp) // Limita ancho para no chocar con el botón
+                modifier = Modifier.widthIn(max = 200.dp)
             ) {
                 Text(
                     text = user.nombre,
@@ -845,12 +837,12 @@ fun UserListItem(
 
 
 // Función para cargar todos los usuarios de la BD
-// Improved function to load all users from the database
 private fun loadAllUsers(callback: (List<User>) -> Unit) {
+    // Inicializar Firestore
     val db = Firebase.firestore
 
-    // Add logging to track progress
-    println("Iniciando carga de usuarios desde Firestore")
+    // Añadir un log para verificar la carga
+    Log.d("UserPage", "Iniciando carga de usuarios desde Firestore")
 
     db.collection("usuarios")
         .get()
@@ -860,6 +852,7 @@ private fun loadAllUsers(callback: (List<User>) -> Unit) {
 
             for (doc in snapshot.documents) {
                 try {
+                    // Verificar si el documento tiene datos
                     val userId = doc.id
                     val userName = doc.getString("nombre") ?: "Sin nombre"
                     val userWeight = doc.getString("peso") ?: ""
@@ -868,7 +861,7 @@ private fun loadAllUsers(callback: (List<User>) -> Unit) {
                     val userGoal = doc.getString("objetivoFitness") ?: "No especificado"
                     val userExp = doc.getString("nivelExperiencia") ?: ""
 
-                    println("Cargando usuario: $userName (ID: $userId)")
+                    Log.d("UserPage", "Cargando usuario: $userName (ID: $userId)")
 
                     val user = User(
                         id = userId,
@@ -881,27 +874,27 @@ private fun loadAllUsers(callback: (List<User>) -> Unit) {
                     )
                     usersList.add(user)
                 } catch (e: Exception) {
-                    println("Error al procesar documento: ${e.message}")
+                    // Manejo de errores
+                    Log.e("Error", "Error al procesar documento: ${doc.id} - ${e.message}")
                 }
             }
-
-            println("Carga completada. Total usuarios: ${usersList.size}")
+            Log.d("UserPage", "Usuarios cargados: ${usersList.size}")
             callback(usersList)
         }
         .addOnFailureListener { e ->
-            println("Error crítico al cargar usuarios: ${e.message}")
+            // Manejo de errores
+            Log.e("Error", "Error al cargar usuarios: ${e.message}")
             callback(emptyList())
         }
 }
 
 // Función para cargar la lista de amigos del usuario
-// Improved function to load friends list
 private fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
     val db = Firebase.firestore
 
     println("Iniciando carga de amigos para usuario: $userId")
 
-    // First get friend IDs
+    // Verificar si el usuario tiene un documento de amigos
     db.collection("amigos")
         .document(userId)
         .get()
@@ -940,17 +933,20 @@ private fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
                                 )
                                 friendsList.add(user)
                             } else {
-                                println("Documento de usuario no encontrado para amigo ID: $friendId")
+                                // Manejo de errores si el documento no existe
+                                Log.e("Error", "Documento de usuario no encontrado para amigo ID: $friendId")
                             }
 
                             loadedCount++
                             if (loadedCount >= friendIds.size) {
-                                println("Carga de amigos completada. Total: ${friendsList.size}")
+                                // Todos los amigos han sido cargados
+                                Log.d("UserPage", "Carga de amigos completada. Total: ${friendsList.size}")
                                 callback(friendsList)
                             }
                         }
                         .addOnFailureListener { e ->
-                            println("Error al cargar datos de amigo $friendId: ${e.message}")
+                            // Manejo de errores si la carga falla
+                            Log.e("Error", "Error al cargar datos de amigo $friendId: ${e.message}")
                             loadedCount++
                             if (loadedCount >= friendIds.size) {
                                 callback(friendsList)
@@ -958,17 +954,20 @@ private fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
                         }
                 }
             } else {
-                println("No existe documento de amigos para el usuario o está vacío")
+                // Manejo de errores si el documento no existe o está vacío
+                Log.d("Error", "No existe documento de amigos para el usuario o está vacío")
                 callback(emptyList())
             }
         }
         .addOnFailureListener { e ->
-            println("Error crítico al cargar amigos: ${e.message}")
+            // Manejo de errores si la carga falla
+            Log.e("Error", "Error al cargar amigos: ${e.message}")
             callback(emptyList())
         }
 }
 // Función para agregar un amigo
 private fun addFriend(userId: String, friendId: String, callback: () -> Unit) {
+    // Inicializar Firestore
     val db = Firebase.firestore
 
     // Verificar si ya existe un documento de amigos para el usuario
@@ -1010,13 +1009,15 @@ private fun addFriend(userId: String, friendId: String, callback: () -> Unit) {
                         callback()
                     }
                     .addOnFailureListener { e ->
-                        println("Error al crear lista de amigos: ${e.message}")
+                        // Manejo de errores si la creación falla
+                        Log.e("Error", "Error al crear lista de amigos: ${e.message}")
                         callback()
                     }
             }
         }
         .addOnFailureListener { e ->
-            println("Error al verificar lista de amigos: ${e.message}")
+            // Manejo de errores si la carga falla
+            Log.e("Error", "Error al verificar lista de amigos: ${e.message}")
             callback()
         }
 }
@@ -1057,7 +1058,7 @@ private fun removeFriend(userId: String, friendId: String, callback: () -> Unit)
 }
 
 
-
+// Composable para mostrar un elemento de estadística
 @Composable
 fun StatItem(count: String, label: String) {
     Column(
@@ -1077,12 +1078,14 @@ fun StatItem(count: String, label: String) {
     }
 }
 
+// Composable para mostrar una sección del perfil
 @Composable
 fun ProfileSection(
     title: String,
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     content: @Composable () -> Unit
 ) {
+    // Estado para expandir/colapsar la sección
     var expanded by remember { mutableStateOf(true) }
 
     Card(
@@ -1134,6 +1137,7 @@ fun ProfileSection(
     }
 }
 
+// Composable para mostrar un elemento de información
 @Composable
 fun InfoItem(label: String, value: String) {
     Row(
