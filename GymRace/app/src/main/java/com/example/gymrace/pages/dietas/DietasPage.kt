@@ -275,6 +275,7 @@ fun DietasPage() {
         )
     }
     // Diálogo modal de detalles de la dieta - Actualizado para mostrar todos los campos
+// Diálogo modal de detalles de la dieta - Con título corregido para evitar que oculte el botón cerrar
     if (showDetailDialog && selectedDieta != null) {
         Dialog(
             onDismissRequest = { showDetailDialog = false },
@@ -295,15 +296,10 @@ fun DietasPage() {
                     // Cabecera con título y botón de cerrar
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.Top
                     ) {
-                        Text(
-                            text = selectedDieta?.nombre ?: "",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-
+                        // Botón cerrar siempre a la derecha
                         IconButton(onClick = { showDetailDialog = false }) {
                             Icon(
                                 imageVector = Icons.Default.Close,
@@ -311,6 +307,14 @@ fun DietasPage() {
                             )
                         }
                     }
+
+                    // Título en su propia fila para que ocupe todo el ancho disponible
+                    Text(
+                        text = selectedDieta?.nombre ?: "",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.fillMaxWidth()
+                    )
 
                     Spacer(modifier = Modifier.height(16.dp))
 

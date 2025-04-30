@@ -6,14 +6,18 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -58,62 +62,6 @@ fun EjerciciosPage(modifier: Modifier = Modifier) {
     Content(modifier)
 }
 
-// Barra de filtro
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun FilterBar(
-    searchQuery: MutableState<String>,
-    selectedCategory: MutableState<String>,
-    categories: List<String>
-) {
-    // Estado para la categoría seleccionada
-    var expanded by remember { mutableStateOf(false) }
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        OutlinedTextField(
-            value = searchQuery.value,
-            onValueChange = { searchQuery.value = it },
-            label = { Text("Buscar") },
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier.weight(0.6f)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded },
-            modifier = Modifier.weight(0.6f)
-        ) {
-            OutlinedTextField(
-                value = selectedCategory.value,
-                onValueChange = {},
-                readOnly = true,
-                label = { Text("Categoría") },
-                shape = RoundedCornerShape(8.dp),
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                },
-                modifier = Modifier.menuAnchor()
-            )
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                categories.forEach { category ->
-                    DropdownMenuItem(
-                        text = { Text(category) },
-                        onClick = {
-                            selectedCategory.value = category
-                            expanded = false
-                        }
-                    )
-                }
-            }
-        }
-    }
-}
-
 // Composable principal
 @Composable
 fun Content(modifier: Modifier = Modifier) {
@@ -127,8 +75,10 @@ fun Content(modifier: Modifier = Modifier) {
     val searchQuery = remember { mutableStateOf("") }
     // Estado para la categoría seleccionada
     val selectedCategory = remember { mutableStateOf("Todos") }
+    // Estado para mostrar el diálogo de filtros
+    var showFilterDialog by remember { mutableStateOf(false) }
     // Lista de categorías
-    val categories = listOf("Todos") + gifs.map { it.category }.distinct()
+    val categories = listOf("Todos") + gifs.map { it.category }.distinct().sorted()
     // Estado para los GIFs filtrados
     val filteredGifs = gifs.filter { gif ->
         (selectedCategory.value == "Todos" || gif.category == selectedCategory.value) &&
@@ -140,9 +90,54 @@ fun Content(modifier: Modifier = Modifier) {
     Column(modifier = modifier
         .fillMaxSize()
         .padding(16.dp)) {
-        Spacer(modifier = Modifier.height(32.dp))
-        FilterBar(searchQuery = searchQuery, selectedCategory = selectedCategory, categories = categories)
-        Spacer(modifier = Modifier.height(32.dp))
+
+        // Barra de búsqueda mejorada con estilo similar a la página de dietas
+        OutlinedTextField(
+            value = searchQuery.value,
+            onValueChange = { searchQuery.value = it },
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = { Text("Buscar ejercicios...") },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Buscar"
+                )
+            },
+            trailingIcon = {
+                IconButton(onClick = { showFilterDialog = true }) {
+                    Icon(
+                        imageVector = Icons.Default.FilterList,
+                        contentDescription = "Filtrar"
+                    )
+                }
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(8.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Chip para mostrar el filtro activo (solo se muestra cuando hay un filtro diferente a "Todos")
+        if (selectedCategory.value != "Todos") {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SuggestionChip(
+                    onClick = { selectedCategory.value = "Todos" },  // Al hacer clic, se elimina el filtro
+                    label = { Text(selectedCategory.value) }
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Text(
+                    text = "${filteredGifs.size} resultados",
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+        }
 
         // Mensaje de error si faltan GIFs
         if (missingGifsText.value.isNotEmpty()) {
@@ -156,11 +151,15 @@ fun Content(modifier: Modifier = Modifier) {
 
         // Mensaje de error si no se encuentran GIFs
         if (filteredGifs.isEmpty()) {
-            Text(
-                text = "No se encontraron ejercicios",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(16.dp)
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "No se encontraron ejercicios",
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
         } else {
             // Grid de GIFs
             LazyVerticalGrid(
@@ -173,8 +172,51 @@ fun Content(modifier: Modifier = Modifier) {
                     GifBox(gifData = gifData)
                 }
             }
-//            Spacer(modifier = Modifier.height(68.dp))
         }
+    }
+
+    // Diálogo de filtro por categoría con LazyColumn para permitir scroll
+    if (showFilterDialog) {
+        AlertDialog(
+            onDismissRequest = { showFilterDialog = false },
+            title = { Text("Filtrar por categoría") },
+            text = {
+                // Usando LazyColumn para permitir scroll en la lista de categorías
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    items(categories) { category ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    selectedCategory.value = category
+                                    showFilterDialog = false
+                                },
+//                                .padding(vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = selectedCategory.value == category,
+                                onClick = {
+                                    selectedCategory.value = category
+                                    showFilterDialog = false
+                                }
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = category)
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showFilterDialog = false }) {
+                    Text("Cerrar")
+                }
+            }
+        )
     }
 }
 
@@ -366,7 +408,7 @@ fun ExerciseDetailDialog(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
