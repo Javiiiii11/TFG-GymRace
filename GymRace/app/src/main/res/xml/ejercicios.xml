@@ -5872,4 +5872,547 @@
         </ejercicio>
     </categoria>
 
+    <categoria nombre="Lumbar">
+        <ejercicio>
+            <nombre>Abdominal Superman</nombre>
+            <descripcion>Ejercicio para fortalecer la zona lumbar al elevar brazos y piernas simultáneamente en posición prona.</descripcion>
+            <gif>@drawable/abdominal_superman</gif>
+            <pasos>
+                <paso numero="1">Acuéstate boca abajo con brazos y piernas extendidos.</paso>
+                <paso numero="2">Eleva brazos y piernas al mismo tiempo.</paso>
+                <paso numero="3">Mantén la contracción unos segundos.</paso>
+                <paso numero="4">Desciende lentamente y repite.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el cuello neutro.</item>
+                <item>Evita movimientos bruscos.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos, deltoides</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Abdominal Superman con Mancuernas</nombre>
+            <descripcion>Variación del Superman tradicional que añade resistencia con mancuernas para mayor implicación muscular.</descripcion>
+            <gif>@drawable/abdominal_superman_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Acuéstate boca abajo con mancuernas en las manos.</paso>
+                <paso numero="2">Eleva piernas y brazos simultáneamente.</paso>
+                <paso numero="3">Mantén unos segundos y baja lentamente.</paso>
+                <paso numero="4">Repite el movimiento controlado.</paso>
+            </pasos>
+            <consejo>
+                <item>Utiliza peso ligero si eres principiante.</item>
+                <item>Contrae glúteos y abdomen durante la ejecución.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos, deltoides</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Abdominal Tijera</nombre>
+            <descripcion>Ejercicio abdominal dinámico que activa la zona lumbar y abdominal al cruzar las piernas.</descripcion>
+            <gif>@drawable/abdominal_tijera</gif>
+            <pasos>
+                <paso numero="1">Recuéstate boca arriba y eleva las piernas ligeramente.</paso>
+                <paso numero="2">Cruza alternadamente una pierna sobre la otra en el aire.</paso>
+                <paso numero="3">Mantén la zona lumbar en contacto con el suelo.</paso>
+                <paso numero="4">Realiza el movimiento de forma continua y controlada.</paso>
+            </pasos>
+            <consejo>
+                <item>No bajes demasiado las piernas para evitar arquear la espalda.</item>
+                <item>Respira de forma constante durante el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Abdominal inferior, flexores de cadera</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Buenos Días con Kettlebell</nombre>
+            <descripcion>Ejercicio de bisagra de cadera que fortalece la parte baja de la espalda y los isquiotibiales.</descripcion>
+            <gif>@drawable/buenos_d_as__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Sujeta una kettlebell frente al pecho.</paso>
+                <paso numero="2">Flexiona la cadera manteniendo la espalda recta.</paso>
+                <paso numero="3">Desciende el torso hacia adelante sin arquear la espalda.</paso>
+                <paso numero="4">Vuelve a la posición inicial empujando con la cadera.</paso>
+            </pasos>
+            <consejo>
+                <item>No redondees la espalda durante la bajada.</item>
+                <item>Activa los glúteos al volver a subir.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Isquiotibiales, glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Buenos Días con Mancuernas</nombre>
+            <descripcion>Variación del "Buenos Días" usando mancuernas para fortalecer la zona lumbar y posterior de las piernas.</descripcion>
+            <gif>@drawable/buenos_d_as__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Coloca una mancuerna sobre cada hombro.</paso>
+                <paso numero="2">Inclina el torso hacia adelante desde la cadera.</paso>
+                <paso numero="3">Desciende hasta sentir estiramiento en los isquiotibiales.</paso>
+                <paso numero="4">Sube manteniendo la espalda recta.</paso>
+            </pasos>
+            <consejo>
+                <item>Evita redondear la espalda.</item>
+                <item>Contrae el abdomen para estabilizar.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos, isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Buenos Días Unilateral con Barra</nombre>
+            <descripcion>Versión unilateral del ejercicio "Buenos Días" para trabajar de forma aislada cada lado de la zona lumbar.</descripcion>
+            <gif>@drawable/buenos_d_as_unilateral__barra_</gif>
+            <pasos>
+                <paso numero="1">Coloca la barra sobre un solo hombro.</paso>
+                <paso numero="2">Inclina el torso hacia adelante lentamente.</paso>
+                <paso numero="3">Mantén el equilibrio durante el movimiento.</paso>
+                <paso numero="4">Regresa a la posición inicial con control.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el abdomen activado para mayor estabilidad.</item>
+                <item>Hazlo con poco peso si eres principiante.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Oblicuos, glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión de Lumbar en Máquina</nombre>
+            <descripcion>Ejercicio específico para la zona lumbar realizado con máquina de extensión.</descripcion>
+            <gif>@drawable/extensi_n_de_lumbar__m_quina_</gif>
+            <pasos>
+                <paso numero="1">Ajusta la máquina según tu estatura.</paso>
+                <paso numero="2">Apoya la espalda contra el respaldo y los pies en el suelo.</paso>
+                <paso numero="3">Extiende la espalda hacia atrás de forma controlada.</paso>
+                <paso numero="4">Regresa lentamente a la posición inicial.</paso>
+            </pasos>
+            <consejo>
+                <item>No uses impulso para subir.</item>
+                <item>Evita extender más allá del rango natural.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Extensión Lumbar en el Suelo</nombre>
+            <descripcion>Ejercicio de autocarga para trabajar la zona lumbar tumbado boca abajo en el suelo.</descripcion>
+            <gif>@drawable/extensi_n_lumbar_en_el_suelo</gif>
+            <pasos>
+                <paso numero="1">Acuéstate boca abajo con manos detrás de la nuca.</paso>
+                <paso numero="2">Eleva el torso llevando los hombros hacia atrás.</paso>
+                <paso numero="3">Mantén la contracción unos segundos.</paso>
+                <paso numero="4">Baja lentamente y repite.</paso>
+            </pasos>
+            <consejo>
+                <item>No hiperextiendas el cuello.</item>
+                <item>Contrae glúteos para menor tensión lumbar.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Hiperextensión con Fitball</nombre>
+            <descripcion>Variante de hiperextensión que emplea una fitball para aumentar el rango de movimiento.</descripcion>
+            <gif>@drawable/hiperextensi_n_con_fitball</gif>
+            <pasos>
+                <paso numero="1">Apoya pelvis sobre la fitball y pies en el suelo.</paso>
+                <paso numero="2">Cruza brazos sobre el pecho o detrás de la cabeza.</paso>
+                <paso numero="3">Inclina torso hacia abajo y luego extiende hasta paralelo al suelo.</paso>
+                <paso numero="4">Repite controlando el movimiento.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén core estable durante todo el ejercicio.</item>
+                <item>Evita movimientos bruscos al descender.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos, isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Hiperextensiones</nombre>
+            <descripcion>Ejercicio básico de hiperextensión para fortalecer la zona lumbar sin equipamiento.</descripcion>
+            <gif>@drawable/hiperextensiones</gif>
+            <pasos>
+                <paso numero="1">Colócate boca abajo con manos detrás de la nuca.</paso>
+                <paso numero="2">Eleva torso y piernas simultáneamente.</paso>
+                <paso numero="3">Mantén unos segundos en extensión máxima.</paso>
+                <paso numero="4">Baja lentamente y repite.</paso>
+            </pasos>
+            <consejo>
+                <item>No fuerces la extensión más allá del límite cómodo.</item>
+                <item>Activa glúteos para asistencia.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos, isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Hiperextensión Lumbar con Barra</nombre>
+            <descripcion>Hiperextensión añadiendo resistencia con barra para intensificar el trabajo lumbar.</descripcion>
+            <gif>@drawable/hiperextensi_n_lumbar__barra_</gif>
+            <pasos>
+                <paso numero="1">Coloca una barra ligera sobre la espalda baja.</paso>
+                <paso numero="2">Realiza la hiperextensión manteniendo la barra estable.</paso>
+                <paso numero="3">Contrae lumbares al elevar torso.</paso>
+                <paso numero="4">Baja de forma controlada y repite.</paso>
+            </pasos>
+            <consejo>
+                <item>Usa peso moderado para evitar sobrecarga.</item>
+                <item>Mantén la mirada al frente.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos, isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Hiperextensión Lumbar con Disco</nombre>
+            <descripcion>Variante de hiperextensión con disco sobre la espalda para mayor resistencia.</descripcion>
+            <gif>@drawable/hiperextensi_n_lumbar_con_disco</gif>
+            <pasos>
+                <paso numero="1">Coloca un disco sobre la espalda baja.</paso>
+                <paso numero="2">Realiza la hiperextensión lenta y controlada.</paso>
+                <paso numero="3">Mantén la posición unos segundos arriba.</paso>
+                <paso numero="4">Desciende y repite.</paso>
+            </pasos>
+            <consejo>
+                <item>Empieza con disco ligero y ve aumentando.</item>
+                <item>No arquees excesivamente la zona lumbar.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos, isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Stiff con Piernas Extendidas (Smith)</nombre>
+            <descripcion>Levantamiento tipo stiff en máquina Smith para trabajar lumbares e isquiotibiales.</descripcion>
+            <gif>@drawable/levantamiento_terra_con_piernas_extendidas___stiff__smith_</gif>
+            <pasos>
+                <paso numero="1">Colócate bajo la barra Smith con piernas rectas.</paso>
+                <paso numero="2">Flexiona cadera manteniendo piernas casi extendidas.</paso>
+                <paso numero="3">Desciende barra hasta sentir estiramiento.</paso>
+                <paso numero="4">Vuelve a la posición inicial empujando con cadera.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén rodillas ligeramente flojas, no bloqueadas.</item>
+                <item>Controla la bajada para proteger lumbares.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Isquiotibiales, glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto con Pies Alternos (Kettlebell)</nombre>
+            <descripcion>Variante unilateral de peso muerto con kettlebell para trabajar lumbares y equilibro.</descripcion>
+            <gif>@drawable/peso_muerto_con_pies_alternos__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Sujeta una kettlebell con una mano.</paso>
+                <paso numero="2">Inclina torso y flexiona cadera manteniendo espalda recta.</paso>
+                <paso numero="3">Regresa contrayendo glúteos y lumbares.</paso>
+                <paso numero="4">Alterna mano/pierna en cada repetición.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén mirada al frente para estabilidad.</item>
+                <item>Activa core para prevenir rotaciones.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos, isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto con Rotación (Kettlebell)</nombre>
+            <descripcion>Peso muerto que añade giro de torso al volver, trabajando oblicuos además de lumbares.</descripcion>
+            <gif>@drawable/peso_muerto_con_rotaci_n__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Realiza un peso muerto con kettlebell.</paso>
+                <paso numero="2">Al subir, rota torso llevando kettlebell hacia un lado.</paso>
+                <paso numero="3">Vuelve al centro y baja controlado.</paso>
+                <paso numero="4">Alterna dirección en cada repetición.</paso>
+            </pasos>
+            <consejo>
+                <item>No uses demasiada inercia en la rotación.</item>
+                <item>Controla el movimiento para lumbar y oblicuos.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Oblicuos, glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto con Kettlebell</nombre>
+            <descripcion>Peso muerto clásico con kettlebell para fortalecer cadena posterior y lumbares.</descripcion>
+            <gif>@drawable/peso_muerto__kettlebell_</gif>
+            <pasos>
+                <paso numero="1">Sujeta una kettlebell con ambas manos.</paso>
+                <paso numero="2">Inclina torso manteniendo espalda recta y rodillas ligeramente flexionadas.</paso>
+                <paso numero="3">Desciende kettlebell hasta la altura de la espinilla.</paso>
+                <paso numero="4">Sube empujando con la cadera y contrayendo glúteos.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén peso cerca del cuerpo.</item>
+                <item>No redondees la espalda.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Isquiotibiales, glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto en Smith</nombre>
+            <descripcion>Peso muerto realizado en máquina Smith para mayor control del recorrido.</descripcion>
+            <gif>@drawable/peso_muerto__smith_</gif>
+            <pasos>
+                <paso numero="1">Coloca la barra Smith a la altura de tibias.</paso>
+                <paso numero="2">Inclina torso flexionando cadera manteniendo rodillas suaves.</paso>
+                <paso numero="3">Desciende barra hasta media espinilla.</paso>
+                <paso numero="4">Sube empujando con cadera y espalda recta.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén trayectoria vertical de la barra.</item>
+                <item>Activa core para proteger la zona lumbar.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Isquiotibiales, glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto Sumo con Barra</nombre>
+            <descripcion>Variante sumo con agarre ancho para incidir más en aductores y lumbares.</descripcion>
+            <gif>@drawable/peso_muerto_sumo__barra_</gif>
+            <pasos>
+                <paso numero="1">Separa pies por encima de los hombros con puntas hacia afuera.</paso>
+                <paso numero="2">Agáchate y agarra la barra con manos entre piernas.</paso>
+                <paso numero="3">Sube empujando con cadera y contrayendo lumbares.</paso>
+                <paso numero="4">Baja controlado manteniendo espalda recta.</paso>
+            </pasos>
+            <consejo>
+                <item>Activa glúteos al subir.</item>
+                <item>No redondees la espalda.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Aductores, glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto Sumo con Mancuernas</nombre>
+            <descripcion>Versión sumo con mancuerna en cada mano para mayor libertad de movimiento.</descripcion>
+            <gif>@drawable/peso_muerto_sumo__mancuernas_</gif>
+            <pasos>
+                <paso numero="1">Coloca pies anchos con puntas hacia afuera.</paso>
+                <paso numero="2">Sujeta una mancuerna en cada mano.</paso>
+                <paso numero="3">Realiza el movimiento de peso muerto sumo.</paso>
+                <paso numero="4">Sube contrayendo glúteos y lumbares.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén pesos equilibrados en ambas manos.</item>
+                <item>Controla la bajada sin arquear la espalda.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Aductores, glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto Sumo Rumano con Barra</nombre>
+            <descripcion>Variante rumana del sumo para incidir en isquiotibiales y lumbares con recorrido reducido.</descripcion>
+            <gif>@drawable/peso_muerto_sumo_rumano__barra_</gif>
+            <pasos>
+                <paso numero="1">Adopta postura sumo con barra en manos.</paso>
+                <paso numero="2">Flexiona cadera manteniendo rodillas semiflexionadas.</paso>
+                <paso numero="3">Desciende barra hasta sentir estiramiento.</paso>
+                <paso numero="4">Sube contrayendo glúteos y lumbares.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén espalda recta en todo momento.</item>
+                <item>Controla la fase excéntrica.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Isquiotibiales, glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto Sumo en Smith</nombre>
+            <descripcion>Peso muerto sumo en máquina Smith para recorrido guiado y mayor seguridad.</descripcion>
+            <gif>@drawable/peso_muerto_sumo__smith_</gif>
+            <pasos>
+                <paso numero="1">Coloca pies anchos y ajusta la barra Smith.</paso>
+                <paso numero="2">Desbloquea la barra y baja con cadera.</paso>
+                <paso numero="3">Sube empujando con glúteos.</paso>
+                <paso numero="4">Bloquea barra y repite.</paso>
+            </pasos>
+            <consejo>
+                <item>Evita inclinar torso excesivamente.</item>
+                <item>Activa core para protección.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Aductores, glúteos</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto Unilateral con Barra</nombre>
+            <descripcion>Variante unilateral con barra para trabajar asimetrías y estabilidad lumbar.</descripcion>
+            <gif>@drawable/peso_muerto_unilateral__barra_</gif>
+            <pasos>
+                <paso numero="1">Sujeta la barra con ambas manos al centro y apoya un pie atrás.</paso>
+                <paso numero="2">Inclina torso hacia adelante con pierna trasera elevada.</paso>
+                <paso numero="3">Empuja cadera al volver a posición inicial.</paso>
+                <paso numero="4">Alterna pierna en cada serie.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén el core firme para estabilidad.</item>
+                <item>Controla el equilibrio en cada repetición.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos, isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto Unilateral</nombre>
+            <descripcion>Peso muerto a una pierna sin equipamiento para trabajar lumbares y equilibrio.</descripcion>
+            <gif>@drawable/peso_muerto_unilateral</gif>
+            <pasos>
+                <paso numero="1">Apóyate en una pierna con la otra extendida atrás.</paso>
+                <paso numero="2">Inclina torso manteniendo columna neutra.</paso>
+                <paso numero="3">Vuelve a la posición inicial empujando cadera.</paso>
+                <paso numero="4">Realiza series alternando pierna.</paso>
+            </pasos>
+            <consejo>
+                <item>Usa un apoyo si necesitas ayuda con el equilibrio.</item>
+                <item>Activa core para mayor estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos, isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto Unilateral con Kettlebell</nombre>
+            <descripcion>Variante unilateral con kettlebell para mayor desafío de estabilidad y fuerza lumbar.</descripcion>
+            <gif>@drawable/peso_muerto_unilateral_kettlebell</gif>
+            <pasos>
+                <paso numero="1">Sujeta una kettlebell con una mano.</paso>
+                <paso numero="2">Eleva la pierna contraria atrás y realiza peso muerto.</paso>
+                <paso numero="3">Mantén torso estable durante el movimiento.</paso>
+                <paso numero="4">Alterna lado tras cada repetición.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén mirada al frente para ayudar al equilibrio.</item>
+                <item>Controla la bajada completamente.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos, isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto Unilateral con Mancuernas</nombre>
+            <descripcion>Variante unilateral con mancuernas para trabajar lumbares de forma aislada y mejorar equilibrio.</descripcion>
+            <gif>@drawable/peso_muerto_unilateral_mancuernas</gif>
+            <pasos>
+                <paso numero="1">Sujeta una mancuerna en cada mano o una sola.</paso>
+                <paso numero="2">Inclina torso y levanta pierna contraria atrás.</paso>
+                <paso numero="3">Regresa contrayendo lumbares.</paso>
+                <paso numero="4">Alterna lado tras cada serie.</paso>
+            </pasos>
+            <consejo>
+                <item>Comienza con peso ligero para adaptarte al equilibrio.</item>
+                <item>Activa core durante todo el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos, isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Peso Muerto Unilateral en Smith</nombre>
+            <descripcion>Peso muerto unilateral guiado en máquina Smith para mayor seguridad y control.</descripcion>
+            <gif>@drawable/peso_muerto_unilateral_smith</gif>
+            <pasos>
+                <paso numero="1">Ajusta la barra Smith a la altura adecuada.</paso>
+                <paso numero="2">Coloca una pierna atrás y realiza el movimiento.</paso>
+                <paso numero="3">Sube contrayendo glúteos y lumbares.</paso>
+                <paso numero="4">Alterna pierna en cada repetición.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén trayectoria vertical de la barra.</item>
+                <item>Activa core para proteger la zona lumbar.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Glúteos, isquiotibiales</secundario>
+            </musculos>
+        </ejercicio>
+
+        <ejercicio>
+            <nombre>Remo con Agarre Cerrado (Smith)</nombre>
+            <descripcion>Remo en máquina Smith con agarre cerrado para trabajar lumbares y dorsales.</descripcion>
+            <gif>@drawable/remo___pegada_cerrada__smith_</gif>
+            <pasos>
+                <paso numero="1">Coloca la barra a la altura de la cadera.</paso>
+                <paso numero="2">Inclina torso hacia adelante y agarra la barra con manos juntas.</paso>
+                <paso numero="3">Tira de la barra hacia el abdomen contrayendo dorsales y lumbares.</paso>
+                <paso numero="4">Baja la barra controladamente y repite.</paso>
+            </pasos>
+            <consejo>
+                <item>Mantén espalda recta durante todo el ejercicio.</item>
+                <item>Evita balancear el torso.</item>
+            </consejo>
+            <musculos>
+                <principal>Lumbar</principal>
+                <secundario>Dorsales, bíceps</secundario>
+            </musculos>
+        </ejercicio>
+
+    </categoria>
+
 </ejercicios>
