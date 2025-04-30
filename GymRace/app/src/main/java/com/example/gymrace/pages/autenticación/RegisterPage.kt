@@ -1,4 +1,4 @@
-package com.example.gymrace.pages
+package com.example.gymrace.pages.autenticación
 
 import android.widget.Toast
 import androidx.compose.runtime.*
@@ -47,6 +47,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.example.gymrace.R
+import com.example.gymrace.pages.GLOBAL
 import com.example.gymrace.pages.GLOBAL.Companion.crearUsuarioEnFirestore
 import com.example.gymrace.ui.theme.ThemeManager
 import com.example.gymrace.ui.theme.rememberThemeState

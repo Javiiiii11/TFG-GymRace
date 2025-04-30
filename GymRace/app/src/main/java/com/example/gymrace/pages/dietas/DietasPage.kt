@@ -1,4 +1,4 @@
-package com.example.gymrace.pages
+package com.example.gymrace.pages.dietas
 
 import android.content.Intent
 import androidx.compose.foundation.lazy.items

@@ -1,4 +1,4 @@
-package com.example.gymrace.pages
+package com.example.gymrace.pages.desafios
 
 import android.util.Log
 import androidx.compose.animation.animateContentSize
@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import com.example.gymrace.GifData
 import com.example.gymrace.R
 import com.example.gymrace.addFriend

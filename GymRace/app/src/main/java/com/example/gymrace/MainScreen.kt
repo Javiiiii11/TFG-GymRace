@@ -160,13 +160,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.gymrace.pages.*
+import com.example.gymrace.pages.desafios.ChallengeViewModel
+import com.example.gymrace.pages.desafios.DesafiosPage
+import com.example.gymrace.pages.dietas.DietasPage
 import com.example.gymrace.ui.theme.ThemeManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.firebase.auth.FirebaseAuth
-import np.com.bimalkafle.bottomnavigationdemo.pages.HomePage
+import com.example.gymrace.pages.inicio.HomePage
 import np.com.bimalkafle.bottomnavigationdemo.pages.UserPage
 
 data class BottomNavItem(val label: String, val route: String, val icon: ImageVector)

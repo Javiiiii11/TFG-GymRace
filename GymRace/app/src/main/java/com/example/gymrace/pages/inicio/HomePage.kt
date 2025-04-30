@@ -1,4 +1,4 @@
-package np.com.bimalkafle.bottomnavigationdemo.pages
+package com.example.gymrace.pages.inicio
 
 import android.content.Intent
 import android.os.Build

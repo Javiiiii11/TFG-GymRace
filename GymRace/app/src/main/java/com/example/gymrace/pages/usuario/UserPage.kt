@@ -2,7 +2,7 @@ package np.com.bimalkafle.bottomnavigationdemo.pages
 
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
-import com.example.gymrace.pages.saveLoginState
+import com.example.gymrace.pages.autenticación.saveLoginState
 import com.google.firebase.firestore.FirebaseFirestore
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility

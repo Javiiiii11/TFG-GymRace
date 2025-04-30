@@ -1,4 +1,4 @@
-package com.example.gymrace.pages
+package com.example.gymrace.pages.autenticación
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gymrace.R
+import com.example.gymrace.pages.GLOBAL
 import com.example.gymrace.ui.theme.ThemeManager
 import com.example.gymrace.ui.theme.rememberThemeState
 import com.google.android.gms.auth.api.signin.GoogleSignIn

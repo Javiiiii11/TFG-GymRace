@@ -143,7 +143,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.gymrace.pages.*
+import com.example.gymrace.pages.autenticación.LoginPage
+import com.example.gymrace.pages.autenticación.RegisterPage
+import com.example.gymrace.pages.autenticación.RegisterPage2
+import com.example.gymrace.pages.dietas.DietasPage
+import com.example.gymrace.pages.inicio.InitialScreen
 import com.example.gymrace.ui.theme.GymRaceTheme
 import com.example.gymrace.ui.theme.ThemeManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost

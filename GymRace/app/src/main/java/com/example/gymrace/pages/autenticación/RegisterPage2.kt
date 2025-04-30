@@ -1,10 +1,9 @@
-package com.example.gymrace.pages
+package com.example.gymrace.pages.autenticación
 
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -20,6 +19,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.gymrace.pages.GLOBAL
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
@@ -73,12 +73,20 @@ fun RegisterPage2(navController: NavController) {
                 if (currentUser != null) {
                     val userId = currentUser.uid
                     GLOBAL.guardarDatosRegistro(
-                        userId, nombre, peso, altura, año, selectedGoal, selectedDays, selectedExperience
+                        userId,
+                        nombre,
+                        peso,
+                        altura,
+                        año,
+                        selectedGoal,
+                        selectedDays,
+                        selectedExperience
                     ) {
                         navController.navigate("main") {
                             popUpTo("login") { inclusive = true }
                         }
-                        Toast.makeText(contexto, "Perfil fitnes actualizado", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(contexto, "Perfil fitnes actualizado", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 } else {
                     Toast.makeText(contexto, "No se ha podido identificar al usuario", Toast.LENGTH_SHORT).show()
