@@ -24,56 +24,87 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 
-//Composable para la pagina de registro 2 (fittness profile)
+// Composable para la página de registro 2 / edición de perfil
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterPage2(navController: NavController) {
-    // Variables de estado
     val contexto = LocalContext.current
     val alcanceCorrutina = rememberCoroutineScope()
 
-    // Estado del formulario
-    var peso by rememberSaveable { mutableStateOf("") }
-    var altura by rememberSaveable { mutableStateOf("") }
-    var año by rememberSaveable { mutableStateOf("") }
-    var nombre by rememberSaveable { mutableStateOf("") }
-    var cargando by remember { mutableStateOf(false) }
+    // Determinar si es un nuevo usuario o actualización de perfil
+    val esNuevoUsuario = GLOBAL.nombre.isBlank()
 
-    // Estado del menú desplegable de objetivo fitness
+    // Campos autocompletados si existen datos en GLOBAL
+    var nombre by rememberSaveable { mutableStateOf(GLOBAL.nombre.takeIf { it.isNotBlank() } ?: "") }
+    var año by rememberSaveable { mutableStateOf(GLOBAL.edad.takeIf { it.isNotBlank() } ?: "") }
+    var altura by rememberSaveable { mutableStateOf(GLOBAL.altura.takeIf { it.isNotBlank() } ?: "") }
+    var peso by rememberSaveable { mutableStateOf(GLOBAL.peso.takeIf { it.isNotBlank() } ?: "") }
+
+    // Dropdown Objetivo
     var expandedGoalMenu by remember { mutableStateOf(false) }
-    var selectedGoal by rememberSaveable { mutableStateOf("Selecciona tu objetivo") }
+    var selectedGoal by rememberSaveable { mutableStateOf(
+        GLOBAL.objetivoFitness.takeIf { it.isNotBlank() } ?: "Selecciona tu objetivo"
+    ) }
     val goals = listOf(
-        "Perder peso",
-        "Ganar masa muscular",
-        "Mejorar resistencia",
-        "Mejorar flexibilidad",
-        "Mejorar salud general",
-        "Preparación para competición"
+        "Perder peso", "Ganar masa muscular", "Mejorar resistencia",
+        "Mejorar flexibilidad", "Mejorar salud general", "Preparación para competición"
     )
-    // Estado del menú desplegable de días de entrenamiento
-    var expandedDaysMenu by remember { mutableStateOf(false) }
-    var selectedDays by rememberSaveable { mutableStateOf("Selecciona días") }
-    val trainingDays = listOf("1", "2", "3", "4", "5", "6", "7")
 
-    // Estado del menú desplegable de nivel de experiencia
+    // Dropdown Días
+    var expandedDaysMenu by remember { mutableStateOf(false) }
+    var selectedDays by rememberSaveable { mutableStateOf(
+        GLOBAL.diasEntrenamientoPorSemana.takeIf { it.isNotBlank() } ?: "Selecciona días"
+    ) }
+    val trainingDays = (1..7).map { it.toString() }
+
+    // Dropdown Experiencia
     var expandedExperienceMenu by remember { mutableStateOf(false) }
-    var selectedExperience by rememberSaveable { mutableStateOf("Selecciona nivel") }
+    var selectedExperience by rememberSaveable { mutableStateOf(
+        GLOBAL.nivelExperiencia.takeIf { it.isNotBlank() } ?: "Selecciona nivel"
+    ) }
     val experienceLevels = listOf(
         "Principiante (menos de 6 meses)",
         "Intermedio (6 meses - 2 años)",
         "Avanzado (más de 2 años)"
     )
 
-    // Función para guardar datos del usuario
+    var cargando by remember { mutableStateOf(false) }
+
+    fun validateForm(): String = when {
+        nombre.isBlank() -> "Por favor, ingresa tu apodo."
+        nombre.length < 3 -> "El apodo debe tener al menos 3 caracteres."
+        nombre.length > 20 -> "El apodo no puede tener más de 20 caracteres."
+        año.isBlank() -> "Por favor, ingresa tu edad."
+        !año.all { it.isDigit() } -> "La edad debe ser un número."
+        año.toIntOrNull()?.let { it <= 0 } == true -> "Edad inválida."
+        altura.isBlank() -> "Por favor, ingresa tu altura."
+        !altura.all { it.isDigit() } -> "La altura debe ser un número."
+        altura.toFloatOrNull()?.let { it <= 0f } == true -> "Altura inválida."
+        peso.isBlank() -> "Por favor, ingresa tu peso."
+        !peso.all { it.isDigit() } -> "El peso debe ser un número."
+        peso.toFloatOrNull()?.let { it <= 0f } == true -> "Peso inválido."
+        selectedGoal == "Selecciona tu objetivo" -> "Por favor, selecciona tu objetivo fitness."
+        selectedDays == "Selecciona días" -> "Por favor, selecciona los días de entrenamiento."
+        selectedExperience == "Selecciona nivel" -> "Por favor, selecciona tu nivel de experiencia."
+        else -> ""
+    }
+
     fun saveUserData() {
         cargando = true
         alcanceCorrutina.launch {
             try {
-                val currentUser = FirebaseAuth.getInstance().currentUser
-                if (currentUser != null) {
-                    val userId = currentUser.uid
+                // Actualizar GLOBAL localmente
+                GLOBAL.nombre = nombre
+                GLOBAL.edad = año
+                GLOBAL.altura = altura
+                GLOBAL.peso = peso
+                GLOBAL.objetivoFitness = selectedGoal
+                GLOBAL.diasEntrenamientoPorSemana = selectedDays
+                GLOBAL.nivelExperiencia = selectedExperience
+
+                FirebaseAuth.getInstance().currentUser?.let { user ->
                     GLOBAL.guardarDatosRegistro(
-                        userId,
+                        user.uid,
                         nombre,
                         peso,
                         altura,
@@ -82,17 +113,20 @@ fun RegisterPage2(navController: NavController) {
                         selectedDays,
                         selectedExperience
                     ) {
-                        navController.navigate("main") {
-                            popUpTo("login") { inclusive = true }
+                        // Si es un nuevo usuario, navegar a main
+                        // Si es actualización de perfil, volver a la página anterior
+                        if (esNuevoUsuario) {
+                            navController.navigate("main") {
+                                popUpTo("login") { inclusive = true }
+                            }
+                            Toast.makeText(contexto, "Registro completo", Toast.LENGTH_SHORT).show()
+                        } else {
+                            navController.popBackStack()
+                            Toast.makeText(contexto, "Perfil actualizado", Toast.LENGTH_SHORT).show()
                         }
-                        Toast.makeText(contexto, "Perfil fitnes actualizado", Toast.LENGTH_SHORT)
-                            .show()
                     }
-                } else {
-                    Toast.makeText(contexto, "No se ha podido identificar al usuario", Toast.LENGTH_SHORT).show()
-                }
+                } ?: Toast.makeText(contexto, "No se ha podido identificar al usuario", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
-//                Toast.makeText(contexto, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 Log.e("Firestore", "Error al guardar datos del usuario: ${e.message}")
             } finally {
                 cargando = false
@@ -100,312 +134,243 @@ fun RegisterPage2(navController: NavController) {
         }
     }
 
-    // validación del formulario
-    fun validateForm(): String {
-        return when {
-
-            nombre.isBlank() -> "Por favor, ingresa tu apodo."
-            nombre.length < 3 -> "El apodo debe tener al menos 3 caracteres."
-            nombre.length > 20 -> "El apodo no puede tener más de 20 caracteres."
-
-            año.isBlank() -> "Por favor, ingresa tu edad."
-            !año.all { it.isDigit() } -> "La edad debe ser un número."
-            año.toInt() < 0 -> "La edad no puede ser negativa."
-            año.toInt() == 0 -> "La edad no puede ser cero."
-
-            altura.isBlank() -> "Por favor, ingresa tu altura."
-            !altura.all { it.isDigit() } -> "La altura debe ser un número."
-            altura.toFloat() < 0 -> "La altura no puede ser negativa."
-            altura.toFloat() == 0f -> "La altura no puede ser cero."
-
-            peso.isBlank() -> "Por favor, ingresa tu peso."
-            !peso.all { it.isDigit() } -> "El peso debe ser un número."
-            peso.toFloat() < 0 -> "El peso no puede ser negativo."
-            peso.toFloat() == 0f -> "El peso no puede ser cero."
-
-
-            selectedGoal.isBlank() -> "Por favor, selecciona tu objetivo fitness."
-            selectedGoal.isEmpty() -> "Por favor, selecciona tu objetivo fitness."
-
-            selectedDays.isBlank() -> "Por favor, selecciona los días de entrenamiento."
-            selectedDays.isEmpty() -> "Por favor, selecciona los días de entrenamiento."
-
-            selectedExperience.isBlank() -> "Por favor, selecciona tu nivel de experiencia."
-            selectedExperience.isEmpty() -> "Por favor, selecciona tu nivel de experiencia."
-
-            selectedGoal == "Selecciona tu objetivo" -> "Por favor, selecciona tu objetivo fitness."
-            selectedDays == "Selecciona días" -> "Por favor, selecciona los días de entrenamiento."
-            selectedExperience == "Selecciona nivel" -> "Por favor, selecciona tu nivel de experiencia."
-
-            else -> "" // Todo está bien
-        }
-    }
-
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-//            .verticalScroll(scrollState) // Descomentar si se necesita desplazamiento
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-
     ) {
-        // Título de la página
         Text(
             text = "Tu Perfil Físico",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
-            color = (MaterialTheme.colorScheme.primary) // Color del texto
-
+            color = MaterialTheme.colorScheme.primary
         )
+        Spacer(Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Campos de nombre, peso, altura y edad
-
+        // Apodo
         OutlinedTextField(
             value = nombre,
             onValueChange = { nombre = it },
             label = { Text("Apodo") },
-            modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
+            modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
-                unfocusedBorderColor = Color(0xFF000000) // Color cuando no está enfocado
-            ),
-            leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Apodo") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                focusedBorderColor = Color(0xFFFF9240),
+                unfocusedBorderColor = Color(0xFF000000)
+            )
         )
+        Spacer(Modifier.height(8.dp))
 
+        // Edad
         OutlinedTextField(
             value = año,
             onValueChange = { año = it },
             label = { Text("Edad") },
-            modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            leadingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = null) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
-                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
-            ),
-            leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Edad") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                focusedBorderColor = Color(0xFFFF9240),
+                unfocusedBorderColor = Color(0xFF000000)
+            )
         )
+        Spacer(Modifier.height(8.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
-
+        // Altura
         OutlinedTextField(
             value = altura,
             onValueChange = { altura = it },
             label = { Text("Altura (cm)") },
-            modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            leadingIcon = { Icon(Icons.Default.Height, contentDescription = null) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
-                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
-            ),
-            leadingIcon = { Icon(Icons.Default.Height, contentDescription = "Altura") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                focusedBorderColor = Color(0xFFFF9240),
+                unfocusedBorderColor = Color(0xFF000000)
+            )
         )
+        Spacer(Modifier.height(8.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
-
+        // Peso
         OutlinedTextField(
             value = peso,
             onValueChange = { peso = it },
             label = { Text("Peso (kg)") },
-            modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            leadingIcon = { Icon(Icons.Default.MonitorWeight, contentDescription = null) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
-                unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
-            ),
-            leadingIcon = { Icon(Icons.Default.MonitorWeight, contentDescription = "Peso") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                focusedBorderColor = Color(0xFFFF9240),
+                unfocusedBorderColor = Color(0xFF000000)
+            )
         )
+        Spacer(Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Objetivo fitness
         Text(
             text = "Información de Entrenamiento",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = (MaterialTheme.colorScheme.onBackground),
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.align(Alignment.Start)
         )
+        Spacer(Modifier.height(8.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
-
+        // Objetivo select
         ExposedDropdownMenuBox(
             expanded = expandedGoalMenu,
-            onExpandedChange = { expandedGoalMenu = it }
+            onExpandedChange = { expandedGoalMenu = it },
+            modifier = Modifier.fillMaxWidth()
         ) {
             TextField(
                 value = selectedGoal,
                 onValueChange = {},
+                label = { Text("Objetivo Fitness") },
+                leadingIcon = { Icon(Icons.Default.FitnessCenter, contentDescription = null) },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expandedGoalMenu) },
                 readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedGoalMenu) },
-                leadingIcon = { Icon(Icons.Default.FitnessCenter, contentDescription = "Objetivo") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
-                    unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
-                ),
-                label = { Text("Objetivo Fitness") }
+                    focusedBorderColor = Color(0xFFFF9240),
+                    unfocusedBorderColor = Color(0xFF000000)
+                )
             )
-
             ExposedDropdownMenu(
                 expanded = expandedGoalMenu,
                 onDismissRequest = { expandedGoalMenu = false }
             ) {
-                goals.forEach { goal: String ->
+                goals.forEach { goal ->
                     DropdownMenuItem(
-                        text = { Text(text = goal) },
-                        onClick = {
-                            selectedGoal = goal
-                            expandedGoalMenu = false
-                        }
+                        text = { Text(goal) },
+                        onClick = { selectedGoal = goal; expandedGoalMenu = false }
                     )
                 }
             }
         }
+        Spacer(Modifier.height(8.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Días de entrenamiento
+        // Días select
         ExposedDropdownMenuBox(
             expanded = expandedDaysMenu,
-            onExpandedChange = { expandedDaysMenu = it }
+            onExpandedChange = { expandedDaysMenu = it },
+            modifier = Modifier.fillMaxWidth()
         ) {
             TextField(
                 value = selectedDays,
                 onValueChange = {},
+                label = { Text("Días/semana") },
+                leadingIcon = { Icon(Icons.Default.Numbers, contentDescription = null) },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expandedDaysMenu) },
                 readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedDaysMenu) },
-                leadingIcon = { Icon(Icons.Default.Numbers, contentDescription = "Días") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
-                    unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
-                ),
-                label = { Text("Días de entrenamiento por semana") }
+                    focusedBorderColor = Color(0xFFFF9240),
+                    unfocusedBorderColor = Color(0xFF000000)
+                )
             )
-
             ExposedDropdownMenu(
                 expanded = expandedDaysMenu,
                 onDismissRequest = { expandedDaysMenu = false }
             ) {
-                trainingDays.forEach { day: String ->
+                trainingDays.forEach { day ->
                     DropdownMenuItem(
-                        text = { Text(text = day) },
-                        onClick = {
-                            selectedDays = day
-                            expandedDaysMenu = false
-                        }
+                        text = { Text(day) },
+                        onClick = { selectedDays = day; expandedDaysMenu = false }
                     )
                 }
             }
         }
+        Spacer(Modifier.height(8.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Nivel de experiencia
+        // Experiencia select
         ExposedDropdownMenuBox(
             expanded = expandedExperienceMenu,
-            onExpandedChange = { expandedExperienceMenu = it }
+            onExpandedChange = { expandedExperienceMenu = it },
+            modifier = Modifier.fillMaxWidth()
         ) {
             TextField(
                 value = selectedExperience,
                 onValueChange = {},
+                label = { Text("Nivel de experiencia") },
+                leadingIcon = { Icon(Icons.Default.FitnessCenter, contentDescription = null) },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expandedExperienceMenu) },
                 readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedExperienceMenu) },
-                leadingIcon = { Icon(Icons.Default.FitnessCenter, contentDescription = "Experiencia") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color(0xFFFF9240), // Color cuando está enfocado
-                    unfocusedBorderColor = Color(0xff000000) // Color cuando no está enfocado
-                ),
-                label = { Text("Nivel de experiencia") }
+                    focusedBorderColor = Color(0xFFFF9240),
+                    unfocusedBorderColor = Color(0xFF000000)
+                )
             )
-
             ExposedDropdownMenu(
                 expanded = expandedExperienceMenu,
                 onDismissRequest = { expandedExperienceMenu = false }
             ) {
-                experienceLevels.forEach { level: String ->
+                experienceLevels.forEach { level ->
                     DropdownMenuItem(
-                        text = { Text(text = level) },
-                        onClick = {
-                            selectedExperience = level
-                            expandedExperienceMenu = false
-                        }
+                        text = { Text(level) },
+                        onClick = { selectedExperience = level; expandedExperienceMenu = false }
                     )
                 }
             }
         }
+        Spacer(Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Botón de guardar
-
+        // Botón Guardar/Actualizar
         Button(
             onClick = {
-                val validationMessage = validateForm()
-                if (validationMessage.isNotEmpty()) {
-                    Toast.makeText(contexto, validationMessage, Toast.LENGTH_SHORT).show()
+                validateForm().also { msg ->
+                    if (msg.isNotEmpty()) Toast.makeText(contexto, msg, Toast.LENGTH_SHORT).show()
+                    else saveUserData()
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !cargando,
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF9240))
+        ) {
+            if (cargando) CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color(0xFF7C461D))
+            else Text(text = if (esNuevoUsuario) "Guardar y Continuar" else "Actualizar Perfil", color = Color.White)
+        }
+
+        Spacer(Modifier.height(8.dp))
+
+        // Botón Cancelar/Continuar sin guardar
+        Button(
+            onClick = {
+                if (esNuevoUsuario) {
+                    // Si es un nuevo usuario, ir a main
+                    Toast.makeText(contexto, "Error", Toast.LENGTH_SHORT).show()
+                    navController.navigate("main") { popUpTo("login") { inclusive = true } }
                 } else {
-                    saveUserData()
+                    // Si es una actualización, volver a la página anterior
+                    navController.popBackStack()
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            enabled = !cargando, // Se deshabilita solo si está cargando, no por validación
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xffff9240))
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF9240))
         ) {
-            if (cargando) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    color = Color(0xff7c461d)
-                )
-            } else {
-                Text(text = "Guardar y Continuar", color = Color.White)
-            }
-        }
-        //Continuar sin guardar datos
-        Button(
-            onClick = {
-                navController.navigate("main") {
-                    popUpTo("login") { inclusive = true }
-                }
-            },
-            modifier = Modifier.fillMaxWidth(),
-//            enabled = isFormValid && !cargando,
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xffff9240))
-        ) {
-            if (cargando) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    color = Color(0xff7c461d)
-                )
-            } else {
-                Text(text = "Continuar sin guardar", color = Color.White)
-            }
+            if (cargando) CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color(0xFF7C461D))
+            else Text(text = if (esNuevoUsuario) "Continuar sin perfil" else "Cancelar", color = Color.White)
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(Modifier.height(16.dp))
 
         // Información opcional
         Text(
             text = "Esta información nos ayudará a personalizar tu experiencia",
             color = Color.Gray,
-            fontSize = 14.sp,
+            fontSize = 14.sp
         )
     }
 }

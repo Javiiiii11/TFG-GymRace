@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.example.gymrace.pages.autenticación.saveLoginState
 import com.google.firebase.firestore.FirebaseFirestore
 import android.util.Log
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -53,6 +54,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.gymrace.R
+import com.example.gymrace.pages.GLOBAL
 import com.example.gymrace.ui.theme.ThemeManager.isDarkTheme
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -105,6 +107,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     // Estado para saber si el usuario está registrado con Google
     var isGoogleUser by remember { mutableStateOf(false) }
 
+
     // Efecto para cargar los datos del usuario desde Firebase
     LaunchedEffect(key1 = Unit) {
         try {
@@ -133,6 +136,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     GLOBAL.edad = userDocument.getString("edad") ?: ""
                     GLOBAL.objetivoFitness = userDocument.getString("objetivoFitness") ?: ""
                     GLOBAL.diasEntrenamientoPorSemana = userDocument.getString("diasEntrenamientoPorSemana") ?: ""
+                    // Actualizar GLOBAL
+
 
                     // Transformar el valor de nivelExperiencia al momento de asignarlo
                     val rawNivelExperiencia = userDocument.getString("nivelExperiencia") ?: ""
@@ -538,7 +543,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     onClick = {
                         Log.d("UserPage", "Editando perfil")
                         navController.navigate("register2") {
-                            popUpTo(0) { inclusive = false }
                             Log.d("UserPage", "Editando perfil")
                         }
                     },
@@ -1167,13 +1171,13 @@ fun InfoItem(label: String, value: String) {
 }
 
 // Objeto global para mantener datos del usuario en sesión
-object GLOBAL {
-    var id: String = ""
-    var nombre: String = ""
-    var peso: String = ""
-    var altura: String = ""
-    var edad: String = ""
-    var objetivoFitness: String = ""
-    var diasEntrenamientoPorSemana: String = ""
-    var nivelExperiencia: String = ""
-}
+//object GLOBAL {
+//    var id: String = ""
+//    var nombre: String = ""
+//    var peso: String = ""
+//    var altura: String = ""
+//    var edad: String = ""
+//    var objetivoFitness: String = ""
+//    var diasEntrenamientoPorSemana: String = ""
+//    var nivelExperiencia: String = ""
+//}
