@@ -75,14 +75,17 @@ fun RegisterPage2(navController: NavController) {
         nombre.length < 3 -> "El apodo debe tener al menos 3 caracteres."
         nombre.length > 20 -> "El apodo no puede tener más de 20 caracteres."
         año.isBlank() -> "Por favor, ingresa tu edad."
+        año.toInt() > 120 -> "La edad debe de ser una edad realista."
         !año.all { it.isDigit() } -> "La edad debe ser un número."
-        año.toIntOrNull()?.let { it <= 0 } == true -> "Edad inválida."
+        año.toInt() < 0 -> "La edad no puede ser negativa."
         altura.isBlank() -> "Por favor, ingresa tu altura."
         !altura.all { it.isDigit() } -> "La altura debe ser un número."
-        altura.toFloatOrNull()?.let { it <= 0f } == true -> "Altura inválida."
+        altura.toInt() < 0 -> "La altura no puede ser negativa."
+        altura.toInt() > 300 -> "La altura debe de ser una altura realista."
         peso.isBlank() -> "Por favor, ingresa tu peso."
         !peso.all { it.isDigit() } -> "El peso debe ser un número."
-        peso.toFloatOrNull()?.let { it <= 0f } == true -> "Peso inválido."
+        peso.toInt() < 0 -> "El peso no puede ser negativo."
+        peso.toInt() > 500 -> "El peso debe de ser un peso realista."
         selectedGoal == "Selecciona tu objetivo" -> "Por favor, selecciona tu objetivo fitness."
         selectedDays == "Selecciona días" -> "Por favor, selecciona los días de entrenamiento."
         selectedExperience == "Selecciona nivel" -> "Por favor, selecciona tu nivel de experiencia."
@@ -350,7 +353,6 @@ fun RegisterPage2(navController: NavController) {
             onClick = {
                 if (esNuevoUsuario) {
                     // Si es un nuevo usuario, ir a main
-                    Toast.makeText(contexto, "Error", Toast.LENGTH_SHORT).show()
                     navController.navigate("main") { popUpTo("login") { inclusive = true } }
                 } else {
                     // Si es una actualización, volver a la página anterior

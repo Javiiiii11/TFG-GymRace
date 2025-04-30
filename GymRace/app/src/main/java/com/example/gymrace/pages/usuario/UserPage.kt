@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.example.gymrace.pages.autenticación.saveLoginState
 import com.google.firebase.firestore.FirebaseFirestore
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -56,7 +57,12 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.gymrace.R
 import com.example.gymrace.pages.GLOBAL
 import com.example.gymrace.ui.theme.ThemeManager.isDarkTheme
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.ktx.firestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -380,35 +386,165 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                         }
                     )
                 }
+                var showLoadingDialog by remember { mutableStateOf(false) }
 
-                // Diálogo de confirmación para eliminar la cuenta
+
+                // Diálogo de confirmación para borrar cuenta
                 if (showDeleteAccountDialog) {
                     AlertDialog(
                         onDismissRequest = { showDeleteAccountDialog = false },
                         title = { Text("Confirmación") },
-                        text = { Text("¿Estás seguro de que deseas borrar tu cuenta? Esta acción no se puede deshacer.") },
+                        text = {
+                            Text("¿Estás seguro de que deseas borrar tu cuenta? Esta acción no se puede deshacer.")
+                        },
                         confirmButton = {
                             TextButton(onClick = {
                                 val user = FirebaseAuth.getInstance().currentUser
-                                if (user != null) {
-                                    Firebase.firestore.collection("usuarios").document(user.uid).delete()
-                                    Firebase.firestore.collection("amigos").document(user.uid).delete()
+                                val db = Firebase.firestore
+                                val googleAccount = GoogleSignIn.getLastSignedInAccount(context)
 
-                                    user.delete().addOnCompleteListener { task ->
-                                        if (task.isSuccessful) {
-                                            Log.d("UserPage", "Cuenta eliminada")
-                                            navController.navigate("login") {
-                                                popUpTo(0) { inclusive = true }
+                                if (user != null && googleAccount != null) {
+                                    val credential = GoogleAuthProvider.getCredential(googleAccount.idToken, null)
+
+                                    showLoadingDialog = true // DIÁLOGO DE CARGA
+
+                                    user.reauthenticate(credential).addOnCompleteListener { reauthTask ->
+                                        if (reauthTask.isSuccessful) {
+                                            CoroutineScope(Dispatchers.IO).launch {
+                                                try {
+                                                    val uid = user.uid
+                                                    Log.d("UserPage", "Iniciando eliminación de cuenta para usuario: $uid")
+
+                                                    // 1. Eliminar de 'usuarios'
+                                                    db.collection("usuarios").document(uid).delete().await()
+
+                                                    // 2. Eliminar de 'amigos'
+                                                    try {
+                                                        db.collection("amigos").document(uid).delete().await()
+                                                    } catch (_: Exception) {}
+
+                                                    // 3. Eliminar rutinas donde usuarioId == uid
+                                                    try {
+                                                        val rutinas = db.collection("rutinas").get().await()
+                                                        for (doc in rutinas.documents) {
+                                                            val docUsuarioId = doc.getString("usuarioId")
+                                                            val docUsuarioIdAlt = doc.getString("UsuarioId")
+                                                            if (docUsuarioId == uid || docUsuarioIdAlt == uid) {
+                                                                doc.reference.delete().await()
+                                                            }
+                                                        }
+                                                    } catch (_: Exception) {}
+
+                                                    // 4. Eliminar desafíos donde es creador o invitado
+                                                    val desafios = db.collection("desafios").get().await()
+                                                    for (desafio in desafios.documents) {
+                                                        val creadorValue = desafio.get("creador")
+                                                        val esCreador = when (creadorValue) {
+                                                            is String -> creadorValue == uid
+                                                            is Map<*, *> -> creadorValue.containsKey(uid) || creadorValue.containsValue(uid)
+                                                            else -> false
+                                                        }
+
+                                                        val amigoInvitado = desafio.get("amigoInvitado")
+                                                        val esInvitado = when (amigoInvitado) {
+                                                            is Map<*, *> -> amigoInvitado.containsKey(uid) || amigoInvitado.values.any { it.toString() == uid }
+                                                            is List<*> -> amigoInvitado.contains(uid)
+                                                            is String -> amigoInvitado == uid
+                                                            else -> false
+                                                        }
+
+                                                        if (esCreador || esInvitado) {
+                                                            desafio.reference.delete().await()
+                                                        }
+                                                    }
+
+                                                    // 5. Eliminar al usuario de listas de amigos de otros usuarios
+                                                    val amigos = db.collection("amigos").get().await()
+                                                    for (doc in amigos.documents) {
+                                                        val friendsData = doc.get("friends")
+                                                        when (friendsData) {
+                                                            is List<*> -> {
+                                                                if (friendsData.contains(uid)) {
+                                                                    val nuevaLista = friendsData.filter { it != uid }
+                                                                    doc.reference.update("friends", nuevaLista).await()
+                                                                }
+                                                            }
+                                                            is Map<*, *> -> {
+                                                                if (friendsData.containsKey(uid) || friendsData.containsValue(uid)) {
+                                                                    val nuevoMapa = (friendsData as Map<String, Any>).filterKeys { it != uid }
+                                                                        .filterValues { it.toString() != uid }
+                                                                    doc.reference.update("friends", nuevoMapa).await()
+                                                                }
+                                                            }
+                                                            is String -> {
+                                                                if (friendsData == uid) {
+                                                                    doc.reference.update("friends", "").await()
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    // 6. Eliminar referencias en otras colecciones
+                                                    val coleccionesAdicionales = listOf("dietas", "rutinaspredefinidas")
+                                                    for (coleccion in coleccionesAdicionales) {
+                                                        try {
+                                                            val docs = db.collection(coleccion)
+                                                                .whereEqualTo("UsuarioId", uid).get().await()
+                                                            for (doc in docs.documents) {
+                                                                doc.reference.delete().await()
+                                                            }
+                                                        } catch (_: Exception) {}
+
+                                                        try {
+                                                            val allDocs = db.collection(coleccion).get().await()
+                                                            for (doc in allDocs.documents) {
+                                                                val data = doc.data
+                                                                val contieneUid = data?.values?.any {
+                                                                    when (it) {
+                                                                        is String -> it == uid
+                                                                        is List<*> -> it.contains(uid)
+                                                                        is Map<*, *> -> it.containsKey(uid) || it.containsValue(uid)
+                                                                        else -> false
+                                                                    }
+                                                                } == true
+                                                                if (contieneUid) {
+                                                                    doc.reference.delete().await()
+                                                                }
+                                                            }
+                                                        } catch (_: Exception) {}
+                                                    }
+
+                                                    // 7. Eliminar cuenta de Firebase Authentication
+                                                    withContext(Dispatchers.Main) {
+                                                        user.delete().addOnCompleteListener { deleteTask ->
+                                                            if (deleteTask.isSuccessful) {
+                                                                FirebaseAuth.getInstance().signOut()
+                                                                saveLoginState(context, false, "")
+                                                                clearFirestoreCache()
+                                                                Toast.makeText(context, "Cuenta eliminada correctamente", Toast.LENGTH_LONG).show()
+                                                                navController.navigate("login") {
+                                                                    popUpTo(0) { inclusive = true }
+                                                                }
+                                                            } else {
+                                                                Toast.makeText(context, "Error al eliminar la cuenta: ${deleteTask.exception?.message}", Toast.LENGTH_LONG).show()
+                                                            }
+                                                        }
+                                                    }
+                                                } catch (e: Exception) {
+                                                    Log.e("UserPage", "Error durante el borrado: ${e.message}")
+                                                    withContext(Dispatchers.Main) {
+                                                        Toast.makeText(context, "Error durante el borrado: ${e.message}", Toast.LENGTH_LONG).show()
+                                                    }
+                                                }
                                             }
                                         } else {
-                                            Log.d("UserPage", "Error al eliminar cuenta: ${task.exception?.message}")
+                                            Toast.makeText(context, "Error en reautenticación: ${reauthTask.exception?.message}", Toast.LENGTH_LONG).show()
                                         }
                                     }
-
-                                    FirebaseAuth.getInstance().signOut()
-                                    saveLoginState(context, false, "")
-                                    clearFirestoreCache()
+                                } else {
+                                    Toast.makeText(context, "Usuario o cuenta de Google no disponible", Toast.LENGTH_LONG).show()
                                 }
+
                                 showDeleteAccountDialog = false
                             }) {
                                 Text("Sí")
@@ -419,6 +555,16 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                 Text("No")
                             }
                         }
+                    )
+                }
+
+                // Mostrar loading dialog si corresponde
+                if (showLoadingDialog) {
+                    AlertDialog(
+                        onDismissRequest = { /* No permitir cerrarlo manualmente */ },
+                        title = { Text("Procesando") },
+                        text = { Text("Eliminando tu cuenta y datos...") },
+                        confirmButton = { }
                     )
                 }
             }
@@ -541,9 +687,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 // Botón para Editar perfil
                 Button(
                     onClick = {
-                        Log.d("UserPage", "Editando perfil")
                         navController.navigate("register2") {
-                            Log.d("UserPage", "Editando perfil")
+                            Log.d("Navigation", "Editando perfil")
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -565,7 +710,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                         Log.d("Si","Rutas del navController" + navController.currentBackStackEntry)
                         navController.navigate("login") {
                             popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
-                            Log.d("UserPage", "Cerrando sesión")
+                            Log.d("Navigation", "Cerrando sesión")
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -585,6 +730,15 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
 
 fun cerrarSesion(context: Context) {
     FirebaseAuth.getInstance().signOut()
+    // Limpiar las variables globales
+    GLOBAL.id = ""
+    GLOBAL.nombre = ""
+    GLOBAL.peso = ""
+    GLOBAL.altura = ""
+    GLOBAL.edad = ""
+    GLOBAL.objetivoFitness = ""
+    GLOBAL.diasEntrenamientoPorSemana = ""
+    GLOBAL.nivelExperiencia = ""
     saveLoginState(context, false, "") // Guardar el estado de inicio de sesión
     clearFirestoreCache() // Limpiar la caché de Firestore
 

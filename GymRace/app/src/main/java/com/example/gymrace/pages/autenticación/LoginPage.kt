@@ -109,6 +109,7 @@ fun LoginPage(navController: NavController, onThemeChange: @Composable () -> Uni
                         val isNewUser = authTask.result?.additionalUserInfo?.isNewUser ?: false
 
                         if (isNewUser) {
+                            NewUser() // Limpiar los datos del nuevo usuario
                             // Llama a la función para crear el usuario en Firestore
                             GLOBAL.crearUsuarioEnFirestore(userId, userName) {
                                 navController.navigate("register2") {
@@ -150,6 +151,8 @@ fun LoginPage(navController: NavController, onThemeChange: @Composable () -> Uni
             Log.e("Error", loginError)
         }
     }
+
+
 
     // Función para iniciar sesión con correo/contraseña
     fun loginWithEmailAndPassword(email: String, password: String) {
@@ -477,6 +480,16 @@ fun validateForm(): String {
             }
         )
     }
+}
+
+fun NewUser() {
+    GLOBAL.nombre = ""
+    GLOBAL.edad = ""
+    GLOBAL.altura = ""
+    GLOBAL.peso = ""
+    GLOBAL.objetivoFitness = ""
+    GLOBAL.diasEntrenamientoPorSemana = ""
+    GLOBAL.nivelExperiencia = ""
 }
 
 // Función para guardar el estado de inicio de sesión
