@@ -519,6 +519,8 @@ fun DesafiosPage(
         viewModel.loadFriendsChallenges(userId)
     }
     // Diálogo de comunidad (buscar usuarios)
+// In DesafiosPage composable, modify the onUserAction callback in the UsersDialog
+
     if (showCommunityDialog) {
         UsersDialog(
             title = "Comunidad GymRace",
@@ -536,6 +538,11 @@ fun DesafiosPage(
                             loadFriendsList(userId) { friends ->
                                 friendsList = friends
                                 successMessage = "Usuario eliminado de amigos"
+
+                                // Actualizar la lista de amigos en el ViewModel después de eliminar
+                                scope.launch {
+                                    viewModel.loadFriends(userId)
+                                }
                             }
                         }
                     }
@@ -547,6 +554,11 @@ fun DesafiosPage(
                             loadFriendsList(userId) { friends ->
                                 friendsList = friends
                                 successMessage = "Usuario agregado a amigos"
+
+                                // Actualizar la lista de amigos en el ViewModel después de agregar
+                                scope.launch {
+                                    viewModel.loadFriends(userId)
+                                }
                             }
                         }
                     }
