@@ -104,6 +104,7 @@ fun RegisterPage2(navController: NavController) {
                 GLOBAL.objetivoFitness = selectedGoal
                 GLOBAL.diasEntrenamientoPorSemana = selectedDays
                 GLOBAL.nivelExperiencia = selectedExperience
+                GLOBAL.cuentaPrivada = false
 
                 FirebaseAuth.getInstance().currentUser?.let { user ->
                     GLOBAL.guardarDatosRegistro(
@@ -114,7 +115,8 @@ fun RegisterPage2(navController: NavController) {
                         año,
                         selectedGoal,
                         selectedDays,
-                        selectedExperience
+                        selectedExperience,
+                        false
                     ) {
                         // Si es un nuevo usuario, navegar a main
                         // Si es actualización de perfil, volver a la página anterior

@@ -78,7 +78,8 @@ fun loadAllUsers(callback: (List<User>) -> Unit) {
                     peso = doc.getString("peso") ?: "",
                     altura = doc.getString("altura") ?: "",
                     edad = doc.getString("edad") ?: "",
-                    nivelExperiencia = doc.getString("nivelExperiencia") ?: ""
+                    nivelExperiencia = doc.getString("nivelExperiencia") ?: "",
+                    cuentaPrivada = doc.getBoolean("cuentaPrivada") ?: false,
                 )
             }
             callback(usersList)
@@ -118,7 +119,8 @@ fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
                                         peso = userDoc.getString("peso") ?: "",
                                         altura = userDoc.getString("altura") ?: "",
                                         edad = userDoc.getString("edad") ?: "",
-                                        nivelExperiencia = userDoc.getString("nivelExperiencia") ?: ""
+                                        nivelExperiencia = userDoc.getString("nivelExperiencia") ?: "",
+                                        cuentaPrivada = userDoc.getBoolean("cuentaPrivada") ?: false,
                                     )
                                 )
                             }

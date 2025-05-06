@@ -19,6 +19,7 @@ navigationRuntimeAndroid = "2.9.0-alpha07"
 firebaseCommonKtx = "21.0.0"
 firebaseAuthKtx = "23.2.0"
 firebaseFirestoreKtx = "25.1.2"
+firebaseDatabaseKtx = "21.0.0"
 
 
 [libraries]
@@ -48,6 +49,7 @@ firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-k
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 accompanist-navigation-animation = "com.google.accompanist:accompanist-navigation-animation:0.34.0"
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

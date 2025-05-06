@@ -59,6 +59,9 @@ import com.example.gymrace.pages.GLOBAL
 import com.example.gymrace.ui.theme.ThemeManager.isDarkTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,7 +80,8 @@ data class User(
     val altura: String,
     val edad: String,
     val objetivoFitness: String,
-    val nivelExperiencia: String
+    val nivelExperiencia: String,
+    val cuentaPrivada: Boolean
 )
 
 
@@ -113,6 +117,40 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     // Estado para saber si el usuario está registrado con Google
     var isGoogleUser by remember { mutableStateOf(false) }
 
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
+    val firestore = Firebase.firestore
+
+    // Estado para la configuración de privacidad
+    var isPrivate by remember { mutableStateOf(false) }
+
+    // Efecto para cargar la configuración de privacidad del usuario desde Firestore
+    LaunchedEffect(userId) {
+        userId?.let { uid ->
+            try {
+                // Cargar el estado de privacidad desde Firestore
+                firestore.collection("usuarios")
+                    .document(uid)
+                    .get()
+                    .addOnSuccessListener { document ->
+                        if (document != null && document.exists()) {
+                            // Obtener el valor de cuentaPrivada, si no existe usar false por defecto
+                            isPrivate = document.getBoolean("cuentaPrivada") ?: false
+                            Log.d("UserPage", "Estado de privacidad cargado: $isPrivate")
+                        } else {
+                            Log.d("UserPage", "No se encontró el documento del usuario")
+                            isPrivate = false
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("UserPage", "Error al cargar el estado de privacidad", e)
+                        isPrivate = false
+                    }
+            } catch (e: Exception) {
+                Log.e("UserPage", "Excepción al cargar privacidad", e)
+                isPrivate = false
+            }
+        }
+    }
 
     // Efecto para cargar los datos del usuario desde Firebase
     LaunchedEffect(key1 = Unit) {
@@ -142,8 +180,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     GLOBAL.edad = userDocument.getString("edad") ?: ""
                     GLOBAL.objetivoFitness = userDocument.getString("objetivoFitness") ?: ""
                     GLOBAL.diasEntrenamientoPorSemana = userDocument.getString("diasEntrenamientoPorSemana") ?: ""
-                    // Actualizar GLOBAL
-
 
                     // Transformar el valor de nivelExperiencia al momento de asignarlo
                     val rawNivelExperiencia = userDocument.getString("nivelExperiencia") ?: ""
@@ -232,7 +268,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     // Mostrar diálogo de amigos
     if (showFriendsDialog) {
         UsersDialog(
-            title = "Mis Amigos",
+            title = "Seguidos",
             users = friendsList,
             isLoading = isLoadingUsers,
             onDismiss = { showFriendsDialog = false },
@@ -299,10 +335,59 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     },
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.surface)
-                        .width(200.dp)
+                        .width(240.dp)
                 ) {
+                    // Cambiar tema
+                    DropdownMenuItem(
+                        text = {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Icon(
+                                    imageVector = if (isDarkTheme.value) {
+                                        Icons.Default.DarkMode // Icono para modo oscuro activo
+                                    } else {
+                                        Icons.Default.LightMode // Icono para modo claro activo
+                                    },
+                                    contentDescription = "Cambiar tema",
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Text(
+                                    text = "Tema Oscuro",
+                                    fontSize = 16.sp,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Switch(
+                                    checked = isDarkTheme.value,
+                                    onCheckedChange = {
+                                        onThemeChange()
+                                    },
+                                    colors = SwitchDefaults.colors(
+                                        checkedThumbColor = MaterialTheme.colorScheme.primary,
+                                        uncheckedThumbColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                                        checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                                        uncheckedTrackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                                    )
+                                )
+                            }
+                        },
+                        onClick = {
+                            onThemeChange()
+//        showThemeMenu = false
+//        animateSettingsIcon(rotationState, false, coroutineScope)
+                        }
+                    )
+
+
+
+                    //////
+
                     Text(
-                        text = "Tema",
+                        text = "Privacidad",
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -310,30 +395,50 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     Divider(
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
                         thickness = 1.dp,
-                        modifier = Modifier.padding(horizontal = 8.dp)
+                        modifier = Modifier.padding(vertical = 8.dp)
                     )
                     DropdownMenuItem(
                         text = {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
                                 Icon(
-                                    imageVector = if (isDarkTheme.value) {
-                                        Icons.Default.LightMode // Icono para modo oscuro (cuando está en claro)
-                                    } else {
-                                        Icons.Default.DarkMode // Icono para modo claro (cuando está en oscuro)
-                                    },
-                                    contentDescription = "Cambiar tema",
+                                    imageVector = ImageVector.vectorResource(R.drawable.bloquear),
+                                    contentDescription = "Cuenta Privada",
+                                    modifier = Modifier.size(20.dp)
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = "Cambiar tema")
+                                Text(
+                                    text = "Cuenta Privada",
+                                    fontSize = 16.sp,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Switch(
+                                    checked = isPrivate,
+                                    onCheckedChange = { checked ->
+                                        isPrivate = checked
+                                        userId?.let { updatePrivacyStatus(it, checked) }
+                                    },
+                                    colors = SwitchDefaults.colors(
+                                        checkedThumbColor = MaterialTheme.colorScheme.primary,
+                                        uncheckedThumbColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                                        checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                                        uncheckedTrackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                                    )
+                                )
                             }
                         },
-                        onClick = {
-                            onThemeChange()
-                            showThemeMenu = false
-                            // Anima el icono de vuelta a la posición original al cerrar el menú
-                            animateSettingsIcon(rotationState, false, coroutineScope)
-                        }
+                        onClick = {} // para evitar que se dispare al tocar el switch
                     )
+
+
+
+
+
+                    //////
                     Text(
                         text = "Cuenta",
                         fontWeight = FontWeight.Bold,
@@ -584,7 +689,11 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.background)
-                .border(1.dp, MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12f), RoundedCornerShape(16.dp))
+                .border(
+                    1.dp,
+                    MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12f),
+                    RoundedCornerShape(16.dp)
+                )
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -641,7 +750,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     ) {
                         Text(
-                            text = "Mis amigos",
+                            text = "Seguidos",
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -727,6 +836,30 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
 //        Spacer(modifier = Modifier.height(75.dp))
     }
 }
+private fun updatePrivacyStatus(userId: String, isPrivate: Boolean) {
+    val db = Firebase.firestore
+    db.collection("usuarios")
+        .document(userId)
+        .update("cuentaPrivada", isPrivate)
+        .addOnSuccessListener {
+            Log.d("UserPage", "Estado de privacidad actualizado correctamente a: $isPrivate")
+        }
+        .addOnFailureListener { e ->
+            Log.e("UserPage", "Error al actualizar el estado de privacidad: ${e.message}")
+
+            // Si falla la actualización, puede ser porque el campo no existe
+            // Intenta crear el campo si es necesario
+            db.collection("usuarios")
+                .document(userId)
+                .set(mapOf("cuentaPrivada" to isPrivate), SetOptions.merge())
+                .addOnSuccessListener {
+                    Log.d("UserPage", "Campo cuentaPrivada creado con valor: $isPrivate")
+                }
+                .addOnFailureListener { e2 ->
+                    Log.e("UserPage", "Error al crear el campo cuentaPrivada: ${e2.message}")
+                }
+        }
+}
 
 fun cerrarSesion(context: Context) {
     FirebaseAuth.getInstance().signOut()
@@ -743,6 +876,7 @@ fun cerrarSesion(context: Context) {
     clearFirestoreCache() // Limpiar la caché de Firestore
 
 }
+
 
 // Función para limpiar la caché de Firestore
 fun clearFirestoreCache() {
@@ -1030,7 +1164,8 @@ private fun loadAllUsers(callback: (List<User>) -> Unit) {
                         altura = userHeight,
                         edad = userAge,
                         objetivoFitness = userGoal,
-                        nivelExperiencia = userExp
+                        nivelExperiencia = userExp,
+                        cuentaPrivada = false // Asignar valor por defecto
                     )
                     usersList.add(user)
                 } catch (e: Exception) {
@@ -1089,7 +1224,8 @@ private fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
                                     altura = userDoc.getString("altura") ?: "",
                                     edad = userDoc.getString("edad") ?: "",
                                     objetivoFitness = userDoc.getString("objetivoFitness") ?: "No especificado",
-                                    nivelExperiencia = userDoc.getString("nivelExperiencia") ?: ""
+                                    nivelExperiencia = userDoc.getString("nivelExperiencia") ?: "",
+                                    cuentaPrivada = userDoc.getBoolean("cuentaPrivada") ?: false
                                 )
                                 friendsList.add(user)
                             } else {

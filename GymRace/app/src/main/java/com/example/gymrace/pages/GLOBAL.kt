@@ -33,6 +33,7 @@ class GLOBAL {
         var objetivoFitness: String = ""
         var diasEntrenamientoPorSemana: String = ""
         var nivelExperiencia: String = ""
+        var cuentaPrivada: Boolean = false
 
         // Variables para el registro de usuario
         var name: String = ""
@@ -55,7 +56,8 @@ class GLOBAL {
                 "edad" to "0",
                 "objetivoFitness" to "Sin objetivo",
                 "diasEntrenamientoPorSemana" to "0",
-                "nivelExperiencia" to "Sin nivel"
+                "nivelExperiencia" to "Sin nivel",
+                "cuentaPrivada" to false,
             )
             // Guardar los datos en Firestore
             Firebase.firestore.collection("usuarios")
@@ -80,6 +82,7 @@ class GLOBAL {
             objetivoFitness: String,
             diasEntrenamientoPorSemana: String,
             nivelExperiencia: String,
+            cuentaPrivada: Boolean,
             onComplete: () -> Unit
         ) {
             // Guardar los datos en Firestore
@@ -97,7 +100,8 @@ class GLOBAL {
                             "edad" to edad,
                             "objetivoFitness" to objetivoFitness,
                             "diasEntrenamientoPorSemana" to diasEntrenamientoPorSemana,
-                            "nivelExperiencia" to nivelExperiencia
+                            "nivelExperiencia" to nivelExperiencia,
+                            "cuentaPrivada" to cuentaPrivada
                         )
                     )
                     .addOnSuccessListener {
