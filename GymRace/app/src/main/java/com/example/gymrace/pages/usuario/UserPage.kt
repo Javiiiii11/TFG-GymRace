@@ -31,6 +31,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.FitnessCenter
@@ -431,7 +432,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                         )
                     }
 
-                    // Menú desplegable para notificaciones
+// Menú desplegable para notificaciones
                     if (showNotifications) {
                         NotificacionesDialog(
                             notificaciones = notificaciones,
@@ -448,6 +449,15 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                         loadFriendsList(GLOBAL.id) { friends ->
                                             friendsList = friends
                                         }
+                                    }
+                                }
+                            },
+                            onRejectRequest = { remitenteId ->
+                                // Simplemente elimina la notificación sin añadir al amigo
+                                removeNotification(GLOBAL.id, remitenteId) {
+                                    // Recargar las notificaciones tras rechazar
+                                    loadNotificaciones(GLOBAL.id) { updatedNotifications ->
+                                        notificaciones = updatedNotifications
                                     }
                                 }
                             }
@@ -1807,60 +1817,150 @@ fun loadNotificaciones(idUsuario: String, callback: (List<Notificacion>) -> Unit
 }
 
 
-
 @Composable
-fun NotificacionesDialog(
-    notificaciones: List<Notificacion>,
-    onDismiss: () -> Unit,
-    onAcceptRequest: (String) -> Unit // Aquí pasamos el ID del remitente (quien envió la solicitud)
+fun NotificationItem(
+    notification: Notificacion,
+    onAccept: () -> Unit,
+    onReject: () -> Unit = {}, // Parámetro opcional para mantener compatibilidad
+    nombreUsuario: MutableState<Map<String, String>> = remember { mutableStateOf(mapOf()) }
 ) {
-    Dialog(onDismissRequest = onDismiss) {
-        Surface(
-            shape = RoundedCornerShape(16.dp),
-            tonalElevation = 8.dp,
-            color = MaterialTheme.colorScheme.surface,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+    // Log para verificar que la notificación se pasa correctamente
+    Log.d("NotificationItem", "Notificación: ${notification.mensaje}")
+
+    // Efecto para cargar el nombre del usuario
+    LaunchedEffect(notification.remitente) {
+        // Comprueba si ya tenemos el nombre del usuario
+        if (!nombreUsuario.value.containsKey(notification.remitente)) {
+            // Buscar el nombre del usuario en la base de datos
+            val db = FirebaseFirestore.getInstance()
+            db.collection("usuarios")
+                .document(notification.remitente)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val nombre = document.getString("nombre") ?: notification.remitente
+                        nombreUsuario.value = nombreUsuario.value + (notification.remitente to nombre)
+                    }
+                }
+                .addOnFailureListener {
+                    Log.e("NotificationItem", "Error al obtener el nombre del usuario", it)
+                }
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+    ) {
+        // Fila con Avatar e Información
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Column(
+            // Círculo con icono según tipo
+            Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(
+                        when (notification.tipo) {
+                            "solicitud" -> MaterialTheme.colorScheme.primary
+                            "desafio" -> MaterialTheme.colorScheme.tertiary
+                            else -> MaterialTheme.colorScheme.secondary
+                        }
+                    )
             ) {
+                Icon(
+                    imageVector = when (notification.tipo) {
+                        "solicitud" -> Icons.Default.PersonAdd
+                        "desafio" -> Icons.Default.FitnessCenter
+                        else -> Icons.Default.Notifications
+                    },
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                // Título descriptivo según tipo
                 Text(
-                    text = "Notificaciones",
-                    style = MaterialTheme.typography.titleMedium,
+                    text = when (notification.tipo) {
+                        "solicitud" -> "Solicitud de amistad"
+                        "desafio" -> "Nuevo desafío"
+                        else -> "Notificación"
+                    },
+                    fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
-                Divider()
+                // Remitente (con nombre real si está disponible)
+                val nombreMostrar = nombreUsuario.value[notification.remitente] ?: notification.remitente
+                Text(
+                    text = "De: $nombreMostrar",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
 
-                if (notificaciones.isEmpty()) {
-                    Text("No tienes notificaciones.")
-                } else {
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.heightIn(max = 300.dp)
-                    ) {
-                        items(notificaciones) { notif ->
-                            NotificationItem(
-                                notification = notif,
-                                onAccept = { onAcceptRequest(notif.remitente) } // Aquí se pasa el remitente (quien envió la solicitud)
-                            )
-                            Divider(modifier = Modifier.padding(vertical = 4.dp))
-                        }
-                    }
+                // Mensaje
+                Text(
+                    text = notification.mensaje,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+
+        // Botones de acción debajo de la notificación
+        if (notification.tipo == "solicitud") {
+            Row(
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, end = 8.dp)
+            ) {
+                // Botón de rechazar
+                OutlinedButton(
+                    onClick = onReject,
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.error
+                    ),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                    modifier = Modifier.height(32.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Rechazar",
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Rechazar", fontSize = 12.sp)
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.width(8.dp))
 
+                // Botón de aceptar
                 Button(
-                    onClick = onDismiss,
-                    modifier = Modifier.align(Alignment.End)
+                    onClick = onAccept,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                    modifier = Modifier.height(32.dp)
                 ) {
-                    Text("Cerrar")
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = "Aceptar",
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Aceptar", fontSize = 12.sp)
                 }
             }
         }
@@ -1868,73 +1968,144 @@ fun NotificacionesDialog(
 }
 
 
-
-
 @Composable
-fun NotificationItem(
-    notification: Notificacion,
-    onAccept: () -> Unit
+fun NotificacionesDialog(
+    notificaciones: List<Notificacion>,
+    onDismiss: () -> Unit,
+    onAcceptRequest: (String) -> Unit, // Aquí pasamos el ID del remitente
+    onRejectRequest: (String) -> Unit // Nuevo parámetro para rechazar
 ) {
-    // Log para verificar que la notificación se pasa correctamente
-    Log.d("NotificationItem", "Notificación: ${notification.mensaje}")
+    // Estado para almacenar en caché los nombres de usuarios
+    val nombresUsuarios = remember { mutableStateOf(mapOf<String, String>()) }
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
-    ) {
-        // Círculo con inicial
-        Box(
-            contentAlignment = Alignment.Center,
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = RoundedCornerShape(24.dp),
+            tonalElevation = 8.dp,
+            color = MaterialTheme.colorScheme.surface,
             modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary)
+                .fillMaxWidth()
+                .fillMaxHeight(0.8f)
+                .padding(16.dp)
         ) {
-            Text(
-                text = notification.remitente.take(1).uppercase(),
-                color = Color.White,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-        Column(modifier = Modifier.weight(1f)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = notification.remitente,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Icon(
-                    imageVector = when (notification.tipo) {
-                        "solicitud" -> Icons.Default.PersonAdd
-                        "desafio" -> Icons.Default.FitnessCenter
-                        else -> Icons.Default.Info
-                    },
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(18.dp)
-                )
-            }
-
-            Text(
-                text = notification.mensaje,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-
-        // Botón de aceptar solicitud si aplica
-        if (notification.tipo == "solicitud") {
-            Button(
-                onClick = onAccept,
-                modifier = Modifier.height(36.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
             ) {
-                Text("Aceptar")
+                // Encabezado
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
+                ) {
+                    Text(
+                        text = "Notificaciones",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.align(Alignment.CenterStart)
+                    )
+
+                    IconButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.align(Alignment.CenterEnd)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Cerrar",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+
+                Divider(thickness = 1.dp)
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Contenido principal (lista o mensaje vacío)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    if (notificaciones.isEmpty()) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(vertical = 32.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Notifications,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                                modifier = Modifier.size(72.dp)
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                "No tienes notificaciones",
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                "Las notificaciones aparecerán aquí cuando recibas solicitudes de amistad o nuevos desafíos",
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                                style = MaterialTheme.typography.bodyMedium,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(horizontal = 32.dp)
+                            )
+                        }
+                    } else {
+                        // Aseguramos que LazyColumn tenga un contenedor con scroll
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(8.dp), // Reducido el espacio entre items
+                            contentPadding = PaddingValues(vertical = 8.dp),
+                            modifier = Modifier.fillMaxSize() // Asegura que ocupe todo el espacio disponible
+                        ) {
+                            items(notificaciones) { notif ->
+                                Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    // Reducimos la elevación para que sea más sutil
+                                    elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp),
+                                    colors = CardDefaults.cardColors(
+                                        // Hacemos el fondo más sutil
+                                        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f)
+                                    ),
+                                    // Borde más fino
+                                    border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
+                                ) {
+                                    Box(modifier = Modifier.padding(12.dp)) {
+                                        NotificationItem(
+                                            notification = notif,
+                                            onAccept = { onAcceptRequest(notif.remitente) },
+                                            onReject = { onRejectRequest(notif.remitente) },
+                                            nombreUsuario = nombresUsuarios
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Botón inferior
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                ) {
+                    Button(
+                        onClick = onDismiss,
+                        modifier = Modifier.align(Alignment.Center),
+                        shape = RoundedCornerShape(percent = 50),
+                        contentPadding = PaddingValues(horizontal = 32.dp, vertical = 12.dp)
+                    ) {
+                        Text("Cerrar")
+                    }
+                }
             }
         }
     }
@@ -1988,19 +2159,5 @@ fun removeNotification(userId: String, senderId: String, onComplete: () -> Unit)
 }
 
 
-//Estructura BD notificaciones
 
-/*
-* notificaciones/{userId}/{
-  id1: {
-    tipo: "solicitud",
-    mensaje: "Juan quiere ser tu amigo",
-    remitente: "Juan"
-  },
-  id2: {
-    tipo: "desafio",
-    mensaje: "Has sido retado a glúteos x20",
-    remitente: "Pedro"
-  }
-}
-* */
+
