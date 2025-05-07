@@ -4,6 +4,9 @@ import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.example.gymrace.pages.autenticación.saveLoginState
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.LaunchedEffect
@@ -30,14 +33,18 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -61,6 +68,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import kotlinx.coroutines.CoroutineScope
@@ -71,6 +80,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
+
+data class Notificacion(
+    val tipo: String,
+    val mensaje: String,
+    val remitente: String,
+    val id: String = "" // Adding ID to help with deletion
+)
+
 
 // Clase para representar un usuario
 data class User(
@@ -91,6 +108,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     var showThemeMenu by remember { mutableStateOf(false) }
+    var showNotificationMenu by remember { mutableStateOf(false) }
 
     // Estado para el diálogo de configuración
     var showDeleteAccountDialog by remember { mutableStateOf(false) }
@@ -122,6 +140,10 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
 
     // Estado para la configuración de privacidad
     var isPrivate by remember { mutableStateOf(false) }
+
+    var showNotifications by remember { mutableStateOf(false) }
+    var notificaciones = remember { mutableStateListOf<Notificacion>() }
+
 
     // Efecto para cargar la configuración de privacidad del usuario desde Firestore
     LaunchedEffect(userId) {
@@ -227,13 +249,11 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
 
     // Mostrar diálogo de comunidad
     if (showCommunityDialog) {
-        LaunchedEffect(key1 = showCommunityDialog) {
+        LaunchedEffect(showCommunityDialog) {
             isLoadingUsers = true
             loadAllUsers { users ->
-                // Filtrar al usuario actual
                 allUsers = users.filter { it.id != GLOBAL.id }
                 isLoadingUsers = false
-                Log.d("UserPage", "Usuarios cargados para el diálogo: ${allUsers.size}")
             }
         }
 
@@ -242,26 +262,55 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             users = allUsers,
             isLoading = isLoadingUsers,
             onDismiss = { showCommunityDialog = false },
+            showAddButton = true,
+            currentFriends = friendsList.map { it.id },
             onUserAction = { userId ->
-                // Si el usuario ya es amigo, se elimina; de lo contrario, se agrega
+                // 1) Si ya es amigo, lo eliminamos
                 if (friendsList.any { it.id == userId }) {
                     removeFriend(GLOBAL.id, userId) {
-                        // Recargar la lista de amigos después de eliminar
-                        loadFriendsList(GLOBAL.id) { friends ->
-                            friendsList = friends
+                        loadFriendsList(GLOBAL.id) { updated ->
+                            friendsList = updated
+                            Log.d("UserPage", "Amigo eliminado: $userId")
                         }
                     }
                 } else {
-                    addFriend(GLOBAL.id, userId) {
-                        // Recargar la lista de amigos después de agregar
-                        loadFriendsList(GLOBAL.id) { friends ->
-                            friendsList = friends
+                    // 2) Si NO es amigo, comprobamos cuentaPrivada en Firestore
+                    firestore.collection("usuarios")
+                        .document(userId)
+                        .get()
+                        .addOnSuccessListener { doc ->
+                            val isPrivate = doc.getBoolean("cuentaPrivada") ?: true
+                            Log.d("UserPage", "cuentaPrivada($userId) = $isPrivate")
+
+                            if (isPrivate) {
+                                // Cuenta privada → solo toast de petición enviada
+                                Toast.makeText(
+                                    context,
+                                    "Solicitud de amistad enviada",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                Log.d("UserPage", "Solicitud enviada a $userId")
+                            } else {
+                                // Cuenta pública → añadimos como amigo
+                                addFriend(GLOBAL.id, userId) {
+                                    loadFriendsList(GLOBAL.id) { updated ->
+                                        friendsList = updated
+                                        Log.d("UserPage", "Amigo añadido: $userId")
+                                        Toast.makeText(context,"Amigo añadido", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
                         }
-                    }
+                        .addOnFailureListener { e ->
+                            Log.e("UserPage", "Error leyendo cuentaPrivada", e)
+                            Toast.makeText(
+                                context,
+                                "Error comprobando cuenta privada",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                 }
-            },
-            showAddButton = true,
-            currentFriends = friendsList.map { it.id }
+            }
         )
     }
 
@@ -306,371 +355,531 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
             )
+            Row {
 
-            Box {
-                // Añade este estado para controlar la rotación del icono
-                val rotationState = remember { androidx.compose.animation.core.Animatable(0f) }
-                val coroutineScope = rememberCoroutineScope()
-
-                IconButton(onClick = {
-                    showThemeMenu = !showThemeMenu
-                    // Usa la función de animación
-                    animateSettingsIcon(rotationState, showThemeMenu, coroutineScope)
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Settings,
-                        contentDescription = "Configuración",
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.rotate(rotationState.value) // Aplica la rotación actual
-                    )
-                }
-
-                // Menú desplegable para cambiar tema y más funciones
-                DropdownMenu(
-                    expanded = showThemeMenu,
-                    onDismissRequest = {
-                        showThemeMenu = false
-                        // También activa la animación cuando se cierra el menú por dismissal
-                        animateSettingsIcon(rotationState, false, coroutineScope)
-                    },
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surface)
-                        .width(240.dp)
-                ) {
-                    // Cambiar tema
-                    DropdownMenuItem(
-                        text = {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 8.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Icon(
-                                    imageVector = if (isDarkTheme.value) {
-                                        Icons.Default.DarkMode // Icono para modo oscuro activo
-                                    } else {
-                                        Icons.Default.LightMode // Icono para modo claro activo
-                                    },
-                                    contentDescription = "Cambiar tema",
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Text(
-                                    text = "Tema Oscuro",
-                                    fontSize = 16.sp,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Switch(
-                                    checked = isDarkTheme.value,
-                                    onCheckedChange = {
-                                        onThemeChange()
-                                    },
-                                    colors = SwitchDefaults.colors(
-                                        checkedThumbColor = MaterialTheme.colorScheme.primary,
-                                        uncheckedThumbColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                                        checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                                        uncheckedTrackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-                                    )
-                                )
-                            }
-                        },
-                        onClick = {
-                            onThemeChange()
-//        showThemeMenu = false
-//        animateSettingsIcon(rotationState, false, coroutineScope)
+                Box {
+                    IconButton(onClick = {
+                        loadNotificaciones(GLOBAL.id) { lista ->
+                            notificaciones = lista as SnapshotStateList<Notificacion>
+                            showNotifications = true
                         }
-                    )
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Notifications,
+                            contentDescription = "Notificaciones",
+                            tint = MaterialTheme.colorScheme.onBackground,
+                        )
+                    }
 
-
-
-                    //////
-
-                    Text(
-                        text = "Privacidad",
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                    )
-                    Divider(
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
-                        thickness = 1.dp,
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    )
-                    DropdownMenuItem(
-                        text = {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 8.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.bloquear),
-                                    contentDescription = "Cuenta Privada",
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Text(
-                                    text = "Cuenta Privada",
-                                    fontSize = 16.sp,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Switch(
-                                    checked = isPrivate,
-                                    onCheckedChange = { checked ->
-                                        isPrivate = checked
-                                        userId?.let { updatePrivacyStatus(it, checked) }
-                                    },
-                                    colors = SwitchDefaults.colors(
-                                        checkedThumbColor = MaterialTheme.colorScheme.primary,
-                                        uncheckedThumbColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                                        checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                                        uncheckedTrackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-                                    )
-                                )
-                            }
-                        },
-                        onClick = {} // para evitar que se dispare al tocar el switch
-                    )
-
-
-
-
-
-                    //////
-                    Text(
-                        text = "Cuenta",
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                    )
-                    Divider(
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
-                        thickness = 1.dp,
-                        modifier = Modifier.padding(horizontal = 8.dp)
-                    )
-                    DropdownMenuItem(
-                        text = {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.logout),
-                                    contentDescription = "Cerrar Sesión",
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = "Cerrar Sesión")
-                            }
-                        },
-                        onClick = {
-                            cerrarSesion(context)
-                            Log.d("Si", "Rutas del navController" + navController.currentBackStackEntry)
-                            navController.navigate("login") {
-                                popUpTo(0) { inclusive = true } // Borra todo el historial de navegación
-                                Log.d("UserPage", "Cerrando sesión")
-                            }
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.delete),
-                                    contentDescription = "Borrar Cuenta",
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = "Borrar Cuenta")
-                            }
-                        },
-                        onClick = {
-                            showDeleteAccountDialog = true
-                            showThemeMenu = false
-                            // Anima el icono al cerrar el menú para abrir el diálogo
-                            animateSettingsIcon(rotationState, false, coroutineScope)
-                        }
-                    )
-                }
-                var showLoadingDialog by remember { mutableStateOf(false) }
-
-
-                // Diálogo de confirmación para borrar cuenta
-                if (showDeleteAccountDialog) {
-                    AlertDialog(
-                        onDismissRequest = { showDeleteAccountDialog = false },
-                        title = { Text("Confirmación") },
-                        text = {
-                            Text("¿Estás seguro de que deseas borrar tu cuenta? Esta acción no se puede deshacer.")
-                        },
-                        confirmButton = {
-                            TextButton(onClick = {
-                                val user = FirebaseAuth.getInstance().currentUser
-                                val db = Firebase.firestore
-                                val googleAccount = GoogleSignIn.getLastSignedInAccount(context)
-
-                                if (user != null && googleAccount != null) {
-                                    val credential = GoogleAuthProvider.getCredential(googleAccount.idToken, null)
-
-                                    showLoadingDialog = true // DIÁLOGO DE CARGA
-
-                                    user.reauthenticate(credential).addOnCompleteListener { reauthTask ->
-                                        if (reauthTask.isSuccessful) {
-                                            CoroutineScope(Dispatchers.IO).launch {
-                                                try {
-                                                    val uid = user.uid
-                                                    Log.d("UserPage", "Iniciando eliminación de cuenta para usuario: $uid")
-
-                                                    // 1. Eliminar de 'usuarios'
-                                                    db.collection("usuarios").document(uid).delete().await()
-
-                                                    // 2. Eliminar de 'amigos'
-                                                    try {
-                                                        db.collection("amigos").document(uid).delete().await()
-                                                    } catch (_: Exception) {}
-
-                                                    // 3. Eliminar rutinas donde usuarioId == uid
-                                                    try {
-                                                        val rutinas = db.collection("rutinas").get().await()
-                                                        for (doc in rutinas.documents) {
-                                                            val docUsuarioId = doc.getString("usuarioId")
-                                                            val docUsuarioIdAlt = doc.getString("UsuarioId")
-                                                            if (docUsuarioId == uid || docUsuarioIdAlt == uid) {
-                                                                doc.reference.delete().await()
-                                                            }
-                                                        }
-                                                    } catch (_: Exception) {}
-
-                                                    // 4. Eliminar desafíos donde es creador o invitado
-                                                    val desafios = db.collection("desafios").get().await()
-                                                    for (desafio in desafios.documents) {
-                                                        val creadorValue = desafio.get("creador")
-                                                        val esCreador = when (creadorValue) {
-                                                            is String -> creadorValue == uid
-                                                            is Map<*, *> -> creadorValue.containsKey(uid) || creadorValue.containsValue(uid)
-                                                            else -> false
-                                                        }
-
-                                                        val amigoInvitado = desafio.get("amigoInvitado")
-                                                        val esInvitado = when (amigoInvitado) {
-                                                            is Map<*, *> -> amigoInvitado.containsKey(uid) || amigoInvitado.values.any { it.toString() == uid }
-                                                            is List<*> -> amigoInvitado.contains(uid)
-                                                            is String -> amigoInvitado == uid
-                                                            else -> false
-                                                        }
-
-                                                        if (esCreador || esInvitado) {
-                                                            desafio.reference.delete().await()
-                                                        }
-                                                    }
-
-                                                    // 5. Eliminar al usuario de listas de amigos de otros usuarios
-                                                    val amigos = db.collection("amigos").get().await()
-                                                    for (doc in amigos.documents) {
-                                                        val friendsData = doc.get("friends")
-                                                        when (friendsData) {
-                                                            is List<*> -> {
-                                                                if (friendsData.contains(uid)) {
-                                                                    val nuevaLista = friendsData.filter { it != uid }
-                                                                    doc.reference.update("friends", nuevaLista).await()
-                                                                }
-                                                            }
-                                                            is Map<*, *> -> {
-                                                                if (friendsData.containsKey(uid) || friendsData.containsValue(uid)) {
-                                                                    val nuevoMapa = (friendsData as Map<String, Any>).filterKeys { it != uid }
-                                                                        .filterValues { it.toString() != uid }
-                                                                    doc.reference.update("friends", nuevoMapa).await()
-                                                                }
-                                                            }
-                                                            is String -> {
-                                                                if (friendsData == uid) {
-                                                                    doc.reference.update("friends", "").await()
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-
-                                                    // 6. Eliminar referencias en otras colecciones
-                                                    val coleccionesAdicionales = listOf("dietas", "rutinaspredefinidas")
-                                                    for (coleccion in coleccionesAdicionales) {
-                                                        try {
-                                                            val docs = db.collection(coleccion)
-                                                                .whereEqualTo("UsuarioId", uid).get().await()
-                                                            for (doc in docs.documents) {
-                                                                doc.reference.delete().await()
-                                                            }
-                                                        } catch (_: Exception) {}
-
-                                                        try {
-                                                            val allDocs = db.collection(coleccion).get().await()
-                                                            for (doc in allDocs.documents) {
-                                                                val data = doc.data
-                                                                val contieneUid = data?.values?.any {
-                                                                    when (it) {
-                                                                        is String -> it == uid
-                                                                        is List<*> -> it.contains(uid)
-                                                                        is Map<*, *> -> it.containsKey(uid) || it.containsValue(uid)
-                                                                        else -> false
-                                                                    }
-                                                                } == true
-                                                                if (contieneUid) {
-                                                                    doc.reference.delete().await()
-                                                                }
-                                                            }
-                                                        } catch (_: Exception) {}
-                                                    }
-
-                                                    // 7. Eliminar cuenta de Firebase Authentication
-                                                    withContext(Dispatchers.Main) {
-                                                        user.delete().addOnCompleteListener { deleteTask ->
-                                                            if (deleteTask.isSuccessful) {
-                                                                FirebaseAuth.getInstance().signOut()
-                                                                saveLoginState(context, false, "")
-                                                                clearFirestoreCache()
-                                                                Toast.makeText(context, "Cuenta eliminada correctamente", Toast.LENGTH_LONG).show()
-                                                                navController.navigate("login") {
-                                                                    popUpTo(0) { inclusive = true }
-                                                                }
-                                                            } else {
-                                                                Toast.makeText(context, "Error al eliminar la cuenta: ${deleteTask.exception?.message}", Toast.LENGTH_LONG).show()
-                                                            }
-                                                        }
-                                                    }
-                                                } catch (e: Exception) {
-                                                    Log.e("UserPage", "Error durante el borrado: ${e.message}")
-                                                    withContext(Dispatchers.Main) {
-                                                        Toast.makeText(context, "Error durante el borrado: ${e.message}", Toast.LENGTH_LONG).show()
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            Toast.makeText(context, "Error en reautenticación: ${reauthTask.exception?.message}", Toast.LENGTH_LONG).show()
+                    if (showNotifications) {
+                        NotificacionesDialog(
+                            notificaciones = notificaciones,
+                            onDismiss = { showNotifications = false },
+                            onAcceptRequest = { senderId ->
+                                // Accept the friend request
+                                addFriend(GLOBAL.id, senderId) {
+                                    // Remove the notification after accepting
+                                    removeNotification(GLOBAL.id, senderId) {
+                                        // Reload notifications and friends list
+                                        loadNotificaciones(GLOBAL.id) { updatedNotifications ->
+                                            notificaciones = updatedNotifications as SnapshotStateList<Notificacion>
+                                        }
+                                        loadFriendsList(GLOBAL.id) { friends ->
+                                            friendsList = friends
                                         }
                                     }
-                                } else {
-                                    Toast.makeText(context, "Usuario o cuenta de Google no disponible", Toast.LENGTH_LONG).show()
                                 }
-
-                                showDeleteAccountDialog = false
-                            }) {
-                                Text("Sí")
                             }
-                        },
-                        dismissButton = {
-                            TextButton(onClick = { showDeleteAccountDialog = false }) {
-                                Text("No")
-                            }
-                        }
-                    )
+                        )
+                    }
                 }
 
-                // Mostrar loading dialog si corresponde
-                if (showLoadingDialog) {
-                    AlertDialog(
-                        onDismissRequest = { /* No permitir cerrarlo manualmente */ },
-                        title = { Text("Procesando") },
-                        text = { Text("Eliminando tu cuenta y datos...") },
-                        confirmButton = { }
-                    )
+
+                Box {
+                    // Añade este estado para controlar la rotación del icono
+                    val rotationState = remember { androidx.compose.animation.core.Animatable(0f) }
+                    val coroutineScope = rememberCoroutineScope()
+
+                    IconButton(onClick = {
+                        showThemeMenu = !showThemeMenu
+                        // Usa la función de animación
+                        animateSettingsIcon(rotationState, showThemeMenu, coroutineScope)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = "Configuración",
+                            tint = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier.rotate(rotationState.value) // Aplica la rotación actual
+                        )
+                    }
+
+                    // Menú desplegable para cambiar tema y más funciones
+                    DropdownMenu(
+                        expanded = showThemeMenu,
+                        onDismissRequest = {
+                            showThemeMenu = false
+                            // También activa la animación cuando se cierra el menú por dismissal
+                            animateSettingsIcon(rotationState, false, coroutineScope)
+                        },
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surface)
+                            .width(240.dp)
+                    ) {
+                        // Cambiar tema
+                        DropdownMenuItem(
+                            text = {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Icon(
+                                        imageVector = if (isDarkTheme.value) {
+                                            Icons.Default.DarkMode // Icono para modo oscuro activo
+                                        } else {
+                                            Icons.Default.LightMode // Icono para modo claro activo
+                                        },
+                                        contentDescription = "Cambiar tema",
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Text(
+                                        text = "Tema Oscuro",
+                                        fontSize = 16.sp,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Switch(
+                                        checked = isDarkTheme.value,
+                                        onCheckedChange = {
+                                            onThemeChange()
+                                        },
+                                        colors = SwitchDefaults.colors(
+                                            checkedThumbColor = MaterialTheme.colorScheme.primary,
+                                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurface.copy(
+                                                alpha = 0.6f
+                                            ),
+                                            checkedTrackColor = MaterialTheme.colorScheme.primary.copy(
+                                                alpha = 0.5f
+                                            ),
+                                            uncheckedTrackColor = MaterialTheme.colorScheme.onSurface.copy(
+                                                alpha = 0.3f
+                                            )
+                                        )
+                                    )
+                                }
+                            },
+                            onClick = {
+                                onThemeChange()
+//        showThemeMenu = false
+//        animateSettingsIcon(rotationState, false, coroutineScope)
+                            }
+                        )
+
+
+                        //////
+
+                        Text(
+                            text = "Privacidad",
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+                        Divider(
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
+                            thickness = 1.dp,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(R.drawable.bloquear),
+                                        contentDescription = "Cuenta Privada",
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Text(
+                                        text = "Cuenta Privada",
+                                        fontSize = 16.sp,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Switch(
+                                        checked = isPrivate,
+                                        onCheckedChange = { checked ->
+                                            isPrivate = checked
+                                            userId?.let { updatePrivacyStatus(it, checked) }
+                                        },
+                                        colors = SwitchDefaults.colors(
+                                            checkedThumbColor = MaterialTheme.colorScheme.primary,
+                                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurface.copy(
+                                                alpha = 0.6f
+                                            ),
+                                            checkedTrackColor = MaterialTheme.colorScheme.primary.copy(
+                                                alpha = 0.5f
+                                            ),
+                                            uncheckedTrackColor = MaterialTheme.colorScheme.onSurface.copy(
+                                                alpha = 0.3f
+                                            )
+                                        )
+                                    )
+                                }
+                            },
+                            onClick = {} // para evitar que se dispare al tocar el switch
+                        )
+
+
+                        //////
+                        Text(
+                            text = "Cuenta",
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+                        Divider(
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
+                            thickness = 1.dp,
+                            modifier = Modifier.padding(horizontal = 8.dp)
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.logout),
+                                        contentDescription = "Cerrar Sesión",
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(text = "Cerrar Sesión")
+                                }
+                            },
+                            onClick = {
+                                cerrarSesion(context)
+                                Log.d(
+                                    "Si",
+                                    "Rutas del navController" + navController.currentBackStackEntry
+                                )
+                                navController.navigate("login") {
+                                    popUpTo(0) {
+                                        inclusive = true
+                                    } // Borra todo el historial de navegación
+                                    Log.d("UserPage", "Cerrando sesión")
+                                }
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.delete),
+                                        contentDescription = "Borrar Cuenta",
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(text = "Borrar Cuenta")
+                                }
+                            },
+                            onClick = {
+                                showDeleteAccountDialog = true
+                                showThemeMenu = false
+                                // Anima el icono al cerrar el menú para abrir el diálogo
+                                animateSettingsIcon(rotationState, false, coroutineScope)
+                            }
+                        )
+                    }
+                    var showLoadingDialog by remember { mutableStateOf(false) }
+
+
+                    // Diálogo de confirmación para borrar cuenta
+                    if (showDeleteAccountDialog) {
+                        AlertDialog(
+                            onDismissRequest = { showDeleteAccountDialog = false },
+                            title = { Text("Confirmación") },
+                            text = {
+                                Text("¿Estás seguro de que deseas borrar tu cuenta? Esta acción no se puede deshacer.")
+                            },
+                            confirmButton = {
+                                TextButton(onClick = {
+                                    val user = FirebaseAuth.getInstance().currentUser
+                                    val db = Firebase.firestore
+                                    val googleAccount = GoogleSignIn.getLastSignedInAccount(context)
+
+                                    if (user != null && googleAccount != null) {
+                                        val credential = GoogleAuthProvider.getCredential(
+                                            googleAccount.idToken,
+                                            null
+                                        )
+
+                                        showLoadingDialog = true // DIÁLOGO DE CARGA
+
+                                        user.reauthenticate(credential)
+                                            .addOnCompleteListener { reauthTask ->
+                                                if (reauthTask.isSuccessful) {
+                                                    CoroutineScope(Dispatchers.IO).launch {
+                                                        try {
+                                                            val uid = user.uid
+                                                            Log.d(
+                                                                "UserPage",
+                                                                "Iniciando eliminación de cuenta para usuario: $uid"
+                                                            )
+
+                                                            // 1. Eliminar de 'usuarios'
+                                                            db.collection("usuarios").document(uid)
+                                                                .delete().await()
+
+                                                            // 2. Eliminar de 'amigos'
+                                                            try {
+                                                                db.collection("amigos")
+                                                                    .document(uid).delete().await()
+                                                            } catch (_: Exception) {
+                                                            }
+
+                                                            // 3. Eliminar rutinas donde usuarioId == uid
+                                                            try {
+                                                                val rutinas =
+                                                                    db.collection("rutinas").get()
+                                                                        .await()
+                                                                for (doc in rutinas.documents) {
+                                                                    val docUsuarioId =
+                                                                        doc.getString("usuarioId")
+                                                                    val docUsuarioIdAlt =
+                                                                        doc.getString("UsuarioId")
+                                                                    if (docUsuarioId == uid || docUsuarioIdAlt == uid) {
+                                                                        doc.reference.delete()
+                                                                            .await()
+                                                                    }
+                                                                }
+                                                            } catch (_: Exception) {
+                                                            }
+
+                                                            // 4. Eliminar desafíos donde es creador o invitado
+                                                            val desafios =
+                                                                db.collection("desafios").get()
+                                                                    .await()
+                                                            for (desafio in desafios.documents) {
+                                                                val creadorValue =
+                                                                    desafio.get("creador")
+                                                                val esCreador =
+                                                                    when (creadorValue) {
+                                                                        is String -> creadorValue == uid
+                                                                        is Map<*, *> -> creadorValue.containsKey(
+                                                                            uid
+                                                                        ) || creadorValue.containsValue(
+                                                                            uid
+                                                                        )
+
+                                                                        else -> false
+                                                                    }
+
+                                                                val amigoInvitado =
+                                                                    desafio.get("amigoInvitado")
+                                                                val esInvitado =
+                                                                    when (amigoInvitado) {
+                                                                        is Map<*, *> -> amigoInvitado.containsKey(
+                                                                            uid
+                                                                        ) || amigoInvitado.values.any { it.toString() == uid }
+
+                                                                        is List<*> -> amigoInvitado.contains(
+                                                                            uid
+                                                                        )
+
+                                                                        is String -> amigoInvitado == uid
+                                                                        else -> false
+                                                                    }
+
+                                                                if (esCreador || esInvitado) {
+                                                                    desafio.reference.delete()
+                                                                        .await()
+                                                                }
+                                                            }
+
+                                                            // 5. Eliminar al usuario de listas de amigos de otros usuarios
+                                                            val amigos =
+                                                                db.collection("amigos").get()
+                                                                    .await()
+                                                            for (doc in amigos.documents) {
+                                                                val friendsData = doc.get("friends")
+                                                                when (friendsData) {
+                                                                    is List<*> -> {
+                                                                        if (friendsData.contains(uid)) {
+                                                                            val nuevaLista =
+                                                                                friendsData.filter { it != uid }
+                                                                            doc.reference.update(
+                                                                                "friends",
+                                                                                nuevaLista
+                                                                            ).await()
+                                                                        }
+                                                                    }
+
+                                                                    is Map<*, *> -> {
+                                                                        if (friendsData.containsKey(
+                                                                                uid
+                                                                            ) || friendsData.containsValue(
+                                                                                uid
+                                                                            )
+                                                                        ) {
+                                                                            val nuevoMapa =
+                                                                                (friendsData as Map<String, Any>).filterKeys { it != uid }
+                                                                                    .filterValues { it.toString() != uid }
+                                                                            doc.reference.update(
+                                                                                "friends",
+                                                                                nuevoMapa
+                                                                            ).await()
+                                                                        }
+                                                                    }
+
+                                                                    is String -> {
+                                                                        if (friendsData == uid) {
+                                                                            doc.reference.update(
+                                                                                "friends",
+                                                                                ""
+                                                                            ).await()
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            // 6. Eliminar referencias en otras colecciones
+                                                            val coleccionesAdicionales = listOf(
+                                                                "dietas",
+                                                                "rutinaspredefinidas"
+                                                            )
+                                                            for (coleccion in coleccionesAdicionales) {
+                                                                try {
+                                                                    val docs =
+                                                                        db.collection(coleccion)
+                                                                            .whereEqualTo(
+                                                                                "UsuarioId",
+                                                                                uid
+                                                                            ).get().await()
+                                                                    for (doc in docs.documents) {
+                                                                        doc.reference.delete()
+                                                                            .await()
+                                                                    }
+                                                                } catch (_: Exception) {
+                                                                }
+
+                                                                try {
+                                                                    val allDocs =
+                                                                        db.collection(coleccion)
+                                                                            .get().await()
+                                                                    for (doc in allDocs.documents) {
+                                                                        val data = doc.data
+                                                                        val contieneUid =
+                                                                            data?.values?.any {
+                                                                                when (it) {
+                                                                                    is String -> it == uid
+                                                                                    is List<*> -> it.contains(
+                                                                                        uid
+                                                                                    )
+
+                                                                                    is Map<*, *> -> it.containsKey(
+                                                                                        uid
+                                                                                    ) || it.containsValue(
+                                                                                        uid
+                                                                                    )
+
+                                                                                    else -> false
+                                                                                }
+                                                                            } == true
+                                                                        if (contieneUid) {
+                                                                            doc.reference.delete()
+                                                                                .await()
+                                                                        }
+                                                                    }
+                                                                } catch (_: Exception) {
+                                                                }
+                                                            }
+
+                                                            // 7. Eliminar cuenta de Firebase Authentication
+                                                            withContext(Dispatchers.Main) {
+                                                                user.delete()
+                                                                    .addOnCompleteListener { deleteTask ->
+                                                                        if (deleteTask.isSuccessful) {
+                                                                            FirebaseAuth.getInstance()
+                                                                                .signOut()
+                                                                            saveLoginState(
+                                                                                context,
+                                                                                false,
+                                                                                ""
+                                                                            )
+                                                                            clearFirestoreCache()
+                                                                            Toast.makeText(
+                                                                                context,
+                                                                                "Cuenta eliminada correctamente",
+                                                                                Toast.LENGTH_LONG
+                                                                            ).show()
+                                                                            navController.navigate("login") {
+                                                                                popUpTo(0) {
+                                                                                    inclusive = true
+                                                                                }
+                                                                            }
+                                                                        } else {
+                                                                            Toast.makeText(
+                                                                                context,
+                                                                                "Error al eliminar la cuenta: ${deleteTask.exception?.message}",
+                                                                                Toast.LENGTH_LONG
+                                                                            ).show()
+                                                                        }
+                                                                    }
+                                                            }
+                                                        } catch (e: Exception) {
+                                                            Log.e(
+                                                                "UserPage",
+                                                                "Error durante el borrado: ${e.message}"
+                                                            )
+                                                            withContext(Dispatchers.Main) {
+                                                                Toast.makeText(
+                                                                    context,
+                                                                    "Error durante el borrado: ${e.message}",
+                                                                    Toast.LENGTH_LONG
+                                                                ).show()
+                                                            }
+                                                        }
+                                                    }
+                                                } else {
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Error en reautenticación: ${reauthTask.exception?.message}",
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
+                                                }
+                                            }
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "Usuario o cuenta de Google no disponible",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+
+                                    showDeleteAccountDialog = false
+                                }) {
+                                    Text("Sí")
+                                }
+                            },
+                            dismissButton = {
+                                TextButton(onClick = { showDeleteAccountDialog = false }) {
+                                    Text("No")
+                                }
+                            }
+                        )
+                    }
+
+                    // Mostrar loading dialog si corresponde
+                    if (showLoadingDialog) {
+                        AlertDialog(
+                            onDismissRequest = { /* No permitir cerrarlo manualmente */ },
+                            title = { Text("Procesando") },
+                            text = { Text("Eliminando tu cuenta y datos...") },
+                            confirmButton = { }
+                        )
+                    }
                 }
             }
         }
@@ -872,6 +1081,7 @@ fun cerrarSesion(context: Context) {
     GLOBAL.objetivoFitness = ""
     GLOBAL.diasEntrenamientoPorSemana = ""
     GLOBAL.nivelExperiencia = ""
+    GLOBAL.cuentaPrivada = false
     saveLoginState(context, false, "") // Guardar el estado de inicio de sesión
     clearFirestoreCache() // Limpiar la caché de Firestore
 
@@ -1460,14 +1670,220 @@ fun InfoItem(label: String, value: String) {
     }
 }
 
-// Objeto global para mantener datos del usuario en sesión
-//object GLOBAL {
-//    var id: String = ""
-//    var nombre: String = ""
-//    var peso: String = ""
-//    var altura: String = ""
-//    var edad: String = ""
-//    var objetivoFitness: String = ""
-//    var diasEntrenamientoPorSemana: String = ""
-//    var nivelExperiencia: String = ""
-//}
+//notificaciones
+
+fun loadNotificaciones(userId: String, onResult: (List<Notificacion>) -> Unit) {
+    val db = FirebaseFirestore.getInstance()
+    db.collection("notificaciones")
+        .document(userId)
+        .collection("items")
+        .orderBy("timestamp", Query.Direction.DESCENDING) // Sort by newest first
+        .get()
+        .addOnSuccessListener { result ->
+            val lista = result.mapNotNull { doc ->
+                try {
+                    val tipo = doc.getString("tipo") ?: return@mapNotNull null
+                    val mensaje = doc.getString("mensaje") ?: return@mapNotNull null
+                    val remitente = doc.getString("remitente") ?: return@mapNotNull null
+                    Notificacion(tipo, mensaje, remitente, doc.id)
+                } catch (e: Exception) {
+                    Log.e("Firestore", "Error al parsear notificación", e)
+                    null
+                }
+            }
+            onResult(lista)
+        }
+        .addOnFailureListener { e ->
+            Log.e("Firestore", "Error al cargar notificaciones", e)
+            onResult(emptyList()) // Ensure we don't hang
+        }
+}
+@Composable
+fun NotificacionesDialog(
+    notificaciones: List<Notificacion>,
+    onDismiss: () -> Unit,
+    onAcceptRequest: (String) -> Unit
+) {
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            tonalElevation = 8.dp,
+            color = MaterialTheme.colorScheme.surface,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(
+                    text = "Notificaciones",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Divider()
+
+                if (notificaciones.isEmpty()) {
+                    Text("No tienes notificaciones.")
+                } else {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.heightIn(max = 300.dp)
+                    ) {
+                        items(notificaciones) { notif ->
+                            NotificationItem(
+                                notification = notif,
+                                onAccept = { onAcceptRequest(notif.remitente) }
+                            )
+                            Divider(modifier = Modifier.padding(vertical = 4.dp))
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Button(
+                    onClick = onDismiss,
+                    modifier = Modifier.align(Alignment.End)
+                ) {
+                    Text("Cerrar")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun NotificationItem(
+    notification: Notificacion,
+    onAccept: () -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+    ) {
+        // Círculo con inicial
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primary)
+        ) {
+            Text(
+                text = notification.remitente.take(1).uppercase(),
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        Column(modifier = Modifier.weight(1f)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = notification.remitente,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    imageVector = when (notification.tipo) {
+                        "solicitud" -> Icons.Default.PersonAdd
+                        "desafio" -> Icons.Default.FitnessCenter
+                        else -> Icons.Default.Info
+                    },
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+
+            Text(
+                text = notification.mensaje,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+
+        // Botón de aceptar solicitud si aplica
+        if (notification.tipo == "solicitud") {
+            Button(
+                onClick = onAccept,
+                modifier = Modifier.height(36.dp)
+            ) {
+                Text("Aceptar")
+            }
+        }
+    }
+}
+
+
+
+fun removeNotification(userId: String, senderId: String, onComplete: () -> Unit) {
+    val db = FirebaseFirestore.getInstance()
+    db.collection("notificaciones")
+        .document(userId)
+        .collection("items")
+        .whereEqualTo("remitente", senderId)
+        .whereEqualTo("tipo", "solicitud")
+        .get()
+        .addOnSuccessListener { result ->
+            val batch = db.batch()
+            for (document in result) {
+                batch.delete(document.reference)
+            }
+            batch.commit().addOnCompleteListener {
+                onComplete()
+            }
+        }
+        .addOnFailureListener {
+            Log.e("Firestore", "Error al eliminar notificación", it)
+            onComplete() // Continue even if there's an error
+        }
+}
+
+fun enviarSolicitudAmistad(de: String, a: String) {
+    val db = FirebaseFirestore.getInstance()
+    val noti = mapOf(
+        "tipo" to "solicitud",
+        "mensaje" to "Quiere ser tu amigo",
+        "remitente" to de,
+        "timestamp" to FieldValue.serverTimestamp() // Add timestamp for sorting
+    )
+
+    db.collection("notificaciones")
+        .document(a)
+        .collection("items")
+        .add(noti)
+        .addOnSuccessListener {
+            Log.d("Firestore", "Solicitud de amistad enviada correctamente")
+        }
+        .addOnFailureListener { e ->
+            Log.e("Firestore", "Error al enviar solicitud de amistad", e)
+        }
+}
+
+
+//Estructura BD notificaciones
+
+/*
+* notificaciones/{userId}/{
+  id1: {
+    tipo: "solicitud",
+    mensaje: "Juan quiere ser tu amigo",
+    remitente: "Juan"
+  },
+  id2: {
+    tipo: "desafio",
+    mensaje: "Has sido retado a glúteos x20",
+    remitente: "Pedro"
+  }
+}
+* */
