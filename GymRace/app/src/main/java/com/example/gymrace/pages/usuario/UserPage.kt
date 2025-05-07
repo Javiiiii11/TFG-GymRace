@@ -176,6 +176,29 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             }
         }
     }
+    val lifecycleOwner2 = LocalLifecycleOwner.current
+
+    LaunchedEffect(lifecycleOwner2) {
+        lifecycleOwner2.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            while (true) {
+                delay(5000)
+                try {
+                    GLOBAL.id?.let { userId ->
+                        loadNotificaciones(userId) { nuevasNotificaciones ->
+                            if (nuevasNotificaciones != notificaciones) {
+                                Log.d("NotificationsRefresh", "Notificaciones actualizadas: ${nuevasNotificaciones.size}")
+                                notificaciones = nuevasNotificaciones
+                            } else {
+                                Log.d("NotificationsRefresh", "Sin cambios en notificaciones")
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("NotificationsRefresh", "Error al actualizar notificaciones", e)
+                }
+            }
+        }
+    }
 
 
 
@@ -408,6 +431,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                         )
                     }
 
+                    // Menú desplegable para notificaciones
                     if (showNotifications) {
                         NotificacionesDialog(
                             notificaciones = notificaciones,
@@ -465,6 +489,17 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                             .background(MaterialTheme.colorScheme.surface)
                             .width(240.dp)
                     ) {
+                        Text(
+                            text = "Tema",
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+                        Divider(
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
+                            thickness = 1.dp,
+                            modifier = Modifier.padding(horizontal = 8.dp)
+                        )
                         // Cambiar tema
                         DropdownMenuItem(
                             text = {
@@ -485,7 +520,11 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                         modifier = Modifier.size(20.dp)
                                     )
                                     Text(
-                                        text = "Tema Oscuro",
+                                        text = if (isDarkTheme.value) {
+                                            "Tema Oscuro"
+                                        } else {
+                                            "Tema Claro"
+                                        },
                                         fontSize = 16.sp,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
@@ -511,13 +550,9 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                             },
                             onClick = {
                                 onThemeChange()
-//        showThemeMenu = false
-//        animateSettingsIcon(rotationState, false, coroutineScope)
                             }
                         )
 
-
-                        //////
 
                         Text(
                             text = "Privacidad",
@@ -528,7 +563,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                         Divider(
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
                             thickness = 1.dp,
-                            modifier = Modifier.padding(vertical = 8.dp)
+                            modifier = Modifier.padding(horizontal = 8.dp)
                         )
                         DropdownMenuItem(
                             text = {
@@ -540,12 +575,12 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Icon(
-                                        imageVector = ImageVector.vectorResource(R.drawable.bloquear),
-                                        contentDescription = "Cuenta Privada",
+                                        painter = painterResource(id = if (isPrivate) R.drawable.bloqueado else R.drawable.desbloqueado),
+                                        contentDescription = if (isPrivate) "Cuenta Privada" else "Cuenta Pública",
                                         modifier = Modifier.size(20.dp)
                                     )
                                     Text(
-                                        text = "Cuenta Privada",
+                                        text = if (isPrivate) "Cuenta Privada" else "Cuenta Publica",
                                         fontSize = 16.sp,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
