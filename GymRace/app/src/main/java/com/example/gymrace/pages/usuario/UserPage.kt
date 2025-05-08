@@ -473,16 +473,19 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                         NotificacionesDialog(
                             notificaciones = notificaciones,
                             onDismiss = { showNotifications = false },
-                            onAcceptRequest = { remitenteId ->
-                                addFriend(GLOBAL.id, remitenteId) {
-                                    removeNotification(GLOBAL.id, remitenteId) {
+                            onAcceptRequest = { senderId ->
+                                // Añadir al usuario actual como amigo del remitente
+                                addFriend(senderId, GLOBAL.id) {
+                                    // Eliminar la notificación después de aceptar
+                                    removeNotification(GLOBAL.id, senderId) {
                                         loadNotificaciones(GLOBAL.id) { n -> notificaciones = n }
-                                        loadFriendsList(GLOBAL.id)  { f -> friendsList = f }
+                                        loadFriendsList(GLOBAL.id) { f -> friendsList = f }
                                     }
                                 }
                             },
-                            onRejectRequest = { remitenteId ->
-                                removeNotification(GLOBAL.id, remitenteId) {
+                            onRejectRequest = { senderId ->
+                                // Rechazar la solicitud y eliminar la notificación
+                                removeNotification(GLOBAL.id, senderId) {
                                     loadNotificaciones(GLOBAL.id) { n -> notificaciones = n }
                                 }
                             }
