@@ -315,7 +315,7 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
                             val private = doc.getBoolean("cuentaPrivada") ?: true
                             if (private) {
                                 sendFriendRequestNotification(selectedId, allUsers.find { u -> u.id == userId }?.nombre ?: "", userId)
-                                Toast.makeText(context, "Solicitud enviada", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Solicitud de amistad enviada", Toast.LENGTH_SHORT).show()
                             } else {
                                 scope.launch {
                                     addFriend(userId, selectedId) {

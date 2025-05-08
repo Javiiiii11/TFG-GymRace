@@ -614,7 +614,7 @@ fun DesafiosPage(
 
     if (showCommunityDialog) {
         UsersDialog(
-            title = "Comunidad GymRace",
+            title = "Comunidad",
             users = allUsers,
             isLoading = isLoadingUsers,
             onDismiss = { showCommunityDialog = false },
