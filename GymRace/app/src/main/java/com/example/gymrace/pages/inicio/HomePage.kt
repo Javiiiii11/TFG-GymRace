@@ -106,6 +106,9 @@ fun PredefinedRoutineCard(
     // Estado para mostrar el diálogo
     var showDialog by remember { mutableStateOf(false) }
 
+    // Estado para el lanzador de rutina
+    val rutinaLauncher = remember { RutinaLauncher(navController, routine.id) }
+
     // Obtención del recurso de imagen basado en el nombre
     val imageResourceId = when (routine.imageName) {
         "rbiceps" -> R.drawable.rbiceps
@@ -156,7 +159,7 @@ fun PredefinedRoutineCard(
                     modifier = Modifier.fillMaxWidth()
                 )
                 Button(
-                    onClick = { showDialog = true },
+                    onClick = { rutinaLauncher.launch() },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -278,6 +281,7 @@ fun PredefinedRoutineDetailDialog(
 ) {
     // Estado para el lanzador de rutina
     val rutinaLauncher = remember { RutinaLauncher(navController, routine.id) }
+
     // Diálogo de detalles
     AlertDialog(
         onDismissRequest = onDismissRequest,

@@ -37,7 +37,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.gymrace.GifData
 import com.example.gymrace.R
@@ -45,9 +48,13 @@ import com.example.gymrace.addFriend
 import com.example.gymrace.loadAllUsers
 import com.example.gymrace.loadFriendsList
 import com.example.gymrace.loadGifsFromXml
+import com.example.gymrace.pages.GLOBAL
 import com.example.gymrace.removeFriend
 import com.example.gymrace.showExerciseDetail
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -55,6 +62,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import np.com.bimalkafle.bottomnavigationdemo.pages.User
 import np.com.bimalkafle.bottomnavigationdemo.pages.UsersDialog
+import np.com.bimalkafle.bottomnavigationdemo.pages.sendFriendRequestNotification
 import java.util.UUID
 
 // Modelos de datos
@@ -268,6 +276,8 @@ class ChallengeViewModel : ViewModel() {
         }
     }
 
+
+
     // Permite eliminar un desafío:
     // - Si está en progreso: solo el creador puede eliminarlo.
     // - Si está completado: cualquiera de los 2 puede eliminarlo.
@@ -298,6 +308,50 @@ fun DesafiosPage(
     viewModel: ChallengeViewModel = viewModel(),
     userId: String
 ) {
+
+    suspend fun cargarUsuarioEnGlobal(): Boolean {
+        return try {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser != null) {
+                val userDocument = Firebase.firestore
+                    .collection("usuarios")
+                    .document(currentUser.uid)
+                    .get()
+                    .await()
+
+                if (userDocument.exists()) {
+                    GLOBAL.id = currentUser.uid
+                    GLOBAL.nombre = userDocument.getString("nombre") ?: ""
+                    GLOBAL.peso = userDocument.getString("peso") ?: ""
+                    GLOBAL.altura = userDocument.getString("altura") ?: ""
+                    GLOBAL.edad = userDocument.getString("edad") ?: ""
+                    GLOBAL.objetivoFitness = userDocument.getString("objetivoFitness") ?: ""
+                    GLOBAL.diasEntrenamientoPorSemana = userDocument.getString("diasEntrenamientoPorSemana") ?: ""
+
+                    val rawNivelExperiencia = userDocument.getString("nivelExperiencia") ?: ""
+                    GLOBAL.nivelExperiencia = when (rawNivelExperiencia) {
+                        "Avanzado (más de 2 años)" -> "Avanzado"
+                        "Intermedio (6 meses - 2 años)" -> "Intermedio"
+                        "Principiante (menos de 6 meses)" -> "Principiante"
+                        else -> rawNivelExperiencia
+                    }
+
+                    true
+                } else {
+                    Log.w("UsuarioGlobal", "Documento de usuario no existe")
+                    false
+                }
+            } else {
+                Log.w("UsuarioGlobal", "Usuario no logueado")
+                false
+            }
+        } catch (e: Exception) {
+            Log.e("UsuarioGlobal", "Error al cargar usuario: ${e.message}")
+            false
+        }
+    }
+
+
     // Recupera el contexto de la aplicación
     val challenges by viewModel.friendsChallenges.collectAsState(initial = emptyList())
     // Recupera la lista de amigos del ViewModel
@@ -331,6 +385,49 @@ fun DesafiosPage(
     // Estado para mostrar el diálogo de progreso
     val scope = rememberCoroutineScope()
 
+    // Para refrescar cada 5 segundos
+    LaunchedEffect(userId) {
+        val ok = cargarUsuarioEnGlobal()
+        if (ok) {
+            Log.d("UsuarioGlobal", "Datos cargados correctamente: ${GLOBAL.nombre}")
+        } else {
+            Log.e("UsuarioGlobal", "Error cargando datos")
+        }
+
+        while (true) {
+            viewModel.loadFriendsChallenges(userId)
+            delay(5000)
+        }
+    }
+
+    // Efecto para cargar la lista de amigos cada 5 segundos
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            while (true) {
+                val id = GLOBAL.id
+                if (!id.isNullOrEmpty()) {
+                    try {
+                        loadFriendsList(id) { friends ->
+                            if (friends != friendsList) {
+                                Log.d("FriendsRefresh", "Lista de amigos actualizada: ${friends.size} amigos")
+                                friendsList = friends
+                            } else {
+                                Log.d("FriendsRefresh", "Sin cambios en la lista de amigos")
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.e("FriendsRefresh", "Error al actualizar amigos", e)
+                    }
+                } else {
+                    Log.w("FriendsRefresh", "GLOBAL.id es null o vacío, no se puede cargar amigos")
+                }
+                delay(5000)
+            }
+        }
+    }
+
 
     // Al abrir el diálogo de comunidad, cargar la lista de usuarios y amigos
     LaunchedEffect(showCommunityDialog) {
@@ -347,13 +444,7 @@ fun DesafiosPage(
             }
         }
     }
-    // Para refrescar cada 5 segundos
-    LaunchedEffect(userId) {
-        while (true) {
-            viewModel.loadFriendsChallenges(userId)
-            delay(5000)
-        }
-    }
+
     // Pantalla principal
     Scaffold(
         topBar = {
@@ -528,38 +619,51 @@ fun DesafiosPage(
             isLoading = isLoadingUsers,
             onDismiss = { showCommunityDialog = false },
             onUserAction = { friendId ->
-                // Verificar si ya es amigo
                 val friendIds = friendsList.map { it.id }
-                if (friendIds.contains(friendId)) {
-                    // Eliminar amigo
-                    scope.launch {
+                val firestore = FirebaseFirestore.getInstance()
+
+                scope.launch {
+                    if (friendIds.contains(friendId)) {
+                        // Ya es amigo → eliminarlo
                         removeFriend(userId, friendId) {
-                            // Actualizar lista de amigos
                             loadFriendsList(userId) { friends ->
                                 friendsList = friends
                                 successMessage = "Usuario eliminado de amigos"
-
-                                // Actualizar la lista de amigos en el ViewModel después de eliminar
+                                // Refrescar lista en ViewModel para el diálogo
                                 scope.launch {
                                     viewModel.loadFriends(userId)
                                 }
                             }
                         }
-                    }
-                } else {
-                    // Agregar amigo
-                    scope.launch {
-                        addFriend(userId, friendId) {
-                            // Actualizar lista de amigos
-                            loadFriendsList(userId) { friends ->
-                                friendsList = friends
-                                successMessage = "Usuario agregado a amigos"
+                    } else {
+                        try {
+                            val doc = firestore.collection("usuarios").document(friendId).get().await()
+                            val isPrivate = doc.getBoolean("cuentaPrivada") ?: true
 
-                                // Actualizar la lista de amigos en el ViewModel después de agregar
-                                scope.launch {
-                                    viewModel.loadFriends(userId)
+                            if (isPrivate) {
+                                // Enviar solicitud si es privada
+                                sendFriendRequestNotification(
+                                    toUserId = friendId,
+                                    fromUserName = GLOBAL.nombre,
+                                    fromUserId = userId
+                                )
+                                successMessage = "Solicitud enviada"
+                            } else {
+                                // Añadir amigo directamente si es pública
+                                addFriend(userId, friendId) {
+                                    loadFriendsList(userId) { friends ->
+                                        friendsList = friends
+                                        successMessage = "Amigo añadido"
+                                        scope.launch {
+                                            viewModel.loadFriends(userId)
+                                        }
+
+                                    }
                                 }
                             }
+                        } catch (e: Exception) {
+                            Log.e("DesafiosPage", "Error al comprobar privacidad: ${e.message}")
+                            successMessage = "Error al procesar"
                         }
                     }
                 }
@@ -568,6 +672,7 @@ fun DesafiosPage(
             currentFriends = friendsList.map { it.id }
         )
     }
+
 }
 
 // Composable para el estado vacío (si no hay desafíos)

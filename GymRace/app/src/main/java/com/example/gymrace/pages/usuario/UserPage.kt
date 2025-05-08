@@ -181,6 +181,16 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
 
     LaunchedEffect(lifecycleOwner2) {
         lifecycleOwner2.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            GLOBAL.id?.let { userId ->
+                loadNotificaciones(userId) { nuevasNotificaciones ->
+                    if (nuevasNotificaciones != notificaciones) {
+                        Log.d("NotificationsRefresh", "Notificaciones actualizadas: ${nuevasNotificaciones.size}")
+                        notificaciones = nuevasNotificaciones
+                    } else {
+                        Log.d("NotificationsRefresh", "Sin cambios en notificaciones")
+                    }
+                }
+            }
             while (true) {
                 delay(5000)
                 try {
@@ -355,8 +365,13 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                 addFriend(GLOBAL.id, userId) {
                                     loadFriendsList(GLOBAL.id) { updated ->
                                         friendsList = updated
-                                        Log.d("UserPage", "Amigo añadido: $userId")
-                                        Toast.makeText(context,"Amigo añadido", Toast.LENGTH_SHORT).show()
+                                        if (updated.any { it.id == userId }) {
+                                            Log.d("UserPage", "Amigo añadido correctamente: $userId")
+                                            Toast.makeText(context, "Amigo añadido", Toast.LENGTH_SHORT).show()
+                                        } else {
+                                            Log.e("UserPage", "Error al añadir amigo: $userId no está en la lista")
+                                            Toast.makeText(context, "Error al añadir amigo", Toast.LENGTH_SHORT).show()
+                                        }
                                     }
                                 }
                             }
@@ -416,54 +431,65 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 color = MaterialTheme.colorScheme.onBackground
             )
             Row {
-
-
+                // Icono de notificaciones con badge
                 Box {
-                    IconButton(onClick = {
-                        loadNotificaciones(GLOBAL.id) { lista ->
-                            notificaciones = lista
-                            showNotifications = true
+                    BadgedBox(
+                        badge = {
+                            if (notificaciones.isNotEmpty()) {
+                                Badge(
+                                    modifier = Modifier
+                                        .size(16.dp)
+                                        .offset(x = -9.dp, y = (6).dp)
+                                        .clip(CircleShape)
+                                        .border(1.dp, Color.White, CircleShape),
+                                    containerColor = Color.Red,
+                                    contentColor = Color.White
+                                ) {
+                                    Text(
+                                        text = notificaciones.size.toString(),
+                                        fontSize = 10.sp,
+                                    )
+                                }
+                            }
                         }
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Notifications,
-                            contentDescription = "Notificaciones",
-                            tint = MaterialTheme.colorScheme.onBackground,
-                        )
+                    ) {
+                        IconButton(onClick = {
+                            GLOBAL.id?.let { uid ->
+                                loadNotificaciones(uid) { lista ->
+                                    notificaciones = lista
+                                    showNotifications = true
+                                }
+                            }
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Notifications,
+                                contentDescription = "Notificaciones",
+                                tint = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
                     }
 
-// Menú desplegable para notificaciones
                     if (showNotifications) {
                         NotificacionesDialog(
                             notificaciones = notificaciones,
                             onDismiss = { showNotifications = false },
-                            onAcceptRequest = { remitenteId -> // Aquí estamos recibiendo el ID del remitente (quien envió la solicitud)
-                                // El remitente ya te tiene en su lista de amigos (o está esperando que aceptes)
-                                // Solo necesitamos agregarlo a tu lista de amigos
-                                addFriend(GLOBAL.id, remitenteId) { // GLOBAL.id es quien acepta la solicitud
-                                    // Elimina la notificación después de aceptar
+                            onAcceptRequest = { remitenteId ->
+                                addFriend(GLOBAL.id, remitenteId) {
                                     removeNotification(GLOBAL.id, remitenteId) {
-                                        loadNotificaciones(GLOBAL.id) { updatedNotifications ->
-                                            notificaciones = updatedNotifications
-                                        }
-                                        loadFriendsList(GLOBAL.id) { friends ->
-                                            friendsList = friends
-                                        }
+                                        loadNotificaciones(GLOBAL.id) { n -> notificaciones = n }
+                                        loadFriendsList(GLOBAL.id)  { f -> friendsList = f }
                                     }
                                 }
                             },
                             onRejectRequest = { remitenteId ->
-                                // Simplemente elimina la notificación sin añadir al amigo
                                 removeNotification(GLOBAL.id, remitenteId) {
-                                    // Recargar las notificaciones tras rechazar
-                                    loadNotificaciones(GLOBAL.id) { updatedNotifications ->
-                                        notificaciones = updatedNotifications
-                                    }
+                                    loadNotificaciones(GLOBAL.id) { n -> notificaciones = n }
                                 }
                             }
                         )
                     }
                 }
+
 
 
 
@@ -1479,7 +1505,7 @@ private fun loadAllUsers(callback: (List<User>) -> Unit) {
 }
 
 // Función para cargar la lista de amigos del usuario
-private fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
+fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
     val db = Firebase.firestore
 
     println("Iniciando carga de amigos para usuario: $userId")
@@ -1556,86 +1582,57 @@ private fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
             callback(emptyList())
         }
 }
+
 // Función para agregar un amigo
+
 private fun addFriend(userId: String, friendId: String, callback: () -> Unit) {
-    // Añadimos logs para seguimiento
-    Log.d("AddFriendDebug", "Función addFriend llamada")
-    Log.d("AddFriendDebug", "userId (quien acepta la solicitud): $userId")
-    Log.d("AddFriendDebug", "friendId (quien envió la solicitud): $friendId")
-
-    // IMPORTANTE: Si estás tratando de agregar al usuario actual (userId) a la lista de amigos
-    // del remitente (friendId), debemos invertir los parámetros
-
-    // Inicializar Firestore
     val db = Firebase.firestore
 
-    // PROBLEMA: Estamos añadiendo al remitente (friendId) como amigo del usuario (userId)
-    // en lugar de añadir al usuario (userId) como amigo del remitente (friendId)
-
-    // SOLUCIÓN: Invertir los parámetros para añadir al usuario a la lista de amigos del remitente
-    val actualUserId = friendId  // Quien envió la solicitud
-    val actualFriendId = userId  // Quien acepta la solicitud (tú)
-
-    Log.d("AddFriendDebug", "Agregando a $actualFriendId como amigo de $actualUserId")
-
-    // Verificar si ya existe un documento de amigos para el remitente
     db.collection("amigos")
-        .document(actualUserId)  // Documento del remitente
+        .document(userId)
         .get()
         .addOnSuccessListener { document ->
             if (document.exists()) {
-                Log.d("AddFriendDebug", "Documento de amigos existe para $actualUserId")
-                // Obtener la lista actual de amigos del remitente
                 val currentFriends = document.get("listaAmigos") as? List<String> ?: emptyList()
-                Log.d("AddFriendDebug", "Lista actual de amigos: $currentFriends")
-
-                // Agregar al usuario actual solo si no está ya en la lista
-                if (actualFriendId !in currentFriends) {
-                    Log.d("AddFriendDebug", "$actualFriendId no está en la lista, se añadirá")
-                    val updatedFriends = currentFriends + actualFriendId
-
-                    // Actualizar el documento del remitente
+                if (friendId !in currentFriends) {
+                    val updatedFriends = currentFriends + friendId
                     db.collection("amigos")
-                        .document(actualUserId)
+                        .document(userId)
                         .update("listaAmigos", updatedFriends)
                         .addOnSuccessListener {
-                            Log.d("AddFriendDebug", "Amigo añadido correctamente: $actualFriendId a $actualUserId")
+                            Log.d("AddFriend", "Amigo añadido correctamente: $friendId")
                             callback()
                         }
                         .addOnFailureListener { e ->
-                            Log.e("AddFriendDebug", "Error al agregar amigo: ${e.message}")
+                            Log.e("AddFriend", "Error al actualizar lista de amigos: ${e.message}")
                             callback()
                         }
                 } else {
-                    // Ya está en la lista, simplemente devolver
-                    Log.d("AddFriendDebug", "$actualFriendId ya está en la lista de $actualUserId")
+                    Log.d("AddFriend", "El amigo ya está en la lista: $friendId")
                     callback()
                 }
             } else {
-                Log.d("AddFriendDebug", "Documento de amigos no existe para $actualUserId, creando nuevo")
-                // Crear un nuevo documento para el remitente con el usuario actual como primer amigo
-                val newFriendsList = mapOf("listaAmigos" to listOf(actualFriendId))
-
+                val newFriendsList = mapOf("listaAmigos" to listOf(friendId))
                 db.collection("amigos")
-                    .document(actualUserId)
+                    .document(userId)
                     .set(newFriendsList)
                     .addOnSuccessListener {
-                        Log.d("AddFriendDebug", "Nueva lista de amigos creada para $actualUserId con $actualFriendId")
+                        Log.d("AddFriend", "Nueva lista de amigos creada para $userId")
                         callback()
                     }
                     .addOnFailureListener { e ->
-                        // Manejo de errores si la creación falla
-                        Log.e("AddFriendDebug", "Error al crear lista de amigos: ${e.message}")
+                        Log.e("AddFriend", "Error al crear lista de amigos: ${e.message}")
                         callback()
                     }
             }
         }
         .addOnFailureListener { e ->
-            // Manejo de errores si la carga falla
-            Log.e("AddFriendDebug", "Error al verificar lista de amigos: ${e.message}")
+            Log.e("AddFriend", "Error al obtener documento de amigos: ${e.message}")
             callback()
         }
 }
+
+
 // Función para eliminar un amigo
 private fun removeFriend(userId: String, friendId: String, callback: () -> Unit) {
     val db = Firebase.firestore
@@ -1900,12 +1897,12 @@ fun NotificationItem(
 
                 // Remitente (con nombre real si está disponible)
                 val nombreMostrar = nombreUsuario.value[notification.remitente] ?: notification.remitente
-                Text(
-                    text = "De: $nombreMostrar",
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+//                Text(
+//                    text = "De: $nombreMostrar",
+//                    style = MaterialTheme.typography.bodySmall,
+//                    fontWeight = FontWeight.Medium,
+//                    color = MaterialTheme.colorScheme.onSurface
+//                )
 
                 // Mensaje
                 Text(
