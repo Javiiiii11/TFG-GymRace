@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -705,7 +706,7 @@ fun ExerciseCard(
                 // Botones para ver detalles y eliminar el ejercicio
                 IconButton(onClick = { onShowExerciseDetail(ejercicio) }) {
                     Icon(
-                        imageVector = Icons.Default.Search,
+                        imageVector = Icons.Default.RemoveRedEye,
                         contentDescription = "Ver detalles",
                         tint = MaterialTheme.colorScheme.primary
                     )

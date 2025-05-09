@@ -1581,17 +1581,35 @@
                 <paso numero="3">Realizar el levantamiento manteniendo la espalda recta.</paso>
                 <paso numero="4">Bajar la barra de forma controlada y segura.</paso>
             </pasos>
+            <consejo>
+                <item>Inhala al bajar y exhala al levantar para maximizar la estabilidad.</item>
+                <item>Evita bloquear completamente las rodillas al final del movimiento.</item>
+                <item>Mantén los hombros hacia atrás y el pecho erguido.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Gemelos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Levantamiento Terra Rumano Unilateral (RDL) (barra hexagonal)</nombre>
-            <descripcion>Realizado de forma unilateral para aislar y trabajar de forma intensa la parte posterior y cuadriceps.</descripcion>
+            <descripcion>Realizado de forma unilateral para aislar y trabajar de forma intensa la parte posterior y cuádriceps.</descripcion>
             <gif>@drawable/levantamiento_terra_rumano_unilateral__rdl___barra_hexagonal_</gif>
             <pasos>
                 <paso numero="1">Colocar la barra hexagonal y seleccionar la pierna de apoyo.</paso>
                 <paso numero="2">Mantener la espalda recta y flexionar ligeramente la pierna libre.</paso>
-                <paso numero="3">Realizar el movimiento de descenso concentrándose en la contracción de la pierna trabajada.</paso>
+                <paso numero="3">Descender concentrándose en la contracción de la pierna trabajada.</paso>
                 <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
             </pasos>
+            <consejo>
+                <item>Mantén la cadera alineada y evita rotaciones.</item>
+                <item>Controla el rango de movimiento para no forzar la rodilla.</item>
+                <item>Realiza el ejercicio frente a un espejo para corregir la postura.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Isquiotibiales</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Levantamiento Terra Sumo (kettlebell)</nombre>
@@ -1603,17 +1621,35 @@
                 <paso numero="3">Realizar el levantamiento enfocándose en los muslos y glúteos.</paso>
                 <paso numero="4">Bajar el kettlebell de forma controlada y repetir.</paso>
             </pasos>
+            <consejo>
+                <item>Mantén el peso en los talones al subir.</item>
+                <item>Evita que las rodillas colapsen hacia adentro.</item>
+                <item>Activa el core para proteger la columna.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Aductores</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Peso Muerto (mancuernas)</nombre>
-            <descripcion>Ejercicio básico que, con mancuernas, activa intensamente la cadena posterior y fortalece los cuadriceps indirectamente.</descripcion>
+            <descripcion>Ejercicio básico que, con mancuernas, activa intensamente la cadena posterior y fortalece los cuádriceps indirectamente.</descripcion>
             <gif>@drawable/peso_muerto__mancuernas_</gif>
             <pasos>
                 <paso numero="1">Seleccionar mancuernas de peso moderado.</paso>
-                <paso numero="2">Párate con los pies al ancho de los hombros y mantener la espalda recta.</paso>
-                <paso numero="3">Realizar el movimiento de peso muerto bajando las mancuernas cerca del cuerpo.</paso>
-                <paso numero="4">Subir de forma controlada y repetir.</paso>
+                <paso numero="2">Párate con los pies al ancho de los hombros y mantén la espalda recta.</paso>
+                <paso numero="3">Baja las mancuernas cerca del cuerpo flexionando ligeramente las rodillas.</paso>
+                <paso numero="4">Sube de forma controlada y repite.</paso>
             </pasos>
+            <consejo>
+                <item>Empuja el suelo con los talones al subir.</item>
+                <item>No redondees la espalda en ningún momento.</item>
+                <item>Aprieta glúteos y cuádriceps al finalizar la fase concéntrica.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Espalda baja</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Peso Muerto (máquina)</nombre>
@@ -1621,14 +1657,23 @@
             <gif>@drawable/peso_muerto__m_quina_</gif>
             <pasos>
                 <paso numero="1">Ajustar la máquina según las indicaciones.</paso>
-                <paso numero="2">Posicionarse en la máquina con la espalda recta.</paso>
+                <paso numero="2">Posicionarse con la espalda recta y pies al ancho de hombros.</paso>
                 <paso numero="3">Ejecutar el movimiento de peso muerto.</paso>
                 <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
             </pasos>
+            <consejo>
+                <item>Coloca las caderas a media altura para no sobrecargar rodillas.</item>
+                <item>Controla la velocidad tanto al subir como al bajar.</item>
+                <item>Respira de forma profunda durante todo el movimiento.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Glúteos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Peso Muerto (polea)</nombre>
-            <descripcion>Con polea se efectúa un peso muerto que refuerza tanto la zona lumbar como los cuadriceps mediante resistencia constante.</descripcion>
+            <descripcion>Con polea se efectúa un peso muerto que refuerza tanto la zona lumbar como los cuádriceps mediante resistencia constante.</descripcion>
             <gif>@drawable/peso_muerto__polea_</gif>
             <pasos>
                 <paso numero="1">Ajustar la polea a la resistencia deseada.</paso>
@@ -1636,10 +1681,19 @@
                 <paso numero="3">Realizar el peso muerto manteniendo la espalda recta.</paso>
                 <paso numero="4">Regresar a la posición inicial con control.</paso>
             </pasos>
+            <consejo>
+                <item>Evita balancear el torso durante el ejercicio.</item>
+                <item>Mantén el cuello en línea con la columna.</item>
+                <item>Concéntrate en empujar con las piernas.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Zona lumbar</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Prensa de Piernas Inclinada</nombre>
-            <descripcion>Ejercicio de fuerza para cuadriceps que se realiza en prensa inclinada, activando la parte frontal y media de las piernas.</descripcion>
+            <descripcion>Ejercicio de fuerza para cuádriceps que se realiza en prensa inclinada, activando la parte frontal y media de las piernas.</descripcion>
             <gif>@drawable/prensa_de_piernas_inclinada</gif>
             <pasos>
                 <paso numero="1">Ajustar la máquina de prensa de piernas inclinada.</paso>
@@ -1647,10 +1701,19 @@
                 <paso numero="3">Empujar la plataforma extendiendo las piernas.</paso>
                 <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
             </pasos>
+            <consejo>
+                <item>No bloquees las rodillas completamente al extender.</item>
+                <item>Mantén la espalda apoyada en el respaldo.</item>
+                <item>Respira mientras empujas la plataforma.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Glúteos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Prensa de Piernas Vertical (máquina)</nombre>
-            <descripcion>La prensa vertical permite trabajar los cuadriceps con un movimiento controlado y en un rango completo de movilidad.</descripcion>
+            <descripcion>La prensa vertical permite trabajar los cuádriceps con un movimiento controlado y en un rango completo de movilidad.</descripcion>
             <gif>@drawable/prensa_de_piernas_vertical__m_quina_</gif>
             <pasos>
                 <paso numero="1">Ajustar la máquina de prensa vertical.</paso>
@@ -1658,10 +1721,19 @@
                 <paso numero="3">Ejecutar el movimiento extendiendo las piernas.</paso>
                 <paso numero="4">Regresar de forma controlada a la posición inicial.</paso>
             </pasos>
+            <consejo>
+                <item>No permitas que las caderas se despeguen del asiento.</item>
+                <item>Controla la velocidad para evitar rebotes.</item>
+                <item>Activa el core durante todo el ejercicio.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Aductores</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Press de Pierna Horizontal Unilateral (máquina)</nombre>
-            <descripcion>Se enfoca en cada pierna de forma independiente, mejorando el equilibrio y fuerza de los cuadriceps.</descripcion>
+            <descripcion>Se enfoca en cada pierna de forma independiente, mejorando el equilibrio y fuerza de los cuádriceps.</descripcion>
             <gif>@drawable/press_de_pierna_horizontal_unilateral__m_quina_</gif>
             <pasos>
                 <paso numero="1">Ajustar la máquina para trabajo unilateral.</paso>
@@ -1669,10 +1741,19 @@
                 <paso numero="3">Realizar el press concentrado en la pierna trabajada.</paso>
                 <paso numero="4">Regresar de forma controlada y repetir con la otra pierna.</paso>
             </pasos>
+            <consejo>
+                <item>Mantén el tronco estable y sin rotaciones.</item>
+                <item>Evita estirar completamente la pierna para proteger la articulación.</item>
+                <item>Distribuye bien la presión en la planta del pie.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Core</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Press de Piernas Alternado (máquina)</nombre>
-            <descripcion>Realiza un press alternado que favorece el trabajo unilateral y la simetría en el desarrollo de los cuadriceps.</descripcion>
+            <descripcion>Realiza un press alternado que favorece el trabajo unilateral y la simetría en el desarrollo de los cuádriceps.</descripcion>
             <gif>@drawable/press_de_piernas_alternado__m_quina_</gif>
             <pasos>
                 <paso numero="1">Ajustar la máquina de press de piernas.</paso>
@@ -1680,21 +1761,19 @@
                 <paso numero="3">Alternar la extensión de cada pierna.</paso>
                 <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
             </pasos>
-        </ejercicio>
-        <ejercicio>
-            <nombre>Press de Piernas Vertical (máquina)</nombre>
-            <descripcion>Repite el ejercicio en vertical para maximizar el trabajo de la zona anterior del muslo.</descripcion>
-            <gif>@drawable/press_de_piernas_vertical__m_quina_</gif>
-            <pasos>
-                <paso numero="1">Ajustar la máquina de press vertical.</paso>
-                <paso numero="2">Sentarse y colocar ambos pies en la plataforma.</paso>
-                <paso numero="3">Realizar la extensión completa de las piernas.</paso>
-                <paso numero="4">Bajar de forma controlada a la posición inicial.</paso>
-            </pasos>
+            <consejo>
+                <item>Mantén un ritmo constante y controlado.</item>
+                <item>No bloquees las rodillas al final de cada repetición.</item>
+                <item>Concéntrate en la pierna que empuja.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Glúteos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Press de Pierna Unilateral (máquina)</nombre>
-            <descripcion>Aísla cada pierna de forma individual, permitiendo un mayor enfoque en la fuerza y estabilidad de los cuadriceps.</descripcion>
+            <descripcion>Aísla cada pierna de forma individual, permitiendo un mayor enfoque en la fuerza y estabilidad de los cuádriceps.</descripcion>
             <gif>@drawable/press_de_pierna_unilateral__m_quina_</gif>
             <pasos>
                 <paso numero="1">Configurar la máquina para trabajo unilateral.</paso>
@@ -1702,10 +1781,19 @@
                 <paso numero="3">Ejecutar el press con la pierna seleccionada.</paso>
                 <paso numero="4">Regresar de forma controlada y repetir con la otra pierna.</paso>
             </pasos>
+            <consejo>
+                <item>Asegúrate de alinear la rodilla con el pie.</item>
+                <item>Evita rotar la cadera durante el empuje.</item>
+                <item>Respira de manera constante.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Abductores</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Sentadilla Búlgara (mancuernas)</nombre>
-            <descripcion>Se realiza apoyando una pierna en un banco, lo que aumenta la dificultad y trabaja intensamente el cuadriceps y glúteos.</descripcion>
+            <descripcion>Se realiza apoyando una pierna en un banco, lo que aumenta la dificultad y trabaja intensamente el cuádriceps y glúteos.</descripcion>
             <gif>@drawable/sentadilla_b_lgara__mancuernas_</gif>
             <pasos>
                 <paso numero="1">Colocar un banco detrás y posicionar una pierna sobre él.</paso>
@@ -1713,10 +1801,19 @@
                 <paso numero="3">Realizar la sentadilla bajando el cuerpo sin perder el equilibrio.</paso>
                 <paso numero="4">Subir de forma controlada y repetir en ambas piernas.</paso>
             </pasos>
+            <consejo>
+                <item>Asegúrate de que la rodilla delantera no sobrepase los dedos del pie.</item>
+                <item>Mantén el torso erguido en todo momento.</item>
+                <item>Activa el core para mayor estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Glúteos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Sentadilla - con disco</nombre>
-            <descripcion>La sentadilla con disco añade peso extra sobre el pecho, intensificando el trabajo en los cuadriceps.</descripcion>
+            <descripcion>La sentadilla con disco añade peso extra sobre el pecho, intensificando el trabajo en los cuádriceps.</descripcion>
             <gif>@drawable/sentadilla___con_disco</gif>
             <pasos>
                 <paso numero="1">Colocar el disco sobre el pecho y posicionarse frente a la barra (o sin ella si se usa disco libre).</paso>
@@ -1724,10 +1821,19 @@
                 <paso numero="3">Realizar la sentadilla manteniendo la espalda recta.</paso>
                 <paso numero="4">Subir de forma controlada a la posición inicial.</paso>
             </pasos>
+            <consejo>
+                <item>Mantén los codos altos para evitar que el disco deslice.</item>
+                <item>No dejes que las rodillas colapsen hacia adentro.</item>
+                <item>Respira profundamente antes de descender.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Core</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Sentadilla - pies juntos (barra)</nombre>
-            <descripcion>Ejercicio clásico en el que se juntan los pies para focalizar el esfuerzo en el cuadriceps interno.</descripcion>
+            <descripcion>Ejercicio clásico en el que se juntan los pies para focalizar el esfuerzo en el cuádriceps interno.</descripcion>
             <gif>@drawable/sentadilla___pies_juntos__barra_</gif>
             <pasos>
                 <paso numero="1">Colocar la barra sobre los trapecios.</paso>
@@ -1735,10 +1841,19 @@
                 <paso numero="3">Realizar la sentadilla bajando lentamente.</paso>
                 <paso numero="4">Subir controladamente a la posición inicial.</paso>
             </pasos>
+            <consejo>
+                <item>Controla el descenso para no forzar las rodillas.</item>
+                <item>Mantén el peso en los talones.</item>
+                <item>Activa el core para proteger la espalda.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Aductores</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Sentadilla - pies separados (máquina)</nombre>
-            <descripcion>Utilizando máquina, se trabaja la sentadilla con pies separados para activar distintos sectores del cuadriceps.</descripcion>
+            <descripcion>Utilizando máquina, se trabaja la sentadilla con pies separados para activar distintos sectores del cuádriceps.</descripcion>
             <gif>@drawable/sentadilla___pies_separados__m_quina_</gif>
             <pasos>
                 <paso numero="1">Ajustar la máquina de sentadillas.</paso>
@@ -1746,10 +1861,19 @@
                 <paso numero="3">Realizar la sentadilla extendiendo las piernas.</paso>
                 <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
             </pasos>
+            <consejo>
+                <item>No despegues completamente la espalda del respaldo.</item>
+                <item>Controla la velocidad para un trabajo más efectivo.</item>
+                <item>Respira de forma rítmica.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Abductores</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Zancada con Pies Elevados (mancuernas)</nombre>
-            <descripcion>Con mancuernas y elevación de uno de los pies se realiza una zancada que enfatiza el trabajo unilateral de los cuadriceps.</descripcion>
+            <descripcion>Con mancuernas y elevación de uno de los pies se realiza una zancada que enfatiza el trabajo unilateral de los cuádriceps.</descripcion>
             <gif>@drawable/zancada_con_pies_elevados__mancuernas_</gif>
             <pasos>
                 <paso numero="1">Seleccionar mancuernas y colocarse de pie.</paso>
@@ -1757,6 +1881,15 @@
                 <paso numero="3">Realizar la extensión de la pierna en el movimiento.</paso>
                 <paso numero="4">Regresar a la posición inicial y repetir con la otra pierna.</paso>
             </pasos>
+            <consejo>
+                <item>Mantén la espalda recta y el core activo.</item>
+                <item>No dejes que la rodilla delantera sobrepase los dedos del pie.</item>
+                <item>Controla la bajada para más estabilidad.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Gemelos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Zancada Cruzada (barra)</nombre>
@@ -1768,6 +1901,15 @@
                 <paso numero="3">Dar un paso cruzado hacia adelante realizando la zancada.</paso>
                 <paso numero="4">Regresar a la posición inicial de forma controlada.</paso>
             </pasos>
+            <consejo>
+                <item>Mantén el torso recto y evita inclinarte hacia el lado.</item>
+                <item>Alinea la rodilla con el pie de apoyo.</item>
+                <item>Aprieta el glúteo al volver a la posición inicial.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Glúteos</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Zancada Lateral (kettlebell)</nombre>
@@ -1779,10 +1921,19 @@
                 <paso numero="3">Flexionar la pierna lateral para ejecutar la zancada.</paso>
                 <paso numero="4">Regresar a la posición inicial controladamente y repetir del otro lado.</paso>
             </pasos>
+            <consejo>
+                <item>Mantén el kettlebell cerca del cuerpo.</item>
+                <item>No bajes más allá de un ángulo de 90° en la rodilla.</item>
+                <item>Activa el core para mayor control.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Abductores</secundario>
+            </musculos>
         </ejercicio>
         <ejercicio>
             <nombre>Zancada Lateral (mancuernas)</nombre>
-            <descripcion>Con mancuernas se realiza la zancada lateral para fortalecer la parte externa del cuadriceps y mejorar la estabilidad.</descripcion>
+            <descripcion>Con mancuernas se realiza la zancada lateral para fortalecer la parte externa del cuádriceps y mejorar la estabilidad.</descripcion>
             <gif>@drawable/zancada_lateral__mancuernas_</gif>
             <pasos>
                 <paso numero="1">Seleccionar mancuernas y colocarse de pie.</paso>
@@ -1790,8 +1941,18 @@
                 <paso numero="3">Realizar la zancada flexionando la pierna lateral.</paso>
                 <paso numero="4">Volver a la posición inicial de forma controlada y repetir del otro lado.</paso>
             </pasos>
+            <consejo>
+                <item>Mantén el tronco erguido sin inclinarte.</item>
+                <item>Evita que la rodilla colapse hacia adentro.</item>
+                <item>Asegura una buena estabilidad en el pie de apoyo.</item>
+            </consejo>
+            <musculos>
+                <principal>Cuádriceps</principal>
+                <secundario>Abductores</secundario>
+            </musculos>
         </ejercicio>
     </categoria>
+
 
     <!-- Categoría: Dorsales -->
     <categoria nombre="Dorsales">

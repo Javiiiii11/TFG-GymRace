@@ -1,12 +1,15 @@
 package com.example.gymrace
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,17 +22,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
-import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,9 +42,6 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
     // Inicializa Firebase Firestore
     val db = FirebaseFirestore.getInstance()
     val context = LocalContext.current
-
-    // Inicializa el controlador de la corutina
-//    val scope = rememberCoroutineScope()
 
     // Estados para la rutina
     var rutina by remember { mutableStateOf<Rutina?>(null) }
@@ -51,9 +53,24 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
     var isExerciseCompleted by remember { mutableStateOf(false) }
     var isRutinaCompleted by remember { mutableStateOf(false) }
 
+    // Estado para el modo (ejercicio o descanso)
+    var isRestMode by remember { mutableStateOf(false) }
+    var isRestBetweenSeries by remember { mutableStateOf(false) }
+
     // Estados para las series
     var currentSeries by remember { mutableStateOf(1) }
-    var lastTimeUsed by remember { mutableStateOf(30) } // Guarda el último tiempo usado para resetear
+
+    // Valores guardados para los temporizadores
+    var lastExerciseTimeUsed by remember { mutableStateOf(30) } // Último tiempo de ejercicio usado
+    var lastRestTimeUsed by remember { mutableStateOf(60) } // Último tiempo de descanso usado
+
+    // Temporizadores
+    var exerciseTimer by remember { mutableStateOf(30) } // 30 segundos por defecto para ejercicio
+    var restTimer by remember { mutableStateOf(60) } // 60 segundos por defecto para descanso
+    var isTimerRunning by remember { mutableStateOf(false) }
+
+    // Función para obtener el temporizador actual según el modo
+    val currentTimer = if (isRestMode) restTimer else exerciseTimer
 
     // Datos de ejercicios
     val (ejerciciosData, _) = remember {
@@ -66,16 +83,26 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
         ejerciciosData.find { it.title == nombre }
     }
 
-    // Temporizador de ejercicio
-    var exerciseTimer by remember { mutableStateOf(30) } // 30 segundos por defecto
-    var isTimerRunning by remember { mutableStateOf(false) }
+    // Siguiente ejercicio (para mostrar en la vista de descanso)
+    val nextExerciseName = when {
+        isRestMode && isRestBetweenSeries -> rutina?.ejercicios?.getOrNull(currentExerciseIndex) // mostrar mismo ejercicio
+        else -> rutina?.ejercicios?.getOrNull(currentExerciseIndex + 1) // mostrar siguiente ejercicio
+    }
+
+
+    val nextExerciseData = nextExerciseName?.let { nombre ->
+        ejerciciosData.find { it.title == nombre }
+    }
+
 
     // Estado para controlar la visibilidad del popup de ajuste del temporizador
     var showTimerAdjustDialog by remember { mutableStateOf(false) }
 
-    // Límites para el temporizador
-    val minTime = 10 // tiempo mínimo en segundos
-    val maxTime = 120 // tiempo máximo en segundos
+    // Límites para los temporizadores
+    val minExerciseTime = 10 // tiempo mínimo en segundos para ejercicio
+    val maxExerciseTime = 120 // tiempo máximo en segundos para ejercicio
+    val minRestTime = 15 // tiempo mínimo en segundos para descanso
+    val maxRestTime = 180 // tiempo máximo en segundos para descanso
 
     // Carga la rutina
     LaunchedEffect(rutinaId) {
@@ -118,18 +145,6 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
         }
     }
 
-    // Efecto para el temporizador
-    LaunchedEffect(isTimerRunning, currentExerciseIndex, currentSeries) {
-        if (isTimerRunning) {
-            while (exerciseTimer > 0) {
-                delay(1000)
-                exerciseTimer--
-            }
-            // Completar ejercicio cuando termina el temporizador
-            isExerciseCompleted = true
-            isTimerRunning = false
-        }
-    }
 
     // Diálogo de confirmación para salir
     var showExitDialog by remember { mutableStateOf(false) }
@@ -198,78 +213,237 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                             .clip(RoundedCornerShape(3.dp))
                     )
 
-                    Spacer(modifier = Modifier.height(32.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                    // Nombre del ejercicio actual y número de serie
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                    // Chip para indicar el modo actual (ejercicio o descanso)
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        color = if (isRestMode)
+                            MaterialTheme.colorScheme.tertiaryContainer
+                        else MaterialTheme.colorScheme.primaryContainer,
+                        modifier = Modifier.padding(bottom = 8.dp)
                     ) {
-                        Text(
-                            text = currentExerciseName ?: "Ejercicio",
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-
-                    Spacer(modifier = Modifier.height(32.dp))
-
-                    // Visualización del ejercicio (GIF)
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(280.dp)
-                            .background(
-                                MaterialTheme.colorScheme.surfaceVariant,
-                                RoundedCornerShape(12.dp)
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        if (currentExerciseData != null) {
-                            GifImage(
-                                modifier = Modifier
-                                    .size(240.dp)
-                                    .clip(RoundedCornerShape(12.dp)),
-                                gif = currentExerciseData.resource
-                            )
-                        } else {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             Icon(
-                                imageVector = Icons.Default.FitnessCenter,
+                                imageVector = if (isRestMode) Icons.Default.Coffee else Icons.Default.FitnessCenter,
                                 contentDescription = null,
-                                modifier = Modifier.size(80.dp),
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = if (isRestMode)
+                                    MaterialTheme.colorScheme.onTertiaryContainer
+                                else MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = if (isRestMode) "DESCANSO" else "EJERCICIO",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = if (isRestMode)
+                                    MaterialTheme.colorScheme.onTertiaryContainer
+                                else MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    // Detalle del ejercicio actual
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp)
+                    // Contenido principal - Cambia según el modo (ejercicio o descanso)
+                    AnimatedVisibility(
+                        visible = !isRestMode,
+                        enter = fadeIn(),
+                        exit = fadeOut()
                     ) {
+                        // MODO EJERCICIO
                         Column(
-                            modifier = Modifier.padding(10.dp)
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            if (currentExerciseData != null) {
-                                Text(
-                                    text = "Músculo principal: ${currentExerciseData.mainMuscle}",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = FontWeight.Bold
-                                )
+                            // Nombre del ejercicio actual
+                            Text(
+                                text = currentExerciseName ?: "Ejercicio",
+                                style = MaterialTheme.typography.headlineSmall,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
 
-                                Spacer(modifier = Modifier.height(4.dp))
+                            Spacer(modifier = Modifier.height(15.dp))
 
-                                Text(
-                                    text = "Categoría: ${currentExerciseData.category}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
+                            // Visualización del ejercicio (GIF)
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(270.dp)
+                                    .background(
+                                        MaterialTheme.colorScheme.surfaceVariant,
+                                        RoundedCornerShape(12.dp)
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                if (currentExerciseData != null) {
+                                    GifImage(
+                                        modifier = Modifier
+                                            .size(230.dp)
+                                            .clip(RoundedCornerShape(12.dp)),
+                                        gif = currentExerciseData.resource
+                                    )
+                                } else {
+                                    Icon(
+                                        imageVector = Icons.Default.FitnessCenter,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(80.dp),
+                                        tint = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            // Detalle del ejercicio actual
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp)
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(10.dp)
+                                ) {
+                                    if (currentExerciseData != null) {
+                                        Text(
+                                            text = "Músculo principal: ${currentExerciseData.mainMuscle}",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            fontWeight = FontWeight.Bold
+                                        )
+
+//                                        Spacer(modifier = Modifier.height(4.dp))
+//
+//                                        Text(
+//                                            text = "Categoría: ${currentExerciseData.category}",
+//                                            style = MaterialTheme.typography.bodyMedium
+//                                        )
+                                    }
+                                }
                             }
                         }
                     }
+
+                    AnimatedVisibility(
+                        visible = isRestMode,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f), // Para que ocupe espacio disponible sin empujar abajo
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+//                                // Título del descanso
+//                                Text(
+//                                    text = if (currentExerciseIndex < rutina!!.ejercicios.size - 1)
+//                                        "Descansando antes del siguiente ejercicio"
+//                                    else "Último descanso",
+//                                    style = MaterialTheme.typography.titleMedium,
+//                                    textAlign = TextAlign.Center
+//                                )
+//
+//                                Spacer(modifier = Modifier.height(16.dp))
+
+                                // Vista previa
+                                if (nextExerciseName != null && nextExerciseData != null) {
+                                    Text(
+                                        text = "A continuación:",
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Center
+                                    )
+
+                                    Spacer(modifier = Modifier.height(4.dp))
+
+                                    Text(
+                                        text = nextExerciseName,
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        textAlign = TextAlign.Center,
+                                        maxLines = 2, // Limitar líneas para que no crezca tanto
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+
+                                    Spacer(modifier = Modifier.height(16.dp))
+
+                                    Box(
+                                        modifier = Modifier
+                                            .size(260.dp)
+                                            .background(
+                                                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f),
+                                                RoundedCornerShape(12.dp)
+                                            ),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        GifImage(
+                                            modifier = Modifier
+                                                .size(230.dp)
+                                                .clip(RoundedCornerShape(8.dp)),
+                                            gif = nextExerciseData.resource
+                                        )
+                                    }
+
+                                    Spacer(modifier = Modifier.height(8.dp))
+
+//                                    Card(
+//                                        modifier = Modifier.fillMaxWidth(),
+//                                        shape = RoundedCornerShape(12.dp),
+//                                        colors = CardDefaults.cardColors(
+//                                            containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.5f)
+//                                        )
+//                                    ) {
+//                                        Column(
+//                                            modifier = Modifier.padding(12.dp)
+//                                        ) {
+//                                            Text(
+//                                                text = "Recuerda:",
+//                                                style = MaterialTheme.typography.titleSmall,
+//                                                fontWeight = FontWeight.Bold
+//                                            )
+//
+//                                            Spacer(modifier = Modifier.height(4.dp))
+//
+//                                            Text(
+//                                                text = "• Respira profundamente\n• Hidratate\n• Estira ligeramente el músculo trabajado",
+//                                                style = MaterialTheme.typography.bodyMedium
+//                                            )
+//                                        }
+//                                    }
+                                } else {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(240.dp)
+                                            .background(
+                                                MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.7f),
+                                                CircleShape
+                                            ),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.EmojiEvents,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(130.dp),
+                                            tint = MaterialTheme.colorScheme.onTertiaryContainer
+                                        )
+                                    }
+
+                                    Spacer(modifier = Modifier.height(16.dp))
+
+                                    Text(
+                                        text = "¡Último descanso antes de terminar!",
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        textAlign = TextAlign.Center,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                            }
+                        }
+                    }
+
 
                     Spacer(modifier = Modifier.weight(0.5f))
 
@@ -278,14 +452,18 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        // Temporizador
-                        if (!isExerciseCompleted) {
+                        // Temporizador (igual para ejercicio y descanso, solo cambia el color)
+                        if (!isExerciseCompleted || isRestMode) {
                             // Temporizador clickable para abrir el diálogo de ajuste
                             Box(
                                 modifier = Modifier
                                     .size(130.dp)
                                     .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.primaryContainer)
+                                    .background(
+                                        if (isRestMode)
+                                            MaterialTheme.colorScheme.tertiaryContainer
+                                        else MaterialTheme.colorScheme.primaryContainer
+                                    )
                                     .clickable(enabled = !isTimerRunning) {
                                         if (!isTimerRunning) {
                                             showTimerAdjustDialog = true
@@ -297,10 +475,12 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     Text(
-                                        text = exerciseTimer.toString(),
+                                        text = (if (isRestMode) restTimer else exerciseTimer).toString(),
                                         fontSize = 40.sp,
                                         style = MaterialTheme.typography.headlineLarge,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                                        color = if (isRestMode)
+                                            MaterialTheme.colorScheme.onTertiaryContainer
+                                        else MaterialTheme.colorScheme.onPrimaryContainer
                                     )
 
                                     // Indicador visual para ajustar el tiempo (solo visible si no está corriendo)
@@ -308,7 +488,9 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                         Text(
                                             text = "Tocar para ajustar",
                                             style = MaterialTheme.typography.labelSmall,
-                                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+                                            color = if (isRestMode)
+                                                MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.7f)
+                                            else MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                                         )
                                     }
                                 }
@@ -321,7 +503,12 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                 onClick = { isTimerRunning = !isTimerRunning },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(40.dp)
+                                    .height(40.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = if (isRestMode)
+                                        MaterialTheme.colorScheme.tertiary
+                                    else MaterialTheme.colorScheme.primary
+                                )
                             ) {
                                 Icon(
                                     imageVector = if (isTimerRunning) Icons.Default.Pause else Icons.Default.PlayArrow,
@@ -330,7 +517,38 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(if (isTimerRunning) "Pausar" else "Iniciar")
                             }
-                        } else {
+
+                            // Botón para saltar el tiempo (solo visible si estamos en descanso)
+                            if (isRestMode) {
+                                Spacer(modifier = Modifier.height(4.dp))
+                                TextButton(
+                                onClick = {
+                                    if (isRestBetweenSeries) {
+                                        currentSeries++
+                                        isRestMode = false
+                                        isRestBetweenSeries = false
+                                        isTimerRunning = false
+                                        exerciseTimer = lastExerciseTimeUsed
+                                    } else {
+                                        currentExerciseIndex++
+                                        currentSeries = 1
+                                        isRestMode = false
+                                        isTimerRunning = false
+                                        exerciseTimer = lastExerciseTimeUsed
+                                    }
+
+                                },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(36.dp)
+                                ) {
+                                    Text("Saltar descanso")
+                                }
+                            }
+                        }
+
+                        // Botones de acción cuando se completa un ejercicio y no estamos en modo descanso
+                        if (isExerciseCompleted && !isRestMode) {
                             // Botones de acción cuando se completa un ejercicio
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -339,9 +557,12 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                 // Botón para otra serie
                                 Button(
                                     onClick = {
-                                        currentSeries++
+                                        isRestMode = true
+                                        isRestBetweenSeries = true // << Activamos flag de descanso entre series
+                                        restTimer = lastRestTimeUsed
                                         isExerciseCompleted = false
                                     },
+
                                     modifier = Modifier
                                         .weight(1f)
                                         .height(48.dp),
@@ -355,16 +576,16 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                     Text("Otra serie")
                                 }
 
-                                // Botón para siguiente ejercicio
+                                // Botón para descanso/siguiente ejercicio
                                 Button(
                                     onClick = {
                                         if (currentExerciseIndex < rutina!!.ejercicios.size - 1) {
-                                            currentExerciseIndex++
-                                            currentSeries = 1 // Resetear series para el nuevo ejercicio
+                                            // Si no es el último ejercicio, ofrecemos descanso
+                                            isRestMode = true
+                                            restTimer = lastRestTimeUsed
                                             isExerciseCompleted = false
-                                            exerciseTimer = 30 // Resetear temporizador al valor por defecto
-                                            lastTimeUsed = 30 // Resetear valor guardado también
                                         } else {
+                                            // Si es el último ejercicio, completamos la rutina
                                             isRutinaCompleted = true
                                         }
                                     },
@@ -376,9 +597,9 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                     )
                                 ) {
                                     if (currentExerciseIndex < rutina!!.ejercicios.size - 1) {
-                                        Icon(Icons.Default.ArrowForward, contentDescription = null)
+                                        Icon(Icons.Default.Coffee, contentDescription = null)
                                         Spacer(modifier = Modifier.width(4.dp))
-                                        Text("Siguiente")
+                                        Text("Descansar")
                                     } else {
                                         Icon(Icons.Default.CheckCircle, contentDescription = null)
                                         Spacer(modifier = Modifier.width(4.dp))
@@ -395,6 +616,38 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
+
+                        // Si estamos en modo descanso y es tiempo de pasar al siguiente ejercicio
+                        if (isRestMode && restTimer <= 0) {
+                            Button(
+                                onClick = {
+                                    if (isRestBetweenSeries) {
+                                        // Es descanso entre series → NO cambiamos de ejercicio
+                                        currentSeries++
+                                        isRestMode = false
+                                        isRestBetweenSeries = false
+                                        exerciseTimer = lastExerciseTimeUsed
+                                    } else {
+                                        // Es descanso normal entre ejercicios → pasamos al siguiente
+                                        currentExerciseIndex++
+                                        currentSeries = 1
+                                        isRestMode = false
+                                        exerciseTimer = lastExerciseTimeUsed
+                                    }
+
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(48.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary
+                                )
+                            ) {
+                                Icon(Icons.Default.ArrowForward, contentDescription = null)
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("Siguiente ejercicio")
+                            }
+                        }
                     }
                 }
             }
@@ -405,7 +658,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
     if (showTimerAdjustDialog) {
         AlertDialog(
             onDismissRequest = { showTimerAdjustDialog = false },
-            title = { Text("Ajustar tiempo") },
+            title = { Text(if (isRestMode) "Ajustar tiempo de descanso" else "Ajustar tiempo de ejercicio") },
             text = {
                 Column(
                     modifier = Modifier.padding(4.dp),
@@ -413,7 +666,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                 ) {
                     // Valor actual grande
                     Text(
-                        text = "$exerciseTimer s",
+                        text = "${if (isRestMode) restTimer else exerciseTimer} s",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(vertical = 4.dp)
@@ -430,7 +683,13 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                         // Botones de decremento
                         Row {
                             OutlinedIconButton(
-                                onClick = { exerciseTimer = (exerciseTimer - 10).coerceAtLeast(minTime) },
+                                onClick = {
+                                    if (isRestMode) {
+                                        restTimer = (restTimer - 10).coerceAtLeast(minRestTime)
+                                    } else {
+                                        exerciseTimer = (exerciseTimer - 10).coerceAtLeast(minExerciseTime)
+                                    }
+                                },
                                 modifier = Modifier.size(36.dp)
                             ) {
                                 Text("-10", style = MaterialTheme.typography.labelMedium)
@@ -439,7 +698,13 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                             Spacer(modifier = Modifier.width(4.dp))
 
                             OutlinedIconButton(
-                                onClick = { exerciseTimer = (exerciseTimer - 5).coerceAtLeast(minTime) },
+                                onClick = {
+                                    if (isRestMode) {
+                                        restTimer = (restTimer - 5).coerceAtLeast(minRestTime)
+                                    } else {
+                                        exerciseTimer = (exerciseTimer - 5).coerceAtLeast(minExerciseTime)
+                                    }
+                                },
                                 modifier = Modifier.size(36.dp)
                             ) {
                                 Text("-5", style = MaterialTheme.typography.labelMedium)
@@ -449,7 +714,13 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                         // Botones de incremento
                         Row {
                             OutlinedIconButton(
-                                onClick = { exerciseTimer = (exerciseTimer + 5).coerceAtMost(maxTime) },
+                                onClick = {
+                                    if (isRestMode) {
+                                        restTimer = (restTimer + 5).coerceAtMost(maxRestTime)
+                                    } else {
+                                        exerciseTimer = (exerciseTimer + 5).coerceAtMost(maxExerciseTime)
+                                    }
+                                },
                                 modifier = Modifier.size(36.dp)
                             ) {
                                 Text("+5", style = MaterialTheme.typography.labelMedium)
@@ -458,7 +729,13 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                             Spacer(modifier = Modifier.width(4.dp))
 
                             OutlinedIconButton(
-                                onClick = { exerciseTimer = (exerciseTimer + 10).coerceAtMost(maxTime) },
+                                onClick = {
+                                    if (isRestMode) {
+                                        restTimer = (restTimer + 10).coerceAtMost(maxRestTime)
+                                    } else {
+                                        exerciseTimer = (exerciseTimer + 10).coerceAtMost(maxExerciseTime)
+                                    }
+                                },
                                 modifier = Modifier.size(36.dp)
                             ) {
                                 Text("+10", style = MaterialTheme.typography.labelMedium)
@@ -470,20 +747,26 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
 
                     // Slider para ajuste fino
                     Slider(
-                        value = exerciseTimer.toFloat(),
-                        onValueChange = { exerciseTimer = it.toInt() },
-                        valueRange = minTime.toFloat()..maxTime.toFloat(),
-                        steps = ((maxTime - minTime) / 5) - 1, // Pasos de 5 segundos
+                        value = if (isRestMode) restTimer.toFloat() else exerciseTimer.toFloat(),
+                        onValueChange = { value ->
+                            if (isRestMode) {
+                                restTimer = value.toInt()
+                            } else {
+                                exerciseTimer = value.toInt()
+                            }
+                        },
+                        valueRange = if (isRestMode) minRestTime.toFloat()..maxRestTime.toFloat()
+                        else minExerciseTime.toFloat()..maxExerciseTime.toFloat(),
+                        steps = ((if (isRestMode) maxRestTime - minRestTime else maxExerciseTime - minExerciseTime) / 5) - 1,
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    // Rango del slider
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("$minTime s", style = MaterialTheme.typography.bodySmall)
-                        Text("$maxTime s", style = MaterialTheme.typography.bodySmall)
+                        Text("${if (isRestMode) minRestTime else minExerciseTime} s", style = MaterialTheme.typography.bodySmall)
+                        Text("${if (isRestMode) maxRestTime else maxExerciseTime} s", style = MaterialTheme.typography.bodySmall)
                     }
                 }
             },
@@ -491,7 +774,11 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                 Button(
                     onClick = {
                         showTimerAdjustDialog = false
-                        lastTimeUsed = exerciseTimer // Guardar el tiempo seleccionado
+                        if (isRestMode) {
+                            lastRestTimeUsed = restTimer
+                        } else {
+                            lastExerciseTimeUsed = exerciseTimer
+                        }
                     }
                 ) {
                     Text("Aceptar")
@@ -526,9 +813,81 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
             }
         )
     }
+    // Efecto para el temporizador
+    LaunchedEffect(key1 = isTimerRunning, key2 = isRestMode) {
+        if (isTimerRunning) {
+            while (if (isRestMode) restTimer > 0 else exerciseTimer > 0) {
+                delay(1000)
+                if (isRestMode) {
+                    restTimer -= 1
+                } else {
+                    exerciseTimer -= 1
+                }
+            }
+
+            isTimerRunning = false
+
+            if (isRestMode) {
+                if (isRestBetweenSeries) {
+                    // 👉 DESCANSO entre series: NO pasar al siguiente ejercicio
+                    currentSeries++
+                    isRestMode = false
+                    isRestBetweenSeries = false
+                    exerciseTimer = lastExerciseTimeUsed
+                    isExerciseCompleted = false
+                } else {
+                    // 👉 DESCANSO entre ejercicios: PASAR al siguiente ejercicio
+                    currentExerciseIndex++
+                    currentSeries = 1
+                    isRestMode = false
+                    exerciseTimer = lastExerciseTimeUsed
+                    isExerciseCompleted = false
+
+                    if (currentExerciseIndex >= (rutina?.ejercicios?.size ?: 0)) {
+                        isRutinaCompleted = true
+                    }
+                }
+            } else {
+                isExerciseCompleted = true
+            }
+        }
+    }
+
 }
 
-// Composable para mostrar un mensaje de error
+// Clase para iniciar una rutina desde un botón
+class RutinaLauncher(
+    private val navController: NavController,
+    private val rutinaId: String
+) {
+    // Función para iniciar la rutina
+    fun launch() {
+        navController.navigate("ejecutar_rutina/$rutinaId")
+    }
+
+    // Composable que crea un botón para iniciar la rutina
+    @Composable
+    fun LaunchButton(
+        modifier: Modifier = Modifier,
+        text: String = "Iniciar Rutina",
+        showIcon: Boolean = true
+    ) {
+        Button(
+            onClick = { launch() },
+            modifier = modifier,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
+        ) {
+            if (showIcon) {
+                Icon(Icons.Default.PlayArrow, contentDescription = null)
+                Spacer(modifier = Modifier.width(4.dp))
+            }
+            Text(text)
+        }
+    }
+}
+
 @Composable
 fun ErrorMessage(message: String, onRetry: () -> Unit) {
     Column(
@@ -561,14 +920,9 @@ fun ErrorMessage(message: String, onRetry: () -> Unit) {
     }
 }
 
-// Composable para mostrar la pantalla de rutina completada
 @Composable
 fun RutinaCompletada(rutina: Rutina, onFinish: () -> Unit) {
-
-    // Animación de escala infinita
-    // Se utiliza para hacer que el icono de verificación crezca y decrezca
     val infiniteTransition = rememberInfiniteTransition()
-    // Se define la animación de escala
     val scale by infiniteTransition.animateFloat(
         initialValue = 1f,
         targetValue = 1.2f,
@@ -628,39 +982,6 @@ fun RutinaCompletada(rutina: Rutina, onFinish: () -> Unit) {
             Icon(Icons.Default.Home, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
             Text("Volver al inicio")
-        }
-    }
-}
-
-// Clase para iniciar una rutina desde un botón
-class RutinaLauncher(
-    private val navController: NavController,
-    private val rutinaId: String
-) {
-    // Función para iniciar la rutina
-    fun launch() {
-        navController.navigate("ejecutar_rutina/$rutinaId")
-    }
-
-    // Composable que crea un botón para iniciar la rutina
-    @Composable
-    fun LaunchButton(
-        modifier: Modifier = Modifier,
-        text: String = "Iniciar Rutina",
-        showIcon: Boolean = true
-    ) {
-        Button(
-            onClick = { launch() },
-            modifier = modifier,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            )
-        ) {
-            if (showIcon) {
-                Icon(Icons.Default.PlayArrow, contentDescription = null)
-                Spacer(modifier = Modifier.width(4.dp))
-            }
-            Text(text)
         }
     }
 }
