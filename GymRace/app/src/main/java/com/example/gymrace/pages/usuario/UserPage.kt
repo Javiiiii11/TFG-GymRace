@@ -1,6 +1,7 @@
 package np.com.bimalkafle.bottomnavigationdemo.pages
 
 import android.content.Context
+import android.content.Intent
 import com.google.firebase.auth.FirebaseAuth
 import com.example.gymrace.pages.autenticación.saveLoginState
 import com.google.firebase.firestore.FirebaseFirestore
@@ -43,6 +44,7 @@ import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SupervisorAccount
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -327,73 +329,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             isLoading = false
         }
     }
-
-//    LaunchedEffect(Unit) {
-//        delay(200) // Espera breve para que el UI se dibuje antes de cargar datos pesados
-//
-//        try {
-//            val currentUser = FirebaseAuth.getInstance().currentUser
-//            if (currentUser != null) {
-//                isGoogleUser = currentUser.providerData.any { it.providerId == "google.com" }
-//
-//                val userDocument = Firebase.firestore
-//                    .collection("usuarios")
-//                    .document(currentUser.uid)
-//                    .get()
-//                    .await()
-//
-//                if (userDocument.exists()) {
-//                    // Globales
-//                    GLOBAL.id = currentUser.uid
-//                    GLOBAL.nombre = userDocument.getString("nombre") ?: ""
-//                    GLOBAL.peso = userDocument.getString("peso") ?: ""
-//                    GLOBAL.altura = userDocument.getString("altura") ?: ""
-//                    GLOBAL.edad = userDocument.getString("edad") ?: ""
-//                    GLOBAL.objetivoFitness = userDocument.getString("objetivoFitness") ?: ""
-//                    GLOBAL.diasEntrenamientoPorSemana = userDocument.getString("diasEntrenamientoPorSemana") ?: ""
-//                    GLOBAL.nivelExperiencia = when (userDocument.getString("nivelExperiencia")) {
-//                        "Avanzado (más de 2 años)" -> "Avanzado"
-//                        "Intermedio (6 meses - 2 años)" -> "Intermedio"
-//                        "Principiante (menos de 6 meses)" -> "Principiante"
-//                        else -> userDocument.getString("nivelExperiencia") ?: ""
-//                    }
-//
-//                    // Locales
-//                    userName = GLOBAL.nombre
-//                    userWeight = GLOBAL.peso
-//                    userHeight = GLOBAL.altura
-//                    userAge = GLOBAL.edad
-//                    userFitnessGoal = GLOBAL.objetivoFitness
-//                    userTrainingDays = GLOBAL.diasEntrenamientoPorSemana
-//                    userExperienceLevel = GLOBAL.nivelExperiencia
-//
-//                    // Fecha de registro
-//                    userDocument.getTimestamp("fechaCreacion")?.toDate()?.let { fecha ->
-//                        val formato = SimpleDateFormat("d 'de' MMMM 'de' yyyy", Locale("es", "ES"))
-//                        fechaRegistro = formato.format(fecha)
-//                            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale("es", "ES")) else it.toString() }
-//                    }
-//
-//                    // Privacidad
-//                    isPrivate = userDocument.getBoolean("cuentaPrivada") ?: false
-//
-//                    // Amigos
-//                    loadFriendsList(currentUser.uid) { friends -> friendsList = friends }
-//
-//                    // Notificaciones
-//                    loadNotificaciones(currentUser.uid) { nuevas -> notificaciones = nuevas }
-//                }
-//            } else {
-//                userName = "No has iniciado sesión"
-//            }
-//        } catch (e: Exception) {
-//            Log.e("CargaInicial", "Error al cargar datos del usuario", e)
-//            userName = "Error al cargar datos"
-//        } finally {
-//            isLoading = false
-//        }
-//    }
-
 
     // Mostrar diálogo de comunidad
     if (showCommunityDialog) {
@@ -1131,6 +1066,37 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Icono de privacidad
+                    Icon(
+                        painter = painterResource(id = if (isPrivate) R.drawable.bloqueado else R.drawable.desbloqueado),
+                        contentDescription = if (isPrivate) "Cuenta Privada" else "Cuenta Pública",
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    // Icono de compartir perfil
+                    IconButton(onClick = {
+                        // Lógica para compartir el perfil
+                        val shareIntent = Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT, "Mira mi perfil en GymRace: ${userName}")
+                            type = "text/plain"
+                        }
+                        context.startActivity(Intent.createChooser(shareIntent, null))
+                    }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Share,
+                            contentDescription = "Compartir perfil",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                }
                 // Foto de perfil
                 Box(
                     modifier = Modifier
