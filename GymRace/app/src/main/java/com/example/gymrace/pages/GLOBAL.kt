@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
@@ -58,6 +59,7 @@ class GLOBAL {
                 "diasEntrenamientoPorSemana" to "0",
                 "nivelExperiencia" to "Sin nivel",
                 "cuentaPrivada" to false,
+                "fechaCreacion" to FieldValue.serverTimestamp()
             )
             // Guardar los datos en Firestore
             Firebase.firestore.collection("usuarios")

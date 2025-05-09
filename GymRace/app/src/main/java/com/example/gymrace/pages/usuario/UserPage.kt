@@ -4,9 +4,6 @@ import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.example.gymrace.pages.autenticación.saveLoginState
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.LaunchedEffect
@@ -35,7 +32,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.FitnessCenter
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.LightMode
@@ -45,7 +41,6 @@ import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,18 +57,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.repeatOnLifecycle
 import com.example.gymrace.R
 import com.example.gymrace.pages.GLOBAL
 import com.example.gymrace.ui.theme.ThemeManager.isDarkTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import kotlinx.coroutines.CoroutineScope
@@ -81,7 +70,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
@@ -116,7 +104,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     var showThemeMenu by remember { mutableStateOf(false) }
-    var showNotificationMenu by remember { mutableStateOf(false) }
 
     // Estado para el diálogo de configuración
     var showDeleteAccountDialog by remember { mutableStateOf(false) }
@@ -149,109 +136,20 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     // Estado para la configuración de privacidad
     var isPrivate by remember { mutableStateOf(false) }
 
-
+    // Estado para las notificaciones
     var notificaciones by remember { mutableStateOf(emptyList<Notificacion>()) }
     var showNotifications by remember { mutableStateOf(false) }
 
-    // Efecto para cargar la lista de amigos cada 5 segundos
-    val lifecycleOwner = LocalLifecycleOwner.current
+    // Guarda la fecha de registro
+    var fechaRegistro by remember { mutableStateOf("Fecha no disponible") }
 
-    LaunchedEffect(lifecycleOwner) {
-        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            while (true) {
-                delay(5000)
-                try {
-                    GLOBAL.id?.let { userId ->
-                        loadFriendsList(userId) { friends ->
-                            if (friends != friendsList) {
-                                Log.d("FriendsRefresh", "Lista de amigos actualizada: ${friends.size} amigos")
-                                friendsList = friends
-                            } else {
-                                Log.d("FriendsRefresh", "Sin cambios en la lista de amigos")
-                            }
-                        }
-                    }
-                } catch (e: Exception) {
-                    Log.e("FriendsRefresh", "Error al actualizar amigos", e)
-                }
-            }
-        }
-    }
-    val lifecycleOwner2 = LocalLifecycleOwner.current
+    LaunchedEffect(Unit) {
+        delay(200) // Espera breve para que el UI se dibuje antes de cargar datos pesados
 
-    LaunchedEffect(lifecycleOwner2) {
-        lifecycleOwner2.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            GLOBAL.id?.let { userId ->
-                loadNotificaciones(userId) { nuevasNotificaciones ->
-                    if (nuevasNotificaciones != notificaciones) {
-                        Log.d("NotificationsRefresh", "Notificaciones actualizadas: ${nuevasNotificaciones.size}")
-                        notificaciones = nuevasNotificaciones
-                    } else {
-                        Log.d("NotificationsRefresh", "Sin cambios en notificaciones")
-                    }
-                }
-            }
-            while (true) {
-                delay(5000)
-                try {
-                    GLOBAL.id?.let { userId ->
-                        loadNotificaciones(userId) { nuevasNotificaciones ->
-                            if (nuevasNotificaciones != notificaciones) {
-                                Log.d("NotificationsRefresh", "Notificaciones actualizadas: ${nuevasNotificaciones.size}")
-                                notificaciones = nuevasNotificaciones
-                            } else {
-                                Log.d("NotificationsRefresh", "Sin cambios en notificaciones")
-                            }
-                        }
-                    }
-                } catch (e: Exception) {
-                    Log.e("NotificationsRefresh", "Error al actualizar notificaciones", e)
-                }
-            }
-        }
-    }
-
-
-
-    // Efecto para cargar la configuración de privacidad del usuario desde Firestore
-    LaunchedEffect(userId) {
-        userId?.let { uid ->
-            try {
-                // Cargar el estado de privacidad desde Firestore
-                firestore.collection("usuarios")
-                    .document(uid)
-                    .get()
-                    .addOnSuccessListener { document ->
-                        if (document != null && document.exists()) {
-                            // Obtener el valor de cuentaPrivada, si no existe usar false por defecto
-                            isPrivate = document.getBoolean("cuentaPrivada") ?: false
-                            Log.d("UserPage", "Estado de privacidad cargado: $isPrivate")
-                        } else {
-                            Log.d("UserPage", "No se encontró el documento del usuario")
-                            isPrivate = false
-                        }
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e("UserPage", "Error al cargar el estado de privacidad", e)
-                        isPrivate = false
-                    }
-            } catch (e: Exception) {
-                Log.e("UserPage", "Excepción al cargar privacidad", e)
-                isPrivate = false
-            }
-        }
-    }
-
-    // Efecto para cargar los datos del usuario desde Firebase
-    LaunchedEffect(key1 = Unit) {
         try {
             val currentUser = FirebaseAuth.getInstance().currentUser
             if (currentUser != null) {
-                // Comprobar si el usuario inició sesión con Google
                 isGoogleUser = currentUser.providerData.any { it.providerId == "google.com" }
-
-                // Add debug logging
-                println("Loading user data for UID: ${currentUser.uid}")
 
                 val userDocument = Firebase.firestore
                     .collection("usuarios")
@@ -260,9 +158,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     .await()
 
                 if (userDocument.exists()) {
-                    println("User document exists - loading data")
-
-                    // Actualizar variables globales
+                    // Globales
                     GLOBAL.id = currentUser.uid
                     GLOBAL.nombre = userDocument.getString("nombre") ?: ""
                     GLOBAL.peso = userDocument.getString("peso") ?: ""
@@ -270,17 +166,14 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     GLOBAL.edad = userDocument.getString("edad") ?: ""
                     GLOBAL.objetivoFitness = userDocument.getString("objetivoFitness") ?: ""
                     GLOBAL.diasEntrenamientoPorSemana = userDocument.getString("diasEntrenamientoPorSemana") ?: ""
-
-                    // Transformar el valor de nivelExperiencia al momento de asignarlo
-                    val rawNivelExperiencia = userDocument.getString("nivelExperiencia") ?: ""
-                    GLOBAL.nivelExperiencia = when (rawNivelExperiencia) {
+                    GLOBAL.nivelExperiencia = when (userDocument.getString("nivelExperiencia")) {
                         "Avanzado (más de 2 años)" -> "Avanzado"
                         "Intermedio (6 meses - 2 años)" -> "Intermedio"
                         "Principiante (menos de 6 meses)" -> "Principiante"
-                        else -> rawNivelExperiencia  // En caso de otro valor, se mantiene el original
+                        else -> userDocument.getString("nivelExperiencia") ?: ""
                     }
 
-                    // Actualizar estado local
+                    // Locales
                     userName = GLOBAL.nombre
                     userWeight = GLOBAL.peso
                     userHeight = GLOBAL.altura
@@ -289,31 +182,33 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     userTrainingDays = GLOBAL.diasEntrenamientoPorSemana
                     userExperienceLevel = GLOBAL.nivelExperiencia
 
-                    println("User data loaded successfully: ${GLOBAL.nombre}")
-
-                    // Cargar lista de amigos
-                    loadFriendsList(currentUser.uid) { friends ->
-                        friendsList = friends
+                    // Fecha de registro
+                    userDocument.getTimestamp("fechaCreacion")?.toDate()?.let { fecha ->
+                        val formato = SimpleDateFormat("d 'de' MMMM 'de' yyyy", Locale("es", "ES"))
+                        fechaRegistro = formato.format(fecha)
+                            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale("es", "ES")) else it.toString() }
                     }
-                } else {
-                    println("User document does not exist for UID: ${currentUser.uid}")
-                    // Consider setting default values or showing an error state
-                    userName = "Usuario no encontrado"
+
+                    // Privacidad
+                    isPrivate = userDocument.getBoolean("cuentaPrivada") ?: false
+
+                    // Amigos
+                    loadFriendsList(currentUser.uid) { friends -> friendsList = friends }
+
+                    // Notificaciones
+                    loadNotificaciones(currentUser.uid) { nuevas -> notificaciones = nuevas }
                 }
             } else {
-                println("Current user is null - no user logged in")
-                // Handle not logged in state
                 userName = "No has iniciado sesión"
             }
         } catch (e: Exception) {
-            println("Error al cargar datos de usuario: ${e.message}")
-            println("Stack trace: ${e.stackTraceToString()}")
-            // Set a value to indicate error
+            Log.e("CargaInicial", "Error al cargar datos del usuario", e)
             userName = "Error al cargar datos"
         } finally {
             isLoading = false
         }
     }
+
 
     // Mostrar diálogo de comunidad
     if (showCommunityDialog) {
@@ -1102,12 +997,11 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 InfoItem(label = "Objetivo Fitness", value = userFitnessGoal)
                 InfoItem(label = "Días por semana", value = userTrainingDays)
                 InfoItem(label = "Experiencia", value = userExperienceLevel)
-                InfoItem(
-                    label = "Fecha de registro",
-                    value = SimpleDateFormat("MMMM yyyy", Locale("es", "ES")).format(Date())
-                )
+                InfoItem(label = "Fecha de registro", value = fechaRegistro)
             }
         )
+
+
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -1692,7 +1586,7 @@ fun StatItem(count: String, label: String) {
     }
 }
 
-// Composable para mostrar una sección del perfil
+// Composable para mostrar una sección del perfil@
 @Composable
 fun ProfileSection(
     title: String,
@@ -2157,7 +2051,4 @@ fun removeNotification(userId: String, senderId: String, onComplete: () -> Unit)
             onComplete() // Continue even if there's an error
         }
 }
-
-
-
 
