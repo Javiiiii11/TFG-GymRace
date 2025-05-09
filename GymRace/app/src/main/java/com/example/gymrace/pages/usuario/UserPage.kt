@@ -36,9 +36,12 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SupervisorAccount
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -57,6 +60,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.gymrace.R
 import com.example.gymrace.pages.GLOBAL
 import com.example.gymrace.ui.theme.ThemeManager.isDarkTheme
@@ -111,6 +117,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     // Estados para diálogos
     var showCommunityDialog by remember { mutableStateOf(false) }
     var showFriendsDialog by remember { mutableStateOf(false) }
+    var showFollowersDialog by remember { mutableStateOf(false) }
+
 
     // Estados para datos del usuario
     var userName by remember { mutableStateOf("Cargando...") }
@@ -125,6 +133,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     // Lista de usuarios y amigos
     var allUsers by remember { mutableStateOf<List<User>>(emptyList()) }
     var friendsList by remember { mutableStateOf<List<User>>(emptyList()) }
+    var followersList by remember { mutableStateOf<List<User>>(emptyList()) }  // ← nuevo
     var isLoadingUsers by remember { mutableStateOf(false) }
 
     // Estado para saber si el usuario está registrado con Google
@@ -141,15 +150,121 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     var showNotifications by remember { mutableStateOf(false) }
 
     // Guarda la fecha de registro
+
     var fechaRegistro by remember { mutableStateOf("Fecha no disponible") }
 
-    LaunchedEffect(Unit) {
-        delay(200) // Espera breve para que el UI se dibuje antes de cargar datos pesados
+    LaunchedEffect(userId) {
+        userId?.let {
+            val doc = firestore.collection("usuarios").document(it).get().await()
+            val timestamp = doc.getTimestamp("fechaCreacion")
+            timestamp?.toDate()?.let { fecha ->
+                val formato = SimpleDateFormat("d 'de' MMMM 'de' yyyy", Locale("es", "ES"))
+                fechaRegistro = formato.format(fecha)
+                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale("es", "ES")) else it.toString() }
+            }
+        }
+    }
 
+
+    // Efecto para cargar la lista de amigos cada 5 segundos
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            while (true) {
+                delay(10000)
+                try {
+                    GLOBAL.id?.let { userId ->
+                        loadFriendsList(userId) { friends ->
+                            if (friends != friendsList) {
+                                Log.d("FriendsRefresh", "Lista de amigos actualizada: ${friends.size} amigos")
+                                friendsList = friends
+                            } else {
+                                Log.d("FriendsRefresh", "Sin cambios en la lista de amigos")
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("FriendsRefresh", "Error al actualizar amigos", e)
+                }
+            }
+        }
+    }
+    val lifecycleOwner2 = LocalLifecycleOwner.current
+
+    LaunchedEffect(lifecycleOwner2) {
+        lifecycleOwner2.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            GLOBAL.id?.let { userId ->
+                loadNotificaciones(userId) { nuevasNotificaciones ->
+                    if (nuevasNotificaciones != notificaciones) {
+                        Log.d("NotificationsRefresh", "Notificaciones actualizadas: ${nuevasNotificaciones.size}")
+                        notificaciones = nuevasNotificaciones
+                    } else {
+                        Log.d("NotificationsRefresh", "Sin cambios en notificaciones")
+                    }
+                }
+            }
+            while (true) {
+                delay(5000)
+                try {
+                    GLOBAL.id?.let { userId ->
+                        loadNotificaciones(userId) { nuevasNotificaciones ->
+                            if (nuevasNotificaciones != notificaciones) {
+                                Log.d("NotificationsRefresh", "Notificaciones actualizadas: ${nuevasNotificaciones.size}")
+                                notificaciones = nuevasNotificaciones
+                            } else {
+                                Log.d("NotificationsRefresh", "Sin cambios en notificaciones")
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("NotificationsRefresh", "Error al actualizar notificaciones", e)
+                }
+            }
+        }
+    }
+
+
+
+    // Efecto para cargar la configuración de privacidad del usuario desde Firestore
+    LaunchedEffect(userId) {
+        userId?.let { uid ->
+            try {
+                // Cargar el estado de privacidad desde Firestore
+                firestore.collection("usuarios")
+                    .document(uid)
+                    .get()
+                    .addOnSuccessListener { document ->
+                        if (document != null && document.exists()) {
+                            // Obtener el valor de cuentaPrivada, si no existe usar false por defecto
+                            isPrivate = document.getBoolean("cuentaPrivada") ?: false
+                            Log.d("UserPage", "Estado de privacidad cargado: $isPrivate")
+                        } else {
+                            Log.d("UserPage", "No se encontró el documento del usuario")
+                            isPrivate = false
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("UserPage", "Error al cargar el estado de privacidad", e)
+                        isPrivate = false
+                    }
+            } catch (e: Exception) {
+                Log.e("UserPage", "Excepción al cargar privacidad", e)
+                isPrivate = false
+            }
+        }
+    }
+
+    // Efecto para cargar los datos del usuario desde Firebase
+    LaunchedEffect(key1 = Unit) {
         try {
             val currentUser = FirebaseAuth.getInstance().currentUser
             if (currentUser != null) {
+                // Comprobar si el usuario inició sesión con Google
                 isGoogleUser = currentUser.providerData.any { it.providerId == "google.com" }
+
+                // Add debug logging
+                println("Loading user data for UID: ${currentUser.uid}")
 
                 val userDocument = Firebase.firestore
                     .collection("usuarios")
@@ -158,7 +273,9 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     .await()
 
                 if (userDocument.exists()) {
-                    // Globales
+                    println("User document exists - loading data")
+
+                    // Actualizar variables globales
                     GLOBAL.id = currentUser.uid
                     GLOBAL.nombre = userDocument.getString("nombre") ?: ""
                     GLOBAL.peso = userDocument.getString("peso") ?: ""
@@ -166,14 +283,17 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     GLOBAL.edad = userDocument.getString("edad") ?: ""
                     GLOBAL.objetivoFitness = userDocument.getString("objetivoFitness") ?: ""
                     GLOBAL.diasEntrenamientoPorSemana = userDocument.getString("diasEntrenamientoPorSemana") ?: ""
-                    GLOBAL.nivelExperiencia = when (userDocument.getString("nivelExperiencia")) {
+
+                    // Transformar el valor de nivelExperiencia al momento de asignarlo
+                    val rawNivelExperiencia = userDocument.getString("nivelExperiencia") ?: ""
+                    GLOBAL.nivelExperiencia = when (rawNivelExperiencia) {
                         "Avanzado (más de 2 años)" -> "Avanzado"
                         "Intermedio (6 meses - 2 años)" -> "Intermedio"
                         "Principiante (menos de 6 meses)" -> "Principiante"
-                        else -> userDocument.getString("nivelExperiencia") ?: ""
+                        else -> rawNivelExperiencia  // En caso de otro valor, se mantiene el original
                     }
 
-                    // Locales
+                    // Actualizar estado local
                     userName = GLOBAL.nombre
                     userWeight = GLOBAL.peso
                     userHeight = GLOBAL.altura
@@ -182,32 +302,97 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     userTrainingDays = GLOBAL.diasEntrenamientoPorSemana
                     userExperienceLevel = GLOBAL.nivelExperiencia
 
-                    // Fecha de registro
-                    userDocument.getTimestamp("fechaCreacion")?.toDate()?.let { fecha ->
-                        val formato = SimpleDateFormat("d 'de' MMMM 'de' yyyy", Locale("es", "ES"))
-                        fechaRegistro = formato.format(fecha)
-                            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale("es", "ES")) else it.toString() }
+                    println("User data loaded successfully: ${GLOBAL.nombre}")
+
+                    // Cargar lista de amigos
+                    loadFriendsList(currentUser.uid) { friends ->
+                        friendsList = friends
                     }
-
-                    // Privacidad
-                    isPrivate = userDocument.getBoolean("cuentaPrivada") ?: false
-
-                    // Amigos
-                    loadFriendsList(currentUser.uid) { friends -> friendsList = friends }
-
-                    // Notificaciones
-                    loadNotificaciones(currentUser.uid) { nuevas -> notificaciones = nuevas }
+                } else {
+                    println("User document does not exist for UID: ${currentUser.uid}")
+                    // Consider setting default values or showing an error state
+                    userName = "Usuario no encontrado"
                 }
             } else {
+                println("Current user is null - no user logged in")
+                // Handle not logged in state
                 userName = "No has iniciado sesión"
             }
         } catch (e: Exception) {
-            Log.e("CargaInicial", "Error al cargar datos del usuario", e)
+            println("Error al cargar datos de usuario: ${e.message}")
+            println("Stack trace: ${e.stackTraceToString()}")
+            // Set a value to indicate error
             userName = "Error al cargar datos"
         } finally {
             isLoading = false
         }
     }
+
+//    LaunchedEffect(Unit) {
+//        delay(200) // Espera breve para que el UI se dibuje antes de cargar datos pesados
+//
+//        try {
+//            val currentUser = FirebaseAuth.getInstance().currentUser
+//            if (currentUser != null) {
+//                isGoogleUser = currentUser.providerData.any { it.providerId == "google.com" }
+//
+//                val userDocument = Firebase.firestore
+//                    .collection("usuarios")
+//                    .document(currentUser.uid)
+//                    .get()
+//                    .await()
+//
+//                if (userDocument.exists()) {
+//                    // Globales
+//                    GLOBAL.id = currentUser.uid
+//                    GLOBAL.nombre = userDocument.getString("nombre") ?: ""
+//                    GLOBAL.peso = userDocument.getString("peso") ?: ""
+//                    GLOBAL.altura = userDocument.getString("altura") ?: ""
+//                    GLOBAL.edad = userDocument.getString("edad") ?: ""
+//                    GLOBAL.objetivoFitness = userDocument.getString("objetivoFitness") ?: ""
+//                    GLOBAL.diasEntrenamientoPorSemana = userDocument.getString("diasEntrenamientoPorSemana") ?: ""
+//                    GLOBAL.nivelExperiencia = when (userDocument.getString("nivelExperiencia")) {
+//                        "Avanzado (más de 2 años)" -> "Avanzado"
+//                        "Intermedio (6 meses - 2 años)" -> "Intermedio"
+//                        "Principiante (menos de 6 meses)" -> "Principiante"
+//                        else -> userDocument.getString("nivelExperiencia") ?: ""
+//                    }
+//
+//                    // Locales
+//                    userName = GLOBAL.nombre
+//                    userWeight = GLOBAL.peso
+//                    userHeight = GLOBAL.altura
+//                    userAge = GLOBAL.edad
+//                    userFitnessGoal = GLOBAL.objetivoFitness
+//                    userTrainingDays = GLOBAL.diasEntrenamientoPorSemana
+//                    userExperienceLevel = GLOBAL.nivelExperiencia
+//
+//                    // Fecha de registro
+//                    userDocument.getTimestamp("fechaCreacion")?.toDate()?.let { fecha ->
+//                        val formato = SimpleDateFormat("d 'de' MMMM 'de' yyyy", Locale("es", "ES"))
+//                        fechaRegistro = formato.format(fecha)
+//                            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale("es", "ES")) else it.toString() }
+//                    }
+//
+//                    // Privacidad
+//                    isPrivate = userDocument.getBoolean("cuentaPrivada") ?: false
+//
+//                    // Amigos
+//                    loadFriendsList(currentUser.uid) { friends -> friendsList = friends }
+//
+//                    // Notificaciones
+//                    loadNotificaciones(currentUser.uid) { nuevas -> notificaciones = nuevas }
+//                }
+//            } else {
+//                userName = "No has iniciado sesión"
+//            }
+//        } catch (e: Exception) {
+//            Log.e("CargaInicial", "Error al cargar datos del usuario", e)
+//            userName = "Error al cargar datos"
+//        } finally {
+//            isLoading = false
+//        }
+//    }
 
 
     // Mostrar diálogo de comunidad
@@ -302,6 +487,33 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             showAddButton = false
         )
     }
+    // Mostrar diálogo de seguidores
+    if (showFollowersDialog) {
+        LaunchedEffect(showFollowersDialog) {
+            isLoadingUsers = true
+            loadFollowersList(GLOBAL.id) { followers ->
+                followersList = followers
+                isLoadingUsers = false
+            }
+        }
+
+        UsersDialog(
+            title = "Seguidores",
+            users = followersList,
+            isLoading = isLoadingUsers,
+            onDismiss = { showFollowersDialog = false },
+            showAddButton = false,
+            onUserAction = { followerId ->
+                // Si quieres permitir eliminar a un seguidor:
+                removeFriend(followerId, GLOBAL.id) {
+                    loadFollowersList(GLOBAL.id) { updated ->
+                        followersList = updated
+                    }
+                }
+            }
+        )
+    }
+
 
     Column(
         modifier = Modifier
@@ -962,16 +1174,31 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                         .padding(top = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
+                    // Botón de Seguidores
+                    Button(
+                        onClick = { showFollowersDialog = true },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                    ) {
+                        Text(text = "Seguidores", color = MaterialTheme.colorScheme.onPrimary)
+                    }
+                    // Botón de Seguidos
                     Button(
                         onClick = { showFriendsDialog = true },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     ) {
-                        Text(
-                            text = "Seguidos",
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
+                        Text(text = "Seguidos", color = MaterialTheme.colorScheme.onPrimary)
                     }
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    // Botón de comunidad
                     Button(
                         onClick = { showCommunityDialog = true },
                         modifier = Modifier.weight(1f),
@@ -981,7 +1208,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                         ),
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
                     ) {
-                        Text(text = "Comunidad")
+                        Text(text = "Comunidad",
+                        )
                     }
                 }
             }
@@ -2052,3 +2280,46 @@ fun removeNotification(userId: String, senderId: String, onComplete: () -> Unit)
         }
 }
 
+private fun loadFollowersList(userId: String, callback: (List<User>) -> Unit) {
+    val db = Firebase.firestore
+    // Consulta todos los docs donde mi ID esté en listaAmigos
+    db.collection("amigos")
+        .whereArrayContains("listaAmigos", userId)
+        .get()
+        .addOnSuccessListener { snapshot ->
+            val followerIds = snapshot.documents.map { it.id }
+            if (followerIds.isEmpty()) {
+                callback(emptyList())
+                return@addOnSuccessListener
+            }
+            // Recuperar datos de cada usuario
+            val followers = mutableListOf<User>()
+            var loaded = 0
+            for (fid in followerIds) {
+                db.collection("usuarios").document(fid).get()
+                    .addOnSuccessListener { doc ->
+                        if (doc.exists()) {
+                            followers += User(
+                                id = doc.id,
+                                nombre = doc.getString("nombre") ?: "",
+                                peso = doc.getString("peso") ?: "",
+                                altura = doc.getString("altura") ?: "",
+                                edad = doc.getString("edad") ?: "",
+                                objetivoFitness = doc.getString("objetivoFitness") ?: "",
+                                nivelExperiencia = doc.getString("nivelExperiencia") ?: "",
+                                cuentaPrivada = doc.getBoolean("cuentaPrivada") ?: false
+                            )
+                        }
+                        loaded++
+                        if (loaded == followerIds.size) callback(followers)
+                    }
+                    .addOnFailureListener {
+                        loaded++
+                        if (loaded == followerIds.size) callback(followers)
+                    }
+            }
+        }
+        .addOnFailureListener {
+            callback(emptyList())
+        }
+}
