@@ -829,7 +829,7 @@ fun ChallengeItem(
 fun StatusChip(status: String) {
     // Determina el color y el texto del chip según el estado
     val (color, text) = when (status) {
-        "PENDING" -> Pair(MaterialTheme.colorScheme.tertiary, "Pendiente")
+        "PENDING" -> Pair(MaterialTheme.colorScheme.tertiary, "Pendiente de aceptar")
         "ACCEPTED", "IN_PROGRESS" -> Pair(MaterialTheme.colorScheme.primary, "En progreso")
         "COMPLETED" -> Pair(MaterialTheme.colorScheme.secondary, "Completado")
         else -> Pair(MaterialTheme.colorScheme.error, "Desconocido")
@@ -871,20 +871,46 @@ fun CreateChallengeDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Crear nuevo desafío") },
+        title = {
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Crear nuevo desafío",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    IconButton(onClick = onDismiss) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Cerrar"
+                        )
+                    }
+                }
+                Divider()
+            }
+        },
         text = {
             Column {
                 OutlinedTextField(
                     value = challengeName,
                     onValueChange = { challengeName = it },
                     label = { Text("Nombre del desafío") },
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
                 )
                 OutlinedTextField(
                     value = challengeDescription,
                     onValueChange = { challengeDescription = it },
                     label = { Text("Descripción") },
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
                 )
                 // Selección de amigo
                 ExposedDropdownMenuBox(
@@ -896,8 +922,13 @@ fun CreateChallengeDialog(
                         onValueChange = {},
                         readOnly = true,
                         label = { Text("Amigo") },
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedFriends) },
-                        modifier = Modifier.fillMaxWidth().menuAnchor().padding(vertical = 8.dp)
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedFriends)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor()
+                            .padding(vertical = 8.dp)
                     )
                     ExposedDropdownMenu(
                         expanded = expandedFriends,
@@ -916,13 +947,16 @@ fun CreateChallengeDialog(
                     }
                 }
                 // Selección de ejercicio con estado visual más claro
-                Column(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                ) {
                     Text(
                         text = "Ejercicio",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
-
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -937,7 +971,10 @@ fun CreateChallengeDialog(
                         ) {
                             Text(
                                 text = if (selectedExercise.isNotBlank()) selectedExercise else "Seleccionar ejercicio",
-                                color = if (selectedExercise.isBlank()) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface
+                                color = if (selectedExercise.isBlank())
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                else
+                                    MaterialTheme.colorScheme.onSurface
                             )
                             Icon(
                                 Icons.Default.Search,
@@ -947,18 +984,18 @@ fun CreateChallengeDialog(
                         }
                     }
                 }
-
                 OutlinedTextField(
                     value = repetitions,
                     onValueChange = { repetitions = it.filter { char -> char.isDigit() } },
                     label = { Text("Repeticiones") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
                 )
             }
         },
         confirmButton = {
-            // Botón de creación del desafío
             Button(
                 onClick = {
                     val reps = repetitions.toIntOrNull() ?: 0
@@ -984,11 +1021,13 @@ fun CreateChallengeDialog(
                 Text("Crear")
             }
         },
-        // Botón de cancelación
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancelar") }
+            TextButton(onClick = onDismiss) {
+                Text("Cancelar")
+            }
         }
     )
+
 
     // Diálogo de selección mejorada de ejercicio
     if (showEjerciciosDialog) {
