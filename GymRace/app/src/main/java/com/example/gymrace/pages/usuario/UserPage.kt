@@ -208,7 +208,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 }
             }
             while (true) {
-                delay(5000)
+                delay(10000)
                 try {
                     GLOBAL.id?.let { userId ->
                         loadNotificaciones(userId) { nuevasNotificaciones ->
@@ -1870,6 +1870,18 @@ fun InfoItem(label: String, value: String) {
 //notificaciones
 
 fun loadNotificaciones(idUsuario: String, callback: (List<Notificacion>) -> Unit) {
+    try {
+        // Verifica si el ID de usuario es válido
+        if (idUsuario.isEmpty()) {
+            Log.e("Notificaciones", "ID de usuario vacío")
+            callback(emptyList())
+            return
+        }
+    } catch (e: Exception) {
+        Log.e("Notificaciones", "Error al cargar notificaciones: ${e.message}")
+        callback(emptyList())
+        return
+    }
     Firebase.firestore
         .collection("notificaciones")
         .document(idUsuario)

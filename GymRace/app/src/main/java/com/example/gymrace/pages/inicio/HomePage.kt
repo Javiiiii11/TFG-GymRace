@@ -65,9 +65,16 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, onThem
         }
 
         // Cargar rutinas predefinidas desde Firestore
-        item {
-            LoadPredefinedRoutinesFromFirestore(navController)
+        try {
+            item {
+                LoadPredefinedRoutinesFromFirestore(navController)
+            }
+        } catch (e: Exception) {
+            Log.e("FirestoreError", "Error loading routines", e)
         }
+//        item {
+//            LoadPredefinedRoutinesFromFirestore(navController)
+//        }
 
         // Sección de rutina personalizada
         item {
