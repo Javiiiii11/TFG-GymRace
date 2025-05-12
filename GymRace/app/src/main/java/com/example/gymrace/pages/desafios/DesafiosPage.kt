@@ -53,6 +53,7 @@ import com.example.gymrace.removeFriend
 import com.example.gymrace.showExerciseDetail
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.delay
@@ -71,13 +72,15 @@ data class Challenge(
     val name: String,
     val description: String,
     val creatorId: String,
+    val creatorName: String, // ← AÑADIDO
     val participantId: String,
     val exercise: String,
     val repetitions: Int,
     val creatorProgress: Int = 0,
     val participantProgress: Int = 0,
-    val status: String // PENDING, ACCEPTED, IN_PROGRESS, COMPLETED
+    val status: String
 )
+
 
 // Modelo de datos para amigos
 data class Friend(
@@ -156,6 +159,7 @@ class ChallengeViewModel : ViewModel() {
                     name = document.getString("titulo") ?: "",
                     description = document.getString("descripcion") ?: "",
                     creatorId = document.getString("creador.id") ?: "",
+                    creatorName = document.getString("creador.nombre") ?: "",
                     participantId = document.getString("amigoInvitado.id") ?: "",
                     exercise = document.getString("ejercicio") ?: "",
                     repetitions = (document.getLong("repeticiones") ?: 0).toInt(),
@@ -176,6 +180,7 @@ class ChallengeViewModel : ViewModel() {
                     name = document.getString("titulo") ?: "",
                     description = document.getString("descripcion") ?: "",
                     creatorId = document.getString("creador.id") ?: "",
+                    creatorName = document.getString("creador.nombre") ?: "",
                     participantId = document.getString("amigoInvitado.id") ?: "",
                     exercise = document.getString("ejercicio") ?: "",
                     repetitions = (document.getLong("repeticiones") ?: 0).toInt(),
@@ -194,11 +199,14 @@ class ChallengeViewModel : ViewModel() {
     // Función para crear un nuevo desafío
     suspend fun createChallenge(challenge: Challenge) {
         try {
-            // Verifica si el ID del desafío está vacío y genera uno nuevo
+            val firestore = FirebaseFirestore.getInstance()
+
+            // Si el challenge no tiene ID, le generamos uno nuevo
             val challengeData = if (challenge.id.isBlank()) {
                 challenge.copy(id = UUID.randomUUID().toString())
             } else challenge
-            // Crea un mapa con los datos del desafío
+
+            // Preparamos los datos del desafío para Firestore
             val desafioData = mapOf(
                 "creador" to mapOf("id" to challengeData.creatorId, "progreso" to 0),
                 "amigoInvitado" to mapOf("id" to challengeData.participantId, "progreso" to 0),
@@ -208,15 +216,37 @@ class ChallengeViewModel : ViewModel() {
                 "repeticiones" to challengeData.repetitions,
                 "status" to challengeData.status
             )
-            // Guarda el desafío en Firestore
+
+            // Guardamos en la colección 'desafios'
             firestore.collection("desafios")
                 .document(challengeData.id)
                 .set(desafioData)
                 .await()
 
+            // Recargamos la lista de desafíos
             loadFriendsChallenges(challenge.creatorId)
+
+            // Creamos notificación
+            val notificationData = mapOf(
+                "tipo" to "desafio",
+                "mensaje" to "${challenge.creatorName} te ha retado a un desafío",
+                "remitente" to challenge.creatorId,
+                "challengeId" to challengeData.id,
+                "timestamp" to FieldValue.serverTimestamp()
+            )
+
+            firestore.collection("notificaciones")
+                .document(challenge.participantId)
+                .collection("items")
+                .add(notificationData)
+                .addOnSuccessListener {
+                    Log.d("ChallengeNotification", "Notificación de desafío enviada con éxito")
+                }
+                .addOnFailureListener {
+                    Log.e("ChallengeNotification", "Error al enviar la notificación de desafío", it)
+                }
+
         } catch (e: Exception) {
-            // Manejo de errores al crear un desafío
             Log.e("Error", "Error al crear el desafio: ${e.message}")
         }
     }
@@ -1004,6 +1034,7 @@ fun CreateChallengeDialog(
                             name = challengeName,
                             description = challengeDescription,
                             creatorId = currentUserId,
+                            creatorName = GLOBAL.nombre, // ← NUEVO
                             participantId = selectedFriendId,
                             exercise = selectedExercise,
                             repetitions = reps,

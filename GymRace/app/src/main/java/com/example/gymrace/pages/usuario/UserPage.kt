@@ -69,6 +69,7 @@ import com.example.gymrace.R
 import com.example.gymrace.pages.GLOBAL
 import com.example.gymrace.ui.theme.ThemeManager.isDarkTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.play.core.integrity.bd
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
@@ -88,8 +89,10 @@ data class Notificacion(
     val mensaje: String,
     val remitente: String,
     val timestamp: String,
-    val id: String = "" // ID del documento
+    val id: String = "", // id de la notificación
+    val challengeId: String? = null  // id del desafío, si corresponde
 )
+
 
 
 
@@ -1896,15 +1899,19 @@ fun loadNotificaciones(idUsuario: String, callback: (List<Notificacion>) -> Unit
                 val id = document.id
                 val timestamp = document.getTimestamp("timestamp")?.toDate()?.toString() ?: ""
 
+
+                val challengeId = document.getString("challengeId")
                 lista.add(
                     Notificacion(
                         tipo = tipo,
                         mensaje = mensaje,
                         remitente = remitente,
-                        id = id,
-                        timestamp = timestamp
+                        timestamp = timestamp,
+                        id = id, // ← ¡ESTO es lo importante!
+                        challengeId = challengeId
                     )
                 )
+
             }
 
             Log.d("Notificaciones", "Notificaciones cargadas: ${lista.size}")  // Agrega este log
@@ -2064,6 +2071,50 @@ fun NotificationItem(
                     Text("Aceptar", fontSize = 12.sp)
                 }
             }
+        }else if (notification.tipo == "desafio") {
+            Row(
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, end = 8.dp)
+            ) {
+                // Botón de aceptar
+                Button(
+                    onClick = onAccept,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                    modifier = Modifier.height(32.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = "Aceptar",
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Aceptar", fontSize = 12.sp)
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                // Botón de rechazar
+                OutlinedButton(
+                    onClick = onReject,
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.error
+                    ),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                    modifier = Modifier.height(32.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Rechazar",
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Rechazar", fontSize = 12.sp)
+                }
+            }
         }
     }
 }
@@ -2181,10 +2232,43 @@ fun NotificacionesDialog(
                                     Box(modifier = Modifier.padding(12.dp)) {
                                         NotificationItem(
                                             notification = notif,
-                                            onAccept = { onAcceptRequest(notif.remitente) },
-                                            onReject = { onRejectRequest(notif.remitente) },
+                                            onAccept = {
+                                                if (notif.tipo == "solicitud") {
+                                                    onAcceptRequest(notif.remitente)
+                                                    removeNotification(GLOBAL.id!!, notif.id) // ← CORRECTO
+                                                } else if (notif.tipo == "desafio" && notif.challengeId != null) {
+                                                    val db = FirebaseFirestore.getInstance()
+                                                    val userId = GLOBAL.id!!
+                                                    db.collection("desafios").document(notif.challengeId).update("status", "ACCEPTED")
+                                                        .addOnSuccessListener {
+                                                            Log.d("Notif", "Desafío aceptado")
+                                                            removeNotification(userId, notif.id) // ← CORRECTO
+                                                        }
+                                                        .addOnFailureListener { e ->
+                                                            Log.e("Notif", "Error al aceptar desafío", e)
+                                                        }
+                                                }
+                                            },
+                                            onReject = {
+                                                if (notif.tipo == "solicitud") {
+                                                    onRejectRequest(notif.remitente)
+                                                    removeNotification(GLOBAL.id!!, notif.id) // ← CORRECTO
+                                                } else if (notif.tipo == "desafio" && notif.challengeId != null) {
+                                                    val db = FirebaseFirestore.getInstance()
+                                                    val userId = GLOBAL.id!!
+                                                    db.collection("desafios").document(notif.challengeId).delete()
+                                                        .addOnSuccessListener {
+                                                            Log.d("Notif", "Desafío rechazado y eliminado")
+                                                            removeNotification(userId, notif.id) // ← CORRECTO
+                                                        }
+                                                        .addOnFailureListener { e ->
+                                                            Log.e("Notif", "Error al rechazar desafío", e)
+                                                        }
+                                                }
+                                            },
                                             nombreUsuario = nombresUsuarios
                                         )
+
                                     }
                                 }
                             }
@@ -2213,6 +2297,7 @@ fun NotificacionesDialog(
 }
 
 
+// Función para enviar una notificación de solicitud de amistad
 fun sendFriendRequestNotification(toUserId: String, fromUserName: String, fromUserId: String) {
     val db = FirebaseFirestore.getInstance()
     val notificationData = mapOf(
@@ -2236,26 +2321,19 @@ fun sendFriendRequestNotification(toUserId: String, fromUserName: String, fromUs
 }
 
 
-fun removeNotification(userId: String, senderId: String, onComplete: () -> Unit) {
-    val db = FirebaseFirestore.getInstance()
-    db.collection("notificaciones")
+fun removeNotification(userId: String, notificationId: String, onComplete: () -> Unit = {}) {
+    FirebaseFirestore.getInstance()
+        .collection("notificaciones")
         .document(userId)
         .collection("items")
-        .whereEqualTo("remitente", senderId)
-        .whereEqualTo("tipo", "solicitud")
-        .get()
-        .addOnSuccessListener { result ->
-            val batch = db.batch()
-            for (document in result) {
-                batch.delete(document.reference)
-            }
-            batch.commit().addOnCompleteListener {
-                onComplete()
-            }
+        .document(notificationId)
+        .delete()
+        .addOnSuccessListener {
+            Log.d("Notif", "Notificación $notificationId eliminada")
+            onComplete()
         }
         .addOnFailureListener {
-            Log.e("Firestore", "Error al eliminar notificación", it)
-            onComplete() // Continue even if there's an error
+            Log.e("Notif", "Error al eliminar notificación", it)
         }
 }
 
