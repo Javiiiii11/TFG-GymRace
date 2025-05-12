@@ -44,6 +44,7 @@ import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SupervisorAccount
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Person2
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -154,6 +155,9 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     var notificaciones by remember { mutableStateOf(emptyList<Notificacion>()) }
     var showNotifications by remember { mutableStateOf(false) }
 
+    var requestedUserIds by remember { mutableStateOf<List<String>>(emptyList()) }
+
+
     // Guarda la fecha de registro
 
     var fechaRegistro by remember { mutableStateOf("Fecha no disponible") }
@@ -183,15 +187,15 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     GLOBAL.id?.let { userId ->
                         loadFriendsList(userId) { friends ->
                             if (friends != friendsList) {
-                                Log.d("FriendsRefresh", "Lista de amigos actualizada: ${friends.size} amigos")
+                                Log.d("FriendsRefresh", "Lista de seguidores actualizada: ${friends.size} seguidores")
                                 friendsList = friends
                             } else {
-                                Log.d("FriendsRefresh", "Sin cambios en la lista de amigos")
+                                Log.d("FriendsRefresh", "Sin cambios en la lista de seguidores")
                             }
                         }
                     }
                 } catch (e: Exception) {
-                    Log.e("FriendsRefresh", "Error al actualizar amigos", e)
+                    Log.e("FriendsRefresh", "Error al actualizar seguidos", e)
                 }
             }
         }
@@ -340,7 +344,16 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             isLoadingUsers = true
             loadAllUsers { users ->
                 allUsers = users.filter { it.id != GLOBAL.id }
-                isLoadingUsers = false
+
+                // Espera a que también se carguen los IDs de solicitudes
+                loadRequestedUserIds(GLOBAL.id) { requested ->
+                    requestedUserIds = requested
+
+                    // Solo ahora marcamos como terminado
+                    isLoadingUsers = false
+
+                    Log.d("UserPage", "Solicitudes ya enviadas: $requested")
+                }
             }
         }
 
@@ -351,6 +364,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             onDismiss = { showCommunityDialog = false },
             showAddButton = true,
             currentFriends = friendsList.map { it.id },
+            requestedUserIds = requestedUserIds, // ← ¡NO olvides esto!
             onUserAction = { userId ->
                 // 1) Si ya es amigo, lo eliminamos
                 if (friendsList.any { it.id == userId }) {
@@ -376,6 +390,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                     fromUserName = GLOBAL.nombre,
                                     fromUserId = GLOBAL.id
                                 )
+                                requestedUserIds = requestedUserIds + userId
+
                                 Toast.makeText(context, "Solicitud de amistad enviada", Toast.LENGTH_SHORT).show()
                                 Log.d("UserPage", "Solicitud enviada a $userId")
 
@@ -1322,7 +1338,8 @@ fun UsersDialog(
     onDismiss: () -> Unit,
     onUserAction: (String) -> Unit,
     showAddButton: Boolean,
-    currentFriends: List<String> = emptyList()
+    currentFriends: List<String> = emptyList(),
+    requestedUserIds: List<String> = emptyList() // ← NUEVO
 ) {
     Dialog(
         onDismissRequest = onDismiss,
@@ -1402,7 +1419,7 @@ fun UsersDialog(
                             Text(
                                 text = if (showAddButton)
                                     "No hay usuarios disponibles"
-                                else "No tienes amigos aún",
+                                else "No hay nadie por aquí",
                                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                                 textAlign = TextAlign.Center
                             )
@@ -1417,7 +1434,7 @@ fun UsersDialog(
                             } else {
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(
-                                    text = "Ve a 'Comunidad' para agregar amigos",
+                                    text = "Ve a 'Comunidad' para conocer a otros usuarios",
                                     fontSize = 12.sp,
                                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
                                     textAlign = TextAlign.Center
@@ -1444,7 +1461,8 @@ fun UsersDialog(
                                 user = user,
                                 onAction = { onUserAction(user.id) },
                                 showAddButton = showAddButton,
-                                isAlreadyFriend = currentFriends.contains(user.id)
+                                isAlreadyFriend = currentFriends.contains(user.id),
+                                alreadyRequested = requestedUserIds.contains(user.id) // ← NUEVO
                             )
                             Divider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f))
                         }
@@ -1474,7 +1492,8 @@ fun UserListItem(
     user: User,
     onAction: () -> Unit,
     showAddButton: Boolean,
-    isAlreadyFriend: Boolean = false
+    isAlreadyFriend: Boolean = false,
+    alreadyRequested: Boolean = false // ← NUEVO
 ) {
     Row(
         modifier = Modifier
@@ -1526,20 +1545,28 @@ fun UserListItem(
 
         // Botón de acción (agregar o eliminar amigo)
         IconButton(
-            onClick = onAction
+            onClick = {
+                if (!alreadyRequested) {
+                    onAction()
+                }
+            }
         ) {
             Icon(
-                imageVector = if (showAddButton) {
-                    if (isAlreadyFriend) Icons.Default.PersonRemove else Icons.Default.PersonAdd
-                } else {
-                    Icons.Default.PersonRemove
+                imageVector = when {
+                    isAlreadyFriend -> Icons.Default.PersonRemove
+                    alreadyRequested -> Icons.Outlined.Person2 // ← Ícono para "solicitud enviada"
+                    else -> Icons.Default.PersonAdd
                 },
-                contentDescription = if (showAddButton) {
-                    if (isAlreadyFriend) "Eliminar amigo" else "Agregar amigo"
-                } else {
-                    "Eliminar amigo"
+                contentDescription = when {
+                    isAlreadyFriend -> "Eliminar amigo"
+                    alreadyRequested -> "Solicitud pendiente"
+                    else -> "Agregar amigo"
                 },
-                tint = if (showAddButton && !isAlreadyFriend) MaterialTheme.colorScheme.primary else Color.Red
+                tint = when {
+                    isAlreadyFriend -> Color.Red
+                    alreadyRequested -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f) // grisáceo
+                    else -> MaterialTheme.colorScheme.primary
+                }
             )
         }
     }
@@ -1603,7 +1630,7 @@ private fun loadAllUsers(callback: (List<User>) -> Unit) {
 fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
     val db = Firebase.firestore
 
-    println("Iniciando carga de amigos para usuario: $userId")
+    Log.d("UserPage", "Iniciando carga de seguidores para usuario: $userId")
 
     // Verificar si el usuario tiene un documento de amigos
     db.collection("amigos")
@@ -1615,7 +1642,7 @@ fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
                 println("IDs de amigos encontrados: ${friendIds.size}")
 
                 if (friendIds.isEmpty()) {
-                    println("No tiene amigos agregados")
+                    Log.d("UserPage", "No tiene usuarios agregados")
                     callback(emptyList())
                     return@addOnSuccessListener
                 }
@@ -1652,7 +1679,7 @@ fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
                             loadedCount++
                             if (loadedCount >= friendIds.size) {
                                 // Todos los amigos han sido cargados
-                                Log.d("UserPage", "Carga de amigos completada. Total: ${friendsList.size}")
+                                Log.d("UserPage", "Carga de seguidores completada. Total: ${friendsList.size}")
                                 callback(friendsList)
                             }
                         }
@@ -2300,23 +2327,35 @@ fun NotificacionesDialog(
 // Función para enviar una notificación de solicitud de amistad
 fun sendFriendRequestNotification(toUserId: String, fromUserName: String, fromUserId: String) {
     val db = FirebaseFirestore.getInstance()
-    val notificationData = mapOf(
-        "tipo" to "solicitud",
-        "mensaje" to "$fromUserName quiere ser tu amigo",
-        "remitente" to fromUserId,
-        "timestamp" to FieldValue.serverTimestamp()
-    )
+    val notificacionesRef = db.collection("notificaciones").document(toUserId).collection("items")
 
-    // Crea colección si no existe, Firestore lo maneja automáticamente
-    db.collection("notificaciones")
-        .document(toUserId)
-        .collection("items")
-        .add(notificationData)
-        .addOnSuccessListener {
-            Log.d("Notif", "Notificación enviada a $toUserId")
+    // Verifica si ya hay una notificación de solicitud del mismo remitente
+    notificacionesRef
+        .whereEqualTo("tipo", "solicitud")
+        .whereEqualTo("remitente", fromUserId)
+        .get()
+        .addOnSuccessListener { snapshot ->
+            if (snapshot.isEmpty) {
+                // Si no hay solicitud previa, envía la notificación
+                val notificationData = mapOf(
+                    "tipo" to "solicitud",
+                    "mensaje" to "$fromUserName quiere ser tu amigo",
+                    "remitente" to fromUserId,
+                    "timestamp" to FieldValue.serverTimestamp()
+                )
+                notificacionesRef.add(notificationData)
+                    .addOnSuccessListener {
+                        Log.d("Notif", "Notificación enviada a $toUserId")
+                    }
+                    .addOnFailureListener {
+                        Log.e("Notif", "Error al enviar notificación", it)
+                    }
+            } else {
+                Log.d("Notif", "Solicitud ya enviada previamente a $toUserId")
+            }
         }
         .addOnFailureListener {
-            Log.e("Notif", "Error al enviar notificación", it)
+            Log.e("Notif", "Error al verificar notificación existente", it)
         }
 }
 
@@ -2373,6 +2412,50 @@ private fun loadFollowersList(userId: String, callback: (List<User>) -> Unit) {
                     .addOnFailureListener {
                         loaded++
                         if (loaded == followerIds.size) callback(followers)
+                    }
+            }
+        }
+        .addOnFailureListener {
+            callback(emptyList())
+        }
+}
+
+
+fun loadRequestedUserIds(fromUserId: String, callback: (List<String>) -> Unit) {
+    val db = FirebaseFirestore.getInstance()
+    val requestedTo = mutableListOf<String>()
+
+    db.collection("notificaciones")
+        .get()
+        .addOnSuccessListener { snapshot ->
+            var pending = snapshot.documents.size
+            if (pending == 0) {
+                callback(emptyList())
+                return@addOnSuccessListener
+            }
+
+            for (doc in snapshot.documents) {
+                val userId = doc.id
+                db.collection("notificaciones")
+                    .document(userId)
+                    .collection("items")
+                    .whereEqualTo("tipo", "solicitud")
+                    .whereEqualTo("remitente", fromUserId)
+                    .get()
+                    .addOnSuccessListener { items ->
+                        if (!items.isEmpty) {
+                            requestedTo.add(userId)
+                        }
+                        pending--
+                        if (pending == 0) {
+                            callback(requestedTo)
+                        }
+                    }
+                    .addOnFailureListener {
+                        pending--
+                        if (pending == 0) {
+                            callback(requestedTo)
+                        }
                     }
             }
         }
