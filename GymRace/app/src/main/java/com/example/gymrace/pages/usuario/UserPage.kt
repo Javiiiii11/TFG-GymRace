@@ -157,6 +157,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
 
     var requestedUserIds by remember { mutableStateOf<List<String>>(emptyList()) }
 
+    //estado para el usuario esta en la lista de usuariosInvitados
+    var isUserInvited by remember { mutableStateOf(false) }
 
     // Guarda la fecha de registro
 
@@ -179,12 +181,13 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(lifecycleOwner) {
-        delay(10000) // Espera un 10 antes de iniciar el ciclo
+        delay(5000) // Espera antes de iniciar el ciclo
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             while (true) {
                 delay(10000)
                 try {
                     GLOBAL.id?.let { userId ->
+                        Log.d("FriendsRefresh", "Intentando cargar la lista de amigos...")
                         loadFriendsList(userId) { friends ->
                             if (friends != friendsList) {
                                 Log.d("FriendsRefresh", "Lista de seguidores actualizada: ${friends.size} seguidores")
@@ -193,9 +196,9 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                 Log.d("FriendsRefresh", "Sin cambios en la lista de seguidores")
                             }
                         }
-                    }
+                    } ?: Log.e("FriendsRefresh", "GLOBAL.id es nulo")
                 } catch (e: Exception) {
-                    Log.e("FriendsRefresh", "Error al actualizar seguidos", e)
+                    Log.e("FriendsRefresh", "Error al actualizar seguidos: ${e.message}", e)
                 }
             }
         }
@@ -363,8 +366,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             isLoading = isLoadingUsers,
             onDismiss = { showCommunityDialog = false },
             showAddButton = true,
-            currentFriends = friendsList.map { it.id },
-            requestedUserIds = requestedUserIds, // ← ¡NO olvides esto!
+            currentFriends = friendsList.map { it.id },  // Aquí se pasa la lista de IDs de amigos actuales
+            requestedUserIds = requestedUserIds,
             onUserAction = { userId ->
                 // 1) Si ya es amigo, lo eliminamos
                 if (friendsList.any { it.id == userId }) {
@@ -384,7 +387,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                             Log.d("UserPage", "cuentaPrivada($userId) = $isPrivate")
 
                             if (isPrivate) {
-                                // Cuenta privada → solo toast de petición enviada
+                                // Cuenta privada → enviar solicitud de amistad
                                 sendFriendRequestNotification(
                                     toUserId = userId,
                                     fromUserName = GLOBAL.nombre,
@@ -424,7 +427,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
         )
     }
 
-    // Mostrar diálogo de amigos
+// Mostrar diálogo de amigos
     if (showFriendsDialog) {
         UsersDialog(
             title = "Seguidos",
@@ -439,10 +442,13 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     }
                 }
             },
-            showAddButton = false
+            showAddButton = false,
+            currentFriends = friendsList.map { it.id },  // Añadimos este parámetro
+            requestedUserIds = requestedUserIds  // Añadimos este parámetro
         )
     }
-    // Mostrar diálogo de seguidores
+
+// Mostrar diálogo de seguidores
     if (showFollowersDialog) {
         LaunchedEffect(showFollowersDialog) {
             isLoadingUsers = true
@@ -458,6 +464,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             isLoading = isLoadingUsers,
             onDismiss = { showFollowersDialog = false },
             showAddButton = false,
+            currentFriends = friendsList.map { it.id },  // Añadimos este parámetro
+            requestedUserIds = requestedUserIds,  // Añadimos este parámetro
             onUserAction = { followerId ->
                 // Si quieres permitir eliminar a un seguidor:
                 removeFriend(followerId, GLOBAL.id) {
@@ -468,7 +476,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             }
         )
     }
-
 
     Column(
         modifier = Modifier
@@ -549,6 +556,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                 // Rechazar la solicitud y eliminar la notificación
                                 removeNotification(GLOBAL.id, senderId) {
                                     loadNotificaciones(GLOBAL.id) { n -> notificaciones = n }
+                                    loadFriendsList(GLOBAL.id) { f -> friendsList = f }
                                 }
                             }
                         )
@@ -1267,6 +1275,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
 //        Spacer(modifier = Modifier.height(75.dp))
     }
 }
+
 private fun updatePrivacyStatus(userId: String, isPrivate: Boolean) {
     val db = Firebase.firestore
     db.collection("usuarios")
@@ -1336,75 +1345,44 @@ fun UsersDialog(
     users: List<User>,
     isLoading: Boolean,
     onDismiss: () -> Unit,
-    onUserAction: (String) -> Unit,
     showAddButton: Boolean,
-    currentFriends: List<String> = emptyList(),
-    requestedUserIds: List<String> = emptyList() // ← NUEVO
+    currentFriends: List<String>,
+    requestedUserIds: List<String>, // Lista de IDs de usuarios a los que ya se envió solicitud
+    onUserAction: (String) -> Unit
 ) {
-    Dialog(
-        onDismissRequest = onDismiss,
-        properties = DialogProperties(
-            dismissOnBackPress = true,
-            dismissOnClickOutside = true
-        )
-    ) {
+    Dialog(onDismissRequest = onDismiss) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .heightIn(max = 500.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                // Dialog header
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "$title (${users.size})",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
+                // Título del diálogo
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
 
-                    IconButton(onClick = onDismiss) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = "Cerrar",
-                            tint = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
-                }
+                // Búsqueda (si deseas implementarla más adelante)
+                // SearchBar()
 
-                Divider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f))
-
-                // Dialog content
+                // Lista de usuarios
                 if (isLoading) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(300.dp),
+                            .height(200.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Text(
-                                text = "Cargando usuarios...",
-                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-                            )
-                        }
+                        CircularProgressIndicator()
                     }
                 } else if (users.isEmpty()) {
                     Box(
@@ -1413,73 +1391,44 @@ fun UsersDialog(
                             .height(200.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = if (showAddButton)
-                                    "No hay usuarios disponibles"
-                                else "No hay nadie por aquí",
-                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-                                textAlign = TextAlign.Center
-                            )
-                            if (showAddButton) {
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                    text = "Parece que aún no hay otros usuarios en la aplicación",
-                                    fontSize = 12.sp,
-                                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
-                                    textAlign = TextAlign.Center
-                                )
-                            } else {
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                    text = "Ve a 'Comunidad' para conocer a otros usuarios",
-                                    fontSize = 12.sp,
-                                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                        }
+                        Text(
+                            text = "No se encontraron usuarios",
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                        )
                     }
                 } else {
-                    // Debug text to show loaded data
-                    Text(
-                        text = "Usuarios cargados: ${users.size}",
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(300.dp)
+                            .weight(1f)
                     ) {
                         items(users) { user ->
+                            val isAlreadyFriend = currentFriends.contains(user.id)
+                            val alreadyRequested = requestedUserIds.contains(user.id)
+
                             UserListItem(
                                 user = user,
                                 onAction = { onUserAction(user.id) },
                                 showAddButton = showAddButton,
-                                isAlreadyFriend = currentFriends.contains(user.id),
-                                alreadyRequested = requestedUserIds.contains(user.id) // ← NUEVO
+                                isAlreadyFriend = isAlreadyFriend,
+                                alreadyRequested = alreadyRequested
                             )
-                            Divider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f))
+
+                            Divider(
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+                            )
                         }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Close button
-                Button(
+                // Botón cerrar
+                TextButton(
                     onClick = onDismiss,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    )
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .padding(top = 8.dp)
                 ) {
-                    Text("Cerrar", color = MaterialTheme.colorScheme.onPrimary)
+                    Text("Cerrar")
                 }
             }
         }
@@ -1574,7 +1523,7 @@ fun UserListItem(
 
 
 // Función para cargar todos los usuarios de la BD
-private fun loadAllUsers(callback: (List<User>) -> Unit) {
+fun loadAllUsers(callback: (List<User>) -> Unit) {
     // Inicializar Firestore
     val db = Firebase.firestore
 
@@ -2421,45 +2370,73 @@ private fun loadFollowersList(userId: String, callback: (List<User>) -> Unit) {
 }
 
 
-fun loadRequestedUserIds(fromUserId: String, callback: (List<String>) -> Unit) {
-    val db = FirebaseFirestore.getInstance()
-    val requestedTo = mutableListOf<String>()
+// Función para cargar los IDs de usuarios a los que el usuario actual ha enviado solicitudes
+fun loadRequestedUserIds(currentUserId: String, callback: (List<String>) -> Unit) {
+    val db = Firebase.firestore
+    val notificacionesRef = db.collection("notificaciones")
+    val requestedIds = mutableListOf<String>()
 
-    db.collection("notificaciones")
+    // Busca solicitudes enviadas por el usuario actual
+    // Primero necesitamos consultar la colección de notificaciones
+    // para cada usuario posible (esto es simplificado)
+    db.collection("usuarios")
         .get()
-        .addOnSuccessListener { snapshot ->
-            var pending = snapshot.documents.size
-            if (pending == 0) {
+        .addOnSuccessListener { usersSnapshot ->
+            if (usersSnapshot.isEmpty) {
+                Log.d("UserPage", "No hay usuarios para comprobar solicitudes")
                 callback(emptyList())
                 return@addOnSuccessListener
             }
 
-            for (doc in snapshot.documents) {
-                val userId = doc.id
-                db.collection("notificaciones")
-                    .document(userId)
+            // Contador para saber cuándo hemos terminado con todas las consultas
+            var usersToCheck = usersSnapshot.size()
+
+            for (userDoc in usersSnapshot.documents) {
+                val targetUserId = userDoc.id
+
+                // Evitamos verificar solicitudes al propio usuario
+                if (targetUserId == currentUserId) {
+                    usersToCheck--
+                    if (usersToCheck == 0) {
+                        callback(requestedIds)
+                    }
+                    continue
+                }
+
+                // Busca en las notificaciones del usuario objetivo
+                notificacionesRef.document(targetUserId)
                     .collection("items")
                     .whereEqualTo("tipo", "solicitud")
-                    .whereEqualTo("remitente", fromUserId)
+                    .whereEqualTo("remitente", currentUserId)
                     .get()
-                    .addOnSuccessListener { items ->
-                        if (!items.isEmpty) {
-                            requestedTo.add(userId)
+                    .addOnSuccessListener { notifSnapshot ->
+                        if (!notifSnapshot.isEmpty) {
+                            // Si hay solicitudes del usuario actual a este usuario, añadimos su ID
+                            requestedIds.add(targetUserId)
+                            Log.d("UserPage", "Solicitud encontrada para: $targetUserId")
                         }
-                        pending--
-                        if (pending == 0) {
-                            callback(requestedTo)
+
+                        // Disminuimos el contador
+                        usersToCheck--
+
+                        // Si hemos terminado con todos los usuarios, llamamos al callback
+                        if (usersToCheck == 0) {
+                            Log.d("UserPage", "Carga de solicitudes completada. Total: ${requestedIds.size}")
+                            callback(requestedIds)
                         }
                     }
-                    .addOnFailureListener {
-                        pending--
-                        if (pending == 0) {
-                            callback(requestedTo)
+                    .addOnFailureListener { e ->
+                        Log.e("UserPage", "Error al buscar solicitudes para $targetUserId", e)
+                        usersToCheck--
+
+                        if (usersToCheck == 0) {
+                            callback(requestedIds)
                         }
                     }
             }
         }
-        .addOnFailureListener {
+        .addOnFailureListener { e ->
+            Log.e("UserPage", "Error al cargar usuarios para comprobar solicitudes", e)
             callback(emptyList())
         }
 }

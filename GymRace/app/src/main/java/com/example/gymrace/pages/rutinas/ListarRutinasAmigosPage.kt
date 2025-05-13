@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import com.google.firebase.firestore.QuerySnapshot
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -27,6 +28,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
+import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldPath
@@ -101,6 +103,9 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
     var isLoadingUsers by remember { mutableStateOf(false) }
     var friendsList by remember { mutableStateOf<List<User>>(emptyList()) }
     var showFriendsListDialog by remember { mutableStateOf(false) }
+
+    var requestedUserIds by remember { mutableStateOf<List<String>>(emptyList()) }
+
 
     // Carga rutinas de amigos suspendida
     suspend fun cargarRutinasAmigos(initialLoad: Boolean = true) {
@@ -293,7 +298,19 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
         }
     }
 
-    // Diálogo de comunidad
+    LaunchedEffect(showCommunityDialog) {
+        if (showCommunityDialog) {
+            isLoadingUsers = true
+
+            // Si ya tienes un método para cargar usuarios, mantenlo y añade esto al final:
+            loadRequestedUserIds(userId) { requested ->
+                requestedUserIds = requested
+                isLoadingUsers = false
+            }
+        }
+    }
+
+// Diálogo de comunidad
     if (showCommunityDialog) {
         UsersDialog(
             title = "Comunidad",
@@ -302,6 +319,7 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
             onDismiss = { showCommunityDialog = false },
             showAddButton = true,
             currentFriends = friendsList.map { it.id },
+            requestedUserIds = requestedUserIds,  // Añadimos el parámetro faltante
             onUserAction = { selectedId ->
                 if (friendsList.any { it.id == selectedId }) {
                     scope.launch {
@@ -315,6 +333,8 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
                             val private = doc.getBoolean("cuentaPrivada") ?: true
                             if (private) {
                                 sendFriendRequestNotification(selectedId, allUsers.find { u -> u.id == userId }?.nombre ?: "", userId)
+                                // Actualizar la lista de solicitudes enviadas
+                                requestedUserIds = requestedUserIds + selectedId
                                 Toast.makeText(context, "Solicitud de amistad enviada", Toast.LENGTH_SHORT).show()
                             } else {
                                 scope.launch {
@@ -331,7 +351,7 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
         )
     }
 
-    // Diálogo de amigos
+// Diálogo de amigos
     if (showFriendsListDialog) {
         UsersDialog(
             title = "Mis Amigos",
@@ -343,7 +363,9 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
                     removeFriend(userId, friendId) { loadFriendsList(userId) { friendsList = it } }
                 }
             },
-            showAddButton = false
+            showAddButton = false,
+            currentFriends = friendsList.map { it.id },  // Añadimos el parámetro faltante
+            requestedUserIds = requestedUserIds  // Añadimos el parámetro faltante
         )
     }
 }
@@ -638,4 +660,65 @@ fun RutinaAmigoCard(
             }
         }
     }
+}
+
+
+
+private fun loadRequestedUserIds(currentUserId: String, callback: (List<String>) -> Unit) {
+    val db = FirebaseFirestore.getInstance()
+    val notificacionesRef = db.collection("notificaciones")
+    val requestedIds = mutableListOf<String>()
+
+    db.collection("usuarios")
+        .get()
+        .addOnSuccessListener { usersSnapshot: QuerySnapshot ->
+            if (usersSnapshot.isEmpty) {
+                Log.d("ListarRutinas", "No hay usuarios para comprobar solicitudes")
+                callback(emptyList())
+                return@addOnSuccessListener
+            }
+
+            var usersToCheck = usersSnapshot.size()
+
+            for (userDoc in usersSnapshot.documents) {
+                val targetUserId = userDoc.id
+
+                if (targetUserId == currentUserId) {
+                    usersToCheck--
+                    if (usersToCheck == 0) {
+                        callback(requestedIds)
+                    }
+                    continue
+                }
+
+                notificacionesRef.document(targetUserId)
+                    .collection("items")
+                    .whereEqualTo("tipo", "solicitud")
+                    .whereEqualTo("remitente", currentUserId)
+                    .get()
+                    .addOnSuccessListener { notifSnapshot: QuerySnapshot ->
+                        if (!notifSnapshot.isEmpty) {
+                            requestedIds.add(targetUserId)
+                        }
+
+                        usersToCheck--
+
+                        if (usersToCheck == 0) {
+                            callback(requestedIds)
+                        }
+                    }
+                    .addOnFailureListener { e: Exception ->
+                        Log.e("ListarRutinas", "Error al buscar solicitudes", e)
+                        usersToCheck--
+
+                        if (usersToCheck == 0) {
+                            callback(requestedIds)
+                        }
+                    }
+            }
+        }
+        .addOnFailureListener { e: Exception ->
+            Log.e("ListarRutinas", "Error al cargar usuarios", e)
+            callback(emptyList())
+        }
 }

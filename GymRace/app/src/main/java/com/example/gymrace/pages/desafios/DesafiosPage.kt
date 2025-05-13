@@ -639,9 +639,29 @@ fun DesafiosPage(
         viewModel.loadFriends(userId)
         viewModel.loadFriendsChallenges(userId)
     }
-    // Diálogo de comunidad (buscar usuarios)
-// In DesafiosPage composable, modify the onUserAction callback in the UsersDialog
 
+
+// Primero, debes añadir esta variable a tu composable:
+    var requestedUserIds by remember { mutableStateOf<List<String>>(emptyList()) }
+
+// Luego, carga los IDs de solicitudes enviadas (añade esto dentro de un LaunchedEffect
+// o donde inicializas tus datos):
+    LaunchedEffect(showCommunityDialog) {
+        if (showCommunityDialog) {
+            // Cargar usuarios y otras inicializaciones que ya tengas
+            loadAllUsers { users ->
+                allUsers = users.filter { it.id != userId }
+
+                // Cargar las solicitudes enviadas
+                loadRequestedUserIds(userId) { requested ->
+                    requestedUserIds = requested
+                    isLoadingUsers = false
+                }
+            }
+        }
+    }
+
+// Finalmente, corrige la llamada a UsersDialog:
     if (showCommunityDialog) {
         UsersDialog(
             title = "Comunidad",
@@ -677,6 +697,8 @@ fun DesafiosPage(
                                     fromUserName = GLOBAL.nombre,
                                     fromUserId = userId
                                 )
+                                // Actualizar la lista de solicitudes enviadas
+                                requestedUserIds = requestedUserIds + friendId
                                 successMessage = "Solicitud enviada"
                             } else {
                                 // Añadir amigo directamente si es pública
@@ -687,7 +709,6 @@ fun DesafiosPage(
                                         scope.launch {
                                             viewModel.loadFriends(userId)
                                         }
-
                                     }
                                 }
                             }
@@ -699,10 +720,10 @@ fun DesafiosPage(
                 }
             },
             showAddButton = true,
-            currentFriends = friendsList.map { it.id }
+            currentFriends = friendsList.map { it.id },
+            requestedUserIds = requestedUserIds  // Añadimos el parámetro faltante
         )
     }
-
 }
 
 // Composable para el estado vacío (si no hay desafíos)
@@ -1301,4 +1322,74 @@ fun ExercisePreviewItem(
             )
         }
     }
+}
+
+
+// Función para cargar los IDs de usuarios a los que el usuario actual ha enviado solicitudes
+private fun loadRequestedUserIds(currentUserId: String, callback: (List<String>) -> Unit) {
+    val db = Firebase.firestore
+    val notificacionesRef = db.collection("notificaciones")
+    val requestedIds = mutableListOf<String>()
+
+    // Busca solicitudes enviadas por el usuario actual
+    db.collection("usuarios")
+        .get()
+        .addOnSuccessListener { usersSnapshot ->
+            if (usersSnapshot.isEmpty) {
+                Log.d("DesafiosPage", "No hay usuarios para comprobar solicitudes")
+                callback(emptyList())
+                return@addOnSuccessListener
+            }
+
+            // Contador para saber cuándo hemos terminado con todas las consultas
+            var usersToCheck = usersSnapshot.size()
+
+            for (userDoc in usersSnapshot.documents) {
+                val targetUserId = userDoc.id
+
+                // Evitamos verificar solicitudes al propio usuario
+                if (targetUserId == currentUserId) {
+                    usersToCheck--
+                    if (usersToCheck == 0) {
+                        callback(requestedIds)
+                    }
+                    continue
+                }
+
+                // Busca en las notificaciones del usuario objetivo
+                notificacionesRef.document(targetUserId)
+                    .collection("items")
+                    .whereEqualTo("tipo", "solicitud")
+                    .whereEqualTo("remitente", currentUserId)
+                    .get()
+                    .addOnSuccessListener { notifSnapshot ->
+                        if (!notifSnapshot.isEmpty) {
+                            // Si hay solicitudes del usuario actual a este usuario, añadimos su ID
+                            requestedIds.add(targetUserId)
+                            Log.d("DesafiosPage", "Solicitud encontrada para: $targetUserId")
+                        }
+
+                        // Disminuimos el contador
+                        usersToCheck--
+
+                        // Si hemos terminado con todos los usuarios, llamamos al callback
+                        if (usersToCheck == 0) {
+                            Log.d("DesafiosPage", "Carga de solicitudes completada. Total: ${requestedIds.size}")
+                            callback(requestedIds)
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("DesafiosPage", "Error al buscar solicitudes para $targetUserId", e)
+                        usersToCheck--
+
+                        if (usersToCheck == 0) {
+                            callback(requestedIds)
+                        }
+                    }
+            }
+        }
+        .addOnFailureListener { e ->
+            Log.e("DesafiosPage", "Error al cargar usuarios para comprobar solicitudes", e)
+            callback(emptyList())
+        }
 }
