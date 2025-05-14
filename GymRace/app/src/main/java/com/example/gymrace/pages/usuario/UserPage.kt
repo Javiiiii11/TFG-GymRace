@@ -37,12 +37,9 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.People
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.SupervisorAccount
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Person2
 import androidx.compose.material.icons.outlined.Share
@@ -62,7 +59,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
@@ -70,7 +66,6 @@ import com.example.gymrace.R
 import com.example.gymrace.pages.GLOBAL
 import com.example.gymrace.ui.theme.ThemeManager.isDarkTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.play.core.integrity.bd
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
@@ -203,8 +198,11 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             }
         }
     }
+
+
     val lifecycleOwner2 = LocalLifecycleOwner.current
 
+    // Refresca notificaciones
     LaunchedEffect(lifecycleOwner2) {
         lifecycleOwner2.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             GLOBAL.id?.let { userId ->
@@ -237,7 +235,30 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
         }
     }
 
+    val currentLifecycleOwner = LocalLifecycleOwner.current
 
+    // Efecto para cargar la lista de seguidores cada 10 segundos
+    LaunchedEffect(showFollowersDialog) {
+        if (showFollowersDialog) {
+            snapshotFlow { showFollowersDialog }
+                .collect { shouldShow ->
+                    if (shouldShow) {
+                        currentLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                            while (showFollowersDialog) {
+                                GLOBAL.id?.let { uid ->
+                                    loadFollowersList(uid) { newFollowers ->
+                                        if (newFollowers != followersList) {
+                                            followersList = newFollowers
+                                        }
+                                    }
+                                }
+                                delay(10_000)
+                            }
+                        }
+                    }
+                }
+        }
+    }
 
     // Efecto para cargar la configuración de privacidad del usuario desde Firestore
     LaunchedEffect(userId) {
@@ -347,15 +368,9 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             isLoadingUsers = true
             loadAllUsers { users ->
                 allUsers = users.filter { it.id != GLOBAL.id }
-
-                // Espera a que también se carguen los IDs de solicitudes
                 loadRequestedUserIds(GLOBAL.id) { requested ->
                     requestedUserIds = requested
-
-                    // Solo ahora marcamos como terminado
                     isLoadingUsers = false
-
-                    Log.d("UserPage", "Solicitudes ya enviadas: $requested")
                 }
             }
         }
@@ -366,116 +381,93 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             isLoading = isLoadingUsers,
             onDismiss = { showCommunityDialog = false },
             showAddButton = true,
-            currentFriends = friendsList.map { it.id },  // Aquí se pasa la lista de IDs de amigos actuales
+            currentFriends = friendsList.map { it.id },
             requestedUserIds = requestedUserIds,
             onUserAction = { userId ->
-                // 1) Si ya es amigo, lo eliminamos
                 if (friendsList.any { it.id == userId }) {
+                    // Eliminar amigo
+                    friendsList = friendsList.filterNot { it.id == userId } // UI instantánea
                     removeFriend(GLOBAL.id, userId) {
-                        loadFriendsList(GLOBAL.id) { updated ->
-                            friendsList = updated
-                            Log.d("UserPage", "Amigo eliminado: $userId")
-                        }
+                        loadFriendsList(GLOBAL.id) { friendsList = it }
                     }
                 } else {
-                    // 2) Si NO es amigo, comprobamos cuentaPrivada en Firestore
-                    firestore.collection("usuarios")
-                        .document(userId)
+                    // Enviar solicitud
+                    requestedUserIds = requestedUserIds + userId        // UI instantánea
+                    firestore.collection("usuarios").document(userId)
                         .get()
                         .addOnSuccessListener { doc ->
-                            val isPrivate = doc.getBoolean("cuentaPrivada") ?: true
-                            Log.d("UserPage", "cuentaPrivada($userId) = $isPrivate")
-
-                            if (isPrivate) {
-                                // Cuenta privada → enviar solicitud de amistad
+                            val isPriv = doc.getBoolean("cuentaPrivada") ?: true
+                            if (isPriv) {
                                 sendFriendRequestNotification(
                                     toUserId = userId,
                                     fromUserName = GLOBAL.nombre,
                                     fromUserId = GLOBAL.id
                                 )
-                                requestedUserIds = requestedUserIds + userId
-
-                                Toast.makeText(context, "Solicitud de amistad enviada", Toast.LENGTH_SHORT).show()
-                                Log.d("UserPage", "Solicitud enviada a $userId")
-
+                                Toast.makeText(context, "Solicitud enviada", Toast.LENGTH_SHORT).show()
                             } else {
-                                // Cuenta pública → añadimos como amigo
+                                friendsList = friendsList + allUsers.first { it.id == userId } // optimista
                                 addFriend(GLOBAL.id, userId) {
-                                    loadFriendsList(GLOBAL.id) { updated ->
-                                        friendsList = updated
-                                        if (updated.any { it.id == userId }) {
-                                            Log.d("UserPage", "Amigo añadido correctamente: $userId")
-                                            Toast.makeText(context, "Amigo añadido", Toast.LENGTH_SHORT).show()
-                                        } else {
-                                            Log.e("UserPage", "Error al añadir amigo: $userId no está en la lista")
-                                            Toast.makeText(context, "Error al añadir amigo", Toast.LENGTH_SHORT).show()
-                                        }
-                                    }
+                                    loadFriendsList(GLOBAL.id) { friendsList = it }
                                 }
                             }
                         }
-                        .addOnFailureListener { e ->
-                            Log.e("UserPage", "Error leyendo cuentaPrivada", e)
-                            Toast.makeText(
-                                context,
-                                "Error comprobando cuenta privada",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        .addOnFailureListener {
+                            Toast.makeText(context, "Error comprobando cuenta", Toast.LENGTH_SHORT).show()
+                            // revertir estado si quieres
+                            requestedUserIds = requestedUserIds.filterNot { it == userId }
                         }
                 }
             }
         )
     }
 
-// Mostrar diálogo de amigos
+    // Mostrar diálogo de amigos
     if (showFriendsDialog) {
         UsersDialog(
             title = "Seguidos",
             users = friendsList,
             isLoading = isLoadingUsers,
             onDismiss = { showFriendsDialog = false },
-            onUserAction = { userId ->
-                removeFriend(GLOBAL.id, userId) {
-                    // Recargar la lista de amigos después de eliminar
-                    loadFriendsList(GLOBAL.id) { friends ->
-                        friendsList = friends
-                    }
-                }
-            },
             showAddButton = false,
-            currentFriends = friendsList.map { it.id },  // Añadimos este parámetro
-            requestedUserIds = requestedUserIds  // Añadimos este parámetro
+            currentFriends = friendsList.map { it.id },
+            requestedUserIds = requestedUserIds,
+            onUserAction = { userId ->
+                friendsList = friendsList.filterNot { it.id == userId } // UI instantánea
+                removeFriend(GLOBAL.id, userId) {
+                    loadFriendsList(GLOBAL.id) { friendsList = it }
+                }
+            }
         )
     }
 
-// Mostrar diálogo de seguidores
+    // Mostrar diálogo de seguidores
     if (showFollowersDialog) {
         LaunchedEffect(showFollowersDialog) {
+            // carga inicial al abrir
             isLoadingUsers = true
-            loadFollowersList(GLOBAL.id) { followers ->
-                followersList = followers
+            loadFollowersList(GLOBAL.id) {
+                followersList = it
                 isLoadingUsers = false
             }
         }
-
         UsersDialog(
             title = "Seguidores",
             users = followersList,
             isLoading = isLoadingUsers,
             onDismiss = { showFollowersDialog = false },
             showAddButton = false,
-            currentFriends = friendsList.map { it.id },  // Añadimos este parámetro
-            requestedUserIds = requestedUserIds,  // Añadimos este parámetro
+            currentFriends = friendsList.map { it.id },
+            requestedUserIds = requestedUserIds,
             onUserAction = { followerId ->
-                // Si quieres permitir eliminar a un seguidor:
+                // eliminar seguidor
                 removeFriend(followerId, GLOBAL.id) {
-                    loadFollowersList(GLOBAL.id) { updated ->
-                        followersList = updated
-                    }
+                    loadFollowersList(GLOBAL.id) { followersList = it }
                 }
             }
         )
     }
+
+
 
     Column(
         modifier = Modifier
@@ -538,29 +530,29 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                         }
                     }
 
+                    // Notificaciones (igual que antes, pero asegúrate de filtrar requestedUserIds en onReject)
                     if (showNotifications) {
                         NotificacionesDialog(
                             notificaciones = notificaciones,
                             onDismiss = { showNotifications = false },
                             onAcceptRequest = { senderId ->
-                                // Añadir al usuario actual como amigo del remitente
+                                requestedUserIds = requestedUserIds.filterNot { it == senderId } // UI instantánea
                                 addFriend(senderId, GLOBAL.id) {
-                                    // Eliminar la notificación después de aceptar
                                     removeNotification(GLOBAL.id, senderId) {
-                                        loadNotificaciones(GLOBAL.id) { n -> notificaciones = n }
-                                        loadFriendsList(GLOBAL.id) { f -> friendsList = f }
+                                        loadNotificaciones(GLOBAL.id) { notificaciones = it }
+                                        loadFriendsList(GLOBAL.id) { friendsList = it }
                                     }
                                 }
                             },
                             onRejectRequest = { senderId ->
-                                // Rechazar la solicitud y eliminar la notificación
+                                requestedUserIds = requestedUserIds.filterNot { it == senderId } // UI instantánea
                                 removeNotification(GLOBAL.id, senderId) {
-                                    loadNotificaciones(GLOBAL.id) { n -> notificaciones = n }
-                                    loadFriendsList(GLOBAL.id) { f -> friendsList = f }
+                                    loadNotificaciones(GLOBAL.id) { notificaciones = it }
                                 }
                             }
                         )
                     }
+
                 }
 
 
