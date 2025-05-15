@@ -470,7 +470,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 removeFriend(followerId, GLOBAL.id) {
                     loadFollowersList(GLOBAL.id) { followersList = it }
                 }
-            }
+            },
+            icon = Icons.Default.Close // Cambiar el ícono a "PersonRemove"
         )
     }
 
@@ -717,7 +718,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                         )
 
 
-                        //////
                         Text(
                             text = "Cuenta",
                             fontWeight = FontWeight.Bold,
@@ -797,232 +797,153 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                             googleAccount.idToken,
                                             null
                                         )
-
                                         showLoadingDialog = true // DIÁLOGO DE CARGA
 
-                                                CoroutineScope(Dispatchers.IO).launch {
-                                                        try {
-                                                            val uid = user.uid
-                                                            Log.d(
-                                                                "UserPage",
-                                                                "Iniciando eliminación de cuenta para usuario: $uid"
-                                                            )
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            try {
+                                                val uid = user.uid
+                                                Log.d("UserPage", "Iniciando eliminación de cuenta para usuario: $uid")
 
-                                                            // 1. Eliminar de 'usuarios'
-                                                            db.collection("usuarios").document(uid)
-                                                                .delete().await()
+                                                // 1. Eliminar de 'usuarios'
+                                                db.collection("usuarios").document(uid).delete().await()
 
-                                                            // 2. Eliminar de 'amigos'
-                                                            try {
-                                                                db.collection("amigos")
-                                                                    .document(uid).delete().await()
-                                                            } catch (_: Exception) {
+                                                // 2. Eliminar de 'amigos'
+                                                try {
+                                                    db.collection("amigos").document(uid).delete().await()
+                                                } catch (_: Exception) {}
+
+                                                // 3. Eliminar rutinas donde usuarioId == uid
+                                                try {
+                                                    val rutinas = db.collection("rutinas").get().await()
+                                                    for (doc in rutinas.documents) {
+                                                        val docUsuarioId = doc.getString("usuarioId")
+                                                        val docUsuarioIdAlt = doc.getString("UsuarioId")
+                                                        if (docUsuarioId == uid || docUsuarioIdAlt == uid) {
+                                                            doc.reference.delete().await()
+                                                        }
+                                                    }
+                                                } catch (_: Exception) {}
+
+                                                // 4. Eliminar desafíos donde es creador o invitado
+                                                val desafios = db.collection("desafios").get().await()
+                                                for (desafio in desafios.documents) {
+                                                    val creadorValue = desafio.get("creador")
+                                                    val esCreador = when (creadorValue) {
+                                                        is String -> creadorValue == uid
+                                                        is Map<*, *> -> creadorValue.containsKey(uid) || creadorValue.containsValue(uid)
+                                                        else -> false
+                                                    }
+
+                                                    val amigoInvitado = desafio.get("amigoInvitado")
+                                                    val esInvitado = when (amigoInvitado) {
+                                                        is Map<*, *> -> amigoInvitado.containsKey(uid) || amigoInvitado.values.any { it.toString() == uid }
+                                                        is List<*> -> amigoInvitado.contains(uid)
+                                                        is String -> amigoInvitado == uid
+                                                        else -> false
+                                                    }
+
+                                                    if (esCreador || esInvitado) {
+                                                        desafio.reference.delete().await()
+                                                    }
+                                                }
+
+                                                // 5. Eliminar al usuario de listas de amigos de otros usuarios
+                                                val amigos = db.collection("amigos").get().await()
+                                                for (doc in amigos.documents) {
+                                                    val friendsData = doc.get("friends")
+                                                    when (friendsData) {
+                                                        is List<*> -> {
+                                                            if (friendsData.contains(uid)) {
+                                                                val nuevaLista = friendsData.filter { it != uid }
+                                                                doc.reference.update("friends", nuevaLista).await()
                                                             }
+                                                        }
 
-                                                            // 3. Eliminar rutinas donde usuarioId == uid
-                                                            try {
-                                                                val rutinas =
-                                                                    db.collection("rutinas").get()
-                                                                        .await()
-                                                                for (doc in rutinas.documents) {
-                                                                    val docUsuarioId =
-                                                                        doc.getString("usuarioId")
-                                                                    val docUsuarioIdAlt =
-                                                                        doc.getString("UsuarioId")
-                                                                    if (docUsuarioId == uid || docUsuarioIdAlt == uid) {
-                                                                        doc.reference.delete()
-                                                                            .await()
-                                                                    }
-                                                                }
-                                                            } catch (_: Exception) {
+                                                        is Map<*, *> -> {
+                                                            if (friendsData.containsKey(uid) || friendsData.containsValue(uid)) {
+                                                                val nuevoMapa = (friendsData as Map<String, Any>)
+                                                                    .filterKeys { it != uid }
+                                                                    .filterValues { it.toString() != uid }
+                                                                doc.reference.update("friends", nuevoMapa).await()
                                                             }
+                                                        }
 
-                                                            // 4. Eliminar desafíos donde es creador o invitado
-                                                            val desafios =
-                                                                db.collection("desafios").get()
-                                                                    .await()
-                                                            for (desafio in desafios.documents) {
-                                                                val creadorValue =
-                                                                    desafio.get("creador")
-                                                                val esCreador =
-                                                                    when (creadorValue) {
-                                                                        is String -> creadorValue == uid
-                                                                        is Map<*, *> -> creadorValue.containsKey(
-                                                                            uid
-                                                                        ) || creadorValue.containsValue(
-                                                                            uid
-                                                                        )
-
-                                                                        else -> false
-                                                                    }
-
-                                                                val amigoInvitado =
-                                                                    desafio.get("amigoInvitado")
-                                                                val esInvitado =
-                                                                    when (amigoInvitado) {
-                                                                        is Map<*, *> -> amigoInvitado.containsKey(
-                                                                            uid
-                                                                        ) || amigoInvitado.values.any { it.toString() == uid }
-
-                                                                        is List<*> -> amigoInvitado.contains(
-                                                                            uid
-                                                                        )
-
-                                                                        is String -> amigoInvitado == uid
-                                                                        else -> false
-                                                                    }
-
-                                                                if (esCreador || esInvitado) {
-                                                                    desafio.reference.delete()
-                                                                        .await()
-                                                                }
-                                                            }
-
-                                                            // 5. Eliminar al usuario de listas de amigos de otros usuarios
-                                                            val amigos =
-                                                                db.collection("amigos").get()
-                                                                    .await()
-                                                            for (doc in amigos.documents) {
-                                                                val friendsData = doc.get("friends")
-                                                                when (friendsData) {
-                                                                    is List<*> -> {
-                                                                        if (friendsData.contains(uid)) {
-                                                                            val nuevaLista =
-                                                                                friendsData.filter { it != uid }
-                                                                            doc.reference.update(
-                                                                                "friends",
-                                                                                nuevaLista
-                                                                            ).await()
-                                                                        }
-                                                                    }
-
-                                                                    is Map<*, *> -> {
-                                                                        if (friendsData.containsKey(
-                                                                                uid
-                                                                            ) || friendsData.containsValue(
-                                                                                uid
-                                                                            )
-                                                                        ) {
-                                                                            val nuevoMapa =
-                                                                                (friendsData as Map<String, Any>).filterKeys { it != uid }
-                                                                                    .filterValues { it.toString() != uid }
-                                                                            doc.reference.update(
-                                                                                "friends",
-                                                                                nuevoMapa
-                                                                            ).await()
-                                                                        }
-                                                                    }
-
-                                                                    is String -> {
-                                                                        if (friendsData == uid) {
-                                                                            doc.reference.update(
-                                                                                "friends",
-                                                                                ""
-                                                                            ).await()
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-
-                                                            // 6. Eliminar referencias en otras colecciones
-                                                            val coleccionesAdicionales = listOf(
-                                                                "dietas",
-                                                                "rutinaspredefinidas"
-                                                            )
-                                                            for (coleccion in coleccionesAdicionales) {
-                                                                try {
-                                                                    val docs =
-                                                                        db.collection(coleccion)
-                                                                            .whereEqualTo(
-                                                                                "UsuarioId",
-                                                                                uid
-                                                                            ).get().await()
-                                                                    for (doc in docs.documents) {
-                                                                        doc.reference.delete()
-                                                                            .await()
-                                                                    }
-                                                                } catch (_: Exception) {
-                                                                }
-
-                                                                try {
-                                                                    val allDocs =
-                                                                        db.collection(coleccion)
-                                                                            .get().await()
-                                                                    for (doc in allDocs.documents) {
-                                                                        val data = doc.data
-                                                                        val contieneUid =
-                                                                            data?.values?.any {
-                                                                                when (it) {
-                                                                                    is String -> it == uid
-                                                                                    is List<*> -> it.contains(
-                                                                                        uid
-                                                                                    )
-
-                                                                                    is Map<*, *> -> it.containsKey(
-                                                                                        uid
-                                                                                    ) || it.containsValue(
-                                                                                        uid
-                                                                                    )
-
-                                                                                    else -> false
-                                                                                }
-                                                                            } == true
-                                                                        if (contieneUid) {
-                                                                            doc.reference.delete()
-                                                                                .await()
-                                                                        }
-                                                                    }
-                                                                } catch (_: Exception) {
-                                                                }
-                                                            }
-
-                                                            // 7. Eliminar cuenta de Firebase Authentication
-                                                            withContext(Dispatchers.Main) {
-                                                                user.delete()
-                                                                    .addOnCompleteListener { deleteTask ->
-                                                                        if (deleteTask.isSuccessful) {
-                                                                            FirebaseAuth.getInstance()
-                                                                                .signOut()
-                                                                            saveLoginState(
-                                                                                context,
-                                                                                false,
-                                                                                ""
-                                                                            )
-                                                                            clearFirestoreCache()
-                                                                            Toast.makeText(
-                                                                                context,
-                                                                                "Cuenta eliminada correctamente",
-                                                                                Toast.LENGTH_LONG
-                                                                            ).show()
-                                                                            navController.navigate("login") {
-                                                                                popUpTo(0) {
-                                                                                    inclusive = true
-                                                                                }
-                                                                            }
-                                                                        } else {
-                                                                            Toast.makeText(
-                                                                                context,
-                                                                                "Error al eliminar la cuenta: ${deleteTask.exception?.message}",
-                                                                                Toast.LENGTH_LONG
-                                                                            ).show()
-                                                                        }
-                                                                    }
-                                                            }
-                                                        } catch (e: Exception) {
-                                                            Log.e(
-                                                                "UserPage",
-                                                                "Error durante el borrado: ${e.message}"
-                                                            )
-                                                            withContext(Dispatchers.Main) {
-                                                                Toast.makeText(
-                                                                    context,
-                                                                    "Error durante el borrado: ${e.message}",
-                                                                    Toast.LENGTH_LONG
-                                                                ).show()
+                                                        is String -> {
+                                                            if (friendsData == uid) {
+                                                                doc.reference.update("friends", "").await()
                                                             }
                                                         }
                                                     }
                                                 }
+
+                                                // 6. Eliminar referencias en otras colecciones
+                                                val coleccionesAdicionales = listOf("dietas", "rutinaspredefinidas")
+                                                for (coleccion in coleccionesAdicionales) {
+                                                    try {
+                                                        val docs = db.collection(coleccion)
+                                                            .whereEqualTo("UsuarioId", uid)
+                                                            .get().await()
+                                                        for (doc in docs.documents) {
+                                                            doc.reference.delete().await()
+                                                        }
+                                                    } catch (_: Exception) {}
+
+                                                    try {
+                                                        val allDocs = db.collection(coleccion).get().await()
+                                                        for (doc in allDocs.documents) {
+                                                            val data = doc.data
+                                                            val contieneUid = data?.values?.any {
+                                                                when (it) {
+                                                                    is String -> it == uid
+                                                                    is List<*> -> it.contains(uid)
+                                                                    is Map<*, *> -> it.containsKey(uid) || it.containsValue(uid)
+                                                                    else -> false
+                                                                }
+                                                            } == true
+
+                                                            if (contieneUid) {
+                                                                doc.reference.delete().await()
+                                                            }
+                                                        }
+                                                    } catch (_: Exception) {}
+                                                }
+
+                                                // 7. Eliminar cuenta de Firebase Authentication
+                                                withContext(Dispatchers.Main) {
+                                                    user.delete().addOnCompleteListener { deleteTask ->
+                                                        if (deleteTask.isSuccessful) {
+                                                            FirebaseAuth.getInstance().signOut()
+                                                            saveLoginState(context, false, "")
+                                                            clearFirestoreCache()
+                                                            Toast.makeText(
+                                                                context,
+                                                                "Cuenta eliminada correctamente",
+                                                                Toast.LENGTH_LONG
+                                                            ).show()
+                                                            navController.navigate("login") {
+                                                                popUpTo(0) { inclusive = true }
+                                                            }
+                                                        } else {
+                                                            Toast.makeText(
+                                                                context,
+                                                                "Error al eliminar la cuenta: ${deleteTask.exception?.message}",
+                                                                Toast.LENGTH_LONG
+                                                            ).show()
+                                                        }
+                                                    }
+                                                }
+                                            } catch (e: Exception) {
+                                                Log.e("UserPage", "Error durante el borrado: ${e.message}")
+                                                withContext(Dispatchers.Main) {
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Error durante el borrado: ${e.message}",
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
+                                                }
+                                            }
+                                        }
+                                    }
                                     showDeleteAccountDialog = false
                                 }) {
                                     Text("Sí")
@@ -1330,7 +1251,8 @@ fun UsersDialog(
     showAddButton: Boolean,
     currentFriends: List<String>,
     requestedUserIds: List<String>, // Lista de IDs de usuarios a los que ya se envió solicitud
-    onUserAction: (String) -> Unit
+    onUserAction: (String) -> Unit,
+    icon: ImageVector = Icons.Default.Close // Icono por defecto
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Card(
@@ -1352,9 +1274,6 @@ fun UsersDialog(
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
-
-                // Búsqueda (si deseas implementarla más adelante)
-                // SearchBar()
 
                 // Lista de usuarios
                 if (isLoading) {
@@ -1403,7 +1322,9 @@ fun UsersDialog(
                                 },
                                 showAddButton = showAddButton,
                                 isAlreadyFriend = isAlreadyFriend,
-                                alreadyRequested = alreadyRequested
+                                alreadyRequested = alreadyRequested,
+                                customIcon = icon, // Pasar el icono personalizado
+                                isFollowersList = title == "Seguidores" // Indica si es lista de seguidores
                             )
 
                             Divider(
@@ -1434,8 +1355,10 @@ fun UserListItem(
     onAction: () -> Unit,
     showAddButton: Boolean,
     isAlreadyFriend: Boolean = false,
-    alreadyRequested: Boolean = false, // ← NUEVO
-    onRemove: () -> Unit
+    alreadyRequested: Boolean = false,
+    onRemove: () -> Unit,
+    customIcon: ImageVector? = null, // Nuevo parámetro para un icono personalizado
+    isFollowersList: Boolean = false // Indicador para distinguir la lista de seguidores
 ) {
     Row(
         modifier = Modifier
@@ -1497,16 +1420,20 @@ fun UserListItem(
         ) {
             Icon(
                 imageVector = when {
+                    // Si es lista de seguidores, siempre muestra el icono de eliminar
+                    isFollowersList -> Icons.Default.PersonRemove
                     isAlreadyFriend -> Icons.Default.PersonRemove
-                    alreadyRequested -> Icons.Outlined.Person2 // ← Ícono para "solicitud enviada"
+                    alreadyRequested -> Icons.Outlined.Person2 // Ícono para "solicitud enviada"
                     else -> Icons.Default.PersonAdd
                 },
                 contentDescription = when {
+                    isFollowersList -> "Eliminar seguidor"
                     isAlreadyFriend -> "Eliminar amigo"
                     alreadyRequested -> "Solicitud pendiente"
                     else -> "Agregar amigo"
                 },
                 tint = when {
+                    isFollowersList -> Color.Red
                     isAlreadyFriend -> Color.Red
                     alreadyRequested -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f) // grisáceo
                     else -> MaterialTheme.colorScheme.primary
