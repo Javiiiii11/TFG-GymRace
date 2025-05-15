@@ -388,7 +388,9 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                     // Eliminar amigo
                     friendsList = friendsList.filterNot { it.id == userId } // UI instantánea
                     removeFriend(GLOBAL.id, userId) {
-                        loadFriendsList(GLOBAL.id) { friendsList = it }
+                        loadFriendsList(GLOBAL.id) { updatedFriends ->
+                            friendsList = updatedFriends // Actualiza el estado con la nueva lista
+                        }
                     }
                 } else {
                     // Enviar solicitud
@@ -434,7 +436,9 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             onUserAction = { userId ->
                 friendsList = friendsList.filterNot { it.id == userId } // UI instantánea
                 removeFriend(GLOBAL.id, userId) {
-                    loadFriendsList(GLOBAL.id) { friendsList = it }
+                    loadFriendsList(GLOBAL.id) { updatedFriends ->
+                        friendsList = updatedFriends // Actualiza el estado con la nueva lista
+                    }
                 }
             }
         )
@@ -793,9 +797,9 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
 
                                         showLoadingDialog = true // DIÁLOGO DE CARGA
 
-                                        user.reauthenticate(credential)
-                                            .addOnCompleteListener { reauthTask ->
-                                                if (reauthTask.isSuccessful) {
+//                                        user.reauthenticate(credential)
+//                                            .addOnCompleteListener { reauthTask ->
+//                                                if (reauthTask.isSuccessful) {
                                                     CoroutineScope(Dispatchers.IO).launch {
                                                         try {
                                                             val uid = user.uid
@@ -1019,20 +1023,24 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                                         }
                                                     }
                                                 } else {
-                                                    Toast.makeText(
-                                                        context,
-                                                        "Error en reautenticación: ${reauthTask.exception?.message}",
-                                                        Toast.LENGTH_LONG
-                                                    ).show()
+//                                                    Toast.makeText(
+//                                                        context,
+//                                                        "Error en reautenticación: ${reauthTask.exception?.message}",
+//                                                        Toast.LENGTH_LONG
+//                                                    ).show()
+//                                                    Log.d(
+//                                                        "UserPage",
+//                                                        "Error en reautenticación: ${reauthTask.exception?.message}"
+//                                                    )
                                                 }
-                                            }
-                                    } else {
-                                        Toast.makeText(
-                                            context,
-                                            "Usuario o cuenta de Google no disponible",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
+//                                            }
+//                                    } else {
+//                                        Toast.makeText(
+//                                            context,
+//                                            "Usuario o cuenta de Google no disponible",
+//                                            Toast.LENGTH_LONG
+//                                        ).show()
+//                                    }
 
                                     showDeleteAccountDialog = false
                                 }) {
