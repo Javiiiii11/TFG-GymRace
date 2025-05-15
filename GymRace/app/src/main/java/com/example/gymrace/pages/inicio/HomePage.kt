@@ -1,40 +1,48 @@
 package com.example.gymrace.pages.inicio
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import java.text.SimpleDateFormat
+import java.util.*
 import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FitnessCenter
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import com.example.gymrace.MainActivity
@@ -42,13 +50,7 @@ import com.example.gymrace.R
 import com.example.gymrace.RutinaLauncher
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
-import java.time.LocalDate
-import java.time.YearMonth
-import java.time.format.TextStyle
-import java.util.*
 
-
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomePage(modifier: Modifier = Modifier, navController: NavController, onThemeChange : () -> Unit) {
     LazyColumn(
@@ -519,10 +521,8 @@ fun TitleSection() {
 }
 
 // Esta función muestra el calendario
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarSection() {
-//    val today = remember { LocalDate.now() }
     Column {
         Box(
             modifier = Modifier
@@ -555,20 +555,91 @@ fun CalendarSection() {
     }
 }
 
+// Clase para manejar las operaciones de calendario
+class CalendarUtil {
+    companion object {
+
+        // Obtener el número de días en un mes
+        fun getDaysInMonth(year: Int, month: Int): Int {
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.YEAR, year)
+            calendar.set(Calendar.MONTH, month)
+            return calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        }
+
+        // Obtener el primer día de la semana del mes
+        fun getFirstDayOfMonth(year: Int, month: Int): Int {
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.YEAR, year)
+            calendar.set(Calendar.MONTH, month)
+            calendar.set(Calendar.DAY_OF_MONTH, 1)
+            var dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - Calendar.MONDAY
+            if (dayOfWeek < 0) dayOfWeek += 7
+            return dayOfWeek + 1
+        }
+
+        // Obtener el nombre del mes
+        fun getMonthName(month: Int, locale: Locale = Locale("es", "ES")): String {
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.MONTH, month)
+            return SimpleDateFormat("MMMM", locale).format(calendar.time).replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(locale) else it.toString()
+            }
+        }
+    }
+}
+
+// Esta clase representa un mes y año
+data class YearMonthCompat(val year: Int, val month: Int) {
+    fun minusMonths(months: Int): YearMonthCompat {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month)
+        calendar.add(Calendar.MONTH, -months)
+        return YearMonthCompat(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH))
+    }
+
+    fun plusMonths(months: Int): YearMonthCompat {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month)
+        calendar.add(Calendar.MONTH, months)
+        return YearMonthCompat(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH))
+    }
+
+    fun lengthOfMonth(): Int {
+        return CalendarUtil.getDaysInMonth(year, month)
+    }
+
+    companion object {
+        fun now(): YearMonthCompat {
+            val calendar = Calendar.getInstance()
+            return YearMonthCompat(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH))
+        }
+    }
+}
+
 // Esta función muestra el calendario mejorado
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ImprovedCalendar(modifier: Modifier, onDateSelected: (Int) -> Unit) {
     // Estado para el mes y año actuales
-    var currentYearMonth by remember { mutableStateOf(YearMonth.now()) }
-    // Estado para el día seleccionado
-    val today = remember { LocalDate.now() }
-    // Obtener el mes y año actuales
-    val isCurrentMonth = currentYearMonth.year == today.year && currentYearMonth.month == today.month
+    var currentYearMonth by remember { mutableStateOf(YearMonthCompat.now()) }
+
+    // Obtener la fecha actual
+    val calendar = remember { Calendar.getInstance() }
+    val todayYear = remember { calendar.get(Calendar.YEAR) }
+    val todayMonth = remember { calendar.get(Calendar.MONTH) }
+    val todayDay = remember { calendar.get(Calendar.DAY_OF_MONTH) }
+
+    // Verificar si es el mes actual
+    val isCurrentMonth = currentYearMonth.year == todayYear && currentYearMonth.month == todayMonth
+
     // Obtener el número de días en el mes actual
     val daysInMonth = currentYearMonth.lengthOfMonth()
+
     // Obtener el primer día de la semana del mes actual
-    val firstDayOfMonth = currentYearMonth.atDay(1).dayOfWeek.value
+    val firstDayOfMonth = CalendarUtil.getFirstDayOfMonth(currentYearMonth.year, currentYearMonth.month)
+
     Column(modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         // Encabezado del calendario
         CalendarHeader(
@@ -577,21 +648,20 @@ fun ImprovedCalendar(modifier: Modifier, onDateSelected: (Int) -> Unit) {
             onNext = { currentYearMonth = currentYearMonth.plusMonths(1) }
         )
         // Rejilla del calendario
-        CalendarGrid(daysInMonth, firstDayOfMonth, isCurrentMonth, today, onDateSelected)
+        CalendarGrid(daysInMonth, firstDayOfMonth, isCurrentMonth, todayDay, onDateSelected)
     }
 }
 
 // Esta función muestra el encabezado del calendario
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CalendarHeader(currentYearMonth: YearMonth, onPrevious: () -> Unit, onNext: () -> Unit) {
+fun CalendarHeader(currentYearMonth: YearMonthCompat, onPrevious: () -> Unit, onNext: () -> Unit) {
     // Encabezado del calendario
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         // Botones para retroceder al mes anterior
         IconButton(onClick = onPrevious) { Icon(Icons.Default.KeyboardArrowLeft, contentDescription = "Prev") }
         // Título del mes y año
         Text(
-            text = "${currentYearMonth.month.getDisplayName(TextStyle.FULL, Locale("es", "ES"))} ${currentYearMonth.year}",
+            text = "${CalendarUtil.getMonthName(currentYearMonth.month)} ${currentYearMonth.year}",
             fontSize = 18.sp,
             modifier = Modifier
                 .padding(0.dp)
@@ -604,14 +674,15 @@ fun CalendarHeader(currentYearMonth: YearMonth, onPrevious: () -> Unit, onNext: 
 }
 
 // Esta función muestra la rejilla del calendario
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CalendarGrid(daysInMonth: Int, firstDayOfMonth: Int, isCurrentMonth: Boolean, today: LocalDate, onDateSelected: (Int) -> Unit) {
+fun CalendarGrid(daysInMonth: Int, firstDayOfMonth: Int, isCurrentMonth: Boolean, todayDay: Int, onDateSelected: (Int) -> Unit) {
     // Días de la semana
     val days = listOf("L", "M", "X", "J", "V", "S", "D")
     // Encabezado de los días de la semana
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        days.forEach { Text( it, fontWeight = FontWeight.Bold)}
+        days.forEach { day ->
+            Text(day, fontWeight = FontWeight.Bold)
+        }
     }
     // Rejilla del calendario
     LazyVerticalGrid(columns = GridCells.Fixed(7)) {
@@ -621,7 +692,7 @@ fun CalendarGrid(daysInMonth: Int, firstDayOfMonth: Int, isCurrentMonth: Boolean
             // Espacio para cada día
             val dayNumber = day + 1
             // Verifica si el día es hoy
-            val isToday = isCurrentMonth && dayNumber == today.dayOfMonth
+            val isToday = isCurrentMonth && dayNumber == todayDay
             // Cuadro para cada día
             Box(
                 modifier = Modifier
@@ -637,7 +708,6 @@ fun CalendarGrid(daysInMonth: Int, firstDayOfMonth: Int, isCurrentMonth: Boolean
         }
     }
 }
-
 // Esta función muestra la sección de más opciones
 @Composable
 fun Masoptions() {

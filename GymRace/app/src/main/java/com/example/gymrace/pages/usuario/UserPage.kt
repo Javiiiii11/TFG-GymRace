@@ -386,6 +386,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             onUserAction = { userId ->
                 if (friendsList.any { it.id == userId }) {
                     // Eliminar amigo
+                    requestedUserIds = requestedUserIds.filterNot { it == userId }
+
                     friendsList = friendsList.filterNot { it.id == userId } // UI instantánea
                     removeFriend(GLOBAL.id, userId) {
                         loadFriendsList(GLOBAL.id) { updatedFriends ->
@@ -395,6 +397,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 } else {
                     // Enviar solicitud
                     requestedUserIds = requestedUserIds + userId        // UI instantánea
+
                     firestore.collection("usuarios").document(userId)
                         .get()
                         .addOnSuccessListener { doc ->
@@ -407,7 +410,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                 )
                                 Toast.makeText(context, "Solicitud enviada", Toast.LENGTH_SHORT).show()
                             } else {
-                                friendsList = friendsList + allUsers.first { it.id == userId } // optimista
+                                friendsList = friendsList + allUsers.first { it.id == userId } // UI instantánea
                                 addFriend(GLOBAL.id, userId) {
                                     loadFriendsList(GLOBAL.id) { friendsList = it }
                                 }
@@ -797,10 +800,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
 
                                         showLoadingDialog = true // DIÁLOGO DE CARGA
 
-//                                        user.reauthenticate(credential)
-//                                            .addOnCompleteListener { reauthTask ->
-//                                                if (reauthTask.isSuccessful) {
-                                                    CoroutineScope(Dispatchers.IO).launch {
+                                                CoroutineScope(Dispatchers.IO).launch {
                                                         try {
                                                             val uid = user.uid
                                                             Log.d(
@@ -1022,26 +1022,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                                             }
                                                         }
                                                     }
-                                                } else {
-//                                                    Toast.makeText(
-//                                                        context,
-//                                                        "Error en reautenticación: ${reauthTask.exception?.message}",
-//                                                        Toast.LENGTH_LONG
-//                                                    ).show()
-//                                                    Log.d(
-//                                                        "UserPage",
-//                                                        "Error en reautenticación: ${reauthTask.exception?.message}"
-//                                                    )
                                                 }
-//                                            }
-//                                    } else {
-//                                        Toast.makeText(
-//                                            context,
-//                                            "Usuario o cuenta de Google no disponible",
-//                                            Toast.LENGTH_LONG
-//                                        ).show()
-//                                    }
-
                                     showDeleteAccountDialog = false
                                 }) {
                                     Text("Sí")
@@ -1338,6 +1319,7 @@ private fun animateSettingsIcon(
     }
 }
 
+
 // Diálogo para mostrar usuarios (amigos o comunidad)
 @Composable
 fun UsersDialog(
@@ -1404,11 +1386,21 @@ fun UsersDialog(
                     ) {
                         items(users) { user ->
                             val isAlreadyFriend = currentFriends.contains(user.id)
-                            val alreadyRequested = requestedUserIds.contains(user.id)
+                            var alreadyRequested = requestedUserIds.contains(user.id)
 
                             UserListItem(
                                 user = user,
                                 onAction = { onUserAction(user.id) },
+                                onRemove = {
+                                    removeFriend(GLOBAL.id, user.id) {
+                                        loadFriendsList(GLOBAL.id) { updatedFriends ->
+                                            alreadyRequested = false // Actualiza el estado de la UI
+
+                                            // Actualiza la lista de amigos
+                                            onUserAction(user.id)
+                                        }
+                                    }
+                                },
                                 showAddButton = showAddButton,
                                 isAlreadyFriend = isAlreadyFriend,
                                 alreadyRequested = alreadyRequested
@@ -1442,7 +1434,8 @@ fun UserListItem(
     onAction: () -> Unit,
     showAddButton: Boolean,
     isAlreadyFriend: Boolean = false,
-    alreadyRequested: Boolean = false // ← NUEVO
+    alreadyRequested: Boolean = false, // ← NUEVO
+    onRemove: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -1497,6 +1490,8 @@ fun UserListItem(
             onClick = {
                 if (!alreadyRequested) {
                     onAction()
+                }else{
+                    onRemove()
                 }
             }
         ) {
