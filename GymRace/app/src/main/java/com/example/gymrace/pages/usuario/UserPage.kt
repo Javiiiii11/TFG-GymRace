@@ -237,26 +237,51 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
 
     val currentLifecycleOwner = LocalLifecycleOwner.current
 
-    // Efecto para cargar la lista de seguidores cada 10 segundos
+//    // Efecto para cargar la lista de seguidores cada 10 segundos
+//    LaunchedEffect(showFollowersDialog) {
+//        if (showFollowersDialog) {
+//            snapshotFlow { showFollowersDialog }
+//                .collect { shouldShow ->
+//                    if (shouldShow) {
+//                        currentLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+//                            while (showFollowersDialog) {
+//                                GLOBAL.id?.let { uid ->
+//                                    loadFollowersList(uid) { newFollowers ->
+//                                        if (newFollowers != followersList) {
+//                                            followersList = newFollowers
+//                                        }
+//                                    }
+//                                }
+//                                delay(10_000)
+//                            }
+//                        }
+//                    }
+//                }
+//        }
+//    }
+
+
+    // Efecto para cargar la lista de seguidores periódicamente cuando el diálogo está visible
     LaunchedEffect(showFollowersDialog) {
+        // Solo ejecutamos la lógica si el diálogo está visible
         if (showFollowersDialog) {
-            snapshotFlow { showFollowersDialog }
-                .collect { shouldShow ->
-                    if (shouldShow) {
-                        currentLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                            while (showFollowersDialog) {
-                                GLOBAL.id?.let { uid ->
-                                    loadFollowersList(uid) { newFollowers ->
-                                        if (newFollowers != followersList) {
-                                            followersList = newFollowers
-                                        }
-                                    }
-                                }
-                                delay(10_000)
-                            }
+            // Usamos un bucle que se ejecuta mientras esté en el contexto de LaunchedEffect
+            while (true) {
+                GLOBAL.id?.let { uid ->
+                    loadFollowersList(uid) { newFollowers ->
+                        // Actualizamos la lista solo si hay cambios
+                        if (newFollowers != followersList) {
+                            followersList = newFollowers
                         }
                     }
                 }
+
+                // Esperamos 10 segundos antes de la siguiente actualización
+                delay(10_000)
+
+                // Si el diálogo se cierra, salimos del bucle
+                if (!showFollowersDialog) break
+            }
         }
     }
 
@@ -538,7 +563,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                         }
                     }
 
-                    // Notificaciones (igual que antes, pero asegúrate de filtrar requestedUserIds en onReject)
+                    // Diálogo de notificaciones
                     if (showNotifications) {
                         NotificacionesDialog(
                             notificaciones = notificaciones,
@@ -546,21 +571,21 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                             onAcceptRequest = { senderId ->
                                 requestedUserIds = requestedUserIds.filterNot { it == senderId } // UI instantánea
                                 addFriend(senderId, GLOBAL.id) {
-                                    removeNotification(GLOBAL.id, senderId) {
+                                    removeNotification(GLOBAL.id, senderId, {
                                         loadNotificaciones(GLOBAL.id) { notificaciones = it }
                                         loadFriendsList(GLOBAL.id) { friendsList = it }
-                                    }
+                                    }, Icons.Default.PersonAdd)
                                 }
                             },
                             onRejectRequest = { senderId ->
-                                requestedUserIds = requestedUserIds.filterNot { it == senderId } // UI instantánea
-                                removeNotification(GLOBAL.id, senderId) {
+                                requestedUserIds = requestedUserIds.filterNot { it == senderId } // ✅ Se actualiza inmediatamente
+                                removeNotification(GLOBAL.id, senderId, {
                                     loadNotificaciones(GLOBAL.id) { notificaciones = it }
-                                }
-                            }
+                                }, Icons.Default.PersonAdd)
+                            },
+                            icon = Icons.Default.PersonAdd // Cambiar el ícono a "PersonAdd"
                         )
                     }
-
                 }
 
 
@@ -1305,7 +1330,7 @@ fun UsersDialog(
                     ) {
                         items(users) { user ->
                             val isAlreadyFriend = currentFriends.contains(user.id)
-                            var alreadyRequested = requestedUserIds.contains(user.id)
+                            val alreadyRequested by rememberUpdatedState(requestedUserIds.contains(user.id)) // ✅ Se evalúa dinámicamente
 
                             UserListItem(
                                 user = user,
@@ -1313,25 +1338,21 @@ fun UsersDialog(
                                 onRemove = {
                                     removeFriend(GLOBAL.id, user.id) {
                                         loadFriendsList(GLOBAL.id) { updatedFriends ->
-                                            alreadyRequested = false // Actualiza el estado de la UI
-
-                                            // Actualiza la lista de amigos
-                                            onUserAction(user.id)
+                                            onUserAction(user.id) // ✅ Esto actualiza requestedUserIds desde el padre
                                         }
                                     }
                                 },
                                 showAddButton = showAddButton,
                                 isAlreadyFriend = isAlreadyFriend,
                                 alreadyRequested = alreadyRequested,
-                                customIcon = icon, // Pasar el icono personalizado
-                                isFollowersList = title == "Seguidores" // Indica si es lista de seguidores
+                                customIcon = icon,
+                                isFollowersList = title == "Seguidores"
                             )
 
-                            Divider(
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
-                            )
+                            Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
                         }
                     }
+
                 }
 
                 // Botón cerrar
@@ -1357,8 +1378,8 @@ fun UserListItem(
     isAlreadyFriend: Boolean = false,
     alreadyRequested: Boolean = false,
     onRemove: () -> Unit,
-    customIcon: ImageVector? = null, // Nuevo parámetro para un icono personalizado
-    isFollowersList: Boolean = false // Indicador para distinguir la lista de seguidores
+    customIcon: ImageVector? = null,
+    isFollowersList: Boolean = false
 ) {
     Row(
         modifier = Modifier
@@ -1411,19 +1432,18 @@ fun UserListItem(
         // Botón de acción (agregar o eliminar amigo)
         IconButton(
             onClick = {
-                if (!alreadyRequested) {
-                    onAction()
-                }else{
-                    onRemove()
+                if (alreadyRequested) {
+                    onRemove() // Llama a onRemove cuando ya se ha enviado una solicitud
+                } else {
+                    onAction() // Llama a onAction para enviar una solicitud
                 }
             }
         ) {
             Icon(
                 imageVector = when {
-                    // Si es lista de seguidores, siempre muestra el icono de eliminar
                     isFollowersList -> Icons.Default.PersonRemove
                     isAlreadyFriend -> Icons.Default.PersonRemove
-                    alreadyRequested -> Icons.Outlined.Person2 // Ícono para "solicitud enviada"
+                    alreadyRequested -> Icons.Outlined.Person2
                     else -> Icons.Default.PersonAdd
                 },
                 contentDescription = when {
@@ -1435,7 +1455,7 @@ fun UserListItem(
                 tint = when {
                     isFollowersList -> Color.Red
                     isAlreadyFriend -> Color.Red
-                    alreadyRequested -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f) // grisáceo
+                    alreadyRequested -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                     else -> MaterialTheme.colorScheme.primary
                 }
             )
@@ -2022,11 +2042,27 @@ fun NotificationItem(
 fun NotificacionesDialog(
     notificaciones: List<Notificacion>,
     onDismiss: () -> Unit,
-    onAcceptRequest: (String) -> Unit, // Aquí pasamos el ID del remitente
-    onRejectRequest: (String) -> Unit // Nuevo parámetro para rechazar
+    onAcceptRequest: (String) -> Unit,
+    onRejectRequest: (String) -> Unit,
+    icon: ImageVector = Icons.Default.PersonAdd,
 ) {
     // Estado para almacenar en caché los nombres de usuarios
     val nombresUsuarios = remember { mutableStateOf(mapOf<String, String>()) }
+
+    // Estado local mutable para la lista de notificaciones
+    val notificacionesLocales = remember { mutableStateListOf<Notificacion>() }
+
+    // Inicializar el estado local con las notificaciones recibidas
+    LaunchedEffect(notificaciones) {
+        notificacionesLocales.clear()
+        notificacionesLocales.addAll(notificaciones)
+    }
+
+    // Función local para eliminar una notificación y actualizar la UI inmediatamente
+    val removeNotificationLocal = { notificationId: String ->
+        // Eliminar la notificación del estado local para actualizar la UI inmediatamente
+        notificacionesLocales.removeIf { it.id == notificationId }
+    }
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -2079,7 +2115,7 @@ fun NotificacionesDialog(
                         .fillMaxWidth()
                         .weight(1f)
                 ) {
-                    if (notificaciones.isEmpty()) {
+                    if (notificacionesLocales.isEmpty()) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
@@ -2111,20 +2147,17 @@ fun NotificacionesDialog(
                     } else {
                         // Aseguramos que LazyColumn tenga un contenedor con scroll
                         LazyColumn(
-                            verticalArrangement = Arrangement.spacedBy(8.dp), // Reducido el espacio entre items
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
                             contentPadding = PaddingValues(vertical = 8.dp),
-                            modifier = Modifier.fillMaxSize() // Asegura que ocupe todo el espacio disponible
+                            modifier = Modifier.fillMaxSize()
                         ) {
-                            items(notificaciones) { notif ->
+                            items(notificacionesLocales) { notif ->
                                 Card(
                                     modifier = Modifier.fillMaxWidth(),
-                                    // Reducimos la elevación para que sea más sutil
                                     elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp),
                                     colors = CardDefaults.cardColors(
-                                        // Hacemos el fondo más sutil
                                         containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f)
                                     ),
-                                    // Borde más fino
                                     border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
                                 ) {
                                     Box(modifier = Modifier.padding(12.dp)) {
@@ -2133,14 +2166,27 @@ fun NotificacionesDialog(
                                             onAccept = {
                                                 if (notif.tipo == "solicitud") {
                                                     onAcceptRequest(notif.remitente)
-                                                    removeNotification(GLOBAL.id!!, notif.id) // ← CORRECTO
+                                                    // Actualizar UI primero
+                                                    removeNotificationLocal(notif.id)
+                                                    // Luego actualizar en la base de datos
+                                                    removeNotification(
+                                                        GLOBAL.id!!,
+                                                        notif.id,
+                                                        icon = icon
+                                                    )
                                                 } else if (notif.tipo == "desafio" && notif.challengeId != null) {
                                                     val db = FirebaseFirestore.getInstance()
                                                     val userId = GLOBAL.id!!
+                                                    // Actualizar UI primero
+                                                    removeNotificationLocal(notif.id)
                                                     db.collection("desafios").document(notif.challengeId).update("status", "ACCEPTED")
                                                         .addOnSuccessListener {
                                                             Log.d("Notif", "Desafío aceptado")
-                                                            removeNotification(userId, notif.id) // ← CORRECTO
+                                                            removeNotification(
+                                                                userId,
+                                                                notif.id,
+                                                                icon = icon
+                                                            )
                                                         }
                                                         .addOnFailureListener { e ->
                                                             Log.e("Notif", "Error al aceptar desafío", e)
@@ -2150,14 +2196,23 @@ fun NotificacionesDialog(
                                             onReject = {
                                                 if (notif.tipo == "solicitud") {
                                                     onRejectRequest(notif.remitente)
-                                                    removeNotification(GLOBAL.id!!, notif.id) // ← CORRECTO
+                                                    // Actualizar UI primero
+                                                    removeNotificationLocal(notif.id)
+                                                    // Luego actualizar en la base de datos
+                                                    removeNotification(GLOBAL.id!!, notif.id, icon = icon)
                                                 } else if (notif.tipo == "desafio" && notif.challengeId != null) {
                                                     val db = FirebaseFirestore.getInstance()
                                                     val userId = GLOBAL.id!!
+                                                    // Actualizar UI primero
+                                                    removeNotificationLocal(notif.id)
                                                     db.collection("desafios").document(notif.challengeId).delete()
                                                         .addOnSuccessListener {
                                                             Log.d("Notif", "Desafío rechazado y eliminado")
-                                                            removeNotification(userId, notif.id) // ← CORRECTO
+                                                            removeNotification(
+                                                                userId,
+                                                                notif.id,
+                                                                icon = icon
+                                                            )
                                                         }
                                                         .addOnFailureListener { e ->
                                                             Log.e("Notif", "Error al rechazar desafío", e)
@@ -2166,7 +2221,6 @@ fun NotificacionesDialog(
                                             },
                                             nombreUsuario = nombresUsuarios
                                         )
-
                                     }
                                 }
                             }
@@ -2231,7 +2285,12 @@ fun sendFriendRequestNotification(toUserId: String, fromUserName: String, fromUs
 }
 
 
-fun removeNotification(userId: String, notificationId: String, onComplete: () -> Unit = {}) {
+fun removeNotification(
+    userId: String,
+    notificationId: String,
+    onComplete: () -> Unit = {},
+    icon: ImageVector
+) {
     FirebaseFirestore.getInstance()
         .collection("notificaciones")
         .document(userId)

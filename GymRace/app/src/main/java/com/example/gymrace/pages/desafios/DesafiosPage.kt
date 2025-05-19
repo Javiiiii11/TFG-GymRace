@@ -44,12 +44,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.gymrace.GifData
 import com.example.gymrace.R
-import com.example.gymrace.addFriend
 import com.example.gymrace.loadAllUsers
-import com.example.gymrace.loadFriendsList
 import com.example.gymrace.loadGifsFromXml
 import com.example.gymrace.pages.GLOBAL
-import com.example.gymrace.removeFriend
 import com.example.gymrace.showExerciseDetail
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -431,49 +428,49 @@ fun DesafiosPage(
     }
 
     // Efecto para cargar la lista de amigos cada 5 segundos
-    val lifecycleOwner = LocalLifecycleOwner.current
-
-    LaunchedEffect(lifecycleOwner) {
-        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            while (true) {
-                val id = GLOBAL.id
-                if (!id.isNullOrEmpty()) {
-                    try {
-                        loadFriendsList(id) { friends ->
-                            if (friends != friendsList) {
-                                Log.d("FriendsRefresh", "Lista de amigos actualizada: ${friends.size} amigos")
-                                friendsList = friends
-                            } else {
-                                Log.d("FriendsRefresh", "Sin cambios en la lista de amigos")
-                            }
-                        }
-                    } catch (e: Exception) {
-                        Log.e("FriendsRefresh", "Error al actualizar amigos", e)
-                    }
-                } else {
-                    Log.w("FriendsRefresh", "GLOBAL.id es null o vacío, no se puede cargar amigos")
-                }
-                delay(5000)
-            }
-        }
-    }
+//    val lifecycleOwner = LocalLifecycleOwner.current
+//
+//    LaunchedEffect(lifecycleOwner) {
+//        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+//            while (true) {
+//                val id = GLOBAL.id
+//                if (!id.isNullOrEmpty()) {
+//                    try {
+//                        loadFriendsList(id) { friends ->
+//                            if (friends != friendsList) {
+//                                Log.d("FriendsRefresh", "Lista de amigos actualizada: ${friends.size} amigos")
+//                                friendsList = friends
+//                            } else {
+//                                Log.d("FriendsRefresh", "Sin cambios en la lista de amigos")
+//                            }
+//                        }
+//                    } catch (e: Exception) {
+//                        Log.e("FriendsRefresh", "Error al actualizar amigos", e)
+//                    }
+//                } else {
+//                    Log.w("FriendsRefresh", "GLOBAL.id es null o vacío, no se puede cargar amigos")
+//                }
+//                delay(5000)
+//            }
+//        }
+//    }
 
 
     // Al abrir el diálogo de comunidad, cargar la lista de usuarios y amigos
-    LaunchedEffect(showCommunityDialog) {
-        if (showCommunityDialog) {
-            isLoadingUsers = true
-            loadAllUsers { users ->
-                // Filtramos para excluir al usuario actual
-                allUsers = users.filter { it.id != userId }
-                isLoadingUsers = false
-                Log.d("ListarRutinasAmigosPage", "Usuarios cargados para comunidad: ${allUsers.size}")
-            }
-            loadFriendsList(userId) { friends ->
-                friendsList = friends
-            }
-        }
-    }
+//    LaunchedEffect(showCommunityDialog) {
+//        if (showCommunityDialog) {
+//            isLoadingUsers = true
+//            loadAllUsers { users ->
+//                // Filtramos para excluir al usuario actual
+//                allUsers = users.filter { it.id != userId }
+//                isLoadingUsers = false
+//                Log.d("ListarRutinasAmigosPage", "Usuarios cargados para comunidad: ${allUsers.size}")
+//            }
+//            loadFriendsList(userId) { friends ->
+//                friendsList = friends
+//            }
+//        }
+//    }
 
     // Pantalla principal
     Scaffold(
@@ -663,66 +660,76 @@ fun DesafiosPage(
 
 // Finalmente, corrige la llamada a UsersDialog:
     if (showCommunityDialog) {
-        UsersDialog(
-            title = "Comunidad",
-            users = allUsers,
-            isLoading = isLoadingUsers,
-            onDismiss = { showCommunityDialog = false },
-            onUserAction = { friendId ->
-                val friendIds = friendsList.map { it.id }
-                val firestore = FirebaseFirestore.getInstance()
-
-                scope.launch {
-                    if (friendIds.contains(friendId)) {
-                        // Ya es amigo → eliminarlo
-                        removeFriend(userId, friendId) {
-                            loadFriendsList(userId) { friends ->
-                                friendsList = friends
-                                successMessage = "Usuario eliminado de amigos"
-                                // Refrescar lista en ViewModel para el diálogo
-                                scope.launch {
-                                    viewModel.loadFriends(userId)
-                                }
-                            }
-                        }
-                    } else {
-                        try {
-                            val doc = firestore.collection("usuarios").document(friendId).get().await()
-                            val isPrivate = doc.getBoolean("cuentaPrivada") ?: true
-
-                            if (isPrivate) {
-                                // Enviar solicitud si es privada
-                                sendFriendRequestNotification(
-                                    toUserId = friendId,
-                                    fromUserName = GLOBAL.nombre,
-                                    fromUserId = userId
-                                )
-                                // Actualizar la lista de solicitudes enviadas
-                                requestedUserIds = requestedUserIds + friendId
-                                successMessage = "Solicitud enviada"
-                            } else {
-                                // Añadir amigo directamente si es pública
-                                addFriend(userId, friendId) {
-                                    loadFriendsList(userId) { friends ->
-                                        friendsList = friends
-                                        successMessage = "Amigo añadido"
-                                        scope.launch {
-                                            viewModel.loadFriends(userId)
-                                        }
-                                    }
-                                }
-                            }
-                        } catch (e: Exception) {
-                            Log.e("DesafiosPage", "Error al comprobar privacidad: ${e.message}")
-                            successMessage = "Error al procesar"
-                        }
-                    }
+        LaunchedEffect(showCommunityDialog) {
+            isLoadingUsers = true
+            loadAllUsers { users ->
+                allUsers = users.filter { it.id != GLOBAL.id }
+                loadRequestedUserIds(userId) { requested ->
+                    requestedUserIds = requested
+                    isLoadingUsers = false
                 }
-            },
-            showAddButton = true,
-            currentFriends = friendsList.map { it.id },
-            requestedUserIds = requestedUserIds  // Añadimos el parámetro faltante
-        )
+            }
+        }
+
+//        UsersDialog(
+//            title = "Comunidad",
+//            users = allUsers,
+//            isLoading = isLoadingUsers,
+//            onDismiss = { showCommunityDialog = false },
+//            showAddButton = true,
+//            currentFriends = friendsList.map { it.id },
+//            requestedUserIds = requestedUserIds,
+//            onUserAction = { friendId ->
+//                val firestore = FirebaseFirestore.getInstance()
+//
+//                scope.launch {
+//                    if (friendsList.any { it.id == friendId }) {
+//                        // UI instantánea
+//                        requestedUserIds = requestedUserIds.filterNot { it == friendId }
+//                        friendsList = friendsList.filterNot { it.id == friendId }
+//
+//                        removeFriend(userId, friendId) {
+//                            loadFriendsList(userId) { updatedFriends ->
+//                                friendsList = updatedFriends
+//                                successMessage = "Usuario eliminado de amigos"
+//                                scope.launch { viewModel.loadFriends(userId) }
+//                            }
+//                        }
+//                    } else {
+//                        // UI instantánea
+//                        requestedUserIds = requestedUserIds + friendId
+//
+//                        try {
+//                            val doc = firestore.collection("usuarios").document(friendId).get().await()
+//                            val isPrivate = doc.getBoolean("cuentaPrivada") ?: true
+//
+//                            if (isPrivate) {
+//                                sendFriendRequestNotification(
+//                                    toUserId = friendId,
+//                                    fromUserName = GLOBAL.nombre,
+//                                    fromUserId = userId
+//                                )
+//                                successMessage = "Solicitud enviada"
+//                            } else {
+//                                friendsList = friendsList + allUsers.first { it.id == friendId }
+//
+//                                addFriend(userId, friendId) {
+//                                    loadFriendsList(userId) { updatedFriends ->
+//                                        friendsList = updatedFriends
+//                                        successMessage = "Amigo añadido"
+//                                        scope.launch { viewModel.loadFriends(userId) }
+//                                    }
+//                                }
+//                            }
+//                        } catch (e: Exception) {
+//                            Log.e("UserPage", "Error al comprobar privacidad: ${e.message}")
+//                            successMessage = "Error al procesar"
+//                            requestedUserIds = requestedUserIds.filterNot { it == friendId } // revertir estado
+//                        }
+//                    }
+//                }
+//            }
+//        )
     }
 }
 

@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import com.google.firebase.firestore.QuerySnapshot
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -17,18 +16,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
-import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldPath
@@ -238,22 +233,22 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
                     IconButton(onClick = { navController.navigate("main") { popUpTo(0) { inclusive = true } } }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
                     }
-                },
-                actions = {
-                    IconButton(onClick = { showFriendsListDialog = true }) {
-                        Icon(Icons.Default.People, contentDescription = "Ver Amigos")
-                    }
                 }
+//                actions = {
+//                    IconButton(onClick = { showFriendsListDialog = true }) {
+//                        Icon(Icons.Default.People, contentDescription = "Ver Amigos")
+//                    }
+//                }
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { showCommunityDialog = true },
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Icon(Icons.Default.PersonAdd, contentDescription = "Buscar Comunidad")
-            }
         }
+//        floatingActionButton = {
+//            FloatingActionButton(
+//                onClick = { showCommunityDialog = true },
+//                containerColor = MaterialTheme.colorScheme.primary
+//            ) {
+//                Icon(Icons.Default.PersonAdd, contentDescription = "Buscar Comunidad")
+//            }
+//        }
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -311,63 +306,63 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
     }
 
 // Diálogo de comunidad
-    if (showCommunityDialog) {
-        UsersDialog(
-            title = "Comunidad",
-            users = allUsers,
-            isLoading = isLoadingUsers,
-            onDismiss = { showCommunityDialog = false },
-            showAddButton = true,
-            currentFriends = friendsList.map { it.id },
-            requestedUserIds = requestedUserIds,  // Añadimos el parámetro faltante
-            onUserAction = { selectedId ->
-                if (friendsList.any { it.id == selectedId }) {
-                    scope.launch {
-                        removeFriend(userId, selectedId) {
-                            loadFriendsList(userId) { friendsList = it; successMessage = "Usuario eliminado de amigos"; scope.launch { cargarRutinasAmigos(initialLoad = false) } }
-                        }
-                    }
-                } else {
-                    db.collection("usuarios").document(selectedId).get()
-                        .addOnSuccessListener { doc ->
-                            val private = doc.getBoolean("cuentaPrivada") ?: true
-                            if (private) {
-                                sendFriendRequestNotification(selectedId, allUsers.find { u -> u.id == userId }?.nombre ?: "", userId)
-                                // Actualizar la lista de solicitudes enviadas
-                                requestedUserIds = requestedUserIds + selectedId
-                                Toast.makeText(context, "Solicitud de amistad enviada", Toast.LENGTH_SHORT).show()
-                            } else {
-                                scope.launch {
-                                    addFriend(userId, selectedId) {
-                                        loadFriendsList(userId) { friendsList = it; successMessage = "Usuario agregado a amigos"; scope.launch { cargarRutinasAmigos(initialLoad = false) } }
-                                    }
-                                }
-                                Toast.makeText(context, "Amigo añadido", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                        .addOnFailureListener { Toast.makeText(context, "Error comprobando privacidad", Toast.LENGTH_SHORT).show() }
-                }
-            }
-        )
-    }
+//    if (showCommunityDialog) {
+//        UsersDialog(
+//            title = "Comunidad",
+//            users = allUsers,
+//            isLoading = isLoadingUsers,
+//            onDismiss = { showCommunityDialog = false },
+//            showAddButton = true,
+//            currentFriends = friendsList.map { it.id },
+//            requestedUserIds = requestedUserIds,  // Añadimos el parámetro faltante
+//            onUserAction = { selectedId ->
+//                if (friendsList.any { it.id == selectedId }) {
+//                    scope.launch {
+//                        removeFriend(userId, selectedId) {
+//                            loadFriendsList(userId) { friendsList = it; successMessage = "Usuario eliminado de amigos"; scope.launch { cargarRutinasAmigos(initialLoad = false) } }
+//                        }
+//                    }
+//                } else {
+//                    db.collection("usuarios").document(selectedId).get()
+//                        .addOnSuccessListener { doc ->
+//                            val private = doc.getBoolean("cuentaPrivada") ?: true
+//                            if (private) {
+//                                sendFriendRequestNotification(selectedId, allUsers.find { u -> u.id == userId }?.nombre ?: "", userId)
+//                                // Actualizar la lista de solicitudes enviadas
+//                                requestedUserIds = requestedUserIds + selectedId
+//                                Toast.makeText(context, "Solicitud de amistad enviada", Toast.LENGTH_SHORT).show()
+//                            } else {
+//                                scope.launch {
+//                                    addFriend(userId, selectedId) {
+//                                        loadFriendsList(userId) { friendsList = it; successMessage = "Usuario agregado a amigos"; scope.launch { cargarRutinasAmigos(initialLoad = false) } }
+//                                    }
+//                                }
+//                                Toast.makeText(context, "Amigo añadido", Toast.LENGTH_SHORT).show()
+//                            }
+//                        }
+//                        .addOnFailureListener { Toast.makeText(context, "Error comprobando privacidad", Toast.LENGTH_SHORT).show() }
+//                }
+//            }
+//        )
+//    }
 
 // Diálogo de amigos
-    if (showFriendsListDialog) {
-        UsersDialog(
-            title = "Mis Amigos",
-            users = friendsList,
-            isLoading = isLoadingUsers,
-            onDismiss = { showFriendsListDialog = false },
-            onUserAction = { friendId ->
-                scope.launch {
-                    removeFriend(userId, friendId) { loadFriendsList(userId) { friendsList = it } }
-                }
-            },
-            showAddButton = false,
-            currentFriends = friendsList.map { it.id },  // Añadimos el parámetro faltante
-            requestedUserIds = requestedUserIds  // Añadimos el parámetro faltante
-        )
-    }
+//    if (showFriendsListDialog) {
+//        UsersDialog(
+//            title = "Mis Amigos",
+//            users = friendsList,
+//            isLoading = isLoadingUsers,
+//            onDismiss = { showFriendsListDialog = false },
+//            onUserAction = { friendId ->
+//                scope.launch {
+//                    removeFriend(userId, friendId) { loadFriendsList(userId) { friendsList = it } }
+//                }
+//            },
+//            showAddButton = false,
+//            currentFriends = friendsList.map { it.id },  // Añadimos el parámetro faltante
+//            requestedUserIds = requestedUserIds  // Añadimos el parámetro faltante
+//        )
+//    }
 }
 
 // Función para cargar todos los usuarios de la base de datos
@@ -452,58 +447,58 @@ fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
         }
 }
 
-// Funciones para agregar amigos
-fun addFriend(userId: String, friendId: String, callback: () -> Unit) {
-    val db = FirebaseFirestore.getInstance()
-    db.collection("amigos")
-        .document(userId)
-        .get()
-        .addOnSuccessListener { document ->
-            if (document.exists()) {
-                val currentFriends = document.get("listaAmigos") as? List<String> ?: emptyList()
-                if (!currentFriends.contains(friendId)) {
-                    val updatedFriends = currentFriends + friendId
-                    db.collection("amigos")
-                        .document(userId)
-                        .update("listaAmigos", updatedFriends)
-                        .addOnSuccessListener { callback() }
-                        .addOnFailureListener { callback() }
-                } else {
-                    callback()
-                }
-            } else {
-                // Crear un nuevo documento si no existe
-                db.collection("amigos")
-                    .document(userId)
-                    .set(mapOf("listaAmigos" to listOf(friendId)))
-                    .addOnSuccessListener { callback() }
-                    .addOnFailureListener { callback() }
-            }
-        }
-        .addOnFailureListener { callback() }
-}
-
-// Función para eliminar amigos
-fun removeFriend(userId: String, friendId: String, callback: () -> Unit) {
-    val db = FirebaseFirestore.getInstance()
-    db.collection("amigos")
-        .document(userId)
-        .get()
-        .addOnSuccessListener { document ->
-            if (document.exists()) {
-                val currentFriends = document.get("listaAmigos") as? List<String> ?: emptyList()
-                val updatedFriends = currentFriends.filter { it != friendId }
-                db.collection("amigos")
-                    .document(userId)
-                    .update("listaAmigos", updatedFriends)
-                    .addOnSuccessListener { callback() }
-                    .addOnFailureListener { callback() }
-            } else {
-                callback()
-            }
-        }
-        .addOnFailureListener { callback() }
-}
+//// Funciones para agregar amigos
+//fun addFriend(userId: String, friendId: String, callback: () -> Unit) {
+//    val db = FirebaseFirestore.getInstance()
+//    db.collection("amigos")
+//        .document(userId)
+//        .get()
+//        .addOnSuccessListener { document ->
+//            if (document.exists()) {
+//                val currentFriends = document.get("listaAmigos") as? List<String> ?: emptyList()
+//                if (!currentFriends.contains(friendId)) {
+//                    val updatedFriends = currentFriends + friendId
+//                    db.collection("amigos")
+//                        .document(userId)
+//                        .update("listaAmigos", updatedFriends)
+//                        .addOnSuccessListener { callback() }
+//                        .addOnFailureListener { callback() }
+//                } else {
+//                    callback()
+//                }
+//            } else {
+//                // Crear un nuevo documento si no existe
+//                db.collection("amigos")
+//                    .document(userId)
+//                    .set(mapOf("listaAmigos" to listOf(friendId)))
+//                    .addOnSuccessListener { callback() }
+//                    .addOnFailureListener { callback() }
+//            }
+//        }
+//        .addOnFailureListener { callback() }
+//}
+//
+//// Función para eliminar amigos
+//fun removeFriend(userId: String, friendId: String, callback: () -> Unit) {
+//    val db = FirebaseFirestore.getInstance()
+//    db.collection("amigos")
+//        .document(userId)
+//        .get()
+//        .addOnSuccessListener { document ->
+//            if (document.exists()) {
+//                val currentFriends = document.get("listaAmigos") as? List<String> ?: emptyList()
+//                val updatedFriends = currentFriends.filter { it != friendId }
+//                db.collection("amigos")
+//                    .document(userId)
+//                    .update("listaAmigos", updatedFriends)
+//                    .addOnSuccessListener { callback() }
+//                    .addOnFailureListener { callback() }
+//            } else {
+//                callback()
+//            }
+//        }
+//        .addOnFailureListener { callback() }
+//}
 
 // Componente para mostrar la cabecera del amigo
 @Composable
