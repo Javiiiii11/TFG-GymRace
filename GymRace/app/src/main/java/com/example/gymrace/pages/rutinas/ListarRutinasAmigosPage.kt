@@ -1,14 +1,18 @@
 package com.example.gymrace
 
 import android.util.Log
-import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import com.google.firebase.firestore.QuerySnapshot
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -16,52 +20,31 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import np.com.bimalkafle.bottomnavigationdemo.pages.User
-import np.com.bimalkafle.bottomnavigationdemo.pages.UsersDialog
 
-// Función para enviar solicitud de amistad si la cuenta es privada
-fun sendFriendRequestNotification(toUserId: String, fromUserName: String, fromUserId: String) {
-    val db = FirebaseFirestore.getInstance()
-    val notificationData = mapOf(
-        "tipo" to "solicitud",
-        "mensaje" to "$fromUserName quiere ser tu amigo",
-        "remitente" to fromUserId,
-        "timestamp" to FieldValue.serverTimestamp()
-    )
-    db.collection("notificaciones")
-        .document(toUserId)
-        .collection("items")
-        .add(notificationData)
-        .addOnSuccessListener { Log.d("ListarRutinasAmigosPage", "Notificación enviada a $toUserId") }
-        .addOnFailureListener { Log.e("ListarRutinasAmigosPage", "Error al enviar notificación", it) }
-}
-
-// Definimos la clase Usuario con campo objetivo fitness
+// Definimos la clase Usuario con un nuevo campo para el objetivo fitness
 data class Usuario(
     val id: String = "",
     val nombre: String = "",
     val fotoPerfil: String = "",
     val email: String = "",
-    val objetivoFitness: String = "Mantener forma física"
+    val objetivoFitness: String = "Mantener forma física" // Añadido campo de objetivo fitness
 )
 
-// Rutina compartida por amigo
+// Ampliamos la definición de Rutina para incluir la opción de compartir
 data class RutinaAmigo(
     val id: String = "",
     val nombre: String = "",
@@ -74,296 +57,11 @@ data class RutinaAmigo(
     val fechaCreacion: Timestamp = Timestamp.now()
 )
 
+// Nueva clase para agrupar rutinas por usuario
 data class RutinasPorUsuario(
     val usuario: Usuario,
     val rutinas: List<RutinaAmigo>
 )
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ListarRutinasAmigosPage(navController: NavHostController) {
-    val context = LocalContext.current
-    val db = FirebaseFirestore.getInstance()
-    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-    val scope = rememberCoroutineScope()
-
-    var rutinasPorUsuario by remember { mutableStateOf<List<RutinasPorUsuario>>(emptyList()) }
-    var isLoading by remember { mutableStateOf(true) } // Para carga inicial
-    var isBackgroundLoading by remember { mutableStateOf(false) } // Para actualizaciones en segundo plano
-    var errorMessage by remember { mutableStateOf<String?>(null) }
-    var successMessage by remember { mutableStateOf<String?>(null) }
-
-    var showCommunityDialog by remember { mutableStateOf(false) }
-    var allUsers by remember { mutableStateOf<List<User>>(emptyList()) }
-    var isLoadingUsers by remember { mutableStateOf(false) }
-    var friendsList by remember { mutableStateOf<List<User>>(emptyList()) }
-    var showFriendsListDialog by remember { mutableStateOf(false) }
-
-    var requestedUserIds by remember { mutableStateOf<List<String>>(emptyList()) }
-
-
-    // Carga rutinas de amigos suspendida
-    suspend fun cargarRutinasAmigos(initialLoad: Boolean = true) {
-        // Solo activamos isLoading en la carga inicial
-        if (initialLoad) {
-            isLoading = true
-        } else {
-            isBackgroundLoading = true
-        }
-
-        try {
-            val amigosDoc = db.collection("amigos").document(userId).get().await()
-            val amigosIds = (amigosDoc.get("listaAmigos") as? List<String>) ?: emptyList()
-
-            // Si no hay amigos, limpiamos la lista y terminamos
-            if (amigosIds.isEmpty()) {
-                rutinasPorUsuario = emptyList()
-                isLoading = false
-                isBackgroundLoading = false
-                return
-            }
-
-            val usuariosMap = mutableMapOf<String, Usuario>()
-            val batchSize = 10
-            for (i in amigosIds.indices step batchSize) {
-                val batch = amigosIds.subList(i, minOf(i + batchSize, amigosIds.size))
-                val usuariosSnapshot = db.collection("usuarios")
-                    .whereIn(FieldPath.documentId(), batch)
-                    .get().await()
-                usuariosSnapshot.documents.forEach { doc ->
-                    usuariosMap[doc.id] = Usuario(
-                        id = doc.id,
-                        nombre = doc.getString("nombre") ?: "",
-                        fotoPerfil = doc.getString("fotoPerfil") ?: "",
-                        email = doc.getString("email") ?: "",
-                        objetivoFitness = doc.getString("objetivoFitness") ?: "Mantener forma física"
-                    )
-                }
-            }
-
-            val rutinasResult = mutableMapOf<String, MutableList<RutinaAmigo>>()
-            for (i in amigosIds.indices step batchSize) {
-                val batch = amigosIds.subList(i, minOf(i + batchSize, amigosIds.size))
-                val rutinasSnapshot = db.collection("rutinas")
-                    .whereIn("usuarioId", batch)
-                    .whereEqualTo("compartirConAmigos", true)
-                    .get().await()
-                rutinasSnapshot.documents.forEach { doc ->
-                    val data = doc.data ?: return@forEach
-                    val uid = data["usuarioId"] as? String ?: return@forEach
-                    usuariosMap[uid]?.let { usuario ->
-                        val rutina = RutinaAmigo(
-                            id = doc.id,
-                            nombre = data["nombre"] as? String ?: "",
-                            descripcion = data["descripcion"] as? String ?: "",
-                            dificultad = data["dificultad"] as? String ?: "Medio",
-                            ejercicios = (data["ejercicios"] as? List<*>)?.filterIsInstance<String>() ?: emptyList(),
-                            usuarioId = uid,
-                            nombreUsuario = usuario.nombre,
-                            compartirConAmigos = data["compartirConAmigos"] as? Boolean ?: false,
-                            fechaCreacion = data["fechaCreacion"] as? Timestamp ?: Timestamp.now()
-                        )
-                        rutinasResult.getOrPut(uid) { mutableListOf() }.add(rutina)
-                    }
-                }
-            }
-
-            // Preparar el resultado
-            val nuevoResultado = rutinasResult.mapNotNull { (uid, rutinas) ->
-                usuariosMap[uid]?.let { user -> RutinasPorUsuario(user, rutinas.sortedByDescending { it.fechaCreacion }) }
-            }.sortedBy { it.usuario.nombre }
-
-            // Actualizar solo si hay cambios o es la carga inicial
-            rutinasPorUsuario = nuevoResultado
-
-        } catch (e: Exception) {
-            Log.e("ListarRutinasAmigosPage", "Error: ${e.message}")
-            // Solo mostrar error en la carga inicial
-            if (initialLoad) {
-                errorMessage = "Error al cargar rutinas: ${e.message}"
-            }
-        } finally {
-            isLoading = false
-            isBackgroundLoading = false
-        }
-    }
-
-    // Efectos para diálogos
-    LaunchedEffect(showCommunityDialog) {
-        if (showCommunityDialog) {
-            isLoadingUsers = true
-            loadAllUsers { allUsers = it.filter { u -> u.id != userId }; isLoadingUsers = false }
-            loadFriendsList(userId) { friendsList = it }
-        }
-    }
-    LaunchedEffect(showFriendsListDialog) {
-        if (showFriendsListDialog) loadFriendsList(userId) { friendsList = it }
-    }
-    LaunchedEffect(userId) { if (userId.isNotEmpty()) scope.launch { cargarRutinasAmigos(initialLoad = true) } }
-
-    // Refresco periódico de usuarios, amigos y rutinas cada 5 segundos
-    val lifecycleOwner = LocalLifecycleOwner.current
-    LaunchedEffect(lifecycleOwner) {
-        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            while (true) {
-                delay(5000)
-                // Verificar que no haya una actualización en curso antes de iniciar otra
-                if (!isBackgroundLoading) {
-                    // Si el diálogo de comunidad está abierto, recargar usuarios y amigos
-                    if (showCommunityDialog) {
-                        loadAllUsers { allUsers = it.filter { u -> u.id != userId } }
-                        loadFriendsList(userId) { friendsList = it }
-                    }
-                    // Siempre recargar amigos y rutinas en segundo plano
-                    loadFriendsList(userId) { friendsList = it }
-                    scope.launch { cargarRutinasAmigos(initialLoad = false) }
-                    Log.d("ListarRutinasAmigosPage", "Refresco periódico ejecutado")
-                } else {
-                    Log.d("ListarRutinasAmigosPage", "Omitiendo refresco, hay una carga en progreso")
-                }
-            }
-        }
-    }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Rutinas de Amigos") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.navigate("main") { popUpTo(0) { inclusive = true } } }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
-                    }
-                }
-//                actions = {
-//                    IconButton(onClick = { showFriendsListDialog = true }) {
-//                        Icon(Icons.Default.People, contentDescription = "Ver Amigos")
-//                    }
-//                }
-            )
-        }
-//        floatingActionButton = {
-//            FloatingActionButton(
-//                onClick = { showCommunityDialog = true },
-//                containerColor = MaterialTheme.colorScheme.primary
-//            ) {
-//                Icon(Icons.Default.PersonAdd, contentDescription = "Buscar Comunidad")
-//            }
-//        }
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-        ) {
-            when {
-                isLoading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                errorMessage != null -> {
-                    Text(
-                        text = errorMessage ?: "Error",
-                        modifier = Modifier.align(Alignment.Center),
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-                rutinasPorUsuario.isEmpty() -> {
-                    Text(
-                        text = "No hay rutinas compartidas",
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-                else -> LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp)
-                ) {
-                    rutinasPorUsuario.forEach { group ->
-                        item { AmigoCabecera(group.usuario) }
-                        items(group.rutinas) { RutinaAmigoCard(rutina = it) {
-                            navController.navigate("rutinaDetalle/${it.id}")
-                        } }
-                        item {
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Divider()
-                            Spacer(modifier = Modifier.height(8.dp))
-                        }
-                    }
-                }
-            }
-
-            // La actualización en segundo plano ocurre sin indicador visual
-        }
-    }
-
-    LaunchedEffect(showCommunityDialog) {
-        if (showCommunityDialog) {
-            isLoadingUsers = true
-
-            // Si ya tienes un método para cargar usuarios, mantenlo y añade esto al final:
-            loadRequestedUserIds(userId) { requested ->
-                requestedUserIds = requested
-                isLoadingUsers = false
-            }
-        }
-    }
-
-// Diálogo de comunidad
-//    if (showCommunityDialog) {
-//        UsersDialog(
-//            title = "Comunidad",
-//            users = allUsers,
-//            isLoading = isLoadingUsers,
-//            onDismiss = { showCommunityDialog = false },
-//            showAddButton = true,
-//            currentFriends = friendsList.map { it.id },
-//            requestedUserIds = requestedUserIds,  // Añadimos el parámetro faltante
-//            onUserAction = { selectedId ->
-//                if (friendsList.any { it.id == selectedId }) {
-//                    scope.launch {
-//                        removeFriend(userId, selectedId) {
-//                            loadFriendsList(userId) { friendsList = it; successMessage = "Usuario eliminado de amigos"; scope.launch { cargarRutinasAmigos(initialLoad = false) } }
-//                        }
-//                    }
-//                } else {
-//                    db.collection("usuarios").document(selectedId).get()
-//                        .addOnSuccessListener { doc ->
-//                            val private = doc.getBoolean("cuentaPrivada") ?: true
-//                            if (private) {
-//                                sendFriendRequestNotification(selectedId, allUsers.find { u -> u.id == userId }?.nombre ?: "", userId)
-//                                // Actualizar la lista de solicitudes enviadas
-//                                requestedUserIds = requestedUserIds + selectedId
-//                                Toast.makeText(context, "Solicitud de amistad enviada", Toast.LENGTH_SHORT).show()
-//                            } else {
-//                                scope.launch {
-//                                    addFriend(userId, selectedId) {
-//                                        loadFriendsList(userId) { friendsList = it; successMessage = "Usuario agregado a amigos"; scope.launch { cargarRutinasAmigos(initialLoad = false) } }
-//                                    }
-//                                }
-//                                Toast.makeText(context, "Amigo añadido", Toast.LENGTH_SHORT).show()
-//                            }
-//                        }
-//                        .addOnFailureListener { Toast.makeText(context, "Error comprobando privacidad", Toast.LENGTH_SHORT).show() }
-//                }
-//            }
-//        )
-//    }
-
-// Diálogo de amigos
-//    if (showFriendsListDialog) {
-//        UsersDialog(
-//            title = "Mis Amigos",
-//            users = friendsList,
-//            isLoading = isLoadingUsers,
-//            onDismiss = { showFriendsListDialog = false },
-//            onUserAction = { friendId ->
-//                scope.launch {
-//                    removeFriend(userId, friendId) { loadFriendsList(userId) { friendsList = it } }
-//                }
-//            },
-//            showAddButton = false,
-//            currentFriends = friendsList.map { it.id },  // Añadimos el parámetro faltante
-//            requestedUserIds = requestedUserIds  // Añadimos el parámetro faltante
-//        )
-//    }
-}
 
 // Función para cargar todos los usuarios de la base de datos
 fun loadAllUsers(callback: (List<User>) -> Unit) {
@@ -447,58 +145,548 @@ fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
         }
 }
 
-//// Funciones para agregar amigos
-//fun addFriend(userId: String, friendId: String, callback: () -> Unit) {
-//    val db = FirebaseFirestore.getInstance()
-//    db.collection("amigos")
-//        .document(userId)
-//        .get()
-//        .addOnSuccessListener { document ->
-//            if (document.exists()) {
-//                val currentFriends = document.get("listaAmigos") as? List<String> ?: emptyList()
-//                if (!currentFriends.contains(friendId)) {
-//                    val updatedFriends = currentFriends + friendId
-//                    db.collection("amigos")
-//                        .document(userId)
-//                        .update("listaAmigos", updatedFriends)
-//                        .addOnSuccessListener { callback() }
-//                        .addOnFailureListener { callback() }
-//                } else {
-//                    callback()
-//                }
-//            } else {
-//                // Crear un nuevo documento si no existe
-//                db.collection("amigos")
-//                    .document(userId)
-//                    .set(mapOf("listaAmigos" to listOf(friendId)))
-//                    .addOnSuccessListener { callback() }
-//                    .addOnFailureListener { callback() }
-//            }
-//        }
-//        .addOnFailureListener { callback() }
-//}
-//
-//// Función para eliminar amigos
-//fun removeFriend(userId: String, friendId: String, callback: () -> Unit) {
-//    val db = FirebaseFirestore.getInstance()
-//    db.collection("amigos")
-//        .document(userId)
-//        .get()
-//        .addOnSuccessListener { document ->
-//            if (document.exists()) {
-//                val currentFriends = document.get("listaAmigos") as? List<String> ?: emptyList()
-//                val updatedFriends = currentFriends.filter { it != friendId }
-//                db.collection("amigos")
-//                    .document(userId)
-//                    .update("listaAmigos", updatedFriends)
-//                    .addOnSuccessListener { callback() }
-//                    .addOnFailureListener { callback() }
-//            } else {
-//                callback()
-//            }
-//        }
-//        .addOnFailureListener { callback() }
-//}
+// Componente principal de la página
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ListarRutinasAmigosPage(navController: NavHostController) {
+    // Inicializamos Firebase Firestore y Firebase Auth
+    val db = FirebaseFirestore.getInstance()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    val scope = rememberCoroutineScope()
+
+    var rutinasPorUsuario by remember { mutableStateOf<List<RutinasPorUsuario>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var showDetailDialog by remember { mutableStateOf(false) }
+    var selectedRutina by remember { mutableStateOf<RutinaAmigo?>(null) }
+    var isCopying by remember { mutableStateOf(false) }
+    var successMessage by remember { mutableStateOf<String?>(null) }
+    var errorMessage2 by remember { mutableStateOf<String?>(null) }
+
+    // Estados para el diálogo de comunidad y usuarios
+    var showCommunityDialog by remember { mutableStateOf(false) }
+    var allUsers by remember { mutableStateOf<List<User>>(emptyList()) }
+    var isLoadingUsers by remember { mutableStateOf(false) }
+    var friendsList by remember { mutableStateOf<List<User>>(emptyList()) }
+    var showFriendsListDialog by remember { mutableStateOf(false) }
+
+    // Función suspendida para cargar las rutinas de amigos.
+    suspend fun cargarRutinasAmigos() {
+        isLoading = true
+        try {
+            // Paso 1: Obtener la lista de IDs de amigos del documento "amigos/{userId}"
+            val amigosDoc = db.collection("amigos")
+                .document(userId)
+                .get()
+                .await()
+            val amigosIds = if (amigosDoc.exists() && amigosDoc.get("listaAmigos") != null) {
+                amigosDoc.get("listaAmigos") as? List<String> ?: emptyList()
+            } else {
+                emptyList()
+            }
+
+            if (amigosIds.isEmpty()) {
+                rutinasPorUsuario = emptyList()
+                isLoading = false
+                return
+            }
+
+            // Paso 2: Obtener información de los amigos (usuarios)
+            val usuariosMap = mutableMapOf<String, Usuario>()
+            val batchSize = 10
+            for (i in amigosIds.indices step batchSize) {
+                val batch = amigosIds.subList(i, minOf(i + batchSize, amigosIds.size))
+                val usuariosSnapshot = db.collection("usuarios")
+                    .whereIn(FieldPath.documentId(), batch)
+                    .get()
+                    .await()
+                usuariosSnapshot.documents.forEach { doc ->
+                    val usuario = Usuario(
+                        id = doc.id,
+                        nombre = doc.getString("nombre") ?: "",
+                        fotoPerfil = doc.getString("fotoPerfil") ?: "",
+                        email = doc.getString("email") ?: "",
+                        objetivoFitness = doc.getString("objetivoFitness") ?: "Mantener forma física"
+                    )
+                    usuariosMap[usuario.id] = usuario
+                }
+            }
+
+            // Paso 3: Obtener rutinas compartidas por los amigos
+            val rutinasResult = mutableMapOf<String, MutableList<RutinaAmigo>>()
+            for (i in amigosIds.indices step batchSize) {
+                val batch = amigosIds.subList(i, minOf(i + batchSize, amigosIds.size))
+                val rutinasSnapshot = db.collection("rutinas")
+                    .whereIn("usuarioId", batch)
+                    .whereEqualTo("compartirConAmigos", true)
+                    .get()
+                    .await()
+                rutinasSnapshot.documents.forEach { doc ->
+                    val data = doc.data
+                    if (data != null) {
+                        val usuarioId = data["usuarioId"] as? String ?: ""
+                        val usuario = usuariosMap[usuarioId]
+                        if (usuario != null) {
+                            val rutina = RutinaAmigo(
+                                id = doc.id,
+                                nombre = data["nombre"] as? String ?: "",
+                                descripcion = data["descripcion"] as? String ?: "",
+                                dificultad = data["dificultad"] as? String ?: "Medio",
+                                ejercicios = (data["ejercicios"] as? List<*>)?.filterIsInstance<String>() ?: emptyList(),
+                                usuarioId = usuarioId,
+                                nombreUsuario = usuario.nombre,
+                                compartirConAmigos = data["compartirConAmigos"] as? Boolean ?: false,
+                                fechaCreacion = data["fechaCreacion"] as? Timestamp ?: Timestamp.now()
+                            )
+                            if (!rutinasResult.containsKey(usuarioId)) {
+                                rutinasResult[usuarioId] = mutableListOf()
+                            }
+                            rutinasResult[usuarioId]?.add(rutina)
+                        }
+                    }
+                }
+            }
+
+            // Agrupar y ordenar las rutinas por usuario
+            val resultList = mutableListOf<RutinasPorUsuario>()
+            for ((usuarioId, rutinas) in rutinasResult) {
+                val usuario = usuariosMap[usuarioId]
+                if (usuario != null && rutinas.isNotEmpty()) {
+                    val rutinasOrdenadas = rutinas.sortedByDescending { it.fechaCreacion }
+                    resultList.add(RutinasPorUsuario(usuario, rutinasOrdenadas))
+                }
+            }
+            rutinasPorUsuario = resultList.sortedBy { it.usuario.nombre }
+            isLoading = false
+
+        } catch (e: Exception) {
+            Log.e("ListarRutinasAmigosPage", "Error al cargar rutinas: ${e.message}")
+            errorMessage = "Error al cargar rutinas: ${e.message}"
+            isLoading = false
+        }
+    }
+
+    // Al abrir el diálogo de comunidad, cargar la lista de usuarios y amigos
+    LaunchedEffect(showCommunityDialog) {
+        if (showCommunityDialog) {
+            isLoadingUsers = true
+            loadAllUsers { users ->
+                allUsers = users.filter { it.id != userId }
+                isLoadingUsers = false
+            }
+            loadFriendsList(userId) { friends ->
+                friendsList = friends
+            }
+        }
+    }
+
+    // Cargar lista de amigos cuando se abre el diálogo de amigos
+    LaunchedEffect(showFriendsListDialog) {
+        if (showFriendsListDialog) {
+            loadFriendsList(userId) { friends ->
+                friendsList = friends
+            }
+        }
+    }
+
+    // Cargar rutinas al iniciar
+    LaunchedEffect(userId) {
+        if (userId.isNotEmpty()) {
+            cargarRutinasAmigos()
+        }
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Rutinas de Amigos") },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.navigate("main") {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+        ) {
+            if (isLoading) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            } else if (errorMessage != null) {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Error,
+                        contentDescription = "Error",
+                        tint = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.size(48.dp)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = errorMessage ?: "Error desconocido",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = {
+                        errorMessage = null
+                        isLoading = true
+                        scope.launch {
+                            try {
+                                cargarRutinasAmigos()
+                            } catch (e: Exception) {
+                                errorMessage = "Error al cargar rutinas: ${e.message}"
+                            }
+                        }
+                    }) {
+                        Text("Reintentar")
+                    }
+                }
+            } else if (rutinasPorUsuario.isEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.People,
+                        contentDescription = "No hay rutinas",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(64.dp)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "No hay rutinas compartidas",
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Tus amigos aún no han compartido rutinas",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 32.dp)
+                    )
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    rutinasPorUsuario.forEach { grupo ->
+                        item { AmigoCabecera(usuario = grupo.usuario) }
+                        items(grupo.rutinas) { rutina ->
+                            RutinaAmigoCard(rutina = rutina, onRutinaClick = {
+                                selectedRutina = rutina
+                                showDetailDialog = true
+                            })
+                        }
+                        item {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Divider()
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Diálogo para mostrar detalles de la rutina con opción para copiarla.
+    if (showDetailDialog && selectedRutina != null) {
+        val rutinaLocal = selectedRutina
+        Dialog(
+            onDismissRequest = {
+                selectedRutina = null
+                showDetailDialog = false
+            },
+            properties = androidx.compose.ui.window.DialogProperties(
+                dismissOnClickOutside = true,
+                dismissOnBackPress = true
+            )
+        ) {
+            rutinaLocal?.let { rutina ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                    ) {
+                        // Cabecera
+                        Box(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = rutina.nombre,
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(end = 48.dp)
+                            )
+                            IconButton(
+                                modifier = Modifier.align(Alignment.TopEnd),
+                                onClick = {
+                                    selectedRutina = null
+                                    showDetailDialog = false
+                                }
+                            ) {
+                                Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                            }
+                        }
+
+                        // Creador
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.colorScheme.primaryContainer),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = rutina.nombreUsuario.firstOrNull()?.toString() ?: "?",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Creado por ${rutina.nombreUsuario}",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+
+                        AssistChip(
+                            onClick = { },
+                            label = { Text(rutina.dificultad) },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = when (rutina.dificultad) {
+                                        "Fácil" -> Icons.Default.Star
+                                        "Difícil" -> Icons.Default.StarRate
+                                        else -> Icons.Default.StarHalf
+                                    },
+                                    contentDescription = null,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                        )
+
+                        // Mensajes de estado
+                        AnimatedVisibility(
+                            visible = isCopying || successMessage != null,
+                            enter = fadeIn() + expandVertically(),
+                            exit = fadeOut() + shrinkVertically()
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                if (isCopying) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(16.dp),
+                                        strokeWidth = 2.dp
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = "Copiando rutina a tu colección...",
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                } else if (successMessage != null) {
+                                    Icon(
+                                        imageVector = Icons.Default.Check,
+                                        contentDescription = null,
+                                        tint = Color(0xFF4CAF50),
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = successMessage!!,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = Color(0xFF4CAF50)
+                                    )
+                                }
+                            }
+                        }
+
+                        // Mensaje de error
+                        AnimatedVisibility(
+                            visible = errorMessage2 != null,
+                            enter = fadeIn() + expandVertically(),
+                            exit = fadeOut() + shrinkVertically()
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Error,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.error,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = errorMessage2 ?: "Error desconocido",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                        }
+
+                        LaunchedEffect(errorMessage2) {
+                            if (errorMessage2 != null) {
+                                delay(2000)
+                                errorMessage2 = null
+                            }
+                        }
+
+                        // Descripción y ejercicios
+                        if (rutina.descripcion.isNotEmpty()) {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = "Descripción:",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = rutina.descripcion,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = "Ejercicios (${rutina.ejercicios.size}):",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(max = 200.dp)
+                        ) {
+                            items(rutina.ejercicios) { ejercicio ->
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 4.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.FitnessCenter,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(16.dp),
+                                        tint = MaterialTheme.colorScheme.primary
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = ejercicio,
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Button(
+                                onClick = {
+                                    navController.navigate("ejecutar_rutina/${rutina.id}")
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                            ) {
+                                Icon(Icons.Default.PlayArrow, contentDescription = null)
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("Iniciar Rutina")
+                            }
+
+                            Button(
+                                onClick = {
+                                    isCopying = true
+                                    scope.launch {
+                                        try {
+                                            val querySnapshot = db.collection("rutinas")
+                                                .whereEqualTo("usuarioId", userId)
+                                                .whereEqualTo("nombre", rutina.nombre)
+                                                .get()
+                                                .await()
+
+                                            if (!querySnapshot.isEmpty) {
+                                                isCopying = false
+                                                errorMessage2 = "Ya tienes una rutina con este nombre"
+                                                delay(2000)
+                                                if (showDetailDialog) errorMessage2 = null
+                                                return@launch
+                                            }
+
+                                            val nuevaRutina = hashMapOf(
+                                                "nombre" to rutina.nombre,
+                                                "descripcion" to "${rutina.descripcion}\n\nCopiada de: ${rutina.nombreUsuario}",
+                                                "dificultad" to rutina.dificultad,
+                                                "ejercicios" to rutina.ejercicios,
+                                                "usuarioId" to userId,
+                                                "compartirConAmigos" to false,
+                                                "fechaCreacion" to Timestamp.now()
+                                            )
+
+                                            db.collection("rutinas").add(nuevaRutina).await()
+                                            isCopying = false
+                                            successMessage = "¡Rutina guardada en tu colección!"
+                                            delay(2000)
+                                            if (showDetailDialog) successMessage = null
+                                        } catch (e: Exception) {
+                                            isCopying = false
+                                            errorMessage = "Error al copiar rutina: ${e.message}"
+                                        }
+                                    }
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                            ) {
+                                Icon(Icons.Default.ContentCopy, contentDescription = null)
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("Guardar en Mis Rutinas")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 // Componente para mostrar la cabecera del amigo
 @Composable
@@ -655,65 +843,4 @@ fun RutinaAmigoCard(
             }
         }
     }
-}
-
-
-
-private fun loadRequestedUserIds(currentUserId: String, callback: (List<String>) -> Unit) {
-    val db = FirebaseFirestore.getInstance()
-    val notificacionesRef = db.collection("notificaciones")
-    val requestedIds = mutableListOf<String>()
-
-    db.collection("usuarios")
-        .get()
-        .addOnSuccessListener { usersSnapshot: QuerySnapshot ->
-            if (usersSnapshot.isEmpty) {
-                Log.d("ListarRutinas", "No hay usuarios para comprobar solicitudes")
-                callback(emptyList())
-                return@addOnSuccessListener
-            }
-
-            var usersToCheck = usersSnapshot.size()
-
-            for (userDoc in usersSnapshot.documents) {
-                val targetUserId = userDoc.id
-
-                if (targetUserId == currentUserId) {
-                    usersToCheck--
-                    if (usersToCheck == 0) {
-                        callback(requestedIds)
-                    }
-                    continue
-                }
-
-                notificacionesRef.document(targetUserId)
-                    .collection("items")
-                    .whereEqualTo("tipo", "solicitud")
-                    .whereEqualTo("remitente", currentUserId)
-                    .get()
-                    .addOnSuccessListener { notifSnapshot: QuerySnapshot ->
-                        if (!notifSnapshot.isEmpty) {
-                            requestedIds.add(targetUserId)
-                        }
-
-                        usersToCheck--
-
-                        if (usersToCheck == 0) {
-                            callback(requestedIds)
-                        }
-                    }
-                    .addOnFailureListener { e: Exception ->
-                        Log.e("ListarRutinas", "Error al buscar solicitudes", e)
-                        usersToCheck--
-
-                        if (usersToCheck == 0) {
-                            callback(requestedIds)
-                        }
-                    }
-            }
-        }
-        .addOnFailureListener { e: Exception ->
-            Log.e("ListarRutinas", "Error al cargar usuarios", e)
-            callback(emptyList())
-        }
 }
