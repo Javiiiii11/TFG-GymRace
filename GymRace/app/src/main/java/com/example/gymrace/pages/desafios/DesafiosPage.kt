@@ -32,6 +32,13 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.foundation.Image
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -395,22 +402,8 @@ fun DesafiosPage(
     var selectedChallenge by remember { mutableStateOf<Challenge?>(null) }
     // Estado para el progreso del desafío
     var newProgress by remember { mutableStateOf("0") }
-    // Estado para el diálogo de comunidad
-    var showCommunityDialog by remember { mutableStateOf(false) }
-
-    // Estados para el diálogo de comunidad y usuarios
-    // Estado para la lista de usuarios
-    var allUsers by remember { mutableStateOf<List<User>>(emptyList()) }
-    // Estado para la carga de usuarios
-    var isLoadingUsers by remember { mutableStateOf(false) }
-    // Estado para la lista de amigos
-    var friendsList by remember { mutableStateOf<List<User>>(emptyList()) }
-    // Estado para mostrar el diálogo de lista de amigos
-    var showFriendsListDialog by remember { mutableStateOf(false) }
-    // Estado para mostrar el mensaje de éxito
-    var successMessage by remember { mutableStateOf<String?>(null) }
-    // Estado para mostrar el diálogo de progreso
-    val scope = rememberCoroutineScope()
+    // Estado para el diálogo de confirmación de eliminación
+    var showDeleteChallengeDialog by remember { mutableStateOf(false) }
 
     // Para refrescar cada 5 segundos
     LaunchedEffect(userId) {
@@ -426,51 +419,6 @@ fun DesafiosPage(
             delay(5000)
         }
     }
-
-    // Efecto para cargar la lista de amigos cada 5 segundos
-//    val lifecycleOwner = LocalLifecycleOwner.current
-//
-//    LaunchedEffect(lifecycleOwner) {
-//        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-//            while (true) {
-//                val id = GLOBAL.id
-//                if (!id.isNullOrEmpty()) {
-//                    try {
-//                        loadFriendsList(id) { friends ->
-//                            if (friends != friendsList) {
-//                                Log.d("FriendsRefresh", "Lista de amigos actualizada: ${friends.size} amigos")
-//                                friendsList = friends
-//                            } else {
-//                                Log.d("FriendsRefresh", "Sin cambios en la lista de amigos")
-//                            }
-//                        }
-//                    } catch (e: Exception) {
-//                        Log.e("FriendsRefresh", "Error al actualizar amigos", e)
-//                    }
-//                } else {
-//                    Log.w("FriendsRefresh", "GLOBAL.id es null o vacío, no se puede cargar amigos")
-//                }
-//                delay(5000)
-//            }
-//        }
-//    }
-
-
-    // Al abrir el diálogo de comunidad, cargar la lista de usuarios y amigos
-//    LaunchedEffect(showCommunityDialog) {
-//        if (showCommunityDialog) {
-//            isLoadingUsers = true
-//            loadAllUsers { users ->
-//                // Filtramos para excluir al usuario actual
-//                allUsers = users.filter { it.id != userId }
-//                isLoadingUsers = false
-//                Log.d("ListarRutinasAmigosPage", "Usuarios cargados para comunidad: ${allUsers.size}")
-//            }
-//            loadFriendsList(userId) { friends ->
-//                friendsList = friends
-//            }
-//        }
-//    }
 
     // Pantalla principal
     Scaffold(
@@ -505,17 +453,6 @@ fun DesafiosPage(
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Crear Rutina")
             }
-            // sin animacion
-//            FloatingActionButton(
-//                onClick = { showCreateDialog = true },
-//                containerColor = MaterialTheme.colorScheme.primary,
-//                contentColor = MaterialTheme.colorScheme.onPrimary,
-//                modifier = Modifier
-//                    .padding(bottom = 8.dp, end = 8.dp)
-//                    .navigationBarsPadding()
-//            ) {
-//                Icon(Icons.Default.Add, contentDescription = "Crear Desafío")
-//            }
         }
     ) { paddingValues ->
         Box(
@@ -529,7 +466,7 @@ fun DesafiosPage(
                 )
         ) {
             if (challenges.isEmpty()) {
-                EmptyState(onBuscarAmigos = { showCommunityDialog = true })
+                EmptyState(onCreateDesafio = { showCreateDialog = true })
             }else {
                 ChallengesList(
                     challenges = challenges,
@@ -538,6 +475,21 @@ fun DesafiosPage(
                         coroutineScope.launch {
                             viewModel.updateChallengeStatus(challenge.id, "ACCEPTED", userId)
                         }
+                        //borrar la notificacion
+                        val firestore = FirebaseFirestore.getInstance()
+                        firestore.collection("notificaciones")
+                            .document(userId)
+                            .collection("items")
+                            .whereEqualTo("challengeId", challenge.id)
+                            .get()
+                            .addOnSuccessListener { querySnapshot ->
+                                for (document in querySnapshot.documents) {
+                                    document.reference.delete()
+                                }
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("DesafiosPage", "Error al eliminar la notificación: ${e.message}")
+                            }
                     },
                     onUpdateProgress = { challenge ->
                         selectedChallenge = challenge
@@ -550,8 +502,35 @@ fun DesafiosPage(
                         newProgress = currentProgress.toString()
                     },
                     onDeleteChallenge = { challenge ->
-                        coroutineScope.launch {
-                            viewModel.deleteChallenge(challenge.id, userId, challenge.status, challenge.creatorId)
+                        selectedChallenge = challenge
+                        showDeleteChallengeDialog = true
+                    }
+                )
+            }
+
+
+            if (showDeleteChallengeDialog) {
+                AlertDialog(
+                    onDismissRequest = { showDeleteChallengeDialog = false },
+                    title = { Text("Eliminar desafío") },
+                    text = { Text("¿Estás seguro de que deseas eliminar este desafío?") },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                coroutineScope.launch {
+                                    selectedChallenge?.let { challenge ->
+                                        viewModel.deleteChallenge(challenge.id, userId, challenge.status, challenge.creatorId)
+                                    }
+                                    showDeleteChallengeDialog = false
+                                }
+                            }
+                        ) {
+                            Text("Eliminar")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showDeleteChallengeDialog = false }) {
+                            Text("Cancelar")
                         }
                     }
                 )
@@ -636,106 +615,11 @@ fun DesafiosPage(
         viewModel.loadFriends(userId)
         viewModel.loadFriendsChallenges(userId)
     }
-
-
-// Primero, debes añadir esta variable a tu composable:
-    var requestedUserIds by remember { mutableStateOf<List<String>>(emptyList()) }
-
-// Luego, carga los IDs de solicitudes enviadas (añade esto dentro de un LaunchedEffect
-// o donde inicializas tus datos):
-    LaunchedEffect(showCommunityDialog) {
-        if (showCommunityDialog) {
-            // Cargar usuarios y otras inicializaciones que ya tengas
-            loadAllUsers { users ->
-                allUsers = users.filter { it.id != userId }
-
-                // Cargar las solicitudes enviadas
-                loadRequestedUserIds(userId) { requested ->
-                    requestedUserIds = requested
-                    isLoadingUsers = false
-                }
-            }
-        }
-    }
-
-// Finalmente, corrige la llamada a UsersDialog:
-    if (showCommunityDialog) {
-        LaunchedEffect(showCommunityDialog) {
-            isLoadingUsers = true
-            loadAllUsers { users ->
-                allUsers = users.filter { it.id != GLOBAL.id }
-                loadRequestedUserIds(userId) { requested ->
-                    requestedUserIds = requested
-                    isLoadingUsers = false
-                }
-            }
-        }
-
-//        UsersDialog(
-//            title = "Comunidad",
-//            users = allUsers,
-//            isLoading = isLoadingUsers,
-//            onDismiss = { showCommunityDialog = false },
-//            showAddButton = true,
-//            currentFriends = friendsList.map { it.id },
-//            requestedUserIds = requestedUserIds,
-//            onUserAction = { friendId ->
-//                val firestore = FirebaseFirestore.getInstance()
-//
-//                scope.launch {
-//                    if (friendsList.any { it.id == friendId }) {
-//                        // UI instantánea
-//                        requestedUserIds = requestedUserIds.filterNot { it == friendId }
-//                        friendsList = friendsList.filterNot { it.id == friendId }
-//
-//                        removeFriend(userId, friendId) {
-//                            loadFriendsList(userId) { updatedFriends ->
-//                                friendsList = updatedFriends
-//                                successMessage = "Usuario eliminado de amigos"
-//                                scope.launch { viewModel.loadFriends(userId) }
-//                            }
-//                        }
-//                    } else {
-//                        // UI instantánea
-//                        requestedUserIds = requestedUserIds + friendId
-//
-//                        try {
-//                            val doc = firestore.collection("usuarios").document(friendId).get().await()
-//                            val isPrivate = doc.getBoolean("cuentaPrivada") ?: true
-//
-//                            if (isPrivate) {
-//                                sendFriendRequestNotification(
-//                                    toUserId = friendId,
-//                                    fromUserName = GLOBAL.nombre,
-//                                    fromUserId = userId
-//                                )
-//                                successMessage = "Solicitud enviada"
-//                            } else {
-//                                friendsList = friendsList + allUsers.first { it.id == friendId }
-//
-//                                addFriend(userId, friendId) {
-//                                    loadFriendsList(userId) { updatedFriends ->
-//                                        friendsList = updatedFriends
-//                                        successMessage = "Amigo añadido"
-//                                        scope.launch { viewModel.loadFriends(userId) }
-//                                    }
-//                                }
-//                            }
-//                        } catch (e: Exception) {
-//                            Log.e("UserPage", "Error al comprobar privacidad: ${e.message}")
-//                            successMessage = "Error al procesar"
-//                            requestedUserIds = requestedUserIds.filterNot { it == friendId } // revertir estado
-//                        }
-//                    }
-//                }
-//            }
-//        )
-    }
 }
 
 // Composable para el estado vacío (si no hay desafíos)
 @Composable
-fun EmptyState(onBuscarAmigos: () -> Unit) {
+fun EmptyState(onCreateDesafio: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -743,9 +627,10 @@ fun EmptyState(onBuscarAmigos: () -> Unit) {
     ) {
         // Imagen central
         Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.fuego),
+//            imageVector = ImageVector.vectorResource(id = R.drawable.fuego)
+            painter = painterResource(id = R.drawable.fuego2),
             contentDescription = null,
-            modifier = Modifier.size(80.dp),
+            modifier = Modifier.size(120.dp), // 80 dp
             tint = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -761,11 +646,11 @@ fun EmptyState(onBuscarAmigos: () -> Unit) {
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(24.dp))
-        // Botón para buscar amigos
-        Button(onClick = onBuscarAmigos) {
-            Icon(Icons.Default.PersonAdd, contentDescription = null)
+        // Botón para crear desafío
+        Button(onClick = onCreateDesafio) {
+            Icon(ImageVector.vectorResource(id = R.drawable.fuego), contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Buscar Amigos")
+            Text("Crear desafío")
         }
     }
 }
