@@ -158,6 +158,8 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     var showDeletefriendDialog by remember { mutableStateOf(false) }
     var pendingFriendToDelete by remember { mutableStateOf<String?>(null) }
 
+    var isRemovingFollower by remember { mutableStateOf(false) }
+
 
     // Guarda la fecha de registro
 
@@ -407,6 +409,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 if (friendsList.any { it.id == userId }) {
                     // Eliminar amigo
                     pendingFriendToDelete = userId
+                    isRemovingFollower = false // ← MARCAR que es un seguido (normal)
                     showDeletefriendDialog = true
 
                 } else {
@@ -479,6 +482,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             onUserAction = { userId ->
                 // Eliminar amigo
                 pendingFriendToDelete = userId
+                isRemovingFollower = false // ← MARCAR que es un seguido (normal)
                 showDeletefriendDialog = true
             }
         )
@@ -503,9 +507,9 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             currentFriends = friendsList.map { it.id },
             requestedUserIds = requestedUserIds,
             onUserAction = { followerId ->
-                pendingFriendToDelete = userId
+                pendingFriendToDelete = followerId
+                isRemovingFollower = true // ← MARCAR que es un seguidor
                 showDeletefriendDialog = true
-
             },
             icon = Icons.Default.Close // Cambiar el ícono a "PersonRemove"
         )
@@ -517,26 +521,37 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 showDeletefriendDialog = false
                 pendingFriendToDelete = null
             },
-            title = { Text("Eliminar amigo") },
-            text = { Text("¿Estás seguro de que deseas eliminar a este amigo?") },
+            title = { Text(if (isRemovingFollower) "Eliminar seguidor" else "Dejar de seguir") },
+            text = { Text(if (isRemovingFollower) "¿Estás seguro de que deseas eliminar a este seguidor?" else "¿Estás seguro de que deseas dejar de seguir a este usuario?") },
             confirmButton = {
                 TextButton(onClick = {
-                    pendingFriendToDelete?.let { friendId ->
-                        friendsList = friendsList.filterNot { it.id == friendId }
-                        requestedUserIds = requestedUserIds.filterNot { it == friendId } // <-- Añade esta línea
-                        removeFriend(GLOBAL.id, friendId) {
-                            loadFriendsList(GLOBAL.id) { updatedFriends ->
-                                friendsList = updatedFriends
+                    pendingFriendToDelete?.let { targetId ->
+                        if (isRemovingFollower) {
+                            // Eliminar seguidor (el otro me sigue a mí)
+                            removeFriend(targetId, GLOBAL.id) {
+                                loadFollowersList(GLOBAL.id) { updatedFollowers ->
+                                    followersList = updatedFollowers
+                                }
                             }
-                            loadRequestedUserIds(GLOBAL.id) { requested ->
-                                requestedUserIds = requested
+                        } else {
+                            // Eliminar seguido (yo sigo al otro)
+                            removeFriend(GLOBAL.id, targetId) {
+                                loadFriendsList(GLOBAL.id) { updatedFriends ->
+                                    friendsList = updatedFriends
+                                }
+                                loadRequestedUserIds(GLOBAL.id) { requested ->
+                                    requestedUserIds = requested
+                                }
                             }
+                            friendsList = friendsList.filterNot { it.id == targetId }
+                            requestedUserIds = requestedUserIds.filterNot { it == targetId }
                         }
-
-
                     }
+
+                    // Cerrar el diálogo
                     showDeletefriendDialog = false
                     pendingFriendToDelete = null
+                    isRemovingFollower = false
                 }) {
                     Text("Sí")
                 }
@@ -1054,38 +1069,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             )
         }
 
-        // Diálogo de eliminación de seguidores
-        if (showDeletefriendDialog) {
-            AlertDialog(
-                onDismissRequest = { showDeletefriendDialog = false },
-                title = { Text("Eliminar amigo") },
-                text = { Text("¿Estás seguro de que deseas eliminar a este amigo?") },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            removeFriend(GLOBAL.id, pendingFriendToDelete!!) {
-                                loadFriendsList(GLOBAL.id) { updatedFriends ->
-                                    friendsList = updatedFriends
-                                }
-                            }
-                            // Lógica para eliminar el amigo
-                            showDeletefriendDialog = false
-                            friendsList = friendsList.filterNot { it.id == userId } // UI instantánea
-
-                        }
-                    ) {
-                        Text("Eliminar")
-                    }
-                },
-                dismissButton = {
-                    TextButton(
-                        onClick = { showDeletefriendDialog = false }
-                    ) {
-                        Text("Cancelar")
-                    }
-                }
-            )
-        }
 
         // Profile Header
         Box(
