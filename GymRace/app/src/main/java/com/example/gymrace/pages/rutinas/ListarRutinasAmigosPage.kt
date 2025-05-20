@@ -63,88 +63,6 @@ data class RutinasPorUsuario(
     val rutinas: List<RutinaAmigo>
 )
 
-// Función para cargar todos los usuarios de la base de datos
-fun loadAllUsers(callback: (List<User>) -> Unit) {
-    val db = FirebaseFirestore.getInstance()
-    db.collection("usuarios")
-        .get()
-        .addOnSuccessListener { snapshot ->
-            val usersList = snapshot.documents.map { doc ->
-                User(
-                    id = doc.id,
-                    nombre = doc.getString("nombre") ?: "",
-                    objetivoFitness = doc.getString("objetivoFitness") ?: "",
-                    peso = doc.getString("peso") ?: "",
-                    altura = doc.getString("altura") ?: "",
-                    edad = doc.getString("edad") ?: "",
-                    nivelExperiencia = doc.getString("nivelExperiencia") ?: "",
-                    cuentaPrivada = doc.getBoolean("cuentaPrivada") ?: false,
-                )
-            }
-            callback(usersList)
-        }
-        .addOnFailureListener { e ->
-            Log.e("loadAllUsers", "Error: ${e.message}")
-            callback(emptyList())
-        }
-}
-
-// Función para cargar la lista de amigos de un usuario
-fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
-    val db = FirebaseFirestore.getInstance()
-    db.collection("amigos")
-        .document(userId)
-        .get()
-        .addOnSuccessListener { document ->
-            if (document.exists() && document.get("listaAmigos") != null) {
-                val friendIds = document.get("listaAmigos") as? List<String> ?: emptyList()
-                if (friendIds.isEmpty()) {
-                    callback(emptyList())
-                    return@addOnSuccessListener
-                }
-                val friendsList = mutableListOf<User>()
-                var loadedCount = 0
-                friendIds.forEach { friendId ->
-                    db.collection("usuarios")
-                        .document(friendId)
-                        .get()
-                        .addOnSuccessListener { userDoc ->
-                            if (userDoc.exists()) {
-                                friendsList.add(
-                                    User(
-                                        id = userDoc.id,
-                                        nombre = userDoc.getString("nombre") ?: "",
-                                        objetivoFitness = userDoc.getString("objetivoFitness") ?: "",
-                                        peso = userDoc.getString("peso") ?: "",
-                                        altura = userDoc.getString("altura") ?: "",
-                                        edad = userDoc.getString("edad") ?: "",
-                                        nivelExperiencia = userDoc.getString("nivelExperiencia") ?: "",
-                                        cuentaPrivada = userDoc.getBoolean("cuentaPrivada") ?: false,
-                                    )
-                                )
-                            }
-                            loadedCount++
-                            if (loadedCount >= friendIds.size) {
-                                callback(friendsList)
-                            }
-                        }
-                        .addOnFailureListener {
-                            loadedCount++
-                            if (loadedCount >= friendIds.size) {
-                                callback(friendsList)
-                            }
-                        }
-                }
-            } else {
-                callback(emptyList())
-            }
-        }
-        .addOnFailureListener { e ->
-            Log.e("loadFriendsList", "Error: ${e.message}")
-            callback(emptyList())
-        }
-}
-
 // Componente principal de la página
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -153,7 +71,7 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
     val db = FirebaseFirestore.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     val scope = rememberCoroutineScope()
-
+    // Estados para manejar la carga de rutinas y errores
     var rutinasPorUsuario by remember { mutableStateOf<List<RutinasPorUsuario>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
@@ -174,7 +92,7 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
     suspend fun cargarRutinasAmigos() {
         isLoading = true
         try {
-            // Paso 1: Obtener la lista de IDs de amigos del documento "amigos/{userId}"
+            // Obtener la lista de IDs de amigos del documento "amigos/{userId}"
             val amigosDoc = db.collection("amigos")
                 .document(userId)
                 .get()
@@ -191,7 +109,7 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
                 return
             }
 
-            // Paso 2: Obtener información de los amigos (usuarios)
+            // Obtener información de los amigos (usuarios)
             val usuariosMap = mutableMapOf<String, Usuario>()
             val batchSize = 10
             for (i in amigosIds.indices step batchSize) {
@@ -212,7 +130,7 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
                 }
             }
 
-            // Paso 3: Obtener rutinas compartidas por los amigos
+            // Obtener rutinas compartidas por los amigos
             val rutinasResult = mutableMapOf<String, MutableList<RutinaAmigo>>()
             for (i in amigosIds.indices step batchSize) {
                 val batch = amigosIds.subList(i, minOf(i + batchSize, amigosIds.size))
@@ -687,6 +605,87 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
     }
 }
 
+// Función para cargar todos los usuarios de la base de datos
+fun loadAllUsers(callback: (List<User>) -> Unit) {
+    val db = FirebaseFirestore.getInstance()
+    db.collection("usuarios")
+        .get()
+        .addOnSuccessListener { snapshot ->
+            val usersList = snapshot.documents.map { doc ->
+                User(
+                    id = doc.id,
+                    nombre = doc.getString("nombre") ?: "",
+                    objetivoFitness = doc.getString("objetivoFitness") ?: "",
+                    peso = doc.getString("peso") ?: "",
+                    altura = doc.getString("altura") ?: "",
+                    edad = doc.getString("edad") ?: "",
+                    nivelExperiencia = doc.getString("nivelExperiencia") ?: "",
+                    cuentaPrivada = doc.getBoolean("cuentaPrivada") ?: false,
+                )
+            }
+            callback(usersList)
+        }
+        .addOnFailureListener { e ->
+            Log.e("loadAllUsers", "Error: ${e.message}")
+            callback(emptyList())
+        }
+}
+
+// Función para cargar la lista de amigos de un usuario
+fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
+    val db = FirebaseFirestore.getInstance()
+    db.collection("amigos")
+        .document(userId)
+        .get()
+        .addOnSuccessListener { document ->
+            if (document.exists() && document.get("listaAmigos") != null) {
+                val friendIds = document.get("listaAmigos") as? List<String> ?: emptyList()
+                if (friendIds.isEmpty()) {
+                    callback(emptyList())
+                    return@addOnSuccessListener
+                }
+                val friendsList = mutableListOf<User>()
+                var loadedCount = 0
+                friendIds.forEach { friendId ->
+                    db.collection("usuarios")
+                        .document(friendId)
+                        .get()
+                        .addOnSuccessListener { userDoc ->
+                            if (userDoc.exists()) {
+                                friendsList.add(
+                                    User(
+                                        id = userDoc.id,
+                                        nombre = userDoc.getString("nombre") ?: "",
+                                        objetivoFitness = userDoc.getString("objetivoFitness") ?: "",
+                                        peso = userDoc.getString("peso") ?: "",
+                                        altura = userDoc.getString("altura") ?: "",
+                                        edad = userDoc.getString("edad") ?: "",
+                                        nivelExperiencia = userDoc.getString("nivelExperiencia") ?: "",
+                                        cuentaPrivada = userDoc.getBoolean("cuentaPrivada") ?: false,
+                                    )
+                                )
+                            }
+                            loadedCount++
+                            if (loadedCount >= friendIds.size) {
+                                callback(friendsList)
+                            }
+                        }
+                        .addOnFailureListener {
+                            loadedCount++
+                            if (loadedCount >= friendIds.size) {
+                                callback(friendsList)
+                            }
+                        }
+                }
+            } else {
+                callback(emptyList())
+            }
+        }
+        .addOnFailureListener { e ->
+            Log.e("loadFriendsList", "Error: ${e.message}")
+            callback(emptyList())
+        }
+}
 
 // Componente para mostrar la cabecera del amigo
 @Composable
@@ -797,7 +796,7 @@ fun RutinaAmigoCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-                Spacer(modifier = Modifier.width(8.dp))  // Espacio fijo entre el texto y el chip
+                Spacer(modifier = Modifier.width(8.dp))
                 AssistChip(
                     onClick = { },
                     label = { Text(rutina.dificultad) },

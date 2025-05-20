@@ -274,8 +274,8 @@ fun DietasPage() {
             }
         )
     }
+
     // Diálogo modal de detalles de la dieta - Actualizado para mostrar todos los campos
-// Diálogo modal de detalles de la dieta - Con título corregido para evitar que oculte el botón cerrar
     if (showDetailDialog && selectedDieta != null) {
         Dialog(
             onDismissRequest = { showDetailDialog = false },
@@ -284,7 +284,7 @@ fun DietasPage() {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(500.dp), // Altura fija para permitir desplazamiento
+                    .padding(top = 16.dp, start = 0.dp, end = 0.dp, bottom = 16.dp), // Espacio alrededor del diálogo
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
             ) {
                 Column(

@@ -612,7 +612,7 @@ fun CrearRutinaPage(
             text = { Text(errorMessage) },
             confirmButton = {
                 Button(onClick = { showErrorDialog = false }) {
-                    Text("Aceptar")
+                    Text("Cerrar")
                 }
             }
         )

@@ -22,7 +22,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -36,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 
+// Composable para ejecutar una rutina
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
@@ -69,9 +69,6 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
     var restTimer by remember { mutableStateOf(60) } // 60 segundos por defecto para descanso
     var isTimerRunning by remember { mutableStateOf(false) }
 
-    // Función para obtener el temporizador actual según el modo
-    val currentTimer = if (isRestMode) restTimer else exerciseTimer
-
     // Datos de ejercicios
     val (ejerciciosData, _) = remember {
         loadGifsFromXml(context.resources.getXml(R.xml.ejercicios), context)
@@ -89,7 +86,7 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
         else -> rutina?.ejercicios?.getOrNull(currentExerciseIndex + 1) // mostrar siguiente ejercicio
     }
 
-
+    // Datos del siguiente ejercicio
     val nextExerciseData = nextExerciseName?.let { nombre ->
         ejerciciosData.find { it.title == nombre }
     }
@@ -310,13 +307,6 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                             style = MaterialTheme.typography.bodyMedium,
                                             fontWeight = FontWeight.Bold
                                         )
-
-//                                        Spacer(modifier = Modifier.height(4.dp))
-//
-//                                        Text(
-//                                            text = "Categoría: ${currentExerciseData.category}",
-//                                            style = MaterialTheme.typography.bodyMedium
-//                                        )
                                     }
                                 }
                             }
@@ -331,24 +321,13 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .weight(1f), // Para que ocupe espacio disponible sin empujar abajo
+                                .weight(1f),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.SpaceBetween
                         ) {
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-//                                // Título del descanso
-//                                Text(
-//                                    text = if (currentExerciseIndex < rutina!!.ejercicios.size - 1)
-//                                        "Descansando antes del siguiente ejercicio"
-//                                    else "Último descanso",
-//                                    style = MaterialTheme.typography.titleMedium,
-//                                    textAlign = TextAlign.Center
-//                                )
-//
-//                                Spacer(modifier = Modifier.height(16.dp))
-
                                 // Vista previa
                                 if (nextExerciseName != null && nextExerciseData != null) {
                                     Text(
@@ -388,31 +367,6 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
                                     }
 
                                     Spacer(modifier = Modifier.height(8.dp))
-
-//                                    Card(
-//                                        modifier = Modifier.fillMaxWidth(),
-//                                        shape = RoundedCornerShape(12.dp),
-//                                        colors = CardDefaults.cardColors(
-//                                            containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.5f)
-//                                        )
-//                                    ) {
-//                                        Column(
-//                                            modifier = Modifier.padding(12.dp)
-//                                        ) {
-//                                            Text(
-//                                                text = "Recuerda:",
-//                                                style = MaterialTheme.typography.titleSmall,
-//                                                fontWeight = FontWeight.Bold
-//                                            )
-//
-//                                            Spacer(modifier = Modifier.height(4.dp))
-//
-//                                            Text(
-//                                                text = "• Respira profundamente\n• Hidratate\n• Estira ligeramente el músculo trabajado",
-//                                                style = MaterialTheme.typography.bodyMedium
-//                                            )
-//                                        }
-//                                    }
                                 } else {
                                     Box(
                                         modifier = Modifier
@@ -829,14 +783,14 @@ fun EjecutarRutinaPage(navController: NavHostController, rutinaId: String) {
 
             if (isRestMode) {
                 if (isRestBetweenSeries) {
-                    // 👉 DESCANSO entre series: NO pasar al siguiente ejercicio
+                    // DESCANSO entre series: NO pasar al siguiente ejercicio
                     currentSeries++
                     isRestMode = false
                     isRestBetweenSeries = false
                     exerciseTimer = lastExerciseTimeUsed
                     isExerciseCompleted = false
                 } else {
-                    // 👉 DESCANSO entre ejercicios: PASAR al siguiente ejercicio
+                    // DESCANSO entre ejercicios: PASAR al siguiente ejercicio
                     currentExerciseIndex++
                     currentSeries = 1
                     isRestMode = false
@@ -860,6 +814,7 @@ class RutinaLauncher(
     private val navController: NavController,
     private val rutinaId: String
 ) {
+
     // Función para iniciar la rutina
     fun launch() {
         navController.navigate("ejecutar_rutina/$rutinaId")
@@ -888,6 +843,7 @@ class RutinaLauncher(
     }
 }
 
+// Composable para mostrar un mensaje de error
 @Composable
 fun ErrorMessage(message: String, onRetry: () -> Unit) {
     Column(
@@ -920,6 +876,7 @@ fun ErrorMessage(message: String, onRetry: () -> Unit) {
     }
 }
 
+// Composable para mostrar la rutina completada
 @Composable
 fun RutinaCompletada(rutina: Rutina, onFinish: () -> Unit) {
     val infiniteTransition = rememberInfiniteTransition()

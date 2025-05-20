@@ -49,33 +49,6 @@ data class Rutina(
 )
 
 
-
-
-
-@Composable
-fun BouncyFAB(navController: NavHostController) {
-    val scope = rememberCoroutineScope()
-    val scale = remember { Animatable(1f) }
-
-    FloatingActionButton(
-        onClick = {
-            scope.launch {
-                scale.animateTo(0.85f, animationSpec = tween(100))
-                scale.animateTo(1f, animationSpec = tween(100))
-                navController.navigate("crearRutina") {
-                    popUpTo("listarRutinas") { inclusive = true }
-                }
-            }
-        },
-        containerColor = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.scale(scale.value)
-    ) {
-        Icon(Icons.Default.Add, contentDescription = "Crear Rutina")
-    }
-}
-
-
-
 // Pantalla para listar las rutinas del usuario
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -768,3 +741,28 @@ fun RutinaCard(
         }
     }
 }
+
+
+// Composable para el botón de acción flotante con animación
+@Composable
+fun BouncyFAB(navController: NavHostController) {
+    val scope = rememberCoroutineScope()
+    val scale = remember { Animatable(1f) }
+
+    FloatingActionButton(
+        onClick = {
+            scope.launch {
+                scale.animateTo(0.85f, animationSpec = tween(100))
+                scale.animateTo(1f, animationSpec = tween(100))
+                navController.navigate("crearRutina") {
+                    popUpTo("listarRutinas") { inclusive = true }
+                }
+            }
+        },
+        containerColor = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.scale(scale.value)
+    ) {
+        Icon(Icons.Default.Add, contentDescription = "Crear Rutina")
+    }
+}
+

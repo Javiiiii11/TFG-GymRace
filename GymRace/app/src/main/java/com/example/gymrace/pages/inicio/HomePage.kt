@@ -19,9 +19,7 @@ import androidx.compose.ui.unit.sp
 import java.text.SimpleDateFormat
 import java.util.*
 import android.content.Intent
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -51,6 +49,17 @@ import com.example.gymrace.RutinaLauncher
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
+// Rutinas Predefinidas
+// Esta clase representa una rutina predefinida
+data class PredefinedRoutine(
+    val id: String = "",
+    val title: String = "",
+    val description: String = "",
+    val imageName: String = "",
+    val exercises: List<MainActivity.ExerciseDetail> = emptyList()
+)
+
+// Página de inicio
 @Composable
 fun HomePage(modifier: Modifier = Modifier, navController: NavController, onThemeChange : () -> Unit) {
     LazyColumn(
@@ -74,9 +83,6 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, onThem
         } catch (e: Exception) {
             Log.e("FirestoreError", "Error loading routines", e)
         }
-//        item {
-//            LoadPredefinedRoutinesFromFirestore(navController)
-//        }
 
         // Sección de rutina personalizada
         item {
@@ -87,24 +93,9 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavController, onThem
         item {
             Masoptions()
         }
-
-        // Espaciado adicional al final
-//        item {
-//            Spacer(modifier = Modifier.height(60.dp))
-//        }
     }
 }
 
-
-// Rutinas Predefinidas
-// Esta clase representa una rutina predefinida
-data class PredefinedRoutine(
-    val id: String = "",
-    val title: String = "",
-    val description: String = "",
-    val imageName: String = "",
-    val exercises: List<MainActivity.ExerciseDetail> = emptyList()
-)
 
 // Esta función muestra una tarjeta para cada rutina predefinida
 @Composable
@@ -745,7 +736,7 @@ fun Masoptions() {
                 // Texto para compartir la aplicación
                 Text(
                     text = buildAnnotatedString {
-                        append("Comparte nuestra app ")
+                        append("Comparte la app ")
                         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.secondary, textDecoration = TextDecoration.Underline)) {
                             append("con tus amigos")
                         }
@@ -757,7 +748,6 @@ fun Masoptions() {
                                 type = "text/plain"
                                 putExtra(Intent.EXTRA_SUBJECT, "¡Mira esta app!")
                                 putExtra(Intent.EXTRA_TEXT, "¡Descarga esta fantástica aplicación! https://www.gymrace.sytes.net")
-//                                putExtra(Intent.EXTRA_TEXT, "¡Descarga esta fantástica aplicación! https://play.google.com/store/apps/details?id=com.tuempresa.tuapp")
                             }
                             context.startActivity(Intent.createChooser(shareIntent, "Compartir usando"))
                         },

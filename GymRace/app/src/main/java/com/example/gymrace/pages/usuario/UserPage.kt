@@ -88,10 +88,6 @@ data class Notificacion(
     val id: String = "", // id de la notificación
     val challengeId: String? = null  // id del desafío, si corresponde
 )
-
-
-
-
 // Clase para representar un usuario
 data class User(
     val id: String,
@@ -103,7 +99,6 @@ data class User(
     val nivelExperiencia: String,
     val cuentaPrivada: Boolean
 )
-
 
 // Función principal de la página de usuario
 @Composable
@@ -151,15 +146,9 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     var showNotifications by remember { mutableStateOf(false) }
 
     var requestedUserIds by remember { mutableStateOf<List<String>>(emptyList()) }
-
-    //estado para el usuario esta en la lista de usuariosInvitados
-    var isUserInvited by remember { mutableStateOf(false) }
-
     var showDeletefriendDialog by remember { mutableStateOf(false) }
     var pendingFriendToDelete by remember { mutableStateOf<String?>(null) }
-
     var isRemovingFollower by remember { mutableStateOf(false) }
-
 
     // Guarda la fecha de registro
 
@@ -176,7 +165,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             }
         }
     }
-
 
     // Efecto para cargar la lista de amigos cada 5 segundos
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -216,7 +204,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                         requestedUserIds = requested
                     }
                 }
-                delay(10000) // o menos, si quieres que se actualice más rápido
+                delay(10000) // Espera 10 segundos antes de la siguiente actualización
                 if (!showCommunityDialog) break
             }
         }
@@ -239,7 +227,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 }
             }
             while (true) {
-                delay(10000)
+                delay(10000) // Espera 10 segundos antes de la siguiente actualización
                 try {
                     GLOBAL.id?.let { userId ->
                         loadNotificaciones(userId) { nuevasNotificaciones ->
@@ -409,15 +397,15 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 if (friendsList.any { it.id == userId }) {
                     // Eliminar amigo
                     pendingFriendToDelete = userId
-                    isRemovingFollower = false // ← MARCAR que es un seguido (normal)
+                    isRemovingFollower = false
                     showDeletefriendDialog = true
 
                 } else {
                     if (requestedUserIds.contains(userId)) {
-                        // ✅ CANCELAR solicitud
+                        // CANCELAR solicitud
                         requestedUserIds = requestedUserIds.filterNot { it == userId }
 
-                        // Eliminar la notificación desde la colección "notificaciones"
+                        // Eliminar la notificación
                         val currentUserId = GLOBAL.id
                         if (currentUserId != null) {
                             Firebase.firestore.collection("notificaciones")
@@ -437,7 +425,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                 }
                         }
                     } else {
-                        // ✅ ENVIAR solicitud
+                        // ENVIAR solicitud
                         requestedUserIds = requestedUserIds + userId // UI instantánea
 
                         firestore.collection("usuarios").document(userId)
@@ -482,7 +470,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             onUserAction = { userId ->
                 // Eliminar amigo
                 pendingFriendToDelete = userId
-                isRemovingFollower = false // ← MARCAR que es un seguido (normal)
+                isRemovingFollower = false
                 showDeletefriendDialog = true
             }
         )
@@ -491,7 +479,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     // Mostrar diálogo de seguidores
     if (showFollowersDialog) {
         LaunchedEffect(showFollowersDialog) {
-            // carga inicial al abrir
             isLoadingUsers = true
             loadFollowersList(GLOBAL.id) {
                 followersList = it
@@ -508,13 +495,14 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             requestedUserIds = requestedUserIds,
             onUserAction = { followerId ->
                 pendingFriendToDelete = followerId
-                isRemovingFollower = true // ← MARCAR que es un seguidor
+                isRemovingFollower = true // es un seguidor
                 showDeletefriendDialog = true
             },
-            icon = Icons.Default.Close // Cambiar el ícono a "PersonRemove"
+            icon = Icons.Default.PersonRemove
         )
     }
 
+    // Diálogo de confirmación para eliminar seguido o seguidor
     if (showDeletefriendDialog) {
         AlertDialog(
             onDismissRequest = {
@@ -567,7 +555,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
         )
     }
 
-
+    // Contenido principal de la página
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -644,7 +632,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                 }
                             },
                             onRejectRequest = { senderId ->
-                                requestedUserIds = requestedUserIds.filterNot { it == senderId } // ✅ Se actualiza inmediatamente
+                                requestedUserIds = requestedUserIds.filterNot { it == senderId } // UI instantánea
                                 removeNotification(GLOBAL.id, senderId, {
                                     loadNotificaciones(GLOBAL.id) { notificaciones = it }
                                 }, Icons.Default.PersonAdd)
@@ -1070,7 +1058,7 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
         }
 
 
-        // Profile Header
+        // Sección de perfil
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -1265,8 +1253,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                 }
             }
         )
-
-//        Spacer(modifier = Modifier.height(75.dp))
     }
 }
 
@@ -1307,9 +1293,8 @@ fun cerrarSesion(context: Context) {
     GLOBAL.diasEntrenamientoPorSemana = ""
     GLOBAL.nivelExperiencia = ""
     GLOBAL.cuentaPrivada = false
-    saveLoginState(context, false, "") // Guardar el estado de inicio de sesión
+    saveLoginState(context, false, "") // Borra el estado de inicio de sesión
     clearFirestoreCache() // Limpiar la caché de Firestore
-
 }
 
 
@@ -1333,7 +1318,7 @@ private fun animateSettingsIcon(
 }
 
 
-// Diálogo para mostrar usuarios (amigos o comunidad)
+// Diálogo para mostrar usuarios (seguidos, seguidores o comunidad)
 @Composable
 fun UsersDialog(
     title: String,
@@ -1342,9 +1327,9 @@ fun UsersDialog(
     onDismiss: () -> Unit,
     showAddButton: Boolean,
     currentFriends: List<String>,
-    requestedUserIds: List<String>, // Lista de IDs de usuarios a los que ya se envió solicitud
+    requestedUserIds: List<String>,
     onUserAction: (String) -> Unit,
-    icon: ImageVector = Icons.Default.Close // Icono por defecto
+    icon: ImageVector = Icons.Default.Close
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Card(
@@ -1397,7 +1382,7 @@ fun UsersDialog(
                     ) {
                         items(users) { user ->
                             val isAlreadyFriend = currentFriends.contains(user.id)
-                            val alreadyRequested by rememberUpdatedState(requestedUserIds.contains(user.id)) // ✅ Se evalúa dinámicamente
+                            val alreadyRequested by rememberUpdatedState(requestedUserIds.contains(user.id))
 
                             UserListItem(
                                 user = user,
@@ -1405,7 +1390,7 @@ fun UsersDialog(
                                 onRemove = {
                                     removeFriend(GLOBAL.id, user.id) {
                                         loadFriendsList(GLOBAL.id) { updatedFriends ->
-                                            onUserAction(user.id) // ✅ Esto actualiza requestedUserIds desde el padre
+                                            onUserAction(user.id)
                                         }
                                     }
                                 },
@@ -1529,7 +1514,6 @@ fun UserListItem(
         }
     }
 }
-
 
 // Función para cargar todos los usuarios de la BD
 fun loadAllUsers(callback: (List<User>) -> Unit) {
@@ -1664,7 +1648,6 @@ fun loadFriendsList(userId: String, callback: (List<User>) -> Unit) {
 }
 
 // Función para agregar un amigo
-
 private fun addFriend(userId: String, friendId: String, callback: () -> Unit) {
     val db = Firebase.firestore
 
@@ -1712,11 +1695,9 @@ private fun addFriend(userId: String, friendId: String, callback: () -> Unit) {
         }
 }
 
-
-// Función para eliminar un amigo
+// Función para eliminar un seguidor
 private fun removeFriend(userId: String, friendId: String, callback: () -> Unit) {
     val db = Firebase.firestore
-
     db.collection("amigos")
         .document(userId)
         .get()
@@ -1749,7 +1730,6 @@ private fun removeFriend(userId: String, friendId: String, callback: () -> Unit)
         }
 }
 
-
 // Composable para mostrar un elemento de estadística
 @Composable
 fun StatItem(count: String, label: String) {
@@ -1770,15 +1750,16 @@ fun StatItem(count: String, label: String) {
     }
 }
 
-// Composable para mostrar una sección del perfil@
+// Composable para mostrar una sección del perfil
 @Composable
 fun ProfileSection(
     title: String,
     icon: ImageVector,
     content: @Composable () -> Unit
 ) {
+    // Estado para controlar la expansión de la sección
     var expanded by remember { mutableStateOf(true) }
-
+    // Tarjeta que contiene la sección
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -1787,7 +1768,7 @@ fun ProfileSection(
                 MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12f),
                 RoundedCornerShape(16.dp)
             )
-            .animateContentSize(animationSpec = tween(durationMillis = 50)), // ANIMACIÓN SUAVE
+            .animateContentSize(animationSpec = tween(durationMillis = 50)), // Animación de expansión
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -1820,8 +1801,6 @@ fun ProfileSection(
                     tint = MaterialTheme.colorScheme.onSurface
                 )
             }
-
-            // ANIMACIÓN DE APARICIÓN / DESAPARICIÓN
             AnimatedVisibility(visible = expanded) {
                 Column {
                     Spacer(modifier = Modifier.height(16.dp))
@@ -1831,7 +1810,6 @@ fun ProfileSection(
         }
     }
 }
-
 
 // Composable para mostrar un elemento de información
 @Composable
@@ -1856,8 +1834,8 @@ fun InfoItem(label: String, value: String) {
     }
 }
 
-//notificaciones
-
+//Metodos de notificaciones
+// Función para cargar notificaciones
 fun loadNotificaciones(idUsuario: String, callback: (List<Notificacion>) -> Unit) {
     try {
         // Verifica si el ID de usuario es válido
@@ -1910,7 +1888,7 @@ fun loadNotificaciones(idUsuario: String, callback: (List<Notificacion>) -> Unit
         }
 }
 
-
+// Composable para mostrar una notificacion
 @Composable
 fun NotificationItem(
     notification: Notificacion,
@@ -2105,7 +2083,7 @@ fun NotificationItem(
     }
 }
 
-
+// Dialogo para mostrar notificaciones
 @Composable
 fun NotificacionesDialog(
     notificaciones: List<Notificacion>,
@@ -2352,7 +2330,7 @@ fun sendFriendRequestNotification(toUserId: String, fromUserName: String, fromUs
         }
 }
 
-
+// Función para eliminar una notificación
 fun removeNotification(
     userId: String,
     notificationId: String,
@@ -2374,6 +2352,7 @@ fun removeNotification(
         }
 }
 
+// Función para cargar la lista de seguidores
 private fun loadFollowersList(userId: String, callback: (List<User>) -> Unit) {
     val db = Firebase.firestore
     // Consulta todos los docs donde mi ID esté en listaAmigos
@@ -2418,7 +2397,6 @@ private fun loadFollowersList(userId: String, callback: (List<User>) -> Unit) {
         }
 }
 
-
 // Función para cargar los IDs de usuarios a los que el usuario actual ha enviado solicitudes
 fun loadRequestedUserIds(currentUserId: String, callback: (List<String>) -> Unit) {
     val db = Firebase.firestore
@@ -2426,8 +2404,6 @@ fun loadRequestedUserIds(currentUserId: String, callback: (List<String>) -> Unit
     val requestedIds = mutableListOf<String>()
 
     // Busca solicitudes enviadas por el usuario actual
-    // Primero necesitamos consultar la colección de notificaciones
-    // para cada usuario posible (esto es simplificado)
     db.collection("usuarios")
         .get()
         .addOnSuccessListener { usersSnapshot ->

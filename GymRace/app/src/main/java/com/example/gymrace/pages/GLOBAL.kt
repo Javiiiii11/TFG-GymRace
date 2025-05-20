@@ -1,24 +1,10 @@
 package com.example.gymrace.pages
 
 import android.util.Log
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
 
 // Clase GLOBAL para manejar datos globales y operaciones de Firestore
 class GLOBAL {
@@ -113,10 +99,10 @@ class GLOBAL {
                         onComplete()
                     }
                     .addOnFailureListener { e ->
-                        println("Error al guardar el usuario: $e")
+                        Log.e("Firestore", "Error al guardar el usuario: $e")
                     }
             } else {
-                println("Usuario no autenticado")
+                Log.e("Firestore", "No se pudo guardar el usuario, no está autenticado")
             }
         }
 
