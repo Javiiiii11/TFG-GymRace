@@ -155,6 +155,10 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
     //estado para el usuario esta en la lista de usuariosInvitados
     var isUserInvited by remember { mutableStateOf(false) }
 
+    var showDeletefriendDialog by remember { mutableStateOf(false) }
+    var pendingFriendToDelete by remember { mutableStateOf<String?>(null) }
+
+
     // Guarda la fecha de registro
 
     var fechaRegistro by remember { mutableStateOf("Fecha no disponible") }
@@ -199,6 +203,23 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
         }
     }
 
+    LaunchedEffect(showCommunityDialog) {
+        if (showCommunityDialog) {
+            while (true) {
+                GLOBAL.id?.let { uid ->
+                    loadFriendsList(uid) { updatedFriends ->
+                        friendsList = updatedFriends
+                    }
+                    loadRequestedUserIds(uid) { requested ->
+                        requestedUserIds = requested
+                    }
+                }
+                delay(10000) // o menos, si quieres que se actualice más rápido
+                if (!showCommunityDialog) break
+            }
+        }
+    }
+
 
     val lifecycleOwner2 = LocalLifecycleOwner.current
 
@@ -234,32 +255,6 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             }
         }
     }
-
-    val currentLifecycleOwner = LocalLifecycleOwner.current
-
-//    // Efecto para cargar la lista de seguidores cada 10 segundos
-//    LaunchedEffect(showFollowersDialog) {
-//        if (showFollowersDialog) {
-//            snapshotFlow { showFollowersDialog }
-//                .collect { shouldShow ->
-//                    if (shouldShow) {
-//                        currentLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-//                            while (showFollowersDialog) {
-//                                GLOBAL.id?.let { uid ->
-//                                    loadFollowersList(uid) { newFollowers ->
-//                                        if (newFollowers != followersList) {
-//                                            followersList = newFollowers
-//                                        }
-//                                    }
-//                                }
-//                                delay(10_000)
-//                            }
-//                        }
-//                    }
-//                }
-//        }
-//    }
-
 
     // Efecto para cargar la lista de seguidores periódicamente cuando el diálogo está visible
     LaunchedEffect(showFollowersDialog) {
@@ -411,42 +406,62 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             onUserAction = { userId ->
                 if (friendsList.any { it.id == userId }) {
                     // Eliminar amigo
-                    requestedUserIds = requestedUserIds.filterNot { it == userId }
+                    pendingFriendToDelete = userId
+                    showDeletefriendDialog = true
 
-                    friendsList = friendsList.filterNot { it.id == userId } // UI instantánea
-                    removeFriend(GLOBAL.id, userId) {
-                        loadFriendsList(GLOBAL.id) { updatedFriends ->
-                            friendsList = updatedFriends // Actualiza el estado con la nueva lista
-                        }
-                    }
                 } else {
-                    // Enviar solicitud
-                    requestedUserIds = requestedUserIds + userId        // UI instantánea
+                    if (requestedUserIds.contains(userId)) {
+                        // ✅ CANCELAR solicitud
+                        requestedUserIds = requestedUserIds.filterNot { it == userId }
 
-                    firestore.collection("usuarios").document(userId)
-                        .get()
-                        .addOnSuccessListener { doc ->
-                            val isPriv = doc.getBoolean("cuentaPrivada") ?: true
-                            if (isPriv) {
-                                sendFriendRequestNotification(
-                                    toUserId = userId,
-                                    fromUserName = GLOBAL.nombre,
-                                    fromUserId = GLOBAL.id
-                                )
-                                Toast.makeText(context, "Solicitud enviada", Toast.LENGTH_SHORT).show()
-                            } else {
-                                friendsList = friendsList + allUsers.first { it.id == userId } // UI instantánea
-                                addFriend(GLOBAL.id, userId) {
-                                    loadFriendsList(GLOBAL.id) { friendsList = it }
+                        // Eliminar la notificación desde la colección "notificaciones"
+                        val currentUserId = GLOBAL.id
+                        if (currentUserId != null) {
+                            Firebase.firestore.collection("notificaciones")
+                                .document(userId)
+                                .collection("items")
+                                .whereEqualTo("remitente", currentUserId)
+                                .whereEqualTo("tipo", "solicitud")
+                                .get()
+                                .addOnSuccessListener { snapshot ->
+                                    for (doc in snapshot.documents) {
+                                        doc.reference.delete()
+                                    }
+                                    Toast.makeText(context, "Solicitud cancelada", Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener {
+                                    Toast.makeText(context, "Error al cancelar solicitud", Toast.LENGTH_SHORT).show()
+                                }
+                        }
+                    } else {
+                        // ✅ ENVIAR solicitud
+                        requestedUserIds = requestedUserIds + userId // UI instantánea
+
+                        firestore.collection("usuarios").document(userId)
+                            .get()
+                            .addOnSuccessListener { doc ->
+                                val isPriv = doc.getBoolean("cuentaPrivada") ?: true
+                                if (isPriv) {
+                                    sendFriendRequestNotification(
+                                        toUserId = userId,
+                                        fromUserName = GLOBAL.nombre,
+                                        fromUserId = GLOBAL.id
+                                    )
+                                    Toast.makeText(context, "Solicitud enviada", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    friendsList = friendsList + allUsers.first { it.id == userId } // UI instantánea
+                                    addFriend(GLOBAL.id, userId) {
+                                        loadFriendsList(GLOBAL.id) { friendsList = it }
+                                    }
                                 }
                             }
-                        }
-                        .addOnFailureListener {
-                            Toast.makeText(context, "Error comprobando cuenta", Toast.LENGTH_SHORT).show()
-                            // revertir estado si quieres
-                            requestedUserIds = requestedUserIds.filterNot { it == userId }
-                        }
+                            .addOnFailureListener {
+                                Toast.makeText(context, "Error comprobando cuenta", Toast.LENGTH_SHORT).show()
+                                requestedUserIds = requestedUserIds.filterNot { it == userId }
+                            }
+                    }
                 }
+
             }
         )
     }
@@ -462,12 +477,9 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             currentFriends = friendsList.map { it.id },
             requestedUserIds = requestedUserIds,
             onUserAction = { userId ->
-                friendsList = friendsList.filterNot { it.id == userId } // UI instantánea
-                removeFriend(GLOBAL.id, userId) {
-                    loadFriendsList(GLOBAL.id) { updatedFriends ->
-                        friendsList = updatedFriends // Actualiza el estado con la nueva lista
-                    }
-                }
+                // Eliminar amigo
+                pendingFriendToDelete = userId
+                showDeletefriendDialog = true
             }
         )
     }
@@ -491,15 +503,54 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             currentFriends = friendsList.map { it.id },
             requestedUserIds = requestedUserIds,
             onUserAction = { followerId ->
-                // eliminar seguidor
-                removeFriend(followerId, GLOBAL.id) {
-                    loadFollowersList(GLOBAL.id) { followersList = it }
-                }
+                pendingFriendToDelete = userId
+                showDeletefriendDialog = true
+
             },
             icon = Icons.Default.Close // Cambiar el ícono a "PersonRemove"
         )
     }
 
+    if (showDeletefriendDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showDeletefriendDialog = false
+                pendingFriendToDelete = null
+            },
+            title = { Text("Eliminar amigo") },
+            text = { Text("¿Estás seguro de que deseas eliminar a este amigo?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    pendingFriendToDelete?.let { friendId ->
+                        friendsList = friendsList.filterNot { it.id == friendId }
+                        requestedUserIds = requestedUserIds.filterNot { it == friendId } // <-- Añade esta línea
+                        removeFriend(GLOBAL.id, friendId) {
+                            loadFriendsList(GLOBAL.id) { updatedFriends ->
+                                friendsList = updatedFriends
+                            }
+                            loadRequestedUserIds(GLOBAL.id) { requested ->
+                                requestedUserIds = requested
+                            }
+                        }
+
+
+                    }
+                    showDeletefriendDialog = false
+                    pendingFriendToDelete = null
+                }) {
+                    Text("Sí")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showDeletefriendDialog = false
+                    pendingFriendToDelete = null
+                }) {
+                    Text("No")
+                }
+            }
+        )
+    }
 
 
     Column(
@@ -1000,6 +1051,39 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
             CircularProgressIndicator(
                 modifier = Modifier.padding(16.dp),
                 color = MaterialTheme.colorScheme.primary
+            )
+        }
+
+        // Diálogo de eliminación de seguidores
+        if (showDeletefriendDialog) {
+            AlertDialog(
+                onDismissRequest = { showDeletefriendDialog = false },
+                title = { Text("Eliminar amigo") },
+                text = { Text("¿Estás seguro de que deseas eliminar a este amigo?") },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            removeFriend(GLOBAL.id, pendingFriendToDelete!!) {
+                                loadFriendsList(GLOBAL.id) { updatedFriends ->
+                                    friendsList = updatedFriends
+                                }
+                            }
+                            // Lógica para eliminar el amigo
+                            showDeletefriendDialog = false
+                            friendsList = friendsList.filterNot { it.id == userId } // UI instantánea
+
+                        }
+                    ) {
+                        Text("Eliminar")
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { showDeletefriendDialog = false }
+                    ) {
+                        Text("Cancelar")
+                    }
+                }
             )
         }
 
@@ -1668,15 +1752,16 @@ private fun removeFriend(userId: String, friendId: String, callback: () -> Unit)
                         callback()
                     }
                     .addOnFailureListener { e ->
-                        println("Error al eliminar amigo: ${e.message}")
+                        Log.e("RemoveFriend", "Error al eliminar amigo: ${e.message}")
                         callback()
                     }
+
             } else {
                 callback()
             }
         }
         .addOnFailureListener { e ->
-            println("Error al verificar lista de amigos: ${e.message}")
+            Log.e("RemoveFriend", "Error al verificar lista de amigos: ${e.message}")
             callback()
         }
 }
