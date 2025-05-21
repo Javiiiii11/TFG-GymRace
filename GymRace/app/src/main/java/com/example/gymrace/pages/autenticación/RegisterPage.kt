@@ -118,7 +118,7 @@ fun RegisterPage(navController: NavController, onThemeChange: @Composable () -> 
                                         // Usuario nuevo: primero se crea en Firestore usando la cuenta de Google,
                                         // luego se navega a register2
                                         crearUsuarioEnFirestore(uid, account.displayName ?: "") {
-                                            navController.navigate("register2?uid=$uid&nombre=${account.displayName}") {
+                                            navController.navigate("register2?uid=$uid&nombre=${account.displayName}&isNewUser=true") {
                                                 Log.d("Navigation", "Usuario creado en Firestore, navegando a register2")
                                                 popUpTo("login") { inclusive = true }
                                             }
@@ -142,7 +142,6 @@ fun RegisterPage(navController: NavController, onThemeChange: @Composable () -> 
                         Log.e("Error", "Error al autenticar con Firebase: ${authTask.exception?.message}")
                         isLoading = false
                         registrationError = authTask.exception?.message ?: "Error al iniciar sesión con Google"
-                        Toast.makeText(context, registrationError, Toast.LENGTH_LONG).show()
                     }
                 }
         } catch (e: ApiException) {
@@ -158,7 +157,6 @@ fun RegisterPage(navController: NavController, onThemeChange: @Composable () -> 
                     registrationError = "Error al iniciar sesión con Google: ${e.statusCode}"
                 }
             }
-            Toast.makeText(context, registrationError, Toast.LENGTH_LONG).show()
         }
     }
 

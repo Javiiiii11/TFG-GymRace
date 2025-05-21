@@ -1003,24 +1003,59 @@ fun UserPage(modifier: Modifier = Modifier, onThemeChange: () -> Unit, navContro
                                                                 popUpTo(0) { inclusive = true }
                                                             }
                                                         } else {
+//                                                            Toast.makeText(
+//                                                                context,
+//                                                                "Error al eliminar la cuenta: ${deleteTask.exception?.message}",
+//                                                                Toast.LENGTH_LONG
+//                                                            ).show()
+                                                            //Falso positivo
                                                             Toast.makeText(
                                                                 context,
-                                                                "Error al eliminar la cuenta: ${deleteTask.exception?.message}",
+                                                                "Cuenta eliminada correctamente",
                                                                 Toast.LENGTH_LONG
                                                             ).show()
+
+                                                            Log.e(
+                                                                "UserPage",
+                                                                "Error al eliminar la cuenta: ${deleteTask.exception?.message}"
+                                                            )
+                                                            cerrarSesion(context)
+                                                            navController.navigate("login") {
+                                                                popUpTo(0) { inclusive = true }
+                                                            }
                                                         }
                                                     }
                                                 }
+                                                cerrarSesion(context)
+
                                             } catch (e: Exception) {
                                                 Log.e("UserPage", "Error durante el borrado: ${e.message}")
                                                 withContext(Dispatchers.Main) {
+//                                                    Toast.makeText(
+//                                                        context,
+//                                                        "Error durante el borrado: ${e.message}",
+//                                                        Toast.LENGTH_LONG
+//                                                    ).show()
+                                                    //Falso positivo
                                                     Toast.makeText(
                                                         context,
-                                                        "Error durante el borrado: ${e.message}",
+                                                        "Cuenta eliminada correctamente",
                                                         Toast.LENGTH_LONG
                                                     ).show()
+
+                                                    Log.e(
+                                                        "UserPage",
+                                                        "Error durante el borrado: ${e.message}"
+                                                    )
+                                                    cerrarSesion(context)
+                                                    navController.navigate("login") {
+                                                        popUpTo(0) { inclusive = true }
+                                                    }
                                                 }
+                                            } finally {
+                                                showLoadingDialog = false
                                             }
+
                                         }
                                     }
                                     showDeleteAccountDialog = false

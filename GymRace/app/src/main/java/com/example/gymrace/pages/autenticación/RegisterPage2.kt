@@ -1,5 +1,6 @@
 package com.example.gymrace.pages.autenticación
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -18,10 +19,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.NavController
 import com.example.gymrace.pages.GLOBAL
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
+import np.com.bimalkafle.bottomnavigationdemo.pages.clearFirestoreCache
 
 
 // Composable para la página de registro 2 / edición de perfil
@@ -32,7 +37,8 @@ fun RegisterPage2(navController: NavController) {
     val alcanceCorrutina = rememberCoroutineScope()
 
     // Determinar si es un nuevo usuario o actualización de perfil
-    val esNuevoUsuario = GLOBAL.nombre.isBlank()
+//    val esNuevoUsuario = GLOBAL.nombre.isBlank()
+
 
     // Campos autocompletados si existen datos en GLOBAL
     var nombre by rememberSaveable { mutableStateOf(GLOBAL.nombre.takeIf { it.isNotBlank() } ?: "") }
@@ -67,6 +73,13 @@ fun RegisterPage2(navController: NavController) {
         "Intermedio (6 meses - 2 años)",
         "Avanzado (más de 2 años)"
     )
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val args = navBackStackEntry?.arguments
+
+    val isNewUserParam = args?.getString("isNewUser") == "true"
+
+    val esNuevoUsuario = isNewUserParam || GLOBAL.nombre.isBlank()
+
 
     var cargando by remember { mutableStateOf(false) }
 
