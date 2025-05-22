@@ -48,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -1923,12 +1924,11 @@ fun loadNotificaciones(idUsuario: String, callback: (List<Notificacion>) -> Unit
         }
 }
 
-// Composable para mostrar una notificacion
 @Composable
 fun NotificationItem(
     notification: Notificacion,
     onAccept: () -> Unit,
-    onReject: () -> Unit = {}, // Parámetro opcional para mantener compatibilidad
+    onReject: () -> Unit = {},
     nombreUsuario: MutableState<Map<String, String>> = remember { mutableStateOf(mapOf()) }
 ) {
     // Log para verificar que la notificación se pasa correctamente
@@ -1936,9 +1936,7 @@ fun NotificationItem(
 
     // Efecto para cargar el nombre del usuario
     LaunchedEffect(notification.remitente) {
-        // Comprueba si ya tenemos el nombre del usuario
         if (!nombreUsuario.value.containsKey(notification.remitente)) {
-            // Buscar el nombre del usuario en la base de datos
             val db = FirebaseFirestore.getInstance()
             db.collection("usuarios")
                 .document(notification.remitente)
@@ -1950,175 +1948,213 @@ fun NotificationItem(
                     }
                 }
                 .addOnFailureListener {
-                    Log.e("NotificationItem", "Error al obtener el nombre del usuario", it)
+                    Log.e("NotificationItem", "Error al obtener el nombre", it)
                 }
         }
     }
 
-    Column(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .padding(horizontal = 16.dp, vertical = 6.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        shape = RoundedCornerShape(12.dp)
     ) {
-        // Fila con Avatar e Información
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
-            // Círculo con icono según tipo
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(
-                        when (notification.tipo) {
-                            "solicitud" -> MaterialTheme.colorScheme.primary
-                            "desafio" -> MaterialTheme.colorScheme.tertiary
-                            else -> MaterialTheme.colorScheme.secondary
+            // Fila principal con avatar e información
+            Row(
+                verticalAlignment = Alignment.Top,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                // Avatar con gradiente
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = when (notification.tipo) {
+                                    "solicitud" -> listOf(
+                                        MaterialTheme.colorScheme.primary,
+                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                                    )
+                                    "desafio" -> listOf(
+                                        MaterialTheme.colorScheme.tertiary,
+                                        MaterialTheme.colorScheme.tertiary.copy(alpha = 0.8f)
+                                    )
+                                    else -> listOf(
+                                        MaterialTheme.colorScheme.secondary,
+                                        MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f)
+                                    )
+                                }
+                            )
+                        )
+                ) {
+                    Icon(
+                        imageVector = when (notification.tipo) {
+                            "solicitud" -> Icons.Default.PersonAdd
+                            "desafio" -> Icons.Default.FitnessCenter
+                            else -> Icons.Default.Notifications
+                        },
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                // Contenido de la notificación
+                Column(modifier = Modifier.weight(1f)) {
+                    // Badge del tipo de notificación
+                    Surface(
+                        color = when (notification.tipo) {
+                            "solicitud" -> Color(0xFFE8F5E8)
+                            "desafio" -> Color(0xFFFFF3E0)
+                            else -> Color(0xFFE3F2FD)
+                        },
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    ) {
+                        Text(
+                            text = when (notification.tipo) {
+                                "solicitud" -> "SOLICITUD DE AMISTAD"
+                                "desafio" -> "NUEVO DESAFÍO"
+                                else -> "NOTIFICACIÓN"
+                            },
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = when (notification.tipo) {
+                                "solicitud" -> Color(0xFF2E7D32)
+                                "desafio" -> Color(0xFFE65100)
+                                else -> Color(0xFF1565C0)
+                            },
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+                        )
+                    }
+
+                    // Nombre del remitente
+                    val nombreMostrar = nombreUsuario.value[notification.remitente] ?: notification.remitente
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    // Mensaje
+                    Text(
+                        text = notification.mensaje,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        lineHeight = 20.sp
+                    )
+                }
+            }
+
+            // Botones de acción
+            if (notification.tipo == "solicitud" || notification.tipo == "desafio") {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Divider(
+                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    if (notification.tipo == "solicitud") {
+                        // Botón rechazar
+                        OutlinedButton(
+                            onClick = onReject,
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = MaterialTheme.colorScheme.error
+                            ),
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
+                            shape = RoundedCornerShape(20.dp),
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(36.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Rechazar",
+                                modifier = Modifier.size(16.dp)
+                            )
                         }
-                    )
-            ) {
-                Icon(
-                    imageVector = when (notification.tipo) {
-                        "solicitud" -> Icons.Default.PersonAdd
-                        "desafio" -> Icons.Default.FitnessCenter
-                        else -> Icons.Default.Notifications
-                    },
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
 
-            Spacer(modifier = Modifier.width(12.dp))
+                        Spacer(modifier = Modifier.width(12.dp))
 
-            Column(modifier = Modifier.weight(1f)) {
-                // Título descriptivo según tipo
-                Text(
-                    text = when (notification.tipo) {
-                        "solicitud" -> "Solicitud de amistad"
-                        "desafio" -> "Nuevo desafío"
-                        else -> "Notificación"
-                    },
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                        // Botón aceptar
+                        Button(
+                            onClick = onAccept,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary
+                            ),
+                            shape = RoundedCornerShape(20.dp),
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(36.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = "Aceptar",
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    } else if (notification.tipo == "desafio") {
+                        // Botón rechazar para desafíos
+                        OutlinedButton(
+                            onClick = onReject,
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = MaterialTheme.colorScheme.error
+                            ),
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
+                            shape = RoundedCornerShape(20.dp),
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(36.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Rechazar",
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
 
-                // Remitente (con nombre real si está disponible)
-                val nombreMostrar = nombreUsuario.value[notification.remitente] ?: notification.remitente
-//                Text(
-//                    text = "De: $nombreMostrar",
-//                    style = MaterialTheme.typography.bodySmall,
-//                    fontWeight = FontWeight.Medium,
-//                    color = MaterialTheme.colorScheme.onSurface
-//                )
+                        Spacer(modifier = Modifier.width(12.dp))
 
-                // Mensaje
-                Text(
-                    text = notification.mensaje,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-
-        // Botones de acción debajo de la notificación
-        if (notification.tipo == "solicitud") {
-            Row(
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp, end = 8.dp)
-            ) {
-                // Botón de rechazar
-                OutlinedButton(
-                    onClick = onReject,
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.error
-                    ),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                    modifier = Modifier.height(32.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Rechazar",
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Rechazar", fontSize = 12.sp)
-                }
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                // Botón de aceptar
-                Button(
-                    onClick = onAccept,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    ),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                    modifier = Modifier.height(32.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = "Aceptar",
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Aceptar", fontSize = 12.sp)
-                }
-            }
-        }else if (notification.tipo == "desafio") {
-            Row(
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp, end = 8.dp)
-            ) {
-                // Botón de aceptar
-                Button(
-                    onClick = onAccept,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    ),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                    modifier = Modifier.height(32.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = "Aceptar",
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Aceptar", fontSize = 12.sp)
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                // Botón de rechazar
-                OutlinedButton(
-                    onClick = onReject,
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.error
-                    ),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                    modifier = Modifier.height(32.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Rechazar",
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Rechazar", fontSize = 12.sp)
+                        // Botón aceptar para desafíos
+                        Button(
+                            onClick = onAccept,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.tertiary
+                            ),
+                            shape = RoundedCornerShape(20.dp),
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(36.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.FitnessCenter,
+                                contentDescription = "Aceptar desafío",
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-// Dialogo para mostrar notificaciones
 @Composable
 fun NotificacionesDialog(
     notificaciones: List<Notificacion>,
@@ -2127,7 +2163,7 @@ fun NotificacionesDialog(
     onRejectRequest: (String) -> Unit,
     icon: ImageVector = Icons.Default.PersonAdd,
 ) {
-    // Estado para almacenar en caché los nombres de usuarios
+    // Estado para almacenar en caché los nombres
     val nombresUsuarios = remember { mutableStateOf(mapOf<String, String>()) }
 
     // Estado local mutable para la lista de notificaciones
@@ -2139,9 +2175,8 @@ fun NotificacionesDialog(
         notificacionesLocales.addAll(notificaciones)
     }
 
-    // Función local para eliminar una notificación y actualizar la UI inmediatamente
+    // Función local para eliminar una notificación
     val removeNotificationLocal = { notificationId: String ->
-        // Eliminar la notificación del estado local para actualizar la UI inmediatamente
         notificacionesLocales.removeIf { it.id == notificationId }
     }
 
@@ -2152,8 +2187,7 @@ fun NotificacionesDialog(
             color = MaterialTheme.colorScheme.surface,
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.8f)
-                .padding(16.dp)
+                .fillMaxHeight(0.9f)
         ) {
             Column(
                 modifier = Modifier
@@ -2190,7 +2224,7 @@ fun NotificacionesDialog(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Contenido principal (lista o mensaje vacío)
+                // Contenido principal
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -2202,108 +2236,90 @@ fun NotificacionesDialog(
                             verticalArrangement = Arrangement.Center,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(vertical = 32.dp)
+                                .padding(32.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Notifications,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                                modifier = Modifier.size(72.dp)
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+                                modifier = Modifier.size(80.dp)
                             )
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(24.dp))
                             Text(
-                                "No tienes notificaciones",
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                style = MaterialTheme.typography.bodyLarge
+                                "No hay notificaciones",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Medium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                "Las notificaciones aparecerán aquí cuando recibas solicitudes de amistad o nuevos desafíos",
+                                "Las solicitudes de amistad y desafíos aparecerán aquí",
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                                 style = MaterialTheme.typography.bodyMedium,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(horizontal = 32.dp)
+                                textAlign = TextAlign.Center
                             )
                         }
                     } else {
-                        // Aseguramos que LazyColumn tenga un contenedor con scroll
                         LazyColumn(
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                            contentPadding = PaddingValues(vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(0.dp), // Sin espacio entre items
+                            contentPadding = PaddingValues(0.dp), // Sin padding extra
                             modifier = Modifier.fillMaxSize()
                         ) {
                             items(notificacionesLocales) { notif ->
-                                Card(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp),
-                                    colors = CardDefaults.cardColors(
-                                        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f)
-                                    ),
-                                    border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
-                                ) {
-                                    Box(modifier = Modifier.padding(12.dp)) {
-                                        NotificationItem(
-                                            notification = notif,
-                                            onAccept = {
-                                                if (notif.tipo == "solicitud") {
-                                                    onAcceptRequest(notif.remitente)
-                                                    // Actualizar UI primero
-                                                    removeNotificationLocal(notif.id)
-                                                    // Luego actualizar en la base de datos
+                                NotificationItem(
+                                    notification = notif,
+                                    onAccept = {
+                                        if (notif.tipo == "solicitud") {
+                                            onAcceptRequest(notif.remitente)
+                                            removeNotificationLocal(notif.id)
+                                            removeNotification(
+                                                GLOBAL.id!!,
+                                                notif.id,
+                                                icon = icon
+                                            )
+                                        } else if (notif.tipo == "desafio" && notif.challengeId != null) {
+                                            val db = FirebaseFirestore.getInstance()
+                                            val userId = GLOBAL.id!!
+                                            removeNotificationLocal(notif.id)
+                                            db.collection("desafios").document(notif.challengeId).update("status", "ACCEPTED")
+                                                .addOnSuccessListener {
+                                                    Log.d("Notif", "Desafío aceptado")
                                                     removeNotification(
-                                                        GLOBAL.id!!,
+                                                        userId,
                                                         notif.id,
                                                         icon = icon
                                                     )
-                                                } else if (notif.tipo == "desafio" && notif.challengeId != null) {
-                                                    val db = FirebaseFirestore.getInstance()
-                                                    val userId = GLOBAL.id!!
-                                                    // Actualizar UI primero
-                                                    removeNotificationLocal(notif.id)
-                                                    db.collection("desafios").document(notif.challengeId).update("status", "ACCEPTED")
-                                                        .addOnSuccessListener {
-                                                            Log.d("Notif", "Desafío aceptado")
-                                                            removeNotification(
-                                                                userId,
-                                                                notif.id,
-                                                                icon = icon
-                                                            )
-                                                        }
-                                                        .addOnFailureListener { e ->
-                                                            Log.e("Notif", "Error al aceptar desafío", e)
-                                                        }
                                                 }
-                                            },
-                                            onReject = {
-                                                if (notif.tipo == "solicitud") {
-                                                    onRejectRequest(notif.remitente)
-                                                    // Actualizar UI primero
-                                                    removeNotificationLocal(notif.id)
-                                                    // Luego actualizar en la base de datos
-                                                    removeNotification(GLOBAL.id!!, notif.id, icon = icon)
-                                                } else if (notif.tipo == "desafio" && notif.challengeId != null) {
-                                                    val db = FirebaseFirestore.getInstance()
-                                                    val userId = GLOBAL.id!!
-                                                    // Actualizar UI primero
-                                                    removeNotificationLocal(notif.id)
-                                                    db.collection("desafios").document(notif.challengeId).delete()
-                                                        .addOnSuccessListener {
-                                                            Log.d("Notif", "Desafío rechazado y eliminado")
-                                                            removeNotification(
-                                                                userId,
-                                                                notif.id,
-                                                                icon = icon
-                                                            )
-                                                        }
-                                                        .addOnFailureListener { e ->
-                                                            Log.e("Notif", "Error al rechazar desafío", e)
-                                                        }
+                                                .addOnFailureListener { e ->
+                                                    Log.e("Notif", "Error al aceptar desafío", e)
                                                 }
-                                            },
-                                            nombreUsuario = nombresUsuarios
-                                        )
-                                    }
-                                }
+                                        }
+                                    },
+                                    onReject = {
+                                        if (notif.tipo == "solicitud") {
+                                            onRejectRequest(notif.remitente)
+                                            removeNotificationLocal(notif.id)
+                                            removeNotification(GLOBAL.id!!, notif.id, icon = icon)
+                                        } else if (notif.tipo == "desafio" && notif.challengeId != null) {
+                                            val db = FirebaseFirestore.getInstance()
+                                            val userId = GLOBAL.id!!
+                                            removeNotificationLocal(notif.id)
+                                            db.collection("desafios").document(notif.challengeId).delete()
+                                                .addOnSuccessListener {
+                                                    Log.d("Notif", "Desafío rechazado y eliminado")
+                                                    removeNotification(
+                                                        userId,
+                                                        notif.id,
+                                                        icon = icon
+                                                    )
+                                                }
+                                                .addOnFailureListener { e ->
+                                                    Log.e("Notif", "Error al rechazar desafío", e)
+                                                }
+                                        }
+                                    },
+                                    nombreUsuario = nombresUsuarios
+                                )
                             }
                         }
                     }
@@ -2328,6 +2344,411 @@ fun NotificacionesDialog(
         }
     }
 }
+// Composable para mostrar una notificacion
+//@Composable
+//fun NotificationItem(
+//    notification: Notificacion,
+//    onAccept: () -> Unit,
+//    onReject: () -> Unit = {}, // Parámetro opcional para mantener compatibilidad
+//    nombreUsuario: MutableState<Map<String, String>> = remember { mutableStateOf(mapOf()) }
+//) {
+//    // Log para verificar que la notificación se pasa correctamente
+//    Log.d("NotificationItem", "Notificación: ${notification.mensaje}")
+//
+//    // Efecto para cargar el nombre del usuario
+//    LaunchedEffect(notification.remitente) {
+//        // Comprueba si ya tenemos el nombre del usuario
+//        if (!nombreUsuario.value.containsKey(notification.remitente)) {
+//            // Buscar el nombre del usuario en la base de datos
+//            val db = FirebaseFirestore.getInstance()
+//            db.collection("usuarios")
+//                .document(notification.remitente)
+//                .get()
+//                .addOnSuccessListener { document ->
+//                    if (document != null && document.exists()) {
+//                        val nombre = document.getString("nombre") ?: notification.remitente
+//                        nombreUsuario.value = nombreUsuario.value + (notification.remitente to nombre)
+//                    }
+//                }
+//                .addOnFailureListener {
+//                    Log.e("NotificationItem", "Error al obtener el nombre del usuario", it)
+//                }
+//        }
+//    }
+//
+//    Column(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(vertical = 4.dp)
+//    ) {
+//        // Fila con Avatar e Información
+//        Row(
+//            verticalAlignment = Alignment.CenterVertically,
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            // Círculo con icono según tipo
+//            Box(
+//                contentAlignment = Alignment.Center,
+//                modifier = Modifier
+//                    .size(40.dp)
+//                    .clip(CircleShape)
+//                    .background(
+//                        when (notification.tipo) {
+//                            "solicitud" -> MaterialTheme.colorScheme.primary
+//                            "desafio" -> MaterialTheme.colorScheme.tertiary
+//                            else -> MaterialTheme.colorScheme.secondary
+//                        }
+//                    )
+//            ) {
+//                Icon(
+//                    imageVector = when (notification.tipo) {
+//                        "solicitud" -> Icons.Default.PersonAdd
+//                        "desafio" -> Icons.Default.FitnessCenter
+//                        else -> Icons.Default.Notifications
+//                    },
+//                    contentDescription = null,
+//                    tint = Color.White,
+//                    modifier = Modifier.size(20.dp)
+//                )
+//            }
+//
+//            Spacer(modifier = Modifier.width(12.dp))
+//
+//            Column(modifier = Modifier.weight(1f)) {
+//                // Título descriptivo según tipo
+//                Text(
+//                    text = when (notification.tipo) {
+//                        "solicitud" -> "Solicitud de amistad"
+//                        "desafio" -> "Nuevo desafío"
+//                        else -> "Notificación"
+//                    },
+//                    fontWeight = FontWeight.Bold,
+//                    color = MaterialTheme.colorScheme.onSurface
+//                )
+//
+//                // Remitente (con nombre real si está disponible)
+//                val nombreMostrar = nombreUsuario.value[notification.remitente] ?: notification.remitente
+////                Text(
+////                    text = "De: $nombreMostrar",
+////                    style = MaterialTheme.typography.bodySmall,
+////                    fontWeight = FontWeight.Medium,
+////                    color = MaterialTheme.colorScheme.onSurface
+////                )
+//
+//                // Mensaje
+//                Text(
+//                    text = notification.mensaje,
+//                    style = MaterialTheme.typography.bodySmall,
+//                    color = MaterialTheme.colorScheme.onSurfaceVariant
+//                )
+//            }
+//        }
+//
+//        // Botones de acción debajo de la notificación
+//        if (notification.tipo == "solicitud") {
+//            Row(
+//                horizontalArrangement = Arrangement.End,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 8.dp, end = 8.dp)
+//            ) {
+//                // Botón de rechazar
+//                OutlinedButton(
+//                    onClick = onReject,
+//                    colors = ButtonDefaults.outlinedButtonColors(
+//                        contentColor = MaterialTheme.colorScheme.error
+//                    ),
+//                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
+//                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+//                    modifier = Modifier.height(32.dp)
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Default.Close,
+//                        contentDescription = "Rechazar",
+//                        modifier = Modifier.size(16.dp)
+//                    )
+//                    Spacer(modifier = Modifier.width(4.dp))
+//                    Text("Rechazar", fontSize = 12.sp)
+//                }
+//
+//                Spacer(modifier = Modifier.width(8.dp))
+//
+//                // Botón de aceptar
+//                Button(
+//                    onClick = onAccept,
+//                    colors = ButtonDefaults.buttonColors(
+//                        containerColor = MaterialTheme.colorScheme.primary
+//                    ),
+//                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+//                    modifier = Modifier.height(32.dp)
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Default.Check,
+//                        contentDescription = "Aceptar",
+//                        modifier = Modifier.size(16.dp)
+//                    )
+//                    Spacer(modifier = Modifier.width(4.dp))
+//                    Text("Aceptar", fontSize = 12.sp)
+//                }
+//            }
+//        }else if (notification.tipo == "desafio") {
+//            Row(
+//                horizontalArrangement = Arrangement.End,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 8.dp, end = 8.dp)
+//            ) {
+//                // Botón de aceptar
+//                Button(
+//                    onClick = onAccept,
+//                    colors = ButtonDefaults.buttonColors(
+//                        containerColor = MaterialTheme.colorScheme.primary
+//                    ),
+//                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+//                    modifier = Modifier.height(32.dp)
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Default.Check,
+//                        contentDescription = "Aceptar",
+//                        modifier = Modifier.size(16.dp)
+//                    )
+//                    Spacer(modifier = Modifier.width(4.dp))
+//                    Text("Aceptar", fontSize = 12.sp)
+//                }
+//                Spacer(modifier = Modifier.width(8.dp))
+//                // Botón de rechazar
+//                OutlinedButton(
+//                    onClick = onReject,
+//                    colors = ButtonDefaults.outlinedButtonColors(
+//                        contentColor = MaterialTheme.colorScheme.error
+//                    ),
+//                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
+//                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+//                    modifier = Modifier.height(32.dp)
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Default.Close,
+//                        contentDescription = "Rechazar",
+//                        modifier = Modifier.size(16.dp)
+//                    )
+//                    Spacer(modifier = Modifier.width(4.dp))
+//                    Text("Rechazar", fontSize = 12.sp)
+//                }
+//            }
+//        }
+//    }
+//}
+
+// Dialogo para mostrar notificaciones
+//@Composable
+//fun NotificacionesDialog(
+//    notificaciones: List<Notificacion>,
+//    onDismiss: () -> Unit,
+//    onAcceptRequest: (String) -> Unit,
+//    onRejectRequest: (String) -> Unit,
+//    icon: ImageVector = Icons.Default.PersonAdd,
+//) {
+//    // Estado para almacenar en caché los nombres de usuarios
+//    val nombresUsuarios = remember { mutableStateOf(mapOf<String, String>()) }
+//
+//    // Estado local mutable para la lista de notificaciones
+//    val notificacionesLocales = remember { mutableStateListOf<Notificacion>() }
+//
+//    // Inicializar el estado local con las notificaciones recibidas
+//    LaunchedEffect(notificaciones) {
+//        notificacionesLocales.clear()
+//        notificacionesLocales.addAll(notificaciones)
+//    }
+//
+//    // Función local para eliminar una notificación y actualizar la UI inmediatamente
+//    val removeNotificationLocal = { notificationId: String ->
+//        // Eliminar la notificación del estado local para actualizar la UI inmediatamente
+//        notificacionesLocales.removeIf { it.id == notificationId }
+//    }
+//
+//    Dialog(onDismissRequest = onDismiss) {
+//        Surface(
+//            shape = RoundedCornerShape(24.dp),
+//            tonalElevation = 8.dp,
+//            color = MaterialTheme.colorScheme.surface,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .fillMaxHeight(0.8f)
+//                .padding(16.dp)
+//        ) {
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .padding(16.dp),
+//            ) {
+//                // Encabezado
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(bottom = 8.dp)
+//                ) {
+//                    Text(
+//                        text = "Notificaciones",
+//                        style = MaterialTheme.typography.titleLarge,
+//                        fontWeight = FontWeight.Bold,
+//                        color = MaterialTheme.colorScheme.onSurface,
+//                        modifier = Modifier.align(Alignment.CenterStart)
+//                    )
+//
+//                    IconButton(
+//                        onClick = onDismiss,
+//                        modifier = Modifier.align(Alignment.CenterEnd)
+//                    ) {
+//                        Icon(
+//                            imageVector = Icons.Default.Close,
+//                            contentDescription = "Cerrar",
+//                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+//                        )
+//                    }
+//                }
+//
+//                Divider(thickness = 1.dp)
+//
+//                Spacer(modifier = Modifier.height(8.dp))
+//
+//                // Contenido principal (lista o mensaje vacío)
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .weight(1f)
+//                ) {
+//                    if (notificacionesLocales.isEmpty()) {
+//                        Column(
+//                            horizontalAlignment = Alignment.CenterHorizontally,
+//                            verticalArrangement = Arrangement.Center,
+//                            modifier = Modifier
+//                                .fillMaxSize()
+//                                .padding(vertical = 32.dp)
+//                        ) {
+//                            Icon(
+//                                imageVector = Icons.Default.Notifications,
+//                                contentDescription = null,
+//                                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+//                                modifier = Modifier.size(72.dp)
+//                            )
+//                            Spacer(modifier = Modifier.height(16.dp))
+//                            Text(
+//                                "No tienes notificaciones",
+//                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+//                                style = MaterialTheme.typography.bodyLarge
+//                            )
+//                            Spacer(modifier = Modifier.height(8.dp))
+//                            Text(
+//                                "Las notificaciones aparecerán aquí cuando recibas solicitudes de amistad o nuevos desafíos",
+//                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+//                                style = MaterialTheme.typography.bodyMedium,
+//                                textAlign = TextAlign.Center,
+//                                modifier = Modifier.padding(horizontal = 32.dp)
+//                            )
+//                        }
+//                    } else {
+//                        // Aseguramos que LazyColumn tenga un contenedor con scroll
+//                        LazyColumn(
+//                            verticalArrangement = Arrangement.spacedBy(8.dp),
+//                            contentPadding = PaddingValues(vertical = 8.dp),
+//                            modifier = Modifier.fillMaxSize()
+//                        ) {
+//                            items(notificacionesLocales) { notif ->
+//                                Card(
+//                                    modifier = Modifier.fillMaxWidth(),
+//                                    elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp),
+//                                    colors = CardDefaults.cardColors(
+//                                        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f)
+//                                    ),
+//                                    border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
+//                                ) {
+//                                    Box(modifier = Modifier.padding(12.dp)) {
+//                                        NotificationItem(
+//                                            notification = notif,
+//                                            onAccept = {
+//                                                if (notif.tipo == "solicitud") {
+//                                                    onAcceptRequest(notif.remitente)
+//                                                    // Actualizar UI primero
+//                                                    removeNotificationLocal(notif.id)
+//                                                    // Luego actualizar en la base de datos
+//                                                    removeNotification(
+//                                                        GLOBAL.id!!,
+//                                                        notif.id,
+//                                                        icon = icon
+//                                                    )
+//                                                } else if (notif.tipo == "desafio" && notif.challengeId != null) {
+//                                                    val db = FirebaseFirestore.getInstance()
+//                                                    val userId = GLOBAL.id!!
+//                                                    // Actualizar UI primero
+//                                                    removeNotificationLocal(notif.id)
+//                                                    db.collection("desafios").document(notif.challengeId).update("status", "ACCEPTED")
+//                                                        .addOnSuccessListener {
+//                                                            Log.d("Notif", "Desafío aceptado")
+//                                                            removeNotification(
+//                                                                userId,
+//                                                                notif.id,
+//                                                                icon = icon
+//                                                            )
+//                                                        }
+//                                                        .addOnFailureListener { e ->
+//                                                            Log.e("Notif", "Error al aceptar desafío", e)
+//                                                        }
+//                                                }
+//                                            },
+//                                            onReject = {
+//                                                if (notif.tipo == "solicitud") {
+//                                                    onRejectRequest(notif.remitente)
+//                                                    // Actualizar UI primero
+//                                                    removeNotificationLocal(notif.id)
+//                                                    // Luego actualizar en la base de datos
+//                                                    removeNotification(GLOBAL.id!!, notif.id, icon = icon)
+//                                                } else if (notif.tipo == "desafio" && notif.challengeId != null) {
+//                                                    val db = FirebaseFirestore.getInstance()
+//                                                    val userId = GLOBAL.id!!
+//                                                    // Actualizar UI primero
+//                                                    removeNotificationLocal(notif.id)
+//                                                    db.collection("desafios").document(notif.challengeId).delete()
+//                                                        .addOnSuccessListener {
+//                                                            Log.d("Notif", "Desafío rechazado y eliminado")
+//                                                            removeNotification(
+//                                                                userId,
+//                                                                notif.id,
+//                                                                icon = icon
+//                                                            )
+//                                                        }
+//                                                        .addOnFailureListener { e ->
+//                                                            Log.e("Notif", "Error al rechazar desafío", e)
+//                                                        }
+//                                                }
+//                                            },
+//                                            nombreUsuario = nombresUsuarios
+//                                        )
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                // Botón inferior
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(top = 16.dp)
+//                ) {
+//                    Button(
+//                        onClick = onDismiss,
+//                        modifier = Modifier.align(Alignment.Center),
+//                        shape = RoundedCornerShape(percent = 50),
+//                        contentPadding = PaddingValues(horizontal = 32.dp, vertical = 12.dp)
+//                    ) {
+//                        Text("Cerrar")
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
 
 // Función para enviar una notificación de solicitud de amistad
