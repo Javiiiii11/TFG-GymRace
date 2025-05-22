@@ -444,7 +444,7 @@ fun CustomRoutineSection(navController: NavController) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Rutinas de Amigos",
+                        text = "Rutinas de Usuarios",
                         color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,

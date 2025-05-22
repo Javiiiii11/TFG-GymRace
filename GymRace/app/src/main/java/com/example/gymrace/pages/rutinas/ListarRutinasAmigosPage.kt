@@ -217,7 +217,7 @@ fun ListarRutinasAmigosPage(navController: NavHostController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Rutinas de Amigos") },
+                title = { Text("Rutinas de Usuarios") },
                 navigationIcon = {
                     IconButton(onClick = {
                         navController.navigate("main") {

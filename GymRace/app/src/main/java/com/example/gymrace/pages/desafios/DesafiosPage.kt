@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.foundation.Image
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.layout.ContentScale
@@ -133,7 +134,7 @@ class ChallengeViewModel : ViewModel() {
             _userFriends.value = friendsList
         } catch (e: Exception) {
             // Manejo de errores al cargar amigos
-            Log.e("ChallengeViewModel", "Error al cargar los amigos: ${e.message}")
+            Log.e("ChallengeViewModel", "Error al cargar los usuarios: ${e.message}")
         }
     }
     // Función para cargar desafíos de amigos
@@ -197,7 +198,7 @@ class ChallengeViewModel : ViewModel() {
             _friendsChallenges.value = allChallenges
         } catch (e: Exception) {
             // Manejo de errores al cargar desafíos
-            Log.e("Error", "Error al cargar los desafios de los amigos: ${e.message}")
+            Log.e("Error", "Error al cargar los desafios de los usuarios: ${e.message}")
         }
     }
     // Función para crear un nuevo desafío
@@ -641,7 +642,7 @@ fun EmptyState(onCreateDesafio: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Crea un desafío con el botón + o agrega amigos",
+            text = "Crea un desafío con el botón + o invita usuarios",
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -698,7 +699,7 @@ fun ChallengeItem(
     val myProgress = if (isCreator) challenge.creatorProgress else challenge.participantProgress
     val otherProgress = if (isCreator) challenge.participantProgress else challenge.creatorProgress
     // Determina el nombre del otro participante
-    val otherName = if (isCreator) "Amigo" else "Creador"
+    val otherName = if (isCreator) "Invitado" else "Creador"
 
     Card(
         modifier = Modifier
@@ -733,7 +734,31 @@ fun ChallengeItem(
             ) {
                 StatusChip(status = challenge.status)
                 if (challenge.status == "PENDING" && !isCreator) {
-                    OutlinedButton(onClick = onAccept) { Text("Aceptar") }
+                    Row {
+                        IconButton(
+                            onClick = onAccept,
+                            modifier = Modifier
+                                .size(40.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = "Aceptar",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        IconButton(
+                            onClick = { onDeleteChallenge() },
+                            modifier = Modifier
+                                .size(40.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Rechazar",
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
                 } else if (challenge.status == "ACCEPTED" || challenge.status == "IN_PROGRESS") {
                     Button(onClick = onUpdateProgress, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)) {
                         Icon(Icons.Default.Edit, contentDescription = null)
@@ -746,7 +771,7 @@ fun ChallengeItem(
             if (challenge.status == "COMPLETED") {
                 val winner = when {
                     challenge.creatorProgress > challenge.participantProgress -> "Creador"
-                    challenge.participantProgress > challenge.creatorProgress -> "Amigo"
+                    challenge.participantProgress > challenge.creatorProgress -> "Invitado"
                     else -> "Empate"
                 }
                 Spacer(modifier = Modifier.height(12.dp))
@@ -804,7 +829,7 @@ fun CreateChallengeDialog(
     var challengeName by remember { mutableStateOf("") }
     var challengeDescription by remember { mutableStateOf("") }
     var selectedFriendId by remember { mutableStateOf("") }
-    var selectedFriendName by remember { mutableStateOf("Seleccionar amigo") }
+    var selectedFriendName by remember { mutableStateOf("Seleccionar usuario") }
     var selectedExercise by remember { mutableStateOf("") }
     var repetitions by remember { mutableStateOf("") }
     // Estado para mostrar el menú desplegable de amigos
@@ -864,7 +889,7 @@ fun CreateChallengeDialog(
                         value = selectedFriendName,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Amigo") },
+                        label = { Text("Usuarios") },
                         trailingIcon = {
                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedFriends)
                         },
