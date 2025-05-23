@@ -760,7 +760,7 @@ fun Masoptions() {
                 Text(
                     text = buildAnnotatedString {
                         append("Visita nuestra ")
-                        pushStringAnnotation(tag = "URL", annotation = "https://www.gymrace.sytes.net")
+                        pushStringAnnotation(tag = "URL", annotation = "https://tfg-gymrace-web.onrender.com")
                         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.secondary, textDecoration = TextDecoration.Underline)) {
                             append("página web")
                         }
@@ -768,7 +768,7 @@ fun Masoptions() {
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { uriHandler.openUri("https://www.gymrace.sytes.net") },
+                        .clickable { uriHandler.openUri("https://tfg-gymrace-web.onrender.com") },
                     fontSize = 16.sp
                 )
             }

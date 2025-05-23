@@ -195,7 +195,6 @@ fun Content(modifier: Modifier = Modifier) {
                                     selectedCategory.value = category
                                     showFilterDialog = false
                                 },
-//                                .padding(vertical = 8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             RadioButton(
